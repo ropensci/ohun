@@ -1,11 +1,19 @@
 Package: ohun
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Automatic detection of acoustic signals
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
+Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines
+License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
+URL: https://marce10.github.io/ohun/
+BugReports: https://github.com/maRce10/ohun/issues/
+VignetteBuilder: knitr, rmarkdown
+RoxygenNote: 7.1.1
+Repository: CRAN
+Language: en-US
+Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")), person("Grace", "Smith-Vidaurre", role = c("aut"), email = "gsmithvi@gmail.com"))
+Date/Publication: 2016-04-19 08:12:11
+Imports: warbleR
+
