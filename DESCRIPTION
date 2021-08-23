@@ -6,7 +6,6 @@ Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
 License: GPL (>= 2)
 Encoding: UTF-8
-LazyData: true
 URL: https://marce10.github.io/ohun/
 BugReports: https://github.com/maRce10/ohun/issues/
 VignetteBuilder: knitr, rmarkdown
@@ -15,5 +14,6 @@ Repository: CRAN
 Language: en-US
 Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")), person("Grace", "Smith-Vidaurre", role = c("aut"), email = "gsmithvi@gmail.com"))
 Date/Publication: 2016-04-19 08:12:11
-Imports: warbleR
+Imports: pbapply, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson
+Depends: R (>= 3.2.1), tuneR, warbleR
 
