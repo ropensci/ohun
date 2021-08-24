@@ -151,131 +151,6 @@ get_envelopes <-
     if (length(files) == 0)
       stop("no sound files found in working directory or 'path' supplied")
 
-
-    # if parallel was not called
-    if (pb)
-        cat("Calculating amplitude envelopes:")
-
-   # function for detecting signals
-    env_FUN <-
-      function(i,
-               path,
-               bp,
-               wl,
-               power,
-               parallel,
-               thinning,
-               pb,
-               ssmooth,
-               normalize,
-               filter
-               )
-      {
-
-        # read wave object
-        wave_obj <- warbleR::read_sound_file(X = i, path = path)
-
-          #filter frequencies
-          if (!is.null(bp))
-            {
-            if (filter == "ffilter")
-            wave_obj <-
-            seewave::ffilter(
-              wave_obj,
-              f = wave_obj@samp.rate,
-              from = bp[1] * 1000,
-              to = bp[2] * 1000,
-              bandpass = TRUE,
-              wl = wl,
-              output = "Wave"
-            )
-
-            if (filter == "bwfilter")
-              wave_obj <-
-                seewave::bwfilter(
-                  wave_obj,
-                  f = wave_obj@samp.rate,
-                  from = bp[1] * 1000,
-                  to = bp[2] * 1000,
-                  bandpass = TRUE,
-                  output = "Wave"
-                )
-
-            if (filter == "fir")
-              wave_obj <-
-                seewave::fir(
-                  wave_obj,
-                  f = wave_obj@samp.rate,
-                  from = bp[1] * 1000,
-                  to = bp[2] * 1000,
-                  bandpass = TRUE,
-                  wl = wl,
-                  output = "Wave"
-                )
-            }
-
-          #detect signals based on amplitude (modified from seewave::timer function)
-          amp_vector <- wave_obj@left
-
-          # original number of samples
-          n.samples <- length(amp_vector)
-
-          # original duration
-          wave_dur <- seewave::duration(wave_obj)
-
-          # extract envelope
-          envp <-
-            warbleR::envelope(
-              x = amp_vector,
-              ssmooth = ssmooth
-            )
-
-          # flat edges (first and last 100 ms) if lower than lowest amp value
-          if (n.samples > wave_obj@samp.rate / 5) {
-            min.envp <- min(envp[(wave_obj@samp.rate / 10):(length(envp) - wave_obj@samp.rate / 5)])
-
-            if (envp[1] < min.envp) envp[1:min(which(envp >= min.envp))] <- min.envp
-
-            if (envp[length(envp)] < min.envp) envp[max(which(envp >= min.envp)):length(envp)] <- min.envp
-          }
-
-          # force to be in the range 0-1
-          if (normalize)
-          {
-            envp <- envp - min(envp)
-          envp <- envp / max(envp)
-          }
-
-          # add power
-          if (power != 1){
-            envp <- envp ^ power
-            envp <- envp / max(envp)
-          }
-
-         # thin
-          if (thinning < 1) {
-
-            if (n.samples * thinning < 10)  stop("thinning is too high, no enough samples left for at least 1 sound file")
-
-            # reduce size of envelope
-            envp <-
-              stats::approx(
-                x = seq(0, wave_dur, length.out = length(envp)),
-                y = envp,
-                n = round(n.samples * thinning),
-                method = "linear"
-              )$y
-          }
-
-        output <- list(envelope = envp,
-                       duration = wave_dur,
-                       org.n.samples = n.samples,
-                       sampling.freq = wave_obj@samp.rate
-                       )
-
-        return(output)
-        }
-
     #Apply over each sound file
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & parallel > 1)
@@ -288,7 +163,7 @@ get_envelopes <-
       cl = cl,
       FUN = function(i)
       {
-        env_FUN(i,
+        env_ohun_int(i,
               path,
               bp,
               wl,
@@ -341,7 +216,7 @@ get_envelopes <-
 #' @param ...	 further arguments passed to or from other methods. Ignored when printing envelopes.
 #' @keywords internal
 #'
-#' @exportS3Method
+#' @export
 
 print.envelopes <- function(x, ...) {
 
@@ -384,3 +259,124 @@ print.envelopes <- function(x, ...) {
     cat(crayon::silver(paste0("\n * Created by ", crayon::bold("ohun "), x$call_info$ohun.version)))
 }
 
+########################### internal function to get an envelope ###################
+
+# function for detecting signals
+env_ohun_int <-
+  function(i,
+           path,
+           bp,
+           wl,
+           power,
+           parallel,
+           thinning,
+           pb,
+           ssmooth,
+           normalize,
+           filter
+  )
+  {
+
+    # read wave object
+    wave_obj <- warbleR::read_sound_file(X = i, path = path)
+
+    #filter frequencies
+    if (!is.null(bp))
+    {
+      if (filter == "ffilter")
+        wave_obj <-
+          seewave::ffilter(
+            wave_obj,
+            f = wave_obj@samp.rate,
+            from = bp[1] * 1000,
+            to = bp[2] * 1000,
+            bandpass = TRUE,
+            wl = wl,
+            output = "Wave"
+          )
+
+      if (filter == "bwfilter")
+        wave_obj <-
+          seewave::bwfilter(
+            wave_obj,
+            f = wave_obj@samp.rate,
+            from = bp[1] * 1000,
+            to = bp[2] * 1000,
+            bandpass = TRUE,
+            output = "Wave"
+          )
+
+      if (filter == "fir")
+        wave_obj <-
+          seewave::fir(
+            wave_obj,
+            f = wave_obj@samp.rate,
+            from = bp[1] * 1000,
+            to = bp[2] * 1000,
+            bandpass = TRUE,
+            wl = wl,
+            output = "Wave"
+          )
+    }
+
+    #detect signals based on amplitude (modified from seewave::timer function)
+    amp_vector <- wave_obj@left
+
+    # original number of samples
+    n.samples <- length(amp_vector)
+
+    # original duration
+    wave_dur <- seewave::duration(wave_obj)
+
+    # extract envelope
+    envp <-
+      warbleR::envelope(
+        x = amp_vector,
+        ssmooth = ssmooth
+      )
+
+    # flat edges (first and last 100 ms) if lower than lowest amp value
+    if (n.samples > wave_obj@samp.rate / 5) {
+      min.envp <- min(envp[(wave_obj@samp.rate / 10):(length(envp) - wave_obj@samp.rate / 5)])
+
+      if (envp[1] < min.envp) envp[1:min(which(envp >= min.envp))] <- min.envp
+
+      if (envp[length(envp)] < min.envp) envp[max(which(envp >= min.envp)):length(envp)] <- min.envp
+    }
+
+    # force to be in the range 0-1
+    if (normalize)
+    {
+      envp <- envp - min(envp)
+      envp <- envp / max(envp)
+    }
+
+    # add power
+    if (power != 1){
+      envp <- envp ^ power
+      envp <- envp / max(envp)
+    }
+
+    # thin
+    if (thinning < 1) {
+
+      if (n.samples * thinning < 10)  stop("thinning is too high, no enough samples left for at least 1 sound file")
+
+      # reduce size of envelope
+      envp <-
+        stats::approx(
+          x = seq(0, wave_dur, length.out = length(envp)),
+          y = envp,
+          n = round(n.samples * thinning),
+          method = "linear"
+        )$y
+    }
+
+    output <- list(envelope = envp,
+                   duration = wave_dur,
+                   org.n.samples = n.samples,
+                   sampling.freq = wave_obj@samp.rate
+    )
+
+    return(output)
+  }

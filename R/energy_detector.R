@@ -1,6 +1,5 @@
 #'
-#' \code{energy_detector} detects the start and end of vocalizations in sound files based
-#' on amplitude, duration, and frequency range attributes.
+#' \code{energy_detector} detects the start and end of acoustic signals
 #' @usage energy_detector(files = NULL, envelopes = NULL, path = NULL, wl = 512, power = 1,
 #' thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15, hold.time = 0,
 #' min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
@@ -40,10 +39,9 @@
 #' @export
 #' @name energy_detector
 #' @details This function determines the start and end of signals in sound files. Sound files should be located in the
-#'    working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied).
+#'    working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied). Note that when envelopes are not supplied they are calculated on the fly which is more efficient in terms of memory usage (better option if R crashes!).
 #'
 #' @examples {
-#'  \dontrun{
 #' # Save example files into temporary working directory
 #' data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4"))
 #' writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
@@ -85,6 +83,7 @@
 #' # diagnose detection
 #' diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
 #'
+#' \dontrun{
 #' # USIN OTHER SOUND FILE FORMAT (flac program must be installed)
 #'  # fisrt convert files to flac
 #'  warbleR::wav_2_flac(path = tempdir())
@@ -105,7 +104,7 @@
 #' }
 #'
 #' @references {
-#' Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
 #' @seealso \code{\link{optimize_energy_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
@@ -209,7 +208,7 @@ energy_detector <-
 }
         # either files or envelopes must be supplied
         if (!is.null(files) & !is.null(envelopes))
-          stop("'files' will be ignored as 'envelopes' has been supplied")
+          message("'files' will be ignored as 'envelopes' has been supplied")
 
         # get file names from envelopes
         if (is.null(files))
@@ -228,7 +227,7 @@ energy_detector <-
                thinning,
                ssmooth,
                filter,
-               envelope = NULL
+               envlp
                )
       {
 
@@ -236,38 +235,38 @@ energy_detector <-
         thres <- threshold / 100
 
         # get envelope if not supplied
-        if (is.null(envelope))
-        envelope <- ohun::get_envelopes(path = path,
-                                   files = file,
-                                   bp = bp,
-                                   wl = wl,
-                                   power = power,
-                                   parallel = 1,
-                                   thinning = thinning,
-                                   pb = FALSE,
-                                   ssmooth = ssmooth,
-                                   normalize = TRUE,
-                                   filter = filter
-                                   )[[1]] # first element of the list
+        if (is.null(envlp))
+        envlp <- env_ohun_int(i = file,
+                            path,
+                            bp,
+                            wl,
+                            power,
+                            parallel,
+                            thinning,
+                            pb,
+                            ssmooth,
+                            normalize = TRUE,
+                            filter
+        ) else envlp <- envelopes[[file]]
 
         # normalize to range
-        if (max(envelope[[1]]) > 1) {
-          envelope[[1]] <- envelope[[1]] - min(envelope[[1]])
-          envelope[[1]] <- envelope[[1]] / max(envelope[[1]])
+        if (max(envlp[[1]]) > 1) {
+          envlp[[1]] <- envlp[[1]] - min(envlp[[1]])
+          envlp[[1]] <- envlp[[1]] / max(envlp[[1]])
         }
 
         # time interval between consecutive samples
-        hop.size <- envelope$duration / (length(envelope[[1]]) - 1)
+        hop.size <- envlp$duration / (length(envlp[[1]]) - 1)
 
           # get times at which threshold is crossed
-          cross_thresh <- unlist(lapply(2:length(envelope[[1]]), function(x) {
+          cross_thresh <- unlist(lapply(2:length(envlp[[1]]), function(x) {
 
             #positive means going up
-            if (envelope[[1]][x] > thres & envelope[[1]][x - 1] <= thres) out <- hop.size * (x - 1)
+            if (envlp[[1]][x] > thres & envlp[[1]][x - 1] <= thres) out <- hop.size * (x - 1)
             # negative means going down
-            if (envelope[[1]][x] <= thres & envelope[[1]][x - 1] > thres) out <- hop.size * (x - 1) * -1
+            if (envlp[[1]][x] <= thres & envlp[[1]][x - 1] > thres) out <- hop.size * (x - 1) * -1
           # anything else should be null to save memory
-            if (envelope[[1]][x] <= thres & envelope[[1]][x - 1] <= thres | envelope[[1]][x] > thres & envelope[[1]][x - 1] > thres) out <- NULL
+            if (envlp[[1]][x] <= thres & envlp[[1]][x - 1] <= thres | envlp[[1]][x] > thres & envlp[[1]][x - 1] > thres) out <- NULL
 
               return(out)
           }))
@@ -280,7 +279,7 @@ energy_detector <-
           ends <- abs(cross_thresh[cross_thresh < 0])
 
           # if there is no end
-          if (length(starts) > 0 & length(ends) == 0) ends <- envelope[[1]]$duration
+          if (length(starts) > 0 & length(ends) == 0) ends <- envlp[[1]]$duration
 
           # if there is no start
           if (length(ends) > 0 & length(starts) == 0) starts <- 0
@@ -292,7 +291,7 @@ energy_detector <-
                 if (starts[1] > ends[1]) starts <- c(0, starts)
 
                 # if end is not higher in the last
-          if (starts[length(starts)] > ends[length(ends)]) ends <- c(ends, envelope[[1]]$duration)
+          if (starts[length(starts)] > ends[length(ends)]) ends <- c(ends, envlp[[1]]$duration)
 
           #put time of detection in data frame
           detections_df <-
@@ -412,19 +411,21 @@ energy_detector <-
       cl = cl,
       FUN = function(file)
       {
-        detect_FUN(file = file,
+        out <- detect_FUN(file,
               wl,
               threshold,
               min.duration,
               max.duration,
-              path,
+             path,
               bp,
               power,
               thinning,
               ssmooth,
               filter,
-              if (is.null(envelopes)) NULL else envelopes[[file]]
+             envlp = envelopes
               )
+        return(out)
+
       }
     )
 

@@ -2,8 +2,7 @@
 % Please edit documentation in R/energy_detector.R
 \name{energy_detector}
 \alias{energy_detector}
-\title{\code{energy_detector} detects the start and end of vocalizations in sound files based
-on amplitude, duration, and frequency range attributes.}
+\title{\code{energy_detector} detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, wl = 512, power = 1,
 thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15, hold.time = 0,
@@ -31,7 +30,7 @@ output (usually very large R objects / files). Default is  \code{1} (no thinning
 frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
-  with a sum smooth function. Default is 0 (no smoothing). Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_enveloples}}. Not used if 'envelopes' are supplied.
+  with a sum smooth function. Default is 0 (no smoothing). Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
   with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).}
 
@@ -61,12 +60,11 @@ A data frame containing the start and end of each signal by
   sound file. If no signal was detected for a sound file it is not included in the output data frame.
 }
 \description{
-\code{energy_detector} detects the start and end of vocalizations in sound files based
-on amplitude, duration, and frequency range attributes.
+\code{energy_detector} detects the start and end of acoustic signals
 }
 \details{
 This function determines the start and end of signals in sound files. Sound files should be located in the
-   working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied).
+   working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied). Note that when envelopes are not supplied they are calculated on the fly which is more efficient in terms of memory usage (better option if R crashes!).
 }
 \examples{
 {
@@ -133,7 +131,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
 }
 \references{
 {
-Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 }
 }
 \seealso{

@@ -10,14 +10,12 @@
    }
    
  The package offers functions to:
-   \itemize{
-   \item Energy-based detection
-   \item Template-based detection
-   \item Diagnose detection precision
-   \item Optimize detection routines based on reference annotations
-   }
+   - Energy-based detection
+   - Template-based detection
+   - Diagnose detection precision
+   - Optimize detection routines based on reference annotations
    
-Most of the functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency.
+All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency.
 
 
 To install the latest developmental version from [github](https://github.com/) you will need the R package [devtools](https://cran.r-project.org/package=devtools):

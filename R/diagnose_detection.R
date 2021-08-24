@@ -23,62 +23,49 @@
 #' @export
 #' @name diagnose_detection
 #' @details The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
-#' @examples
-#' \dontrun{
-#' # Save example files into temporary working directory
-#' data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4"))
-#' writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-#' writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-#' writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
-#' writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
+#' @examples {
+#' # perfect detection
+#' diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference)
 #'
-#' # run detection
-#' detec <- energy_detector(path = tempdir(), threshold = 6, ssmooth = 300,
-#' bp = c(2, 9), wl = 300, min.duration = 0.09)
+#' # missing one in detection
+#' diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference[-1, ])
 #'
-#' # diagnose detection
+#' # an extra one in detection
+#' diagnose_detection(reference = lbh_selec_reference[-1, ], detection = lbh_selec_reference)
+#'
+#' # with time diagnostics
+#' diagnose_detection(reference = lbh_selec_reference[-1, ],
+#' detection = lbh_selec_reference, time.diagnostics = TRUE)
+#'
+#' # and extra sound file in reference
 #' diagnose_detection(reference = lbh_selec_reference,
-#' detection = detec)
+#' detection =
+#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ])
 #'
-#' # include time diagnostics
-#' diagnose_detection(reference = lbh_selec_reference,
-#' detection = detec, time.diagnostics = TRUE)
+#' # and extra sound file in detection
+#' diagnose_detection(reference =
+#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
+#' detection = lbh_selec_reference)
 #'
-#' # by sound file
-#' diagnose_detection(reference = lbh_selec_reference,
-#' detection = detec, by.sound.file = TRUE)
+#' # and extra sound file in detection by sound file
+#' dd <- diagnose_detection(reference =
+#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
+#' detection = lbh_selec_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
+#'
+#' # get summary
+#' summarize_diagnostic(dd)
+#'
+#'
 #' }
 #' @seealso \code{\link{optimize_auto_detec}}, \code{\link{optimize_find_peaks}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
-#' Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
 # last modification on jul-16-2021 (MAS)
 diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE)
 {
-  #### set arguments from options
-  # get function arguments
-  argms <- methods::formalArgs(diagnose_detection)
-
-  # get warbleR options
-  opt.argms <- if(!is.null(getOption("warbleR"))) getOption("warbleR") else SILLYNAME <- 0
-
-  # remove options not as default in call and not in function arguments
-  opt.argms <- opt.argms[!sapply(opt.argms, is.null) & names(opt.argms) %in% argms]
-
-  # get arguments set in the call
-  call.argms <- as.list(base::match.call())[-1]
-
-  # remove arguments in options that are in call
-  opt.argms <- opt.argms[!names(opt.argms) %in% names(call.argms)]
-
-  # set options left
-  if (length(opt.argms) > 0)
-    for (q in 1:length(opt.argms))
-      assign(names(opt.argms)[q], opt.argms[[q]])
-
-
   # remove rows with NAs in detection
   detection <- detection[!is.na(detection$start), ]
 
@@ -184,6 +171,34 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
       specificity = 0,
       stringsAsFactors = FALSE
   )
+
+    # add files not in reference
+    if (any(!detection$sound.files %in% reference$sound.files)){
+      extra_files_l <- lapply(setdiff(detection$sound.files, reference$sound.files), function(x)
+      data.frame(
+        sound.files = x,
+        true.positives = 0,
+        false.positives = sum(detection$sound.files == x),
+        false.negatives = 0,
+        split.positives = NA,
+        mean.duration.true.positives = NA,
+        mean.duration.false.positives = mean(detection$end[detection$sound.files == x] - detection$start[detection$sound.files == x]),
+        mean.duration.false.negatives = NA,
+        proportional.duration.true.positives = NA,
+        sensitivity = 1,
+        specificity = 0,
+        stringsAsFactors = FALSE
+      )
+    )
+
+    # data frame with extra file info
+    extra_files <- do.call(rbind,  extra_files_l)
+
+    # add to diagnostics
+    out_df <- rbind(out_df, extra_files)
+    }
+
+
 
   # summarize across sound files
   if (!by.sound.file)

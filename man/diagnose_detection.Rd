@@ -38,34 +38,44 @@ A data frame including the following detection performance diagnostics:
 The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
 }
 \examples{
-\dontrun{
-# Save example files into temporary working directory
-data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4"))
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
-writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
+{
+# perfect detection
+diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference)
 
-# run detection
-detec <- energy_detector(path = tempdir(), threshold = 6, ssmooth = 300,
-bp = c(2, 9), wl = 300, min.duration = 0.09)
+# missing one in detection
+diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference[-1, ])
 
-# diagnose detection
+# an extra one in detection
+diagnose_detection(reference = lbh_selec_reference[-1, ], detection = lbh_selec_reference)
+
+# with time diagnostics
+diagnose_detection(reference = lbh_selec_reference[-1, ],
+detection = lbh_selec_reference, time.diagnostics = TRUE)
+
+# and extra sound file in reference
 diagnose_detection(reference = lbh_selec_reference,
-detection = detec)
+detection =
+lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ])
 
-# include time diagnostics
-diagnose_detection(reference = lbh_selec_reference,
-detection = detec, time.diagnostics = TRUE)
+# and extra sound file in detection
+diagnose_detection(reference =
+lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
+detection = lbh_selec_reference)
 
-# by sound file
-diagnose_detection(reference = lbh_selec_reference,
-detection = detec, by.sound.file = TRUE)
+# and extra sound file in detection by sound file
+dd <- diagnose_detection(reference =
+lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
+detection = lbh_selec_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
+
+# get summary
+summarize_diagnostic(dd)
+
+
 }
 }
 \references{
 {
-Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 }
 }
 \seealso{
