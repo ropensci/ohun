@@ -3,7 +3,7 @@ Type: Package
 Title: Automatic detection of acoustic signals
 Version: 0.1.0
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
-Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize the performance of detection routines. Detections from other software can also be explored and optimized.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://marce10.github.io/ohun/
@@ -16,4 +16,3 @@ Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "m
 Date/Publication: 2016-04-19 08:12:11
 Imports: pbapply, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson
 Depends: R (>= 3.2.1), tuneR, warbleR
-

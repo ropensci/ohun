@@ -10,10 +10,11 @@ ohun is intended to facilitate the automatic detection of acoustic signals, prov
 \details{
 The main features of the package are:
   \itemize{
-  \item The batch processing of sound files for signal detection  
-  \item The usage of annotations for detection optimization and diagnostic
+  \item The use of reference annotations for detection optimization and diagnostic
+  \item The use of signal detection theory diagnostic parameters to evaluate detection performance
+  \item The batch processing of sound files for improve computational performance
   }
-  
+
 The package offers functions to:
   \itemize{
   \item Energy-based detection
@@ -21,13 +22,13 @@ The package offers functions to:
   \item Diagnose detection precision
   \item Optimize detection routines based on reference annotations
   }
-  
+
 Most of the functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency.
 
 License: GPL (>= 2)
 }
 \author{
 Marcelo Araya-Salas & Grace Smith Vidaurre
-  
+
   Maintainer: Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr})
 }

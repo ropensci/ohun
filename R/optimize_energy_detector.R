@@ -1,4 +1,6 @@
-#' Optimize the detection of signals based on a-priori detections
+#' @title Optimize energy-based signal detection
+#'
+#' @description Optimize energy-based signal detection under different correlation treshold values
 #' @usage optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
 #'  wl = 512, ssmooth = 0, hold.time = 0, min.duration = NULL, max.duration = NULL,
 #'   thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE, by.sound.file = FALSE,
@@ -25,7 +27,7 @@
 #' samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 #' than those needed to accurately represent amplitude variation in time, which affects the size of the
 #' output (usually very large R objects / files). Default is  \code{1} (no thinning). Higher sampling rates may afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. \strong{Several values can be supplied for optimization}.
-#' @param filter Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}).
+#' @param filter Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}). \strong{Several values can be supplied for optimization}.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar and messages. Default is \code{TRUE}.
@@ -37,20 +39,21 @@
 #' @param previous.output Data frame with the output of a previous run of this function. This will be used to include previous results in the new output and avoid recalculating detection performance for parameter combinations previously evaluated.
 #' @return A data frame in which each row shows the result of a detection job with a particular combination of tuning parameters (including in the data frame). It also includes the following diagnostic metrics:
 #' \itemize{
-#'  \item \code{true.positives}: number of detections that correspond to signals referenced in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
-#'  \item \code{false.positives}: number of detections that don't match any of the signals referenced in 'reference'. In a perfect detection routine it should be 0.
+#'  \item \code{true.positives}: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
+#'  \item \code{false.positives}: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
-#'  \item \code{split.positives}: number of signals referenced in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
-#'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s).
-#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s).
+#'  \item \code{split.positives}: number of signals in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
+#'  \item \code{merged.positives}: number of signals in 'detection' that were overlapped by more than 1 detection (i.e. signals that were merged). In a perfect detection routine it should be 0.
+#'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals referenced in 'reference'. In a perfect detection routine it should be 1.
-#'  \item \code{sensitivity}: Proportion of signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives with that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  }
 ##' @export
 #' @name optimize_energy_detector
-#' @details This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.
+#' @details This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.
 #'
 #' @examples{
 #' # Save example files into temporary working directory
@@ -106,10 +109,37 @@
 
 optimize_energy_detector <- function(reference, files = NULL, threshold = 15, power = 1, wl = 512, ssmooth = 0, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
 
-  #if reference is not a data frame
-  if (!any(is.data.frame(reference), is_selection_table(reference))) stop("reference is not of a class 'data.frame', 'selection_table'")
-
   if (is_extended_selection_table(reference)) stop("This function cannot take extended selection tables ('reference' argument)")
+
+  #if reference is not a data frame
+  if (!any(is.data.frame(reference), is_selection_table(reference)))
+    stop("reference is not of a class 'data.frame' or 'selection_table'")
+
+  #check if all columns are found
+  if (any(!(c(
+    "sound.files", "selec", "start", "end"
+  ) %in% colnames(reference))))
+    stop(paste(paste(
+      c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
+                                                    "start", "end") %in% colnames(reference))], collapse =
+        ", "
+    ), "column(s) not found in 'reference'"))
+
+  #if there are NAs in start or end stop
+  if (any(is.na(c(reference$end, reference$start))))
+    stop("NAs found in start and/or end columns")
+
+  #if end or start are not numeric stop
+  if (any(!is(reference$end, "numeric"),!is(reference$start, "numeric")))
+    stop("'start' and 'end' must be numeric")
+
+  #if any start higher than end stop
+  if (any(reference$end - reference$start <= 0))
+    stop(paste(
+      "Start is higher than or equal to end in",
+      length(which(reference$end - reference$start <= 0)),
+      "case(s)"
+    ))
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else
@@ -119,19 +149,6 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
     # if files not supplied then used those from reference
     if (is.null(files))
       files <- unique(reference$sound.files)
-
-    # if (!is.null(envelopes)){
-    # # check Y being a autodetec.output object
-    #     if (!is(envelopes, "envelopes"))
-    #       stop("'envelopes' must be and object of class 'envelopes'")
-    #
-    #     # check that all sound files in reference have and envelope in Y
-    #     if (!all(unique(reference$sound.files) %in% names(envelopes)))
-    #        stop("Not all sound files in 'reference' are found in 'envelopes'")
-    #
-    #   # subset envelopes to those in 'reference'
-    #   envelopes <- envelopes[unique(reference$sound.files)]
-    #   }
 
       # get all possible combinations of parameters
       exp_grd <- expand.grid(threshold = threshold, power = power, ssmooth = ssmooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning, filter = filter)
@@ -160,10 +177,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
        cat("\n")
 
 
-       # set pb options
-       pbapply::pboptions(type = ifelse(pb, "timer", "none"))
-
-       eng_det_l <- pbapply::pblapply(X = 1:nrow(exp_grd), FUN = function(x){
+       eng_det_l <- warbleR:::pblapply_wrblr_int(X = 1:nrow(exp_grd), pbar = pb, cl = 1, FUN = function(x){
 
           eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], ssmooth = exp_grd$ssmooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, power = exp_grd$power[x], hold.time = exp_grd$hold.time[x], bp = bp, path = path)
 
@@ -177,7 +191,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
          return(eng_det)
           })
 
-      performance_l <- lapply(eng_det_l, function(Z) suppressWarnings(diagnose_detection(reference = reference, detection = Z, by.sound.file = by.sound.file, time.diagnostics = TRUE)))
+      performance_l <- lapply(eng_det_l, function(Z) suppressWarnings(diagnose_detection(reference = reference, detection = Z, by.sound.file = by.sound.file, time.diagnostics = TRUE, pb = FALSE, parallel = parallel)))
 
       performance <- do.call(rbind, performance_l)
 

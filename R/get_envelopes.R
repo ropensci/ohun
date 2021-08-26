@@ -158,7 +158,7 @@ get_envelopes <-
       cl <- parallel
 
     # run function over sound files or selections in loop
-    env_l <- pblapply_ohun_int(pbar = pb,
+    env_list <- warbleR:::pblapply_wrblr_int(pbar = pb,
       X = files,
       cl = cl,
       FUN = function(i)
@@ -178,22 +178,21 @@ get_envelopes <-
       }
     )
 
-    names(env_l) <- files
+    names(env_list) <- files
 
     # append call info
-    env_l[[length(env_l) + 1]]  <- list(
+    env_list[[length(env_list) + 1]]  <- list(
       parameters = lapply(as.list(base::match.call())[-1], eval),
       call = base::match.call(),
-      ohun.version = "0.1.0"
-        # packageVersion("ohun")
+      ohun.version =  packageVersion("ohun")
     )
 
-    names(env_l)[length(env_l)] <- "call_info"
+    names(env_list)[length(env_list)] <- "call_info"
 
       # add class envelopes
-      class(env_l) <- c("list", "envelopes")
+      class(env_list) <- c("list", "envelopes")
 
-      return(env_l)
+      return(env_list)
 }
 
 
@@ -261,7 +260,6 @@ print.envelopes <- function(x, ...) {
 
 ########################### internal function to get an envelope ###################
 
-# function for detecting signals
 env_ohun_int <-
   function(i,
            path,

@@ -2,7 +2,7 @@
 % Please edit documentation in R/energy_detector.R
 \name{energy_detector}
 \alias{energy_detector}
-\title{\code{energy_detector} detects the start and end of acoustic signals}
+\title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, wl = 512, power = 1,
 thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15, hold.time = 0,
@@ -60,15 +60,13 @@ A data frame containing the start and end of each signal by
   sound file. If no signal was detected for a sound file it is not included in the output data frame.
 }
 \description{
-\code{energy_detector} detects the start and end of acoustic signals
+\code{energy_detector} detects the start and end of acoustic signals based on energy and time attributes
 }
 \details{
-This function determines the start and end of signals in sound files. Sound files should be located in the
-   working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied). Note that when envelopes are not supplied they are calculated on the fly which is more efficient in terms of memory usage (better option if R crashes!).
+This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a template detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}.
 }
 \examples{
 {
- \dontrun{
 # Save example files into temporary working directory
 data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4"))
 writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
@@ -110,6 +108,7 @@ detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 0.15, min
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
 
+\dontrun{
 # USIN OTHER SOUND FILE FORMAT (flac program must be installed)
  # fisrt convert files to flac
  warbleR::wav_2_flac(path = tempdir())

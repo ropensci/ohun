@@ -1,5 +1,6 @@
+#' @title Detects the start and end of acoustic signals
 #'
-#' \code{energy_detector} detects the start and end of acoustic signals
+#' @description \code{energy_detector} detects the start and end of acoustic signals based on energy and time attributes
 #' @usage energy_detector(files = NULL, envelopes = NULL, path = NULL, wl = 512, power = 1,
 #' thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15, hold.time = 0,
 #' min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
@@ -38,8 +39,7 @@
 #'   sound file. If no signal was detected for a sound file it is not included in the output data frame.
 #' @export
 #' @name energy_detector
-#' @details This function determines the start and end of signals in sound files. Sound files should be located in the
-#'    working directory or the path to the sound files should be provided using the 'path' argument. The routine steps are: 1) calculating/modfiying amplitude envelopes (unless 'envelopes' is supplied), 2)  detecting signals above the threshold, 3) merging signals (if 'hold.time' is supplied) and 4) filtering signals based on duration (if 'min.duration' and/or 'max.duration' are supplied). Note that when envelopes are not supplied they are calculated on the fly which is more efficient in terms of memory usage (better option if R crashes!).
+#' @details This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a template detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -406,7 +406,7 @@ energy_detector <-
       cl <- parallel
 
     # run function over sound files or selections in loop
-    detections_l <- pblapply_ohun_int(pbar = pb,
+    detections_l <- warbleR:::pblapply_wrblr_int(pbar = pb,
       X = files,
       cl = cl,
       FUN = function(file)
@@ -441,7 +441,6 @@ energy_detector <-
 
     # remove extra column
     detections$ovlp.sels <- NULL
-
 
     return(detections)
 }

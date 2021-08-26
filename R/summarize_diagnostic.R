@@ -5,16 +5,16 @@
 #' @param diagnostic A data frame with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @return A data frame, typically the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_find_peaks}}, \code{\link{optimize_auto_detec}}) including the following detection performance diagnostics:
 #' \itemize{
-#'  \item \code{true.positives}: number of detections that correspond to signals referenced in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
-#'  \item \code{false.positives}: number of detections that don't match any of the signals referenced in 'reference'. In a perfect detection routine it should be 0.
+#'  \item \code{true.positives}: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
+#'  \item \code{false.positives}: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
-#'  \item \code{split.positives}: number of signals referenced in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
+#'  \item \code{split.positives}: number of signals in 'reference' that overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Optional.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Optional.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Optional.
-#'  \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals referenced in 'reference'. In a perfect detection routine it should be 1. Optional.
-#'  \item \code{sensitivity}: Proportion of signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Optional.
+#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  }
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the signals ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
 #' @export
@@ -49,14 +49,14 @@
 summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
 
   # basic columns required in 'diagnostic'
-  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "sensitivity", "specificity")
+  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "sensitivity", "specificity")
 
   #check diagnostic
   if (any(!(basic_colms %in% colnames(diagnostic))))
     stop(paste(paste(
       basic_colms[!(basic_colms %in% colnames(diagnostic))], collapse =
         ", "
-    ), "column(s) not found in data frame"))
+    ), "column(s) not found in 'diagnostics'"))
 
   # get extra column names (ideally should include tuning parameters)
   extra_colms <- setdiff(colnames(diagnostic), c(basic_colms, c("sound.files", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "proportional.duration.true.positives")))
@@ -81,6 +81,7 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
       false.positives = sum(Y$false.positives, na.rm = TRUE),
       false.negatives = sum(Y$false.negatives, na.rm = TRUE),
       split.positives = sum(Y$split.positives, na.rm = TRUE),
+      merged.positives = sum(Y$merged.positives, na.rm = TRUE),
       ..combined.extra.colms = x,
       stringsAsFactors = FALSE
     )

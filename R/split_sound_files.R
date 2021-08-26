@@ -89,7 +89,7 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
     #check if all columns are found
     if (any(!(c("sound.files", "selec", "start", "end") %in% colnames(X))))
       stop(paste(paste(c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
-                                                                     "start", "end") %in% colnames(X))], collapse=", "), "column(s) not found in data frame"))
+                                                                     "start", "end") %in% colnames(X))], collapse=", "), "column(s) not found in 'X'"))
 
     #if there are NAs in start or end stop
     if (any(is.na(c(X$end, X$start)))) stop("NAs found in start and/or end columns")
@@ -158,7 +158,7 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
     cl <- parallel::makePSOCKcluster(getOption("cl.cores", parallel)) else cl <- parallel
 
     # split using a loop only the ones that are shorter than segments
-    a_l <- pblapply_ohun_int(pbar = pb, X = which(split.df$org.sound.files != split.df$sound.files), cl =  cl, FUN = function(x) {
+    a_l <- warbleR:::pblapply_wrblr_int(pbar = pb, X = which(split.df$org.sound.files != split.df$sound.files), cl =  cl, FUN = function(x) {
 
   # read clip
   clip <- warbleR::read_sound_file(X = split.df$org.sound.files[x], from = split.df$start[x], to = split.df$end[x], path = path)
