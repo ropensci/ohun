@@ -5,8 +5,7 @@
 \title{Extract absolute amplitude envelopes}
 \usage{
 get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
-filter = "ffilter")
+power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
@@ -36,9 +35,7 @@ output (usually very large R objects / files). Default is \code{1} (no thinning)
 \item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).}
 
-\item{normalize}{Logical argument to control if}
-
-\item{filter}{Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}).}
+\item{normalize}{Logical argument to control if envelopes are normalized to a 0-1 range.}
 }
 \value{
 An object of class 'envelopes'.

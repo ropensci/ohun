@@ -5,7 +5,7 @@
 \title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
-power = 1, thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15,
+power = 1, thinning = 1, bp = NULL, ssmooth = 0, threshold = 15,
 hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
@@ -34,9 +34,6 @@ frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is us
   with a sum smooth function. Default is 0 (no smoothing). Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
   with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).}
-
-\item{filter}{Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}).
-Not used if 'envelopes' are supplied.}
 
 \item{threshold}{A numeric vector of length 1 specifying the amplitude threshold for detecting
 signals (in \%).}

@@ -3,7 +3,7 @@
 #' @description Optimize energy-based signal detection under different correlation treshold values
 #' @usage optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
 #'  hop.size = 11.6, wl = NULL, ssmooth = 0, hold.time = 0, min.duration = NULL,
-#'  max.duration = NULL, thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE,
+#'  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
 #'  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
 #' @param reference 'selection_table' object or a data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
@@ -27,7 +27,6 @@
 #' samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 #' than those needed to accurately represent amplitude variation in time, which affects the size of the
 #' output (usually very large R objects / files). Default is  \code{1} (no thinning). Higher sampling rates may afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. \strong{Several values can be supplied for optimization}.
-#' @param filter Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}). \strong{Several values can be supplied for optimization}.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar and messages. Default is \code{TRUE}.
@@ -67,11 +66,6 @@
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 #' threshold = c(6, 10), ssmooth = 300, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 #'
-#' #  2 different filters
-#' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-#' threshold = c(6, 10, 15), ssmooth = 300, filter = c("ffilter", "fir"),
-#' bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
-#'
 #' # with thinning and smoothing
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 #'  threshold = c(6, 10, 15), ssmooth = c(300, 1000), thinning = c(0.1, 0.01),
@@ -79,8 +73,8 @@
 #'
 #' # by sound file
 #' (opt_ed <- optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-#' threshold = c(6, 10, 15), ssmooth = 300, filter = c("ffilter", "fir"),
-#' bp = c(2, 9), hop.size = 6.8, min.duration = 0.09, by.sound.file = TRUE))
+#' threshold = c(6, 10, 15), ssmooth = 300, bp = c(2, 9), hop.size = 6.8,
+#' min.duration = 0.09, by.sound.file = TRUE))
 #'
 #' # summarize
 #' summarize_diagnostic(opt_ed)
@@ -107,7 +101,7 @@
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on dec-21-2021 (MAS)
 
-optimize_energy_detector <- function(reference, files = NULL, threshold = 15, power = 1, hop.size = 11.6, wl = NULL, ssmooth = 0, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
+optimize_energy_detector <- function(reference, files = NULL, threshold = 15, power = 1, hop.size = 11.6, wl = NULL, ssmooth = 0, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
 
   # hopsize
   if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
@@ -154,15 +148,15 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
       files <- unique(reference$sound.files)
 
       # get all possible combinations of parameters
-      exp_grd <- expand.grid(threshold = threshold, power = power, ssmooth = ssmooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning, filter = filter)
+      exp_grd <- expand.grid(threshold = threshold, power = power, ssmooth = ssmooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
 
       # if previous output included
       if (!is.null(previous.output)){
 
         # create composed variable to find overlapping runs
-        previous.output$temp.label <- apply(previous.output[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning", "filter")], 1, paste, collapse = "-")
+        previous.output$temp.label <- apply(previous.output[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
 
-        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning", "filter")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
+        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
 
         # remove composed variable
         previous.output$temp.label <- NULL

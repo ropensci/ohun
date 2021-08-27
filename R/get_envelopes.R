@@ -2,8 +2,7 @@
 #'
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
 #' @usage get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-#' power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
-#' filter = "ffilter")
+#' power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE)
 #' @param path Character string containing the directory path where the sound files are located.
 #' If \code{NULL} (default) then the current working directory is used.
 #' @param files character vector or indicating the sound files that will be analyzed.
@@ -21,8 +20,7 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).
-#' @param normalize Logical argument to control if
-#' @param filter Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (\code{\link[seewave]{ffilter}}), bwfilter (\code{\link[seewave]{bwfilter}}) and fir (\code{\link[seewave]{fir}}).
+#' @param normalize Logical argument to control if envelopes are normalized to a 0-1 range.
 #' @return An object of class 'envelopes'.
 #' @export
 #' @name get_envelopes
@@ -79,8 +77,7 @@ get_envelopes <-
            thinning = 1,
            pb = TRUE,
            ssmooth = 0,
-           normalize = TRUE,
-           filter = "ffilter"
+           normalize = TRUE
            ) {
 
     #check path if not provided set to working directory
@@ -171,8 +168,7 @@ get_envelopes <-
               thinning,
               pb,
               ssmooth,
-              normalize,
-              filter
+              normalize
               )
       }
     )
@@ -270,8 +266,7 @@ env_ohun_int <-
            thinning,
            pb,
            ssmooth,
-           normalize,
-           filter
+           normalize
   )
   {
 
@@ -289,7 +284,6 @@ env_ohun_int <-
     #filter frequencies
     if (!is.null(bp))
     {
-      if (filter == "ffilter")
         wave_obj <-
           seewave::ffilter(
             wave_obj,
@@ -300,30 +294,7 @@ env_ohun_int <-
             wl = wl,
             output = "Wave"
           )
-
-      if (filter == "bwfilter")
-        wave_obj <-
-          seewave::bwfilter(
-            wave_obj,
-            f = wave_obj@samp.rate,
-            from = bp[1] * 1000,
-            to = bp[2] * 1000,
-            bandpass = TRUE,
-            output = "Wave"
-          )
-
-      if (filter == "fir")
-        wave_obj <-
-          seewave::fir(
-            wave_obj,
-            f = wave_obj@samp.rate,
-            from = bp[1] * 1000,
-            to = bp[2] * 1000,
-            bandpass = TRUE,
-            wl = wl,
-            output = "Wave"
-          )
-    }
+      }
 
     #detect signals based on amplitude (modified from seewave::timer function)
     amp_vector <- wave_obj@left
