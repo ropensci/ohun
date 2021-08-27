@@ -14,7 +14,7 @@
    - Diagnose detection precision
    - Optimize detection routines based on reference annotations
    
-All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency.
+All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
 
 
 To install the latest developmental version from [github](https://github.com/) you will need the R package [devtools](https://cran.r-project.org/package=devtools):

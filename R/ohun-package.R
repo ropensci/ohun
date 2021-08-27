@@ -17,7 +17,7 @@
 #'   \item Optimize detection routines based on reference annotations
 #'   }
 #'
-#' Most of the functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency.
+#' All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
 #'
 #' @import warbleR
 #' @import rjson
