@@ -38,7 +38,7 @@
 #' @importFrom tuneR writeWave
 #' @importFrom stats cor weighted.mean
 #' @importClassesFrom tuneR Wave
-#' @author Marcelo Araya-Salas & Grace Smith Vidaurre
+#' @author Marcelo Araya-Salas
 #'
 #'   Maintainer: Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
 #'

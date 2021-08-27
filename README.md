@@ -4,10 +4,10 @@
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
 
  The main features of the package are:
-        - The use of reference annotations for detection optimization and diagnostic
-        - The use of signal detection theory diagnostic parameters to evaluate detection performance
-        - The batch processing of sound files for improve computational performance 
-
+   - The use of reference annotations for detection optimization and diagnostic 
+   - The use of signal detection theory diagnostic parameters to evaluate detection performance 
+   - The batch processing of sound files for improve computational performance
+   
  The package offers functions to:
    - Energy-based detection
    - Template-based detection

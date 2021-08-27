@@ -28,7 +28,7 @@ Most of the functions allow the parallelization of tasks, which distributes the 
 License: GPL (>= 2)
 }
 \author{
-Marcelo Araya-Salas & Grace Smith Vidaurre
+Marcelo Araya-Salas
 
   Maintainer: Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr})
 }

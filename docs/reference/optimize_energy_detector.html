@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Optimize the detection of signals based on a-priori detections — optimize_energy_detector • ohun</title>
+<title>Optimize energy-based signal detection — optimize_energy_detector • ohun</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Optimize the detection of signals based on a-priori detections — optimize_energy_detector" />
-<meta property="og:description" content="Optimize the detection of signals based on a-priori detections" />
+<meta property="og:title" content="Optimize energy-based signal detection — optimize_energy_detector" />
+<meta property="og:description" content="Optimize energy-based signal detection under different correlation treshold values" />
 
 
 
@@ -108,13 +108,13 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Optimize the detection of signals based on a-priori detections</h1>
+    <h1>Optimize energy-based signal detection</h1>
     <small class="dont-index">Source: <a href='https://github.com/maRce10/ohun/blob/master/R/optimize_energy_detector.R'><code>R/optimize_energy_detector.R</code></a></small>
     <div class="hidden name"><code>optimize_energy_detector.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Optimize the detection of signals based on a-priori detections</p>
+    <p>Optimize energy-based signal detection under different correlation treshold values</p>
     </div>
 
     <pre class="usage"><span class='fu'>optimize_energy_detector</span><span class='op'>(</span><span class='va'>reference</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, threshold <span class='op'>=</span> <span class='fl'>15</span>, power <span class='op'>=</span> <span class='fl'>1</span>,
@@ -179,7 +179,7 @@ output (usually very large R objects / files). Default is  <code>1</code> (no th
     </tr>
     <tr>
       <th>filter</th>
-      <td><p>Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (<code><a href='https://rdrr.io/pkg/seewave/man/ffilter.html'>ffilter</a></code>), bwfilter (<code><a href='https://rdrr.io/pkg/seewave/man/bwfilter.html'>bwfilter</a></code>) and fir (<code><a href='https://rdrr.io/pkg/seewave/man/fir.html'>fir</a></code>).</p></td>
+      <td><p>Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (<code><a href='https://rdrr.io/pkg/seewave/man/ffilter.html'>ffilter</a></code>), bwfilter (<code><a href='https://rdrr.io/pkg/seewave/man/bwfilter.html'>bwfilter</a></code>) and fir (<code><a href='https://rdrr.io/pkg/seewave/man/fir.html'>fir</a></code>). <strong>Several values can be supplied for optimization</strong>.</p></td>
     </tr>
     <tr>
       <th>parallel</th>
@@ -213,21 +213,22 @@ If <code>NULL</code> (default) then the current working directory is used.</p></
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame in which each row shows the result of a detection job with a particular combination of tuning parameters (including in the data frame). It also includes the following diagnostic metrics:</p><ul>
-<li><p><code>true.positives</code>: number of detections that correspond to signals referenced in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.</p></li>
-<li><p><code>false.positives</code>: number of detections that don't match any of the signals referenced in 'reference'. In a perfect detection routine it should be 0.</p></li>
+<li><p><code>true.positives</code>: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.</p></li>
+<li><p><code>false.positives</code>: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.</p></li>
 <li><p><code>false.negatives</code>: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.</p></li>
-<li><p><code>split.positives</code>: number of signals referenced in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.</p></li>
-<li><p><code>mean.duration.true.positives</code>: mean duration of true positives (in s).</p></li>
-<li><p><code>mean.duration.false.positives</code>: mean duration of false positives (in s).</p></li>
+<li><p><code>split.positives</code>: number of signals in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.</p></li>
+<li><p><code>merged.positives</code>: number of signals in 'detection' that were overlapped by more than 1 detection (i.e. signals that were merged). In a perfect detection routine it should be 0.</p></li>
+<li><p><code>mean.duration.true.positives</code>: mean duration of true positives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
+<li><p><code>mean.duration.false.positives</code>: mean duration of false positives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>mean.duration.false.negatives</code>: mean duration of false negatives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
-<li><p><code>proportional.duration.true.positives</code>: ratio of total duration of true positives to the total duration of signals referenced in 'reference'. In a perfect detection routine it should be 1.</p></li>
-<li><p><code>sensitivity</code>: Proportion of signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
-<li><p><code>specificity</code>: Proportion of detections that correspond to signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
+<li><p><code>proportional.duration.true.positives</code>: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives with that were not split or merged. Only included when <code>time.diagnostics = TRUE</code>.</p></li>
+<li><p><code>sensitivity</code>: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
+<li><p><code>specificity</code>: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using <code><a href='energy_detector.html'>energy_detector</a></code>.</p>
+    <p>This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using <code><a href='energy_detector.html'>energy_detector</a></code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>

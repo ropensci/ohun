@@ -135,16 +135,16 @@
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame, typically the output of a detection optimization function (<code><a href='diagnose_detection.html'>diagnose_detection</a></code>, <code><a href='https://marce10.github.io/warbleR/reference/optimize_find_peaks.html'>optimize_find_peaks</a></code>, <code><a href='https://marce10.github.io/warbleR/reference/optimize_auto_detec.html'>optimize_auto_detec</a></code>) including the following detection performance diagnostics:</p><ul>
-<li><p><code>true.positives</code>: number of detections that correspond to signals referenced in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.</p></li>
-<li><p><code>false.positives</code>: number of detections that don't match any of the signals referenced in 'reference'. In a perfect detection routine it should be 0.</p></li>
+<li><p><code>true.positives</code>: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.</p></li>
+<li><p><code>false.positives</code>: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.</p></li>
 <li><p><code>false.negatives</code>: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.</p></li>
-<li><p><code>split.positives</code>: number of signals referenced in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.</p></li>
+<li><p><code>split.positives</code>: number of signals in 'reference' that overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.</p></li>
 <li><p><code>mean.duration.true.positives</code>: mean duration of true positives (in s). Optional.</p></li>
 <li><p><code>mean.duration.false.positives</code>: mean duration of false positives (in s). Optional.</p></li>
 <li><p><code>mean.duration.false.negatives</code>: mean duration of false negatives (in s). Optional.</p></li>
-<li><p><code>proportional.duration.true.positives</code>: ratio of total duration of true positives to the total duration of signals referenced in 'reference'. In a perfect detection routine it should be 1. Optional.</p></li>
-<li><p><code>sensitivity</code>: Proportion of signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
-<li><p><code>specificity</code>: Proportion of detections that correspond to signals referenced in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
+<li><p><code>proportional.duration.true.positives</code>: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Optional.</p></li>
+<li><p><code>sensitivity</code>: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
+<li><p><code>specificity</code>: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>

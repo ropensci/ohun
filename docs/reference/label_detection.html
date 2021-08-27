@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Evaluate the performance of a signal detection procedure — diagnose_detection • ohun</title>
+<title>Evaluate the performance of a signal detection procedure — label_detection • ohun</title>
 
 
 <!-- jquery -->
@@ -39,8 +39,8 @@
 
 
 
-<meta property="og:title" content="Evaluate the performance of a signal detection procedure — diagnose_detection" />
-<meta property="og:description" content="diagnose_detection evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table" />
+<meta property="og:title" content="Evaluate the performance of a signal detection procedure — label_detection" />
+<meta property="og:description" content="label_detection evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table" />
 
 
 
@@ -109,16 +109,15 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Evaluate the performance of a signal detection procedure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/maRce10/ohun/blob/master/R/diagnose_detection.R'><code>R/diagnose_detection.R</code></a></small>
-    <div class="hidden name"><code>diagnose_detection.Rd</code></div>
+    <small class="dont-index">Source: <a href='https://github.com/maRce10/ohun/blob/master/R/label_detection.R'><code>R/label_detection.R</code></a></small>
+    <div class="hidden name"><code>label_detection.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>diagnose_detection</code> evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table</p>
+    <p><code>label_detection</code> evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>diagnose_detection</span><span class='op'>(</span><span class='va'>reference</span>, <span class='va'>detection</span>, by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>,
-time.diagnostics <span class='op'>=</span> <span class='cn'>FALSE</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>label_detection</span><span class='op'>(</span><span class='va'>reference</span>, <span class='va'>detection</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -130,14 +129,6 @@ time.diagnostics <span class='op'>=</span> <span class='cn'>FALSE</span>, parall
     <tr>
       <th>detection</th>
       <td><p>Data frame or 'selection.table' with the detections (start and end of the signals) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no signals are found in those files, so detection from those files are all false positives.</p></td>
-    </tr>
-    <tr>
-      <th>by.sound.file</th>
-      <td><p>Logical argument to control whether performance diagnostics are summarized across sound files (when <code>by.sound.file = FALSE</code>, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is <code>FALSE</code>.</p></td>
-    </tr>
-    <tr>
-      <th>time.diagnostics</th>
-      <td><p>Logical argument to control if diagnostics related to the duration of the signals ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if <code>TRUE</code>). Default is <code>FALSE</code>.</p></td>
     </tr>
     <tr>
       <th>parallel</th>
@@ -181,38 +172,36 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><span class='op'>{</span>
-<span class='co'># perfect detection</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>)</span>
+<span class='co'># an extra one in detection (1 false positive)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>)</span>
 
-<span class='co'># missing one in detection</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span>
+<span class='co'># missing one in detection (all true positives)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span>
 
-<span class='co'># an extra one in detection</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>)</span>
+<span class='co'># perfect detection (all true positives)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>)</span>
 
-<span class='co'># with time diagnostics</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, time.diagnostics <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-
-<span class='co'># and extra sound file in reference</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>,
-detection <span class='op'>=</span>
+<span class='co'># and extra sound file in reference (all true positives)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span>
 <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"Phae.long1.wav"</span>, <span class='op'>]</span><span class='op'>)</span>
 
-<span class='co'># and extra sound file in detection</span>
-<span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span>
+<span class='co'># and extra sound file in detection (some false positives)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span>
 <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"Phae.long1.wav"</span>, <span class='op'>]</span>,
 detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>)</span>
 
-<span class='co'># and extra sound file in detection by sound file</span>
-<span class='va'>dd</span> <span class='op'>&lt;-</span> <span class='fu'>diagnose_detection</span><span class='op'>(</span>reference <span class='op'>=</span>
-<span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"Phae.long1.wav"</span>, <span class='op'>]</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, time.diagnostics <span class='op'>=</span> <span class='cn'>TRUE</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='co'># duplicate 1 detection row (to get 2 splits)</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>,
+detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>lbh_selec_reference</span><span class='op'>)</span><span class='op'>)</span>, <span class='op'>]</span><span class='op'>)</span>
 
-<span class='co'># get summary</span>
-<span class='fu'><a href='summarize_diagnostic.html'>summarize_diagnostic</a></span><span class='op'>(</span><span class='va'>dd</span><span class='op'>)</span>
+<span class='co'># merge 2 detections (to get split and merge)</span>
+<span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>lbh_selec_reference</span>
+<span class='va'>Y</span><span class='op'>$</span><span class='va'>end</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1.2</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
 
-
+<span class='co'># remove split to get only merge</span>
+<span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>Y</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span>, <span class='op'>]</span>
+<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
 <span class='op'>}</span>
 </pre>
   </div>
