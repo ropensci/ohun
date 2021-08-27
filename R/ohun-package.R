@@ -9,7 +9,7 @@
 #'   \item The batch processing of sound files for improve computational performance
 #'   }
 #'
-#' The package offers functions to:
+#' The package offers functions for:
 #'   \itemize{
 #'   \item Energy-based detection
 #'   \item Template-based detection

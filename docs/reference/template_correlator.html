@@ -117,7 +117,7 @@
     <p><code>template_correlator</code> estimates templates cross-correlation across multiple sound files.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>template_correlator</span><span class='op'>(</span><span class='va'>templates</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, wl <span class='op'>=</span> <span class='fl'>512</span>, ovlp <span class='op'>=</span> <span class='fl'>0</span>,
+    <pre class="usage"><span class='fu'>template_correlator</span><span class='op'>(</span><span class='va'>templates</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>, ovlp <span class='op'>=</span> <span class='fl'>0</span>,
 wn <span class='op'>=</span><span class='st'>'hanning'</span>, cor.method <span class='op'>=</span> <span class='st'>"pearson"</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>,
 pb <span class='op'>=</span> <span class='cn'>TRUE</span>, type <span class='op'>=</span> <span class='st'>"fourier"</span>, fbtype <span class='op'>=</span> <span class='st'>"mel"</span>, <span class='va'>...</span><span class='op'>)</span></pre>
 
@@ -134,9 +134,12 @@ selection number (selec), and start and end time of signal (start and end). If f
       <td><p>Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.</p></td>
     </tr>
     <tr>
+      <th>hop.size</th>
+      <td><p>A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.</p></td>
+    </tr>
+    <tr>
       <th>wl</th>
-      <td><p>A numeric vector of length 1 specifying the window length of the spectrogram, default
-is 512.</p></td>
+      <td><p>A numeric vector of length 1 specifying the window length of the spectrogram. Default is <code>NULL</code>. If supplied, 'hop.size' is ignored.</p></td>
     </tr>
     <tr>
       <th>ovlp</th>
@@ -255,7 +258,7 @@ path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/
 
       <footer>
       <div class="copyright">
-  <p>Developed by Marcelo Araya-Salas, Grace Smith-Vidaurre.</p>
+  <p>Developed by Marcelo Araya-Salas.</p>
 </div>
 
 <div class="pkgdown">

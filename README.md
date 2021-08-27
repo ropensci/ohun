@@ -8,7 +8,7 @@
    - The use of signal detection theory diagnostic parameters to evaluate detection performance 
    - The batch processing of sound files for improve computational performance
    
- The package offers functions to:
+ The package offers functions for:
    - Energy-based detection
    - Template-based detection
    - Diagnose detection precision
