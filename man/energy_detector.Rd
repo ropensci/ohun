@@ -4,9 +4,9 @@
 \alias{energy_detector}
 \title{Detects the start and end of acoustic signals}
 \usage{
-energy_detector(files = NULL, envelopes = NULL, path = NULL, wl = 512, power = 1,
-thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15, hold.time = 0,
-min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
+energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
+power = 1, thinning = 1, bp = NULL, ssmooth = 0, filter = "ffilter", threshold = 15,
+hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
 \item{files}{Character vector indicating the sound files that will be analyzed. Optional. If 'files' and 'envelopes' are not supplied then the function will work on all supported format sound files in the working directory.}
@@ -16,8 +16,9 @@ min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 \item{path}{Character string containing the directory path where the sound files are located.
 If \code{NULL} (default) then the current working directory is used.}
 
-\item{wl}{A numeric vector of length 1 specifying the window used internally by
-\code{\link[seewave]{ffilter}} for bandpass filtering (so only applied when 'bp' is supplied). Default is 512.}
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
+
+\item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
 \item{power}{A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
@@ -78,7 +79,7 @@ writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
 detec <- energy_detector(files = c("Phae.long1.wav", "Phae.long2.wav",
 "Phae.long3.wav", "Phae.long4.wav"),
 path = tempdir(), threshold = 6, ssmooth = 300,
-bp = c(2, 9), wl = 300, min.duration = 0.09)
+bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference,
@@ -86,7 +87,7 @@ detection = detec)
 
 # without declaring 'files'
 detec <- energy_detector(path = tempdir(), threshold = 6, ssmooth = 300,
-bp = c(2, 9), wl = 300, min.duration = 0.09)
+bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference,
@@ -94,13 +95,13 @@ detection = detec)
 
 # using hold time
 detec <- energy_detector(threshold = 10, hold.time = 0.15,
-bp = c(2, 9), wl = 300, path = tempdir())
+bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference, detection = detec)
 
 # calculate envelopes first
-envs <- get_envelopes(bp = c(2, 9), wl = 300, path = tempdir())
+envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # then run detection providing 'envelopes' (but no 'files')
 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 0.15, min.duration = 0.05)
@@ -120,7 +121,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
  # run detection
  detec <- energy_detector(files = c("Phae.long1.flac", "Phae.long2.flac",
  "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 6,
- ssmooth = 300, bp = c(2, 9), wl = 300, min.duration = 0.09)
+ ssmooth = 300, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
  # diagnose detection
  diagnose_detection(reference = flac_reference, detection = detec)

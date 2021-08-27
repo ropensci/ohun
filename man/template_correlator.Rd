@@ -4,7 +4,7 @@
 \alias{template_correlator}
 \title{Acoustic templates correlator using time-frequency cross-correlation}
 \usage{
-template_correlator(templates, files = NULL, wl = 512, ovlp = 0,
+template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
 wn ='hanning', cor.method = "pearson", parallel = 1, path = NULL,
 pb = TRUE, type = "fourier", fbtype = "mel", ...)
 }
@@ -14,8 +14,9 @@ selection number (selec), and start and end time of signal (start and end). If f
 
 \item{files}{Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.}
 
-\item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram, default
-is 512.}
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
+
+\item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored.}
 
 \item{ovlp}{Numeric vector of length 1 specifying \% of overlap between two
 consecutive windows, as in \code{\link[seewave]{spectro}}. Default is 0. High values of ovlp

@@ -5,9 +5,9 @@
 \title{Optimize energy-based signal detection}
 \usage{
 optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
- wl = 512, ssmooth = 0, hold.time = 0, min.duration = NULL, max.duration = NULL,
-  thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE, by.sound.file = FALSE,
-  bp = NULL, path = NULL, previous.output = NULL)
+ hop.size = 11.6, wl = NULL, ssmooth = 0, hold.time = 0, min.duration = NULL,
+ max.duration = NULL, thinning = 1, filter = "ffilter", parallel = 1, pb = TRUE,
+ by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
 }
 \arguments{
 \item{reference}{'selection_table' object or a data frame with columns
@@ -21,8 +21,9 @@ signals (in \%). Default is 15. \strong{Several values can be supplied for optim
 
 \item{power}{A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). \strong{Several values can be supplied for optimization}.}
 
-\item{wl}{A numeric vector of length 1 specifying the window used internally by
-\code{\link[seewave]{ffilter}} for bandpass filtering (so only applied when 'bp' is supplied). Default is 512.}
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
+
+\item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
 \item{ssmooth}{A numeric vector to smooth the amplitude envelope
 with a sum smooth function. Default is 0 (no smoothing). \strong{Several values can be supplied for optimization}.}
@@ -92,40 +93,40 @@ writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
 
 # using smoothing and minimum duration
 optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-threshold = c(6, 10), ssmooth = 300, bp = c(2, 9), wl = 300, min.duration = 0.09)
+threshold = c(6, 10), ssmooth = 300, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 #  2 different filters
 optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 threshold = c(6, 10, 15), ssmooth = 300, filter = c("ffilter", "fir"),
-bp = c(2, 9), wl = 300, min.duration = 0.09)
+bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # with thinning and smoothing
 optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
  threshold = c(6, 10, 15), ssmooth = c(300, 1000), thinning = c(0.1, 0.01),
- bp = c(2, 9), wl = 300, min.duration = 0.09)
+ bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # by sound file
 (opt_ed <- optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 threshold = c(6, 10, 15), ssmooth = 300, filter = c("ffilter", "fir"),
-bp = c(2, 9), wl = 300, min.duration = 0.09, by.sound.file = TRUE))
+bp = c(2, 9), hop.size = 6.8, min.duration = 0.09, by.sound.file = TRUE))
 
 # summarize
 summarize_diagnostic(opt_ed)
 
 # using hold time
 (op_ed <- optimize_energy_detector(reference = lbh_selec_reference, threshold = 10,
-hold.time = c(0.1, 0.15), bp = c(2, 9), wl = 300, path = tempdir()))
+hold.time = c(0.1, 0.15), bp = c(2, 9), hop.size = 6.8, path = tempdir()))
 
 # including previous output in new call
 optimize_energy_detector(reference = lbh_selec_reference, threshold = 10,
 hold.time = c(0.05, 0.2), previous.output = op_ed,
-bp = c(2, 9), wl = 300, path = tempdir())
+bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # having and extra file in files (simulating a file that should have no detetions)
 sub_reference <- lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ]
 
 optimize_energy_detector(reference = sub_reference, files = unique(lbh_selec_reference$sound.files),
-threshold = 10, hold.time = c(0.1, 0.15), bp = c(2, 9), wl = 300, path = tempdir())
+threshold = 10, hold.time = c(0.1, 0.15), bp = c(2, 9), hop.size = 6.8, path = tempdir())
 }
 
 }

@@ -4,8 +4,8 @@
 \alias{get_envelopes}
 \title{Extract absolute amplitude envelopes}
 \usage{
-get_envelopes(path = NULL, files = NULL, bp = NULL, wl = 512, power = 1,
-parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
+get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
+power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
 filter = "ffilter")
 }
 \arguments{
@@ -17,8 +17,9 @@ If \code{NULL} (default) then the current working directory is used.}
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
 frequency bandpass filter (in kHz). Default is \code{NULL}.}
 
-\item{wl}{A numeric vector of length 1 specifying the window used internally
-for bandpass filtering (so only applied when 'bp' is supplied). Default is 512.}
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
+
+\item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
 \item{power}{A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change).}
 
@@ -46,12 +47,7 @@ An object of class 'envelopes'.
 \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
 }
 \details{
-This function determines the start and end of signals in the sound file selections listed
-  in the input data frame ('X'). Alternatively, if no data frame is provided, the function detects signals across
-  each entire sound file. It can also create long spectrograms highlighting the start and of the detected
-  signals for all sound files in the working directory (if \code{img = TRUE}). Sound files should be located in the
-   working directory or the path to the sound files should be provided using the 'path' argument. The input
-   data frame should have the following columns: c("sound.files","selec","start","end"). This function uses a modified version of the \code{\link[seewave]{timer}} function from seewave package to detect signals.
+This function extracts the absolute amplitude envelopes of sound files. Can be used to manipulate envelopes before running \code{\link{energy_detector}}.
 }
 \examples{
 {

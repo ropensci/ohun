@@ -1,16 +1,16 @@
 #' @title  Extract absolute amplitude envelopes
 #'
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
-#' @usage get_envelopes(path = NULL, files = NULL, bp = NULL, wl = 512, power = 1,
-#' parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
+#' @usage get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
+#' power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE,
 #' filter = "ffilter")
 #' @param path Character string containing the directory path where the sound files are located.
 #' If \code{NULL} (default) then the current working directory is used.
 #' @param files character vector or indicating the sound files that will be analyzed.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}.
-#' @param wl A numeric vector of length 1 specifying the window used internally
-#' for bandpass filtering (so only applied when 'bp' is supplied). Default is 512.
+#' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
+#' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
 #' @param power A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change).
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
@@ -26,12 +26,7 @@
 #' @return An object of class 'envelopes'.
 #' @export
 #' @name get_envelopes
-#' @details This function determines the start and end of signals in the sound file selections listed
-#'   in the input data frame ('X'). Alternatively, if no data frame is provided, the function detects signals across
-#'   each entire sound file. It can also create long spectrograms highlighting the start and of the detected
-#'   signals for all sound files in the working directory (if \code{img = TRUE}). Sound files should be located in the
-#'    working directory or the path to the sound files should be provided using the 'path' argument. The input
-#'    data frame should have the following columns: c("sound.files","selec","start","end"). This function uses a modified version of the \code{\link[seewave]{timer}} function from seewave package to detect signals.
+#' @details This function extracts the absolute amplitude envelopes of sound files. Can be used to manipulate envelopes before running \code{\link{energy_detector}}.
 #'
 #' @examples {
 #' # Save to temporary working directory
@@ -77,7 +72,8 @@ get_envelopes <-
   function(path = NULL,
            files = NULL,
            bp = NULL,
-           wl = 512,
+           hop.size = 11.6,
+           wl = NULL,
            power = 1,
            parallel = 1,
            thinning = 1,
@@ -93,6 +89,9 @@ get_envelopes <-
       if (!dir.exists(path))
         stop("'path' provided does not exist") else
       path <- normalizePath(path)
+
+        # hopsize
+        if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
 
     #if bp is not vector or length!=2 stop
     if (!is.null(bp))
@@ -118,8 +117,7 @@ get_envelopes <-
           stop("'thinning' must be greater than 0 and lower than or equal to 1")
 
     #if wl is not vector or length!=1 stop
-    if (is.null(wl))
-      stop("'wl' must be a numeric vector of length 1") else {
+    if (!is.null(wl)) {
       if (!is.vector(wl))
         stop("'wl' must be a numeric vector of length 1") else {
         if (!length(wl) == 1)
@@ -166,6 +164,7 @@ get_envelopes <-
         env_ohun_int(i,
               path,
               bp,
+              hop.size,
               wl,
               power,
               parallel,
@@ -264,6 +263,7 @@ env_ohun_int <-
   function(i,
            path,
            bp,
+           hop.size,
            wl,
            power,
            parallel,
@@ -277,6 +277,14 @@ env_ohun_int <-
 
     # read wave object
     wave_obj <- warbleR::read_sound_file(X = i, path = path)
+
+    # adjust wl based on hope.size
+    if (is.null(wl))
+      wl <- round(wave_obj@samp.rate * hop.size  / 1000, 0)
+
+    # make wl even if odd
+    if (!(wl %% 2) == 0) wl <- wl + 1
+
 
     #filter frequencies
     if (!is.null(bp))

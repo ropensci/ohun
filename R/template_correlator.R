@@ -1,13 +1,13 @@
 #' Acoustic templates correlator using time-frequency cross-correlation
 #'
 #' \code{template_correlator} estimates templates cross-correlation across multiple sound files.
-#' @usage template_correlator(templates, files = NULL, wl = 512, ovlp = 0,
+#' @usage template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
 #' wn ='hanning', cor.method = "pearson", parallel = 1, path = NULL,
 #' pb = TRUE, type = "fourier", fbtype = "mel", ...)
 #' @param templates 'selection_table', 'extended_selection_table' (warbleR package object classes) or data frame with time and frequency information of the signal(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
 #' selection number (selec), and start and end time of signal (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.
-#' @param wl A numeric vector of length 1 specifying the window length of the spectrogram, default
-#' is 512.
+#' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
+#' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored.
 #' @param ovlp Numeric vector of length 1 specifying \% of overlap between two
 #' consecutive windows, as in \code{\link[seewave]{spectro}}. Default is 0. High values of ovlp
 #' slow down the function but may produce more accurate results.
@@ -86,7 +86,7 @@
 #' }
 # last modification on aug-25-2021 (MAS)
 
-template_correlator <- function(templates, files = NULL, wl = 512, ovlp = 0,
+template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
                   wn ='hanning', cor.method = "pearson", parallel = 1,
                   path = NULL, pb = TRUE, type = "fourier", fbtype = "mel", ...)
 {
@@ -96,13 +96,17 @@ template_correlator <- function(templates, files = NULL, wl = 512, ovlp = 0,
       stop("'path' provided does not exist") else
         path <- normalizePath(path)
 
+      # hopsize
+      if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
+
   #if there are NAs in start or end stop
   if (any(is.na(c(templates$end, templates$start)))) stop("NAs found in start and/or end")
 
   #if wl is not vector or length!=1 stop
-  if (!is.numeric(wl)) stop("'wl' must be a numeric vector of length 1") else {
+      if (!is.null(wl)){
+    if (!is.numeric(wl)) stop("'wl' must be a numeric vector of length 1") else {
     if (!is.vector(wl)) stop("'wl' must be a numeric vector of length 1") else{
-      if (!length(wl) == 1) stop("'wl' must be a numeric vector of length 1")}}
+      if (!length(wl) == 1) stop("'wl' must be a numeric vector of length 1")}}}
 
   #if ovlp is not vector or length!=1 stop
   if (!is.numeric(ovlp)) stop("'ovlp' must be a numeric vector of length 1") else {
@@ -153,24 +157,28 @@ template_correlator <- function(templates, files = NULL, wl = 512, ovlp = 0,
   templates$selection.id <- paste(templates$sound.files, templates$selec, sep = "-")
 
   # create compare.matrix
-  # compare.matrix <- data.frame(templates = rep(templates$selection.id, length(files)), files = files)
-
   compare.matrix <- expand.grid(templates = templates$selection.id, files = files)
 
 
   # function to get spectrogram matrices
-  spc_FUN <- function(j, pth, W, wlg, ovl, w, bndpss, nbnds, entire = FALSE, fbt, ...) {
+  spc_FUN <- function(j, pth, W, hop, wlg, ovl, w, bndpss, nbnds, entire = FALSE, fbt, ...) {
 
     # read entire sound file
     if (entire)
       clp <- warbleR::read_sound_file(X = j, path = pth) else
     clp <- warbleR::read_sound_file(X = W, index = j, path = pth)
 
+      # adjust wl based on hope.size
+      if (is.null(wlg))
+        wlg <- round(clp@samp.rate * hop / 1000, 0)
+
+      # make wl even if odd
+      if (!(wlg %% 2) == 0) wlg <- wlg + 1
+
     # steps for time bins
     steps <-  seq(1, length(clp@left) - wlg, wlg - (ovlp * wlg/100))
 
     if (type == "fourier"){
-      # spc <- seewave::spectro(wave = clp, wl = wlg, ovlp = ovl, wn = w, plot = FALSE, fftw = TRUE, norm = TRUE)
     spc <- warbleR:::stft_wrblr_int(wave = matrix(clp@left), f = clp@samp.rate, wl = wlg, zp = 0, step = steps, wn = w, fftw = FALSE, scale = TRUE, complex = FALSE)
 
     # calculate freq values for spc rows
@@ -245,9 +253,9 @@ template_correlator <- function(templates, files = NULL, wl = 512, ovlp = 0,
     # set bandpass to template frequency range
     bp <- c(templates$bottom.freq[templates$selection.id %in% compare.matrix$templates[e]], templates$top.freq[templates$selection.id %in% compare.matrix$templates[e]])
 
-      spc_template <- spc_FUN(j = which(templates$selection.id == compare.matrix$templates[e]), pth = path, W = templates, wlg = wl, ovl = ovlp, w = wn, bndpss = bp, fbt = fbtype, ...)
+      spc_template <- spc_FUN(j = which(templates$selection.id == compare.matrix$templates[e]), pth = path, W = templates, hop = hop.size, wlg = wl, ovl = ovlp, w = wn, bndpss = bp, fbt = fbtype, ...)
 
-      spc_file <- spc_FUN(j = compare.matrix$files[e], pth = path, wlg = wl, ovl = ovlp, w = wn, entire = TRUE, bndpss = bp, fbt = fbtype, ...)
+      spc_file <- spc_FUN(j = compare.matrix$files[e], pth = path, hop = hop.size, wlg = wl, ovl = ovlp, w = wn, entire = TRUE, bndpss = bp, fbt = fbtype, ...)
 
     # get cross correlation
     corr_vector <- XC_FUN(spc1 = spc_template, spc2 = spc_file, cm = cor.meth)
