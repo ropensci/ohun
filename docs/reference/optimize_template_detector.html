@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/ohun.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -117,7 +120,7 @@
     <p><code>optimize_template_detector</code> optimizes acoustic template detection</p>
     </div>
 
-    <pre class="usage"><span class='fu'>optimize_template_detector</span><span class='op'>(</span><span class='va'>template.correlations</span>, <span class='va'>reference</span>, <span class='va'>thresholds</span>,
+    <pre class="usage"><span class='fu'>optimize_template_detector</span><span class='op'>(</span><span class='va'>template.correlations</span>, <span class='va'>reference</span>, <span class='va'>threshold</span>,
 parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>FALSE</span>, by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>, previous.output <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -129,10 +132,10 @@ parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op
     </tr>
     <tr>
       <th>reference</th>
-      <td><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". <strong>It should contain the reference selections that will be used for detection optimization</strong>.</p></td>
+      <td><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". <strong>It must contain the reference selections that will be used for detection optimization</strong>.</p></td>
     </tr>
     <tr>
-      <th>thresholds</th>
+      <th>threshold</th>
       <td><p>Numeric vector of length &gt; 1 with values between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied. <strong>Several values should be supplied for optimization</strong>.</p></td>
     </tr>
     <tr>
@@ -168,13 +171,13 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function takes a selections data frame or 'selection_table' ('X') and the output of a <code><a href='https://marce10.github.io/warbleR/reference/auto_detec.html'>auto_detec</a></code> routine ('xc.output') and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'X'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'X'. Those parameters can be later used for performing a more efficient detection using <code>optimize_template_detector</code>.</p>
+    <p>This function takes a selections data frame or 'selection_table' ('X') and the output of a <code>auto_detec</code> routine ('xc.output') and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'X'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'X'. Those parameters can be later used for performing a more efficient detection using <code>optimize_template_detector</code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://marce10.github.io/warbleR/reference/optimize_auto_detec.html'>optimize_auto_detec</a></code>, <code><a href='https://marce10.github.io/warbleR/reference/find_peaks.html'>find_peaks</a></code></p></div>
+    <div class='dont-index'><p><code>optimize_auto_detec</code>, <code>find_peaks</code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Marcelo Araya-Salas (<a href='mailto:marcelo.araya@ucr.ac.cr'>marcelo.araya@ucr.ac.cr</a>).</p>
@@ -197,12 +200,12 @@ files <span class='op'>=</span> <span class='st'>"Phae.long4.wav"</span><span cl
 <span class='co'># using 2 threshold</span>
 <span class='fu'>optimize_template_detector</span><span class='op'>(</span>template.correlations <span class='op'>=</span> <span class='va'>tc</span>, reference <span class='op'>=</span>
 <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>==</span> <span class='st'>"Phae.long4.wav"</span>, <span class='op'>]</span>,
-thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
+threshold <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># using several thresholds</span>
 <span class='fu'>optimize_template_detector</span><span class='op'>(</span>template.correlations <span class='op'>=</span> <span class='va'>tc</span>,
 reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>==</span> <span class='st'>"Phae.long4.wav"</span>, <span class='op'>]</span>,
- thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.9</span>, by <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>
+ threshold <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.9</span>, by <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>
 
  <span class='co'># template for the second and third sound file in 'lbh_selec_reference'</span>
  <span class='va'>templ</span> <span class='op'>&lt;-</span> <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>4</span>, <span class='fl'>7</span><span class='op'>)</span>, <span class='op'>]</span>
@@ -213,12 +216,12 @@ reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><
 
 <span class='fu'>optimize_template_detector</span><span class='op'>(</span>template.correlations <span class='op'>=</span> <span class='va'>tc</span>, reference <span class='op'>=</span>
   <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phae.long2.wav"</span>, <span class='st'>"Phae.long3.wav"</span><span class='op'>)</span>, <span class='op'>]</span>,
- thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.7</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+ threshold <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.7</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
 
  <span class='co'># showing diagnostics by sound file</span>
  <span class='fu'>optimize_template_detector</span><span class='op'>(</span>template.correlations <span class='op'>=</span> <span class='va'>tc</span>, reference <span class='op'>=</span>
  <span class='va'>lbh_selec_reference</span><span class='op'>[</span><span class='va'>lbh_selec_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>%in%</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phae.long2.wav"</span>, <span class='st'>"Phae.long3.wav"</span><span class='op'>)</span>, <span class='op'>]</span>,
- thresholds <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.7</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+ threshold <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0.5</span>, <span class='fl'>0.7</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 <span class='op'>}</span>
 
 </pre>
@@ -233,7 +236,7 @@ reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><
 
       <footer>
       <div class="copyright">
-  <p>Developed by Marcelo Araya-Salas, Grace Smith-Vidaurre.</p>
+  <p>Developed by Marcelo Araya-Salas.</p>
 </div>
 
 <div class="pkgdown">

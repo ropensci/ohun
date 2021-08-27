@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/ohun.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -118,8 +121,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NULL</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
-power <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, ssmooth <span class='op'>=</span> <span class='fl'>0</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span>,
-filter <span class='op'>=</span> <span class='st'>"ffilter"</span><span class='op'>)</span></pre>
+power <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, ssmooth <span class='op'>=</span> <span class='fl'>5</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,15 +171,11 @@ output (usually very large R objects / files). Default is <code>1</code> (no thi
     <tr>
       <th>ssmooth</th>
       <td><p>A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).</p></td>
+with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).</p></td>
     </tr>
     <tr>
       <th>normalize</th>
-      <td><p>Logical argument to control if</p></td>
-    </tr>
-    <tr>
-      <th>filter</th>
-      <td><p>Character vector of length 1 indicating the bandpass filter to be applied (only used if 'bp' is supplied). Three options available, (corresponding to the frequency filter functions in the 'seewave' package): ffilter (<code><a href='https://rdrr.io/pkg/seewave/man/ffilter.html'>ffilter</a></code>), bwfilter (<code><a href='https://rdrr.io/pkg/seewave/man/bwfilter.html'>bwfilter</a></code>) and fir (<code><a href='https://rdrr.io/pkg/seewave/man/fir.html'>fir</a></code>).</p></td>
+      <td><p>Logical argument to control if envelopes are normalized to a 0-1 range.</p></td>
     </tr>
     </table>
 
@@ -215,17 +213,17 @@ modified version of the timer function from seewave.</p>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>9</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, xlab <span class='op'>=</span> <span class='st'>"samples"</span>, ylab <span class='op'>=</span> <span class='st'>"amplitude"</span><span class='op'>)</span>
 
 <span class='co'># smoothing envelopes</span>
-<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, ssmooth <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span>
+<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, ssmooth <span class='op'>=</span> <span class='fl'>6.8</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>envs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>envelope</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>9</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, xlab <span class='op'>=</span> <span class='st'>"samples"</span>, ylab <span class='op'>=</span> <span class='st'>"amplitude"</span><span class='op'>)</span>
 
 <span class='co'># smoothing and thinning</span>
-<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, thinning <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>10</span>, ssmooth <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span>
+<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, thinning <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>10</span>, ssmooth <span class='op'>=</span> <span class='fl'>6.8</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>envs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>envelope</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>9</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, xlab <span class='op'>=</span> <span class='st'>"samples"</span>, ylab <span class='op'>=</span> <span class='st'>"amplitude"</span><span class='op'>)</span>
 
 <span class='co'># no normalization</span>
-<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, thinning <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>10</span>, ssmooth <span class='op'>=</span> <span class='fl'>300</span><span class='op'>)</span>
+<span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, thinning <span class='op'>=</span> <span class='fl'>1</span><span class='op'>/</span><span class='fl'>10</span>, ssmooth <span class='op'>=</span> <span class='fl'>6.8</span><span class='op'>)</span>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='va'>envs</span><span class='op'>[[</span><span class='fl'>1</span><span class='op'>]</span><span class='op'>]</span><span class='op'>$</span><span class='va'>envelope</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>[</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>9</span><span class='op'>)</span><span class='op'>:</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/length.html'>length</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>/</span><span class='fl'>4</span><span class='op'>)</span><span class='op'>]</span>, type <span class='op'>=</span> <span class='st'>"l"</span>, xlab <span class='op'>=</span> <span class='st'>"samples"</span>, ylab <span class='op'>=</span> <span class='st'>"amplitude"</span>,
 normalize <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>

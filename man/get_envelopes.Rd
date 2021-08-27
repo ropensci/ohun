@@ -5,7 +5,7 @@
 \title{Extract absolute amplitude envelopes}
 \usage{
 get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 0, normalize = TRUE)
+power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 5, normalize = TRUE)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
@@ -33,7 +33,7 @@ output (usually very large R objects / files). Default is \code{1} (no thinning)
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
 \item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).}
+with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).}
 
 \item{normalize}{Logical argument to control if envelopes are normalized to a 0-1 range.}
 }
@@ -63,17 +63,17 @@ x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # smoothing envelopes
-envs <- get_envelopes(path = tempdir(), ssmooth = 300)
+envs <- get_envelopes(path = tempdir(), ssmooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # smoothing and thinning
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 300)
+envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # no normalization
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 300)
+envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude",
 normalize = FALSE)

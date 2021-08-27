@@ -13,7 +13,7 @@ template_detector(template.correlations, parallel = 1, threshold, pb = TRUE,
 \item{parallel}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
-\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied.}
+\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
@@ -24,7 +24,7 @@ The function returns a data frame with the start and end and correlation score f
 detected signals.
 }
 \description{
-\code{template_detector} find signal ocurrences in cross-correlation vectors from \code{\link{template_correlator}}
+\code{template_detector} find signal occurrences in cross-correlation vectors from \code{\link{template_correlator}}
 }
 \details{
 This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}.

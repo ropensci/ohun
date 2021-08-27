@@ -40,7 +40,7 @@
 
 
 <meta property="og:title" content="Acoustic template detection from time-frequency cross-correlations — template_detector" />
-<meta property="og:description" content="template_detector find signal ocurrences in cross-correlation vectors from template_correlator" />
+<meta property="og:description" content="template_detector find signal occurrences in cross-correlation vectors from template_correlator" />
 
 
 
@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/ohun.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -114,7 +117,7 @@
     </div>
 
     <div class="ref-description">
-    <p><code>template_detector</code> find signal ocurrences in cross-correlation vectors from <code><a href='template_correlator.html'>template_correlator</a></code></p>
+    <p><code>template_detector</code> find signal occurrences in cross-correlation vectors from <code><a href='template_correlator.html'>template_correlator</a></code></p>
     </div>
 
     <pre class="usage"><span class='fu'>template_detector</span><span class='op'>(</span><span class='va'>template.correlations</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, <span class='va'>threshold</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>,
@@ -134,7 +137,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
     </tr>
     <tr>
       <th>threshold</th>
-      <td><p>Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied.</p></td>
+      <td><p>Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.</p></td>
     </tr>
     <tr>
       <th>pb</th>
@@ -216,7 +219,7 @@ detection <span class='op'>=</span> <span class='va'>td</span><span class='op'>)
 
       <footer>
       <div class="copyright">
-  <p>Developed by Marcelo Araya-Salas, Grace Smith-Vidaurre.</p>
+  <p>Developed by Marcelo Araya-Salas.</p>
 </div>
 
 <div class="pkgdown">

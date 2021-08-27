@@ -85,6 +85,9 @@
   </a>
 </li>
 <li>
+  <a href="../articles/ohun.html">Get started</a>
+</li>
+<li>
   <a href="../reference/index.html">Reference</a>
 </li>
       </ul>
@@ -124,7 +127,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>reference</th>
-      <td><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". <strong>It should contain the reference selections that will be used for detection optimization</strong>.</p></td>
+      <td><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". <strong>It must contain the reference selections that will be used for detection optimization</strong>.</p></td>
     </tr>
     <tr>
       <th>detection</th>
@@ -165,7 +168,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='https://marce10.github.io/warbleR/reference/optimize_auto_detec.html'>optimize_auto_detec</a></code>, <code><a href='https://marce10.github.io/warbleR/reference/optimize_find_peaks.html'>optimize_find_peaks</a></code></p></div>
+    <div class='dont-index'><p><code>optimize_auto_detec</code>, <code>optimize_find_peaks</code></p></div>
     <h2 class="hasAnchor" id="author"><a class="anchor" href="#author"></a>Author</h2>
 
     <p>Marcelo Araya-Salas <a href='mailto:marcelo.araya@ucr.ac.cr'>marcelo.araya@ucr.ac.cr</a>)</p>
@@ -215,7 +218,7 @@ detection <span class='op'>=</span> <span class='va'>lbh_selec_reference</span><
 
       <footer>
       <div class="copyright">
-  <p>Developed by Marcelo Araya-Salas, Grace Smith-Vidaurre.</p>
+  <p>Developed by Marcelo Araya-Salas.</p>
 </div>
 
 <div class="pkgdown">

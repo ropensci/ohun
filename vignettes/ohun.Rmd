@@ -1,0 +1,107 @@
+---
+title: <center><font size="7"><b>ohun Automatic detection of acoustic signals</b></font></center>
+pagetitle: Introduction to warbleR
+author: 
+- <center><a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a></center>
+date:  <center>"`r Sys.Date()`"</center>
+output:
+  rmarkdown::html_document:
+    self_contained: yes
+    toc: true
+    toc_depth: 3
+    toc_float:
+      collapsed: false
+      smooth_scroll: true
+vignette: >
+   %\VignetteIndexEntry{1. Introduction to ohun}
+   %\usepackage[utf8]{inputenc}
+   %\VignetteEncoding{UTF-8}
+   %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+---
+
+<!-- <script> -->
+<!--    $(document).ready(function() { -->
+<!--      $head = $('#header'); -->
+<!--      $head.prepend('<img src=\"logo.png\"/>') -->
+<!--    }); -->
+<!-- </script> -->
+
+<!-- &nbsp;  -->
+
+&nbsp; 
+
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+
+<font size = "3">The main features of the package are:
+   - The use of reference annotations for detection optimization and diagnostic 
+   - The use of signal detection theory diagnostic parameters to evaluate detection performance 
+   - The batch processing of sound files for improve computational performance</font>
+   
+ The package offers functions for:
+   - Energy-based detection
+   - Template-based detection
+   - Diagnose detection precision
+   - Optimize detection routines based on reference annotations
+   
+All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
+
+
+To install the latest developmental version from [github](https://github.com/) you will need the R package [devtools](https://cran.r-project.org/package=devtools):
+
+
+```{r, eval = FALSE}
+
+# install pacakge
+devtools::install_github("maRce10/ohun")
+
+#load package
+library(ohun)
+
+```
+
+&nbsp;
+
+
+## Selection tables
+
+These objects are created with the `selection_table()` function. The function takes data frames containing selection data (name of the sound file, selection, start, end ...), verifies if the information is consistent (see the function `checksels()` for details) and saves the 'diagnostic' metadata as an attribute. The selection tables are basically data frames in which the information contained has been corroborated so it can be read by other **warbleR** functions. The selection tables must contain (at least) the following columns:
+
+1. sound files (sound.files)
+1. selection (select)
+1. start
+1. end
+
+Please cite [ohun](https://github.com/maRce10/ohun)  as follows:
+
+Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+
+
+<font size = "3">UNDER DEVELOPMENT</font>
+
+
+avoid having overlapping selections in reference (check with overlapping_sels())
+
+downsample to a freq range just enough for the signals of interest
+
+use hop.size instead of wl
+
+## References
+
+1. Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal acoustic signals. Methods Ecol Evol 8:184-191.
+
+&nbsp; 
+
+---
+
+<font size="4">Session information</font>
+
+```{r session info, echo=F}
+
+sessionInfo()
+
+```
+
+

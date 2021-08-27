@@ -20,15 +20,15 @@ All functions allow the parallelization of tasks, which distributes the tasks am
 To install the latest developmental version from [github](https://github.com/) you will need the R package [devtools](https://cran.r-project.org/package=devtools):
 
 ```r
-devtools::install_github("maRce10/warbleR")
+devtools::install_github("maRce10/ohun")
 
 #load package
-library(warbleR)
+library(ohun)
 
 ```
 
 
-Please cite [ohun](https://github.com/maRce10/ohun)  as follows:
+Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 

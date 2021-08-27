@@ -5,7 +5,7 @@
 \title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
-power = 1, thinning = 1, bp = NULL, ssmooth = 0, threshold = 15,
+power = 1, thinning = 1, bp = NULL, ssmooth = 5, threshold = 0.1,
 hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
@@ -31,12 +31,9 @@ output (usually very large R objects / files). Default is  \code{1} (no thinning
 frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
-  with a sum smooth function. Default is 0 (no smoothing). Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
-#' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
-  with a sum smooth function. Default is 0. Note that smoothing is applied before thinning (see 'thinning' argument).}
+with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
-\item{threshold}{A numeric vector of length 1 specifying the amplitude threshold for detecting
-signals (in \%).}
+\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.}
 
 \item{hold.time}{Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied).}
 
@@ -75,7 +72,7 @@ writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
 # using smoothing and minimum duration
 detec <- energy_detector(files = c("Phae.long1.wav", "Phae.long2.wav",
 "Phae.long3.wav", "Phae.long4.wav"),
-path = tempdir(), threshold = 6, ssmooth = 300,
+path = tempdir(), threshold = 0.6, ssmooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
@@ -83,7 +80,7 @@ diagnose_detection(reference = lbh_selec_reference,
 detection = detec)
 
 # without declaring 'files'
-detec <- energy_detector(path = tempdir(), threshold = 6, ssmooth = 300,
+detec <- energy_detector(path = tempdir(), threshold = 0.6, ssmooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
@@ -91,7 +88,7 @@ diagnose_detection(reference = lbh_selec_reference,
 detection = detec)
 
 # using hold time
-detec <- energy_detector(threshold = 10, hold.time = 0.15,
+detec <- energy_detector(threshold = 0.1, hold.time = 0.15,
 bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # diagnose detection
@@ -101,7 +98,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec)
 envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # then run detection providing 'envelopes' (but no 'files')
-detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 0.15, min.duration = 0.05)
+detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 0.15, min.duration = 0.05)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
@@ -117,8 +114,8 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
 
  # run detection
  detec <- energy_detector(files = c("Phae.long1.flac", "Phae.long2.flac",
- "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 6,
- ssmooth = 300, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+ "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 0.6,
+ ssmooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
  # diagnose detection
  diagnose_detection(reference = flac_reference, detection = detec)
