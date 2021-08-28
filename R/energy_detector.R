@@ -168,16 +168,13 @@ energy_detector <-
 
     #if threshold is not vector or length!=1 stop
       if (!is.numeric(threshold))
-      stop("'threshold' must be a numeric vector of length 1") else {
+      stop("'threshold' must be a numeric vector of length 1")
       if (!is.vector(threshold))
-        stop("'threshold' must be a numeric vector of length 1") else {
+        stop("'threshold' must be a numeric vector of length 1")
         if (!length(threshold) == 1)
           stop("'threshold' must be a numeric vector of length 1")
-
-        if(threshold > 1 | threshold < 0)
-          stop("'threshold' must be a number between  0 and 1")
-      }
-    }
+        if(threshold >= 1 | threshold <= 0)
+          stop("'threshold' must be a number between 0 and 1")
 
     #if files is not character vector
     if (!is.null(files) &

@@ -78,7 +78,7 @@ Please cite [ohun](https://github.com/maRce10/ohun)  as follows:
 Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 
 
-<font size = "3">UNDER DEVELOPMENT</font>
+<font size = "20">UNDER DEVELOPMENT</font>
 
 
 avoid having overlapping selections in reference (check with overlapping_sels())
