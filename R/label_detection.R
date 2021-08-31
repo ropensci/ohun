@@ -7,23 +7,14 @@
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @return A data frame including the following detection performance diagnostics:
+#' @return A data frame including the columns in 'detection' plust 2 additional columns:
 #' \itemize{
-#'  \item \code{true.positives}: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
-#'  \item \code{false.positives}: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.
-#'  \item \code{false.negatives}: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
-#'  \item \code{split.positives}: number of signals in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
-#'  \item \code{merged.positives}: number of signals in 'detection' that were overlapped by more than 1 detection (i.e. signals that were merged). In a perfect detection routine it should be 0.
-#'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives with that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{detection.class}: contains a label indicating the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
+#'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected signal (only supplied for true positives).
 #'  }
 #' @export
 #' @name label_detection
-#' @details The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
+#' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all signals of interest have been selected.
 #' @examples {
 #' # an extra one in detection (1 false positive)
 #' label_detection(reference = lbh_selec_reference[-1, ], detection = lbh_selec_reference)
@@ -56,7 +47,7 @@
 #' Y <- Y[-2, ]
 #' label_detection(reference = lbh_selec_reference, detection = Y)
 #' }
-#' @seealso \code{\link{optimize_auto_detec}}, \code{\link{optimize_find_peaks}}
+#' @seealso \code{\link{diagnose_detection}}, \code{\link{summarize_diagnostic}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
@@ -111,8 +102,14 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
   # add row labels to reference to identify merged detections
   reference$..row.id <- 1:nrow(reference)
 
+
+  # set clusters for windows OS
+  if (Sys.info()[1] == "Windows" & parallel > 1)
+    cl <- parallel::makeCluster(parallel) else
+      cl <- parallel
+
     # look at detections matching 1 training selection at the time
-      labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = parallel, X =  unique(detection$sound.files), FUN = function(z){
+      labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X =  unique(detection$sound.files), FUN = function(z){
 
         # get subset from detection for that sound file
         sub_detec <- detection[detection$sound.files == z, ]

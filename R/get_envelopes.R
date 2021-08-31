@@ -62,9 +62,8 @@
 #' Araya-Salas, M., & Smith-Vidaurre, G. (2017). warbleR: An R package to streamline analysis of animal acoustic signals. Methods in Ecology and Evolution, 8(2), 184-191.
 #' }
 #' @seealso \code{\link{energy_detector}}
-#' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
-#' modified version of the timer function from seewave.
-#last modification on nov-18-2020 (MAS)
+#' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
+#last modification on aug-31-2021 (MAS)
 
 get_envelopes <-
   function(path = NULL,

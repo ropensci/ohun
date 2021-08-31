@@ -124,6 +124,9 @@ optimize_template_detector <- function(template.correlations, reference, thresho
     diagnostics <- previous.output
   } else {
 
+    cat(paste(length(threshold), "thresholds will be evaluated:"))
+    cat("\n")
+
     # set pb options
     diagnostics_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = 1, X = threshold, FUN = function(x){
 

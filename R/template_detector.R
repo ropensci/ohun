@@ -13,11 +13,11 @@
 #' detected signals.
 #' @export
 #' @name template_detector
-#' @details This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}.
+#' @details This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output contains the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
 #' @examples
 #' {
 #' # load example data
-#' data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "lbh_selec_table2", "comp_matrix"))
+#' data(list = c("Phae.long1", "Phae.long2", "Phae.long3"))
 #'
 #' # save sound files
 #' writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))

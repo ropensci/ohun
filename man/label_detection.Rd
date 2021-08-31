@@ -17,26 +17,17 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 }
 \value{
-A data frame including the following detection performance diagnostics:
+A data frame including the columns in 'detection' plust 2 additional columns:
 \itemize{
- \item \code{true.positives}: number of detections that correspond to signals in 'reference'. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
- \item \code{false.positives}: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.
- \item \code{false.negatives}: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
- \item \code{split.positives}: number of signals in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
- \item \code{merged.positives}: number of signals in 'detection' that were overlapped by more than 1 detection (i.e. signals that were merged). In a perfect detection routine it should be 0.
- \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
- \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
- \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
- \item \code{proportional.duration.true.positives}: ratio of total duration of true positives to the total duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives with that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
- \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
- \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+ \item \code{detection.class}: contains a label indicating the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
+ \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected signal (only supplied for true positives).
  }
 }
 \description{
 \code{label_detection} evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table
 }
 \details{
-The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
+The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all signals of interest have been selected.
 }
 \examples{
 {
@@ -78,7 +69,7 @@ Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package
 }
 }
 \seealso{
-\code{\link{optimize_auto_detec}}, \code{\link{optimize_find_peaks}}
+\code{\link{diagnose_detection}}, \code{\link{summarize_diagnostic}}
 }
 \author{
 Marcelo Araya-Salas \email{marcelo.araya@ucr.ac.cr})

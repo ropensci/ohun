@@ -71,7 +71,6 @@
 diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE)
 {
 
-
   # remove row with no info
   detection <- detection[!is.na(detection$start), ]
 
@@ -98,14 +97,17 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           sub_ref <- reference[reference$sound.files == z, ]
 
           # get row index in reference for detected signals
-          detected_reference_rows <- unlist(sapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-")), USE.NAMES = FALSE))
+          detected_reference_rows <- unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-"))))
 
         performance <- data.frame(
               sound.files = z,
-              true.positives = sum(grepl("true", sub_detec$detection.class)),
+              # true.positives = sum(grepl("true", sub_detec$detection.class)),
+              true.positives = length(na.omit(unique(detected_reference_rows))),
               false.positives = sum(grepl("false", sub_detec$detection.class)),
               false.negatives = sum(!sub_ref$..row.id %in% detected_reference_rows),
-              split.positives = sum(grepl("split", sub_detec$detection.class)) / 2,
+              # split.positives = sum(grepl("split", sub_detec$detection.class)),
+              split.positives = length(unique(
+                unlist(lapply(sub_detec$reference.row[grepl("split)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
               merged.positives = sum(grepl("merge", sub_detec$detection.class)),
               mean.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]),
               mean.duration.false.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]),
