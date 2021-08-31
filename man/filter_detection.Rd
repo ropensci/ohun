@@ -4,12 +4,12 @@
 \alias{filter_detection}
 \title{Remove ambiguous detections}
 \usage{
-filter_detection(detection, by = "scores", filter = "max", parallel = 1, pb = TRUE)
+filter_detection(detection, by = "overlap", filter = "max", parallel = 1, pb = TRUE)
 }
 \arguments{
 \item{detection}{Data frame with the output of \code{\link{label_detection}} containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.}
 
-\item{by}{Character vector of length 1 indicating a column in 'detection' that will be used to filter delections. Must refer to a numeric column. Default is 'scores' , which is return by \code{\link{template_detector}}.}
+\item{by}{Character vector of length 1 indicating a column in 'detection' that will be used to filter delections. Must refer to a numeric column. Default is 'overlap', which is return by \code{\link{label_detection}}.}
 
 \item{filter}{Character vector of length 1 indicating the criterium used to filter the column refer to by the 'by' argument. Current options are 'max' (maximum) and 'min' (minimum). Default is 'max'.}
 
@@ -25,7 +25,7 @@ An object of class 'envelopes'.
 \code{filter_detection} removes ambiguous detections (split and merged detections)
 }
 \details{
-This function removes ambiguous detections (split or merged detections, see \code{\link{diagnose_detection}}) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest correlation score on template-based detections. It works on the output of \code{\link{label_detection}}.
+This function removes ambiguous detections (split or merged detections, see \code{\link{diagnose_detection}}) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}.
 }
 \examples{
 {
