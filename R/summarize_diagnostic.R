@@ -84,7 +84,7 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
       false.negatives = sum(Y$false.negatives, na.rm = TRUE),
       split.positives = sum(Y$split.positives, na.rm = TRUE),
       merged.positives = sum(Y$merged.positives, na.rm = TRUE),
-      proportional.overlap.true.positives = mean(Y$proportional.overlap.true.positives, na.rm = TRUE),
+      proportional.overlap.true.positives = if(any(!is.na(Y$proportional.overlap.true.positives))) stats::weighted.mean(x = Y$proportional.overlap.true.positives, w = Y$true.positives, na.rm = TRUE) else NA,
       ..combined.extra.colms = x,
       stringsAsFactors = FALSE
     )

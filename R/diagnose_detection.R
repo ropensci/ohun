@@ -111,7 +111,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
               mean.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]),
               mean.duration.false.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]),
               mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
-              proportional.overlap.true.positives = mean(sub_detec$overlap, na.rm = TRUE),
+              proportional.overlap.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
               sensitivity = sum(!is.na(unique(detected_reference_rows))) / nrow(sub_ref),
               specificity =  if (nrow(sub_detec) > 0) sum(!is.na(unique(detected_reference_rows))) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0,
