@@ -9,8 +9,9 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return A data frame including the columns in 'detection' plust 2 additional columns:
 #' \itemize{
-#'  \item \code{detection.class}: contains a label indicating the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
+#'  \item \code{detection.class}: indicates the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
 #'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected signal (only supplied for true positives).
+#'  \item \code{overlap}: contains the proportion of the reference signal that is overlapped in time by the detection (only supplied for true positives).
 #'  }
 #' @export
 #' @name label_detection
@@ -102,7 +103,6 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
   # add row labels to reference to identify merged detections
   reference$..row.id <- 1:nrow(reference)
 
-
   # set clusters for windows OS
   if (Sys.info()[1] == "Windows" & parallel > 1)
     cl <- parallel::makeCluster(parallel) else
@@ -156,10 +156,20 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
 
         })
 
+        # add overlap percentage
+        sub_detec$overlap <- NA
+
+          # only non-ambiguous true positives
+        sub_detec$overlap[!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)] <- sapply(which(!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)), function(x){
+
+        min(sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_detec$start[x], sub_detec$end[x] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]]) / (sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]])
+        })
+
           }
         } else{
           sub_detec$detection.class <- "false.positive"
           sub_detec$reference.row <- NA
+          sub_detec$overlap <- NA
 }
     return(sub_detec)
     })
