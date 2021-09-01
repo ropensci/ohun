@@ -177,5 +177,8 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
     # put results in a single data frame
     labeled_detections <- do.call(rbind, labeled_detections_list)
 
+    if (is.list(labeled_detections$overlap))
+      labeled_detections$overlap <- unlist(labeled_detections$overlap)
+
   return(labeled_detections)
 }

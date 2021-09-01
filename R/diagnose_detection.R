@@ -87,7 +87,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
     labeled_detection$reference.duration <- sapply(1:nrow(labeled_detection), function(x){
       if (is.na(labeled_detection$reference.row[x])) NA  else
         if (grepl("-", labeled_detection$reference.row[x]))  NA else
-          labeled_detection$end[x] - labeled_detection$start[x]
+          reference$end[as.numeric(labeled_detection$reference.row[x])] - reference$start[as.numeric(labeled_detection$reference.row[x])]
     })
 
         # look at detections matching 1 training selection at the time
@@ -98,7 +98,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           sub_ref <- reference[reference$sound.files == z, ]
 
           # get row index in reference for detected signals
-          detected_reference_rows <- unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-"))))
+          detected_reference_rows <- unique(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-")))))
 
         performance <- data.frame(
               sound.files = z,
