@@ -46,7 +46,7 @@ editor_options:
 
 &nbsp;
 
- The package offers functions for:
+<font size = "4">The package offers functions for: </font>
 
 - Energy-based detection
 - Template-based detection
