@@ -162,7 +162,10 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
           # only non-ambiguous true positives
         sub_detec$overlap[!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)] <- sapply(which(!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)), function(x){
 
-        min(sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_detec$start[x], sub_detec$end[x] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]]) / (sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]])
+        ovlp <- min(sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_detec$start[x], sub_detec$end[x] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]]) / (sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]])
+
+        if (ovlp > 1) ovlp <- 1
+        return(ovlp)
         })
 
           }
@@ -177,8 +180,8 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
     # put results in a single data frame
     labeled_detections <- do.call(rbind, labeled_detections_list)
 
-    if (is.list(labeled_detections$overlap))
-      labeled_detections$overlap <- unlist(labeled_detections$overlap)
+    # if (is.list(labeled_detections$overlap))
+      # labeled_detections$overlap <- unlist(labeled_detections$overlap)
 
   return(labeled_detections)
 }

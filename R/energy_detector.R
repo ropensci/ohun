@@ -243,28 +243,28 @@ energy_detector <-
         ) else envlp <- envelopes[[file]]
 
         # normalize to range
-        if (max(envlp[[1]]) > 1) {
-          envlp[[1]] <- envlp[[1]] - min(envlp[[1]])
-          envlp[[1]] <- envlp[[1]] / max(envlp[[1]])
+        if (max(envlp$envelope) > 1) {
+          envlp$envelope <- envlp$envelope - min(envlp$envelope)
+          envlp$envelope <- envlp$envelope / max(envlp$envelope)
         }
 
         # time interval between consecutive samples
-        hop.samples <- envlp$duration / (length(envlp[[1]]) - 1)
+        hop.samples <- envlp$duration / (length(envlp$envelope) - 1)
 
           # get times at which threshold is crossed
-          cross_thresh <- unlist(lapply(2:length(envlp[[1]]), function(x) {
+          cross_thresh <- unlist(lapply(2:length(envlp$envelope), function(x) {
 
             #positive means going up
-            if (envlp[[1]][x] > thres & envlp[[1]][x - 1] <= thres) out <- hop.samples * (x - 1)
+            if (envlp$envelope[x] > thres & envlp$envelope[x - 1] <= thres) out <- hop.samples * (x - 1)
             # negative means going down
-            if (envlp[[1]][x] <= thres & envlp[[1]][x - 1] > thres) out <- hop.samples * (x - 1) * -1
+            if (envlp$envelope[x] <= thres & envlp$envelope[x - 1] > thres) out <- hop.samples * (x - 1) * -1
           # anything else should be null to save memory
-            if (envlp[[1]][x] <= thres & envlp[[1]][x - 1] <= thres | envlp[[1]][x] > thres & envlp[[1]][x - 1] > thres) out <- NULL
+            if (envlp$envelope[x] <= thres & envlp$envelope[x - 1] <= thres | envlp$envelope[x] > thres & envlp$envelope[x - 1] > thres) out <- NULL
 
               return(out)
           }))
 
-          ## FIX IF START OR END OF SIGNALS NOT INCLUDED IN SOUND FILE
+          ## FIX IF START OR END OF SIGNALS IS NOT INCLUDED IN SOUND FILE
           # get start and end of detections
           # starts are the positive ones
           starts <- cross_thresh[cross_thresh > 0]
@@ -272,7 +272,7 @@ energy_detector <-
           ends <- abs(cross_thresh[cross_thresh < 0])
 
           # if there is no end
-          if (length(starts) > 0 & length(ends) == 0) ends <- envlp[[1]]$duration
+          if (length(starts) > 0 & length(ends) == 0) ends <- envlp$duration
 
           # if there is no start
           if (length(ends) > 0 & length(starts) == 0) starts <- 0
@@ -284,7 +284,7 @@ energy_detector <-
                 if (starts[1] > ends[1]) starts <- c(0, starts)
 
                 # if end is not higher in the last
-          if (starts[length(starts)] > ends[length(ends)]) ends <- c(ends, envlp[[1]]$duration)
+          if (starts[length(starts)] > ends[length(ends)]) ends <- c(ends, envlp$duration)
 
           #put time of detection in data frame
           detections_df <-

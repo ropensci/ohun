@@ -98,11 +98,11 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           sub_ref <- reference[reference$sound.files == z, ]
 
           # get row index in reference for detected signals
-          detected_reference_rows <- unique(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-")))))
+          detected_reference_rows <- unique(na.omit(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-"))))))
 
         performance <- data.frame(
               sound.files = z,
-              true.positives = length(na.omit(unique(detected_reference_rows))),
+              true.positives = length(detected_reference_rows),
               false.positives = sum(grepl("false", sub_detec$detection.class)),
               false.negatives = sum(!sub_ref$..row.id %in% detected_reference_rows),
               split.positives = length(unique(
@@ -113,8 +113,8 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
               mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
               proportional.overlap.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
-              sensitivity = sum(!is.na(unique(detected_reference_rows))) / nrow(sub_ref),
-              specificity =  if (nrow(sub_detec) > 0) sum(!is.na(unique(detected_reference_rows))) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0,
+              sensitivity = length(detected_reference_rows) / nrow(sub_ref),
+              specificity =  if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0,
               stringsAsFactors = FALSE
             )
 

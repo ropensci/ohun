@@ -92,10 +92,10 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
     # add time diagnostics
     if (time.diagnostics){
 
-      summ_diagnostic$mean.duration.true.positives <- mean(Y$mean.duration.true.positives, na.rm = TRUE)
-      summ_diagnostic$mean.duration.false.positives <- mean(Y$mean.duration.false.positives, na.rm = TRUE)
-      summ_diagnostic$mean.duration.false.negatives <- mean(Y$mean.duration.false.negatives, na.rm = TRUE)
-      summ_diagnostic$proportional.duration.true.positives <- stats::weighted.mean(x = Y$proportional.duration.true.positives, w = Y$true.positives, na.rm = TRUE)
+      summ_diagnostic$mean.duration.true.positives <- if(any(!is.na(Y$mean.duration.true.positives))) stats::weighted.mean(x = Y$mean.duration.true.positives, w = Y$true.positives, na.rm = TRUE) else NA
+      summ_diagnostic$mean.duration.false.positives <- if(any(!is.na(Y$mean.duration.false.positives))) stats::weighted.mean(x = Y$mean.duration.false.positives, w = Y$true.positives, na.rm = TRUE) else NA
+      summ_diagnostic$mean.duration.false.negatives <- if(any(!is.na(Y$mean.duration.false.negatives))) stats::weighted.mean(x = Y$mean.duration.false.negatives, w = Y$true.positives, na.rm = TRUE) else NA
+      summ_diagnostic$proportional.duration.true.positives <- if(any(!is.na(Y$proportional.duration.true.positives))) stats::weighted.mean(x = Y$proportional.duration.true.positives, w = Y$true.positives, na.rm = TRUE) else NA
 
     }
 
