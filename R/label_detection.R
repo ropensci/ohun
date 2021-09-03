@@ -160,6 +160,7 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
         sub_detec$overlap <- NA
 
           # only non-ambiguous true positives
+        if (any(!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)))
         sub_detec$overlap[!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)] <- sapply(which(!grepl("-", sub_detec$reference.row) & !is.na(sub_detec$reference.row)), function(x){
 
         ovlp <- min(sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_detec$start[x], sub_detec$end[x] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]]) / (sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]])

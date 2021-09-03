@@ -201,7 +201,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
       if (by.sound.file)
         exp_grd <- exp_grd[rep(1:nrow(exp_grd), each = length(files)), ]
 
-        performance <- data.frame(exp_grd, performance)
+        suppressWarnings(performance <- data.frame(exp_grd, performance))
 
       if (!is.null(previous.output))
         performance <- rbind(previous.output, performance)
