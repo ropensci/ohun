@@ -20,14 +20,14 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{verbose}{Logical argument to control if some summary messages are printed to the console.}
 }
 \value{
-The function returns a data frame with the start and end and correlation score for the
+The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) with the start and end and correlation score for the
 detected signals.
 }
 \description{
 \code{template_detector} find signal occurrences in cross-correlation vectors from \code{\link{template_correlator}}
 }
 \details{
-This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output contains the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
+This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
 }
 \examples{
 {

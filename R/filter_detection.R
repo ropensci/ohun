@@ -1,14 +1,14 @@
-#' @title  Remove ambiguous detections
+#' @title Remove ambiguous detections
 #'
 #' @description \code{filter_detection} removes ambiguous detections (split and merged detections)
 #' @usage filter_detection(detection, by = "overlap", filter = "max", parallel = 1, pb = TRUE)
-#' @param detection Data frame with the output of \code{\link{label_detection}} containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.
+#' @param detection Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) with the output of \code{\link{label_detection}} containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.
 #' @param by Character vector of length 1 indicating a column in 'detection' that will be used to filter delections. Must refer to a numeric column. Default is 'overlap', which is return by \code{\link{label_detection}}.
 #' @param filter Character vector of length 1 indicating the criterium used to filter the column refer to by the 'by' argument. Current options are 'max' (maximum) and 'min' (minimum). Default is 'max'.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @return An object of class 'envelopes'.
+#' @return A selection table (using the warbleR package's format) as in 'X' but removing ambiguous detections (split and merged positives).
 #' @export
 #' @name filter_detection
 #' @details This function removes ambiguous detections (split or merged detections, see \code{\link{diagnose_detection}}) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}.
@@ -56,11 +56,20 @@
 # function to filter detection based on overlap
 filter_detection <- function(detection, by = "overlap", filter = "max", parallel = 1, pb = TRUE){
 
+  #if reference is not a data frame
+  if (!any(is.data.frame(detection), is_selection_table(detection)))
+    stop("'detection' is not of a class 'data.frame' or 'selection_table'")
+
+  # make it a data frame if selection table
+  if (warbleR::is_selection_table(detection))
+    detection <- as.data.frame(detection)
+
   if (is.null(detection$detection.class))
     stop("'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()")
 
   if (!by %in% names(detection))
     stop("'by' column not found")
+
 
   # add row id column to la
   detection$..row.id <- 1:nrow(detection)

@@ -10,7 +10,7 @@ optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
 }
 \arguments{
-\item{reference}{'selection_table' object or a data frame with columns
+\item{reference}{Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 for sound file name (sound.files), selection number (selec), and start and end time of signal
 (start and end). \strong{It must contain the reference selections that will be used for detection optimization}.}
 

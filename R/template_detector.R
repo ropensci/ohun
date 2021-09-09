@@ -9,11 +9,11 @@
 #' @param threshold Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param verbose Logical argument to control if some summary messages are printed to the console.
-#' @return The function returns a data frame with the start and end and correlation score for the
+#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) with the start and end and correlation score for the
 #' detected signals.
 #' @export
 #' @name template_detector
-#' @details This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output contains the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
+#' @details This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
 #' @examples
 #' {
 #' # load example data
@@ -121,9 +121,14 @@ template_detector <- function(template.correlations, parallel = 1, threshold, pb
   # relabel rows
   rownames(sel_table_df) <- 1:nrow(sel_table_df)
 
-  # no detections
+  #  if no detections
   if (all(is.na(sel_table_df$start)) & verbose)
-  write(file = "", x = "no signals above threshold were detected")
+  write(file = "", x = "no signals above threshold were detected") else
+    if (all(sel_table_df$sound.files %in% list.files(eval(rlang::call_args(template.correlations$call_info$call)$path)))){
+    sel_table_df <- selection_table(X = sel_table_df[!is.na(sel_table_df$start), ], path = eval(rlang::call_args(template.correlations$call_info$call)$path), parallel = parallel, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
 
+  attributes(sel_table_df)$call <- base::match.call()
+
+}
   return(sel_table_df)
 }

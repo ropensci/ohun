@@ -164,11 +164,11 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>The function returns a data frame with the start and end and correlation score for the
+    <p>The function returns a 'selection_table' (warbleR package's formats, see <code><a href='https://marce10.github.io/warbleR/reference/selection_table.html'>selection_table</a></code>) or data frame (if sound files can't be found) with the start and end and correlation score for the
 detected signals.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using <code><a href='template_correlator.html'>template_correlator</a></code>. The output contains the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.</p>
+    <p>This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using <code><a href='template_correlator.html'>template_correlator</a></code>. The output is a data frame (or selection table if sound files are still found in the original path supplied to <code><a href='template_correlator.html'>template_correlator</a></code>, using the warbleR package's format, see <code><a href='https://marce10.github.io/warbleR/reference/selection_table.html'>selection_table</a></code>) containing the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>

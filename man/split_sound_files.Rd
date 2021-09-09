@@ -35,7 +35,7 @@ Wave files for each segment in the working directory (if \code{only.sels = FALSE
 \code{split_sound_files} splits sound files in shorter segments
 }
 \details{
-This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{auto_detec}}).
+This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
 }
 \examples{
 {
@@ -59,7 +59,7 @@ Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package
 }
 }
 \seealso{
-\code{\link{cut_sels}}
+\code{\link[warbleR]{cut_sels}}
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr})

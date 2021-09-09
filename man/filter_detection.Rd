@@ -7,7 +7,7 @@
 filter_detection(detection, by = "overlap", filter = "max", parallel = 1, pb = TRUE)
 }
 \arguments{
-\item{detection}{Data frame with the output of \code{\link{label_detection}} containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.}
+\item{detection}{Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) with the output of \code{\link{label_detection}} containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.}
 
 \item{by}{Character vector of length 1 indicating a column in 'detection' that will be used to filter delections. Must refer to a numeric column. Default is 'overlap', which is return by \code{\link{label_detection}}.}
 
@@ -19,7 +19,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 }
 \value{
-An object of class 'envelopes'.
+A selection table (using the warbleR package's format) as in 'X' but removing ambiguous detections (split and merged positives).
 }
 \description{
 \code{filter_detection} removes ambiguous detections (split and merged detections)

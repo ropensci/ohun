@@ -5,7 +5,7 @@
 #'  hop.size = 11.6, wl = NULL, ssmooth = 5, hold.time = 0, min.duration = NULL,
 #'  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
 #'  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
-#' @param reference 'selection_table' object or a data frame with columns
+#' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
 #' (start and end). \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include signals with no signals.

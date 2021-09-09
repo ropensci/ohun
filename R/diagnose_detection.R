@@ -72,7 +72,15 @@
 diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE)
 {
 
-  # remove row with no info
+  # make it a data frame if selection table
+  if (warbleR::is_selection_table(detection))
+    detection <- as.data.frame(detection)
+
+  # make it a data frame if selection table
+  if (warbleR::is_selection_table(reference))
+    reference <- as.data.frame(reference)
+
+    # remove rows with no info
   detection <- detection[!is.na(detection$start), ]
 
   if (nrow(detection) > 0)

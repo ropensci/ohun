@@ -178,7 +178,7 @@ get_envelopes <-
     env_list[[length(env_list) + 1]]  <- list(
       parameters = lapply(as.list(base::match.call())[-1], eval),
       call = base::match.call(),
-      ohun.version =  packageVersion("ohun")
+      ohun.version = packageVersion("ohun")
     )
 
     names(env_list)[length(env_list)] <- "call_info"

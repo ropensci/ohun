@@ -140,7 +140,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>detection</th>
-      <td><p>Data frame with the output of <code><a href='label_detection.html'>label_detection</a></code> containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.</p></td>
+      <td><p>Data frame or selection table (using the warbleR package's format, see <code><a href='https://marce10.github.io/warbleR/reference/selection_table.html'>selection_table</a></code>) with the output of <code><a href='label_detection.html'>label_detection</a></code> containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start", "end". It must also contained the column indicated in the 'by' argument.</p></td>
     </tr>
     <tr>
       <th>by</th>
@@ -163,7 +163,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>An object of class 'envelopes'.</p>
+    <p>A selection table (using the warbleR package's format) as in 'X' but removing ambiguous detections (split and merged positives).</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function removes ambiguous detections (split or merged detections, see <code><a href='diagnose_detection.html'>diagnose_detection</a></code>) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of <code><a href='label_detection.html'>label_detection</a></code>.</p>

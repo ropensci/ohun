@@ -130,7 +130,7 @@ optimize_template_detector <- function(template.correlations, reference, thresho
     # set pb options
     diagnostics_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = 1, X = threshold, FUN = function(x){
 
-      detection <- template_detector(template.correlations = template.correlations, threshold = x, parallel = parallel, pb = FALSE, verbose = FALSE)
+      detection <- as.data.frame(template_detector(template.correlations = template.correlations, threshold = x, parallel = parallel, pb = FALSE, verbose = FALSE))
 
       # run diagnostic by template
       templates <- sapply(strsplit(names(template.correlations)[-length(template.correlations)], "/"), `[`, 1)
@@ -166,7 +166,7 @@ optimize_template_detector <- function(template.correlations, reference, thresho
     # add thresholds to output
     diagnostics <- data.frame(threshold = threshold, diagnostics)
 
-
+    # add previous output
     if (!is.null(previous.output))
       diagnostics <- rbind(previous.output, diagnostics)
 

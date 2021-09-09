@@ -16,7 +16,7 @@
 #' than those needed to accurately represent amplitude variation in time, which affects the size of the
 #' output (usually very large R objects / files). Default is  \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
-#'   frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
+#'   frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param threshold Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.
@@ -30,11 +30,11 @@
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @return A data frame containing the start and end of each signal by
+#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each signal by
 #'   sound file. If no signal was detected for a sound file it is not included in the output data frame.
 #' @export
 #' @name energy_detector
-#' @details This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a template detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}.
+#' @details This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a template detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -433,6 +433,14 @@ energy_detector <-
 
     # remove extra column
     detections$ovlp.sels <- NULL
+
+      if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)){
+
+        detections <- selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = parallel, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
+
+      attributes(detections)$call <- base::match.call()
+
+    }
 
     return(detections)
 }

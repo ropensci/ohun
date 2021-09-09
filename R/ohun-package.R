@@ -32,6 +32,7 @@
 #' @import utils
 #' @import methods
 #' @import stats
+#' @importFrom rlang call_args
 #' @importFrom knitr kable
 #' @importFrom crayon silver bold cyan italic red
 #' @importFrom methods is
