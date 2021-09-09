@@ -7,7 +7,7 @@
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @return A data frame including the columns in 'detection' plus 4 additional columns:
+#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
 #' \itemize{
 #'  \item \code{detection.class}: indicates the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
 #'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected signal (only supplied for true positives).
@@ -69,10 +69,6 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
   if (!any(is.data.frame(detection), is_selection_table(detection)))
     stop("'detection' is not of a class 'data.frame' or 'selection_table'")
 
-  # make it a data frame if selection table
-  if (warbleR::is_selection_table(reference))
-    reference <- as.data.frame(reference)
-
   #check if all columns are found in reference
   if (any(!(c(
     "sound.files", "selec", "start", "end"
@@ -115,7 +111,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
       cl <- parallel
 
     # look at detections matching 1 training selection at the time
-      labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X =  unique(detection$sound.files), FUN = function(z){
+    labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X =  unique(detection$sound.files), FUN = function(z){
 
         # get subset from detection for that sound file
         sub_detec <- as.data.frame(detection[detection$sound.files == z, ])
@@ -124,7 +120,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
         if (any(reference$sound.files == z))
   {
         # get subset from template for that sound file
-        sub_ref <- reference[reference$sound.files == z, ]
+        sub_ref <- as.data.frame(reference[reference$sound.files == z, ])
 
         if (nrow(sub_detec) > 0){
 
@@ -174,18 +170,31 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
         if (ovlp > 1) ovlp <- 1
         return(ovlp)
         })
-
           }
         } else{
           sub_detec$detection.class <- "false.positive"
           sub_detec$reference.row <- NA
           sub_detec$overlap <- NA
-}
+          }
+
     return(sub_detec)
     })
 
     # put results in a single data frame
     labeled_detections <- do.call(rbind, labeled_detections_list)
 
-  return(labeled_detections)
+    # convert to selection table
+    if (is_selection_table(detection)){
+      detection$detection.class <- labeled_detections$detection.class
+      detection$reference.row <- labeled_detections$reference.row
+      detection$overlap <- labeled_detections$overlap
+
+      # overwrite labeled_detections
+      labeled_detections <- detection
+
+      # fix call
+      attributes(labeled_detections)$call <- base::match.call()
+      }
+
+    return(labeled_detections)
 }
