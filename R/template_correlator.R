@@ -261,8 +261,8 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
     corr_vector <- XC_FUN(spc1 = spc_template, spc2 = spc_file, cm = cor.meth)
 
     # get header to extract metadata
-    file_header <- warbleR::read_wave(X = compare.matrix$files[e], path = path, header = TRUE)
-    # template_header <- warbleR::read_wave(X = templates, index = which(templates$selection.id == compare.matrix$templates[e]), path = path, header = TRUE)
+    file_header <- warbleR::read_sound_file(X = compare.matrix$files[e], path = path, header = TRUE)
+
     template_duration <- templates$end[templates$selection.id == compare.matrix$templates[e]] - templates$start[templates$selection.id == compare.matrix$templates[e]]
 
 

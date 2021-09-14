@@ -41,28 +41,7 @@
 #' }
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
 #last modification on aug-23-2021 (MAS)
-split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels  = FALSE, X = NULL){
-
-  #### set arguments from options
-  # get function arguments
-  argms <- methods::formalArgs(split_sound_files)
-
-  # get warbleR options
-  opt.argms <- if(!is.null(getOption("warbleR"))) getOption("warbleR") else SILLYNAME <- 0
-
-  # remove options not as default in call and not in function arguments
-  opt.argms <- opt.argms[!sapply(opt.argms, is.null) & names(opt.argms) %in% argms]
-
-  # get arguments set in the call
-  call.argms <- as.list(base::match.call())[-1]
-
-  # remove arguments in options that are in call
-  opt.argms <- opt.argms[!names(opt.argms) %in% names(call.argms)]
-
-  # set options left
-  if (length(opt.argms) > 0)
-    for (q in 1:length(opt.argms))
-      assign(names(opt.argms)[q], opt.argms[[q]])
+split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else
@@ -103,8 +82,7 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
 
 
   # check sgmnt duration
-  if (is.null(sgmts))
-  {
+  if (is.null(sgmts)){
     if (!is.numeric(sgmt.dur)) stop("'sgmt.dur' must be numeric")
     } else
     if (!is.numeric(sgmts)) stop("'sgmts' must be numeric")
@@ -122,8 +100,7 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
     # calculate segment limits
     if (is.null(sgmts)){
       # if sgmnts duration is shorter than file
-      if (sgmt.dur < wvdr$duration[wvdr$sound.files == x])
-      {
+      if (sgmt.dur < wvdr$duration[wvdr$sound.files == x]){
         # get start and end of segments
         sq <- seq(from = 0, to = wvdr$duration[wvdr$sound.files == x], by = sgmt.dur)
 
@@ -150,8 +127,6 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
 
   # if no sound files are produced
   if (!only.sels){
-
-
 
   # set clusters for windows OS
   if (Sys.info()[1] == "Windows" & parallel > 1)
@@ -197,12 +172,12 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
     X$sel.id <- paste(X$sound.files, X$selec, sep = "-")
 
     # get which selection are found in which new files
-    ovlp.df <- warbleR::overlapping_sels(ovlp.df, indx.row = TRUE, max.ovlp = 0.0000001, pb = pb , parallel = parallel)
+    ovlp.df <- warbleR::overlapping_sels(X = ovlp.df, indx.row = TRUE, max.ovlp = 0.0000001, pb = FALSE, parallel = 1, verbose = FALSE)
 
     ovlp.df$..row <- 1:nrow(ovlp.df)
 
     # split in new files rows and selection rows
-    new.sf.df <- ovlp.df[!is.na(ovlp.df$new.sound.files) & !is.na(ovlp.df$ovlp.sels), ]
+    new.sf.df <- ovlp.df[!is.na(ovlp.df$new.sound.files) & !is.na(ovlp.df$indx.row), ]
     org.sls.df <- ovlp.df[is.na(ovlp.df$new.sound.files), ]
 
     # re-add other columns
@@ -211,6 +186,7 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
 
     # order columns
     org.sls.df <- warbleR::sort_colms(org.sls.df)
+
 
     # find time positions in new files
     new.sels_l <- lapply(1:nrow(new.sf.df), function(x){
@@ -221,8 +197,8 @@ split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = 
       contained.sls <- org.sls.df[org.sls.df$..row %in% strsplit(Y$indx.row, "/")[[1]], ]
 
       # if selection were found within Y
-      if (nrow(contained.sls) > 0)
-{      contained.sls$sound.files <- Y$new.sound.files
+      if (nrow(contained.sls) > 0){
+        contained.sls$sound.files <- Y$new.sound.files
 
       # get new start and end
       contained.sls$start <- contained.sls$start - Y$start
