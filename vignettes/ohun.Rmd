@@ -116,26 +116,12 @@ described above.
 
 ```{r, eval = FALSE}
 
-library(warbleR)
+data(c("lbh_1", "lbh_reference"))
 
-# download recordings from xeno-canto
-for(i in c('nr:154138', 'nr:154129'))
-  warbleR::query_xc(qword = i, path = tempdir(), download = TRUE)
+seewave::spectro(lbh_1, wl = 200, ovlp = 50, scale = FALSE, flim = c(1, 11), collevels = seq(-100, 0, 5), palette = reverse.gray.colors.1, grid = FALSE)
 
-list.files(tempdir())
-
-```
-
-
-```{r, eval = FALSE}
-
-library(warbleR)
-
-# download recordings from xeno-canto
-for(i in c('nr:154138', 'nr:154129'))
-  warbleR::query_xc(qword = i, path = tempdir(), download = TRUE)
-
-list.files("./testing/vignette_files")
+for(i in which(lbh_reference$sound.files == "lbh_1.wav"))
+  lines(x = (lbh_reference[i, c("start", "end")]), y = c(2, 2), col = "#07889BCC", lwd = 6)
 
 ```
 
