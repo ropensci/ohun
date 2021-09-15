@@ -23,7 +23,7 @@
 #'  }
 ##' @export
 #' @name optimize_template_detector
-#' @details This function takes a selections data frame or 'selection_table' ('X') and the output of a \code{\link{auto_detec}} routine ('xc.output') and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'X'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'X'. Those parameters can be later used for performing a more efficient detection using \code{\link{optimize_template_detector}}.
+#' @details This function takes a a reference data frame or 'selection_table' ('X') and the output of \code{\link{template_correlator}} and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{optimize_template_detector}}.
 #'
 #' @examples{
 #' # Save sound files to temporary working directory
@@ -69,7 +69,7 @@
 #' @references {
 #' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
-#' @seealso \code{\link{optimize_auto_detec}}, \code{\link{find_peaks}}
+#' @seealso \code{\link{optimize_energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on dec-21-2021 (MAS)
 optimize_template_detector <- function(template.correlations, reference, threshold, parallel = 1, pb = FALSE, by.sound.file = FALSE, previous.output = NULL){

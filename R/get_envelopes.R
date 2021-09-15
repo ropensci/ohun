@@ -2,7 +2,7 @@
 #'
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
 #' @usage get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-#' power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 5, normalize = TRUE)
+#' power = 1, parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 #' @param path Character string containing the directory path where the sound files are located.
 #' If \code{NULL} (default) then the current working directory is used.
 #' @param files character vector or indicating the sound files that will be analyzed.
@@ -16,9 +16,9 @@
 #' @param thinning Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 #' samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 #' than those needed to accurately represent amplitude variation in time, which affects the size of the
-#' output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by linear interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision and that the higher the thinning the less precise the time detection. It's generally not advised if no smoothing ('ssmooth' argument) is applied.
+#' output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by linear interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision and that the higher the thinning the less precise the time detection. It's generally not advised if no smoothing ('smooth' argument) is applied.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @param ssmooth A numeric vector of length 1 to smooth the amplitude envelope
+#' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).
 #' @param normalize Logical argument to control if envelopes are normalized to a 0-1 range.
 #' @return An object of class 'envelopes'.
@@ -42,17 +42,17 @@
 #' plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 #'
 #' # smoothing envelopes
-#' envs <- get_envelopes(path = tempdir(), ssmooth = 6.8)
+#' envs <- get_envelopes(path = tempdir(), smooth = 6.8)
 #' x <- envs[[1]]$envelope
 #' plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 #'
 #' # smoothing and thinning
-#' envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
+#' envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
 #' x <- envs[[1]]$envelope
 #' plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 #'
 #' # no normalization
-#' envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
+#' envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
 #' x <- envs[[1]]$envelope
 #' plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude",
 #' normalize = FALSE)
@@ -75,7 +75,7 @@ get_envelopes <-
            parallel = 1,
            thinning = 1,
            pb = TRUE,
-           ssmooth = 5,
+           smooth = 5,
            normalize = TRUE
            ) {
 
@@ -99,11 +99,11 @@ get_envelopes <-
       }
     }
 
-    #if ssmooth is not vector or length!=1 stop
-      if (!is.vector(ssmooth))
-        stop("'ssmooth' must be a numeric vector of length 1") else {
-        if (!length(ssmooth) == 1)
-          stop("'ssmooth' must be a numeric vector of length 1")
+    #if smooth is not vector or length!=1 stop
+      if (!is.vector(smooth))
+        stop("'smooth' must be a numeric vector of length 1") else {
+        if (!length(smooth) == 1)
+          stop("'smooth' must be a numeric vector of length 1")
       }
 
     #if thinning is not vector or length!=1 between 1 and 0
@@ -166,7 +166,7 @@ get_envelopes <-
               parallel,
               thinning,
               pb,
-              ssmooth,
+              smooth,
               normalize
               )
       }
@@ -225,11 +225,11 @@ print.envelopes <- function(x, ...) {
   cat(crayon::silver(paste("* Contains the amplitude envelopes of"), length(x) - 1, "sound file(s):\n", paste(crayon::italic(utils::head(file_names), collapse = " ")), if( length(file_names) > 6) paste("... and", length(file_names) - 6, "more") else ""))
 
   # add message about amplitude envelope modifications
-  if (any(names(x$call_info$parameters) == "ssmooth")){
-    if (x$call_info$parameters$ssmooth > 0)
-      ssmooth_message <- paste0(x$call_info$parameters$ssmooth, " samples smoothing") else ssmooth_message <- ""
+  if (any(names(x$call_info$parameters) == "smooth")){
+    if (x$call_info$parameters$smooth > 0)
+      smooth_message <- paste0(x$call_info$parameters$smooth, " samples smoothing") else smooth_message <- ""
       } else
-        ssmooth_message <- ""
+        smooth_message <- ""
 
   if (any(names(x$call_info$parameters) == "thinning")){
     if (x$call_info$parameters$thinning < 1)
@@ -238,15 +238,15 @@ print.envelopes <- function(x, ...) {
     thin_message <- ""
 
 
-  if (ssmooth_message == "" & thin_message == "") cat(crayon::silver("\n * No smoothing or thinning was applied"))
+  if (smooth_message == "" & thin_message == "") cat(crayon::silver("\n * No smoothing or thinning was applied"))
 
-  if (ssmooth_message != "" & thin_message == "")
-    cat(crayon::silver(paste("\n *", ssmooth_message, "was applied")))
+  if (smooth_message != "" & thin_message == "")
+    cat(crayon::silver(paste("\n *", smooth_message, "was applied")))
 
-  if (ssmooth_message == "" & thin_message != "")
+  if (smooth_message == "" & thin_message != "")
     cat(crayon::silver(paste("\n *", thin_message, "was applied")))
-  if (ssmooth_message != "" & thin_message != "")
-    cat(crayon::silver(paste("\n *", ssmooth_message, "and", thin_message, "was applied")))
+  if (smooth_message != "" & thin_message != "")
+    cat(crayon::silver(paste("\n *", smooth_message, "and", thin_message, "was applied")))
 
   # print ohun version
     cat(crayon::silver(paste0("\n * Created by ", crayon::bold("ohun "), x$call_info$ohun.version)))
@@ -264,7 +264,7 @@ env_ohun_int <-
            parallel,
            thinning,
            pb,
-           ssmooth,
+           smooth,
            normalize
   )
   {
@@ -279,8 +279,8 @@ env_ohun_int <-
     # make wl even if odd
     if (!(wl %% 2) == 0) wl <- wl + 1
 
-    # convert ssmooth to samples
-    ssmooth <- round(wave_obj@samp.rate * ssmooth  / 1000, 0)
+    # convert smooth to samples
+    smooth <- round(wave_obj@samp.rate * smooth  / 1000, 0)
 
     #filter frequencies
     if (!is.null(bp))
@@ -310,7 +310,7 @@ env_ohun_int <-
     envp <-
       warbleR::envelope(
         x = amp_vector,
-        ssmooth = ssmooth
+        ssmooth = smooth
       )
 
     # flat edges (first and last 100 ms) if lower than lowest amp value

@@ -62,13 +62,13 @@
 #'
 #'
 #' }
-#' @seealso \code{\link{optimize_auto_detec}}, \code{\link{optimize_find_peaks}}
+#' @seealso \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
 #' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
-# last modification on jul-16-2021 (MAS)
+# last modification on sept-2021 (MAS)
 diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE)
 {
 

@@ -5,7 +5,7 @@
 \title{Extract absolute amplitude envelopes}
 \usage{
 get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-power = 1, parallel = 1, thinning = 1, pb = TRUE, ssmooth = 5, normalize = TRUE)
+power = 1, parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
@@ -28,11 +28,11 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{thinning}{Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 than those needed to accurately represent amplitude variation in time, which affects the size of the
-output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by linear interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision and that the higher the thinning the less precise the time detection. It's generally not advised if no smoothing ('ssmooth' argument) is applied.}
+output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by linear interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision and that the higher the thinning the less precise the time detection. It's generally not advised if no smoothing ('smooth' argument) is applied.}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
-\item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
+\item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).}
 
 \item{normalize}{Logical argument to control if envelopes are normalized to a 0-1 range.}
@@ -63,17 +63,17 @@ x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # smoothing envelopes
-envs <- get_envelopes(path = tempdir(), ssmooth = 6.8)
+envs <- get_envelopes(path = tempdir(), smooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # smoothing and thinning
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
+envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
 
 # no normalization
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, ssmooth = 6.8)
+envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
 x <- envs[[1]]$envelope
 plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude",
 normalize = FALSE)

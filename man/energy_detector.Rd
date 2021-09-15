@@ -5,7 +5,7 @@
 \title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
-power = 1, thinning = 1, bp = NULL, ssmooth = 5, threshold = 0.1,
+power = 1, thinning = 1, bp = NULL, smooth = 5, threshold = 0.1,
 hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
@@ -30,7 +30,7 @@ output (usually very large R objects / files). Default is  \code{1} (no thinning
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
 frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
-\item{ssmooth}{A numeric vector of length 1 to smooth the amplitude envelope
+\item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.}
@@ -72,7 +72,7 @@ writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
 # using smoothing and minimum duration
 detec <- energy_detector(files = c("Phae.long1.wav", "Phae.long2.wav",
 "Phae.long3.wav", "Phae.long4.wav"),
-path = tempdir(), threshold = 0.6, ssmooth = 6.8,
+path = tempdir(), threshold = 0.6, smooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
@@ -80,7 +80,7 @@ diagnose_detection(reference = lbh_selec_reference,
 detection = detec)
 
 # without declaring 'files'
-detec <- energy_detector(path = tempdir(), threshold = 0.6, ssmooth = 6.8,
+detec <- energy_detector(path = tempdir(), threshold = 0.6, smooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
@@ -115,7 +115,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
  # run detection
  detec <- energy_detector(files = c("Phae.long1.flac", "Phae.long2.flac",
  "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 0.6,
- ssmooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+ smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
  # diagnose detection
  diagnose_detection(reference = flac_reference, detection = detec)

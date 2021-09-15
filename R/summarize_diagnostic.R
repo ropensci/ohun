@@ -3,7 +3,7 @@
 #' \code{summarize_diagnostic} summarizes detection diagnostics
 #' @usage summarize_diagnostic(diagnostic, time.diagnostics = FALSE)
 #' @param diagnostic A data frame with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end".
-#' @return A data frame, typically the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_find_peaks}}, \code{\link{optimize_auto_detec}}) including the following detection performance diagnostics:
+#' @return A data frame, typically the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}) including the following detection performance diagnostics:
 #' \itemize{
 #'  \item \code{true.positives}: number of signals in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
 #'  \item \code{false.positives}: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.

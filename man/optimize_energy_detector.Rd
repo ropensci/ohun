@@ -5,7 +5,7 @@
 \title{Optimize energy-based signal detection}
 \usage{
 optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
- hop.size = 11.6, wl = NULL, ssmooth = 5, hold.time = 0, min.duration = NULL,
+ hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
 }
@@ -25,7 +25,7 @@ signals (in \%). Default is 15. \strong{Several values can be supplied for optim
 
 \item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
-\item{ssmooth}{A numeric vector to smooth the amplitude envelope
+\item{smooth}{A numeric vector to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). \strong{Several values can be supplied for optimization}.}
 
 \item{hold.time}{Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied). \strong{Several values can be supplied for optimization}.}
@@ -92,17 +92,17 @@ writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
 
 # using smoothing and minimum duration
 optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-threshold = c(0.06, 0.1), ssmooth = 6.8, bp = c(2, 9), hop.size = 6.8,
+threshold = c(0.06, 0.1), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
 min.duration = 0.09)
 
 # with thinning and smoothing
 optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
- threshold = c(0.06, 0.1, 0.15), ssmooth = c(7, 10), thinning = c(0.1, 0.01),
+ threshold = c(0.06, 0.1, 0.15), smooth = c(7, 10), thinning = c(0.1, 0.01),
  bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # by sound file
 (opt_ed <- optimize_energy_detector(reference = lbh_selec_reference,
-path = tempdir(), threshold = c(0.06, 0.1, 0.15), ssmooth = 6.8, bp = c(2, 9),
+path = tempdir(), threshold = c(0.06, 0.1, 0.15), smooth = 6.8, bp = c(2, 9),
 hop.size = 6.8, min.duration = 0.09, by.sound.file = TRUE))
 
 # summarize
@@ -115,14 +115,14 @@ path = tempdir()))
 
 # including previous output in new call
 optimize_energy_detector(reference = lbh_selec_reference, threshold = 0.1,
-hold.time = c(0.05, 0.2), previous.output = op_ed, ssmooth = 6.8,
+hold.time = c(0.05, 0.2), previous.output = op_ed, smooth = 6.8,
 bp = c(2, 9), hop.size = 7, path = tempdir())
 
 # having and extra file in files (simulating a file that should have no detetions)
 sub_reference <- lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ]
 
 optimize_energy_detector(reference = sub_reference, files = unique(lbh_selec_reference$sound.files),
-threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), ssmooth = 6.8,
+threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), smooth = 6.8,
 hop.size = 7, path = tempdir())
 }
 

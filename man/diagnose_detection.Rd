@@ -86,7 +86,7 @@ Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package
 }
 }
 \seealso{
-\code{\link{optimize_auto_detec}}, \code{\link{optimize_find_peaks}}
+\code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}
 }
 \author{
 Marcelo Araya-Salas \email{marcelo.araya@ucr.ac.cr})

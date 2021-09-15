@@ -2,7 +2,7 @@
 #'
 #' @description Optimize energy-based signal detection under different correlation treshold values
 #' @usage optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
-#'  hop.size = 11.6, wl = NULL, ssmooth = 5, hold.time = 0, min.duration = NULL,
+#'  hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
 #'  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
 #'  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
@@ -14,7 +14,7 @@
 #' @param power A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). \strong{Several values can be supplied for optimization}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
-#' @param ssmooth A numeric vector to smooth the amplitude envelope
+#' @param smooth A numeric vector to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). \strong{Several values can be supplied for optimization}.
 #' @param hold.time Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied). \strong{Several values can be supplied for optimization}.
 #' @param min.duration Numeric vector giving the shortest duration (in
@@ -65,17 +65,17 @@
 #'
 #' # using smoothing and minimum duration
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-#' threshold = c(0.06, 0.1), ssmooth = 6.8, bp = c(2, 9), hop.size = 6.8,
+#' threshold = c(0.06, 0.1), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
 #' min.duration = 0.09)
 #'
 #' # with thinning and smoothing
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-#'  threshold = c(0.06, 0.1, 0.15), ssmooth = c(7, 10), thinning = c(0.1, 0.01),
+#'  threshold = c(0.06, 0.1, 0.15), smooth = c(7, 10), thinning = c(0.1, 0.01),
 #'  bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 #'
 #' # by sound file
 #' (opt_ed <- optimize_energy_detector(reference = lbh_selec_reference,
-#' path = tempdir(), threshold = c(0.06, 0.1, 0.15), ssmooth = 6.8, bp = c(2, 9),
+#' path = tempdir(), threshold = c(0.06, 0.1, 0.15), smooth = 6.8, bp = c(2, 9),
 #' hop.size = 6.8, min.duration = 0.09, by.sound.file = TRUE))
 #'
 #' # summarize
@@ -88,14 +88,14 @@
 #'
 #' # including previous output in new call
 #' optimize_energy_detector(reference = lbh_selec_reference, threshold = 0.1,
-#' hold.time = c(0.05, 0.2), previous.output = op_ed, ssmooth = 6.8,
+#' hold.time = c(0.05, 0.2), previous.output = op_ed, smooth = 6.8,
 #' bp = c(2, 9), hop.size = 7, path = tempdir())
 #'
 #' # having and extra file in files (simulating a file that should have no detetions)
 #' sub_reference <- lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ]
 #'
 #' optimize_energy_detector(reference = sub_reference, files = unique(lbh_selec_reference$sound.files),
-#' threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), ssmooth = 6.8,
+#' threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), smooth = 6.8,
 #' hop.size = 7, path = tempdir())
 #' }
 #'
@@ -105,7 +105,7 @@
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on dec-21-2021 (MAS)
 
-optimize_energy_detector <- function(reference, files = NULL, threshold = 15, power = 1, hop.size = 11.6, wl = NULL, ssmooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
+optimize_energy_detector <- function(reference, files = NULL, threshold = 15, power = 1, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
 
   # hopsize
   if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
@@ -152,7 +152,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
       files <- unique(reference$sound.files)
 
       # get all possible combinations of parameters
-      exp_grd <- expand.grid(threshold = threshold, power = power, ssmooth = ssmooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
+      exp_grd <- expand.grid(threshold = threshold, power = power, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
 
       # if previous output included
       if (!is.null(previous.output)){
@@ -180,7 +180,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
 
        eng_det_l <- warbleR:::pblapply_wrblr_int(X = 1:nrow(exp_grd), pbar = pb, cl = 1, FUN = function(x){
 
-          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], ssmooth = exp_grd$ssmooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, power = exp_grd$power[x], hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
+          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, power = exp_grd$power[x], hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
 
           # make factor a character vector
           eng_det$sound.files <- as.character(eng_det$sound.files)
