@@ -91,7 +91,7 @@
 </center></h4>
             
             <h4 class="date"><center>
-“2021-09-13”
+“2021-09-15”
 </center></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/maRce10/ohun/blob/master/vignettes/ohun.Rmd"><code>vignettes/ohun.Rmd</code></a></small>
@@ -137,183 +137,326 @@
 <span class="co">#load package</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></code></pre></div>
 <p> </p>
+<p>Let’s also create a couple of functions for plotting spectrograms along envelopes and/or highlighted detected signals:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># function to plot spectrograms and amplitude envelopes together</span>
+<span class="va">labeled_spectro</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">wave</span>, <span class="va">reference</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">detection</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">envelope</span> <span class="op">=</span> <span class="cn">FALSE</span>,
+    <span class="va">threshold</span> <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span> <span class="op">{</span>
+
+    <span class="co"># set graphic device</span>
+    <span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/base/on.exit.html">on.exit</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span><span class="op">)</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="va">envelope</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="kw">else</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+
+    <span class="co"># plot spectrogram</span>
+    <span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">wave</span>, grid <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, oma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html">viridis</a></span>,
+        collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, axisX <span class="op">=</span> <span class="kw">if</span> <span class="op">(</span><span class="va">envelope</span><span class="op">)</span>
+            <span class="cn">FALSE</span> <span class="kw">else</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span>
+
+    <span class="co"># plot detection</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">reference</span><span class="op">)</span><span class="op">)</span>
+        <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">reference</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">(</span><span class="va">reference</span><span class="op">[</span><span class="va">i</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,
+            y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#F7D03CFF"</span>, lwd <span class="op">=</span> <span class="fl">7</span>, lend <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+
+    <span class="co"># plot detection</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">detection</span><span class="op">)</span><span class="op">)</span>
+        <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">detection</span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">(</span><span class="va">detection</span><span class="op">[</span><span class="va">i</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,
+            y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1.7</span>, <span class="fl">1.7</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#CF4446FF"</span>, lwd <span class="op">=</span> <span class="fl">7</span>, lend <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
+
+    <span class="va">usr</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span>
+
+    <span class="co"># add legend</span>
+    <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">detection</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">reference</span><span class="op">)</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.84</span>, y <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.98</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#F7D03CFF"</span>, <span class="st">"#CF4446FF"</span><span class="op">)</span>,
+            legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reference"</span>, <span class="st">"detection"</span><span class="op">)</span>, lwd <span class="op">=</span> <span class="fl">4</span>, bg <span class="op">=</span> <span class="st">"#FFFFFFE6"</span><span class="op">)</span>
+
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">detection</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">reference</span><span class="op">)</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.84</span>, y <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.98</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#F7D03CFF"</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"reference"</span><span class="op">)</span>,
+            lwd <span class="op">=</span> <span class="fl">4</span>, bg <span class="op">=</span> <span class="st">"#FFFFFFE6"</span><span class="op">)</span>
+
+    <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">reference</span><span class="op">)</span> <span class="op">&amp;</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">detection</span><span class="op">)</span><span class="op">)</span>
+        <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html">legend</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.84</span>, y <span class="op">=</span> <span class="va">usr</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="fl">0.98</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#CF4446FF"</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"detection"</span><span class="op">)</span>,
+            lwd <span class="op">=</span> <span class="fl">4</span>, bg <span class="op">=</span> <span class="st">"#FFFFFFE6"</span><span class="op">)</span>
+
+    <span class="kw">if</span> <span class="op">(</span><span class="va">envelope</span><span class="op">)</span> <span class="op">{</span>
+        <span class="co"># set graphic device for envelope</span>
+        <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+
+        <span class="co"># plot envelope</span>
+        <span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/env.html">env</a></span><span class="op">(</span><span class="va">wave</span>, colwave <span class="op">=</span> <span class="st">"#07889B"</span><span class="op">)</span>
+
+        <span class="co"># add threshold line</span>
+        <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">threshold</span><span class="op">)</span><span class="op">)</span>
+            <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html">abline</a></span><span class="op">(</span>h <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="st">"usr"</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">*</span> <span class="va">threshold</span>, col <span class="op">=</span> <span class="st">"#CF4446FF"</span>, lwd <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+    <span class="op">}</span>
+<span class="op">}</span></code></pre></div>
 <hr>
-<div id="signal-detection-theory-bioacoustics" class="section level2">
-<h2 class="hasAnchor">
-<a href="#signal-detection-theory-bioacoustics" class="anchor"></a>Signal detection theory + bioacoustics</h2>
+<div id="signal-detection-theory-applied-to-bioacoustics" class="section level1">
+<h1 class="hasAnchor">
+<a href="#signal-detection-theory-applied-to-bioacoustics" class="anchor"></a>Signal detection theory applied to bioacoustics</h1>
 <p>Broadly speaking, signal detection theory deals with the process of recovering signals (i.e. target signals) from background noise (not necessarily acoustic noise) and it’s widely used for optimizing this decision making process in the presence of uncertainty. During a detection routine, the detected ‘items’ can be classified into 4 classes:</p>
 <ul>
-<li>True positives (TPs): signals correctly identified as ‘signal’</li>
-<li>False positives (FPs): background noise incorrectly identified as ‘signal’</li>
-<li>False negatives (FNs): signals incorrectly identified as ‘background noise’</li>
-<li>True negatives (TNs): background noise correctly identified as ‘background noise’</li>
+<li>
+<strong>True positives (TPs)</strong>: signals correctly identified as ‘signal’</li>
+<li>
+<strong>False positives (FPs)</strong>: background noise incorrectly identified as ‘signal’</li>
+<li>
+<strong>False negatives (FNs)</strong>: signals incorrectly identified as ‘background noise’</li>
+<li>
+<strong>True negatives (TNs)</strong>: background noise correctly identified as ‘background noise’</li>
 </ul>
-<p>Several additional indices derived from these indices can be used to evaluate the performance of a detection routine. These are two of the most widely used:</p>
+<p>Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are two of the most commonly used:</p>
 <ul>
-<li>Sensitivity: proportion of target signals that were detected (a.k.a. true positive rate or recall; <em>TPs / (TPs + FNs)</em>)</li>
-<li>Specificity: proportion of detected items that correspond to target signals (<em>(TPs + FNs) / (TPs + FPs)</em>)</li>
+<li>
+<strong>Sensitivity</strong>: proportion of target signals that were detected (a.k.a. true positive rate or recall; <em>TPs / (TPs + FNs)</em>)</li>
+<li>
+<strong>Specificity</strong>: proportion of detected items that correspond to target signals (<em>(TPs + FNs) / (TPs + FPs)</em>)</li>
 </ul>
 <p><font size="2"><em>(Note that metrics that make use of ‘true negatives’ cannot be easily applied in the context of acoustic signal detection as noise cannot always be partitioned in discrete units)</em></font></p>
-<p>A perfect detection will have no false positives or false negatives, which will result in both sensitivity and specificity equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (sensitivity = 1 &amp; specificity &lt; 1) and detecting only target signals but not all of them (sensitivity &lt; 1 &amp; specificity = 1) is warranted. The right balance between these two options will be given by the relative costs of missing signals and mistaking noise for signals. Therefore, these indices can be used for diagnosing and optimizing the performance of a detection routine.</p>
-<p>The package <a href="https://github.com/maRce10/ohun">ohun</a> provides a set of tools to evaluate the performance of an acoustic signal detection based on the indices described above.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lbh_1"</span>, <span class="st">"lbh_reference"</span><span class="op">)</span><span class="op">)</span>
+<p>A perfect detection will have no false positives or false negatives, which will result in both sensitivity and specificity equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (sensitivity = 1 &amp; specificity &lt; 1) and detecting only target signals but not all of them (sensitivity &lt; 1 &amp; specificity = 1) is warranted. The right balance between these two extremes will be given by the relative costs of missing signals and mistaking noise for signals. Hence, these indices provide an useful framework for diagnosing and optimizing the performance of a detection routine.</p>
+<p>The package <a href="https://github.com/maRce10/ohun">ohun</a> provides a set of tools to evaluate the performance of an acoustic signal detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target signals in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: ‘lbh_1’ and ‘lbh_2’), which can be used to illustrate detection performance evaluation. The example data can be visually explored as follows (the syntax <code>package_name::function_name()</code> will be used throughout the vignette to highlight functions coming from packages other than <a href="https://github.com/maRce10/ohun">ohun</a>):</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># load example data</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/data.html">data</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"lbh_1"</span>, <span class="st">"lbh_2"</span>, <span class="st">"lbh_reference"</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">lbh_1</span>, wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">11</span><span class="op">)</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, palette <span class="op">=</span> <span class="va">reverse.gray.colors.1</span>, grid <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="co"># print spectrograms</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh_1</span>, reference <span class="op">=</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="va">lbh_reference</span><span class="op">$</span><span class="va">sound.files</span> <span class="op">==</span>
+    <span class="st">"lbh_1.wav"</span>, <span class="op">]</span>, wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-3-1.png" width="960" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh_2</span>, reference <span class="op">=</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="va">lbh_reference</span><span class="op">$</span><span class="va">sound.files</span> <span class="op">==</span>
+    <span class="st">"lbh_2.wav"</span>, <span class="op">]</span>, wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-3-2.png" width="960" style="display: block; margin: auto;"></p>
+<p>The function <code><a href="../reference/diagnose_detection.html">diagnose_detection()</a></code> evaluates the performance of a detection routine by comparing it to a reference table (which can be a data frame or ‘selection_table’ <em>sensu</em> <a href="https://CRAN.R-project.org/package=warbleR">warbleR</a>). For intance, a perfect detection is given by comparing <code>lbh_reference</code> to itself:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">lbh2_reference</span> <span class="op">&lt;-</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="va">lbh_reference</span><span class="op">$</span><span class="va">sound.files</span> <span class="op">==</span> <span class="st">"lbh_2.wav"</span>, <span class="op">]</span>
 
-<span class="kw">for</span><span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/which.html">which</a></span><span class="op">(</span><span class="va">lbh_reference</span><span class="op">$</span><span class="va">sound.files</span> <span class="op">==</span> <span class="st">"lbh_1.wav"</span><span class="op">)</span><span class="op">)</span>
-  <span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span>x <span class="op">=</span> <span class="op">(</span><span class="va">lbh_reference</span><span class="op">[</span><span class="va">i</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"start"</span>, <span class="st">"end"</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">2</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#07889BCC"</span>, lwd <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></code></pre></div>
+<span class="co"># diagnose</span>
+<span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_reference</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,
+    <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives sensitivity specificity
+## 1             10               0               0           1           1</code></pre>
+<p> </p>
+<p>Although this is a silly example, it shows the basic diagnostic indices, which include basic detection theory indices (‘true.positives’, ‘false.positives’, ‘false.negatives’, ‘sensitivity’ and ‘specificity’) mentioned above. We can play around with the reference table to see how these indices can be used to spot imperfect detection routines (and hopefully improve them!). For instance, we can remove some signals to see how this is reflected in the diagnostics. Getting rid of some rows in ‘detection’, simulating a detection with some false negatives, will affect the sensitivity but not the specificity:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create new table</span>
+<span class="va">lbh2_detection</span> <span class="op">&lt;-</span> <span class="va">lbh2_reference</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">9</span>, <span class="op">]</span>
+
+<span class="co"># print spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh_2</span>, reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span>,
+    wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-5-1.png" width="960" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># diagnose</span>
+<span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,
+    <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives sensitivity specificity
+## 1              7               0               3         0.7           1</code></pre>
+<p> </p>
+<p>Having some additional signals not in reference will do the opposite, reducing specificity but not sensitivity (in this example we just need to switch the tables):</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># print spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh_2</span>, detection <span class="op">=</span> <span class="va">lbh2_reference</span>, reference <span class="op">=</span> <span class="va">lbh2_detection</span>,
+    wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-6-1.png" width="960" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># diagnose</span>
+<span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_detection</span>, detection <span class="op">=</span> <span class="va">lbh2_reference</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,
+    <span class="fl">7</span><span class="op">:</span><span class="fl">8</span><span class="op">)</span><span class="op">]</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives sensitivity specificity
+## 1              7               3               0           1         0.7</code></pre>
+<p> </p>
+<p>The function offers three additional diagnose metrics:</p>
+<ul>
+<li>
+<strong>Split positives</strong>: target signals overlapped by more than 1 detecion</li>
+<li>
+<strong>Merged positives</strong>: number of cases in which 2 or more target signals in ‘reference’ were overlapped by the same detection</li>
+<li>
+<strong>Proportional overlap of true positives</strong>: ratio of the time overlap of true positives with its corresponding signal in the reference table</li>
+</ul>
+<p>In a perfect detection routine split and merged positives should be 0 while proportional overlap should be 1. We can shift the start of signals a bit to reflect a detection in which there is some mismatch to the reference table regarding to the time location of signals:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create new table</span>
+<span class="va">lbh2_detection</span> <span class="op">&lt;-</span> <span class="va">lbh2_reference</span>
+
+<span class="co"># add 'noise' to start</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">18</span><span class="op">)</span>
+<span class="va">lbh2_detection</span><span class="op">$</span><span class="va">start</span> <span class="op">&lt;-</span> <span class="va">lbh2_detection</span><span class="op">$</span><span class="va">start</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">lbh2_detection</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>,
+    sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+
+<span class="co">## print spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh_2</span>, reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span>,
+    wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-7-1.png" width="960" style="display: block; margin: auto;"></p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># diagnose</span>
+<span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span><span class="op">)</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives split.positives
+## 1             10               0               0               0
+##   merged.positives proportional.overlap.true.positives sensitivity specificity
+## 1                0                           0.5280701           1           1</code></pre>
+<p> </p>
+<p>In addition, the following diagnostic metrics related to the duration of the signals can also be returned by setting <code>time.diagnostics = TRUE</code>. Here we tweak the reference and detection data just to have some false positives and false negatives:</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># diagnose with time diagnostics</span>
+<span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_reference</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="op">]</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span><span class="op">[</span><span class="op">-</span><span class="fl">10</span>,
+    <span class="op">]</span>, time.diagnostics <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives split.positives
+## 1              8               1               1               0
+##   merged.positives proportional.overlap.true.positives
+## 1                0                           0.6103203
+##   mean.duration.true.positives mean.duration.false.positives
+## 1                    0.1387504                    0.05524073
+##   mean.duration.false.negatives proportional.duration.true.positives
+## 1                       0.15845                                    1
+##   sensitivity specificity
+## 1   0.8888889   0.8888889</code></pre>
+<p> </p>
+<p>These additional metrics can be used to further filter out undesired signals based on their duration (for instance in a energy_based detection as in <code><a href="../reference/energy_detector.html">energy_detector()</a></code>, explained below).</p>
+<p>Diagnostics can also be detailed by sound file:</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># diagnose by sound file</span>
+<span class="va">diagnostic</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh2_reference</span>, detection <span class="op">=</span> <span class="va">lbh2_detection</span>,
+    by.sound.file <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+
+<span class="va">diagnostic</span></code></pre></div>
+<pre><code>##   sound.files true.positives false.positives false.negatives split.positives
+## 1   lbh_2.wav             10               0               0               0
+##   merged.positives proportional.overlap.true.positives sensitivity specificity
+## 1                0                           0.5280701           1           1</code></pre>
+<p> </p>
+<p>These diagnostics can be summarized (as in the default <code><a href="../reference/diagnose_detection.html">diagnose_detection()</a></code> output) with the function <code><a href="../reference/summarize_diagnostic.html">summarize_diagnostic()</a></code>:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># summarize</span>
+<span class="fu"><a href="../reference/summarize_diagnostic.html">summarize_diagnostic</a></span><span class="op">(</span><span class="va">diagnostic</span><span class="op">)</span></code></pre></div>
+<pre><code>##   true.positives false.positives false.negatives split.positives
+## 1             10               0               0               0
+##   merged.positives proportional.overlap.true.positives sensitivity specificity
+## 1                0                           0.5280701           1           1</code></pre>
+<p> </p>
 </div>
+<div id="detecting-signals-with-ohun" class="section level1">
+<h1 class="hasAnchor">
+<a href="#detecting-signals-with-ohun" class="anchor"></a>Detecting signals with <em>ohun</em>
+</h1>
 <div id="energy-based-detection" class="section level2">
 <h2 class="hasAnchor">
 <a href="#energy-based-detection" class="anchor"></a>Energy-based detection</h2>
-<p>This detector uses amplitude envelopes to infer the position of signals. Amplitude envelopes are representations of the variation in energy through time. For instance we can calculate and plot an amplitude envelope from the example wave object <code>Phae.long1</code>:</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">env</span> <span class="op">&lt;-</span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://marce10.github.io/warbleR/reference/envelope.html">envelope</a></span><span class="op">(</span><span class="va">Phae.long1</span><span class="op">@</span><span class="va">left</span><span class="op">)</span></code></pre></div>
-<p>… and plot it along the spectrogram:</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">opar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,  <span class="fl">4</span>,  <span class="fl">0</span>,  <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot spectrogram</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">Phae.long2</span>, ovlp <span class="op">=</span> <span class="fl">90</span>, grid <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">100</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, wl <span class="op">=</span> <span class="fl">300</span>, palette <span class="op">=</span> <span class="va">reverse.gray.colors.1</span>, oma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">0</span> , <span class="fl">0</span><span class="op">)</span>, axisX <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span>mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>,  <span class="fl">4</span>,  <span class="fl">0</span>,  <span class="fl">0</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot envelope</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/env.html">env</a></span><span class="op">(</span><span class="va">Phae.long2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-4-1.png" width="700" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/graphics/par.html">par</a></span><span class="op">(</span><span class="va">opar</span><span class="op">)</span></code></pre></div>
-<pre><code>## Warning in par(opar): parâmetro gráfico "cin" não pode ser especificado</code></pre>
-<pre><code>## Warning in par(opar): parâmetro gráfico "cra" não pode ser especificado</code></pre>
-<pre><code>## Warning in par(opar): parâmetro gráfico "csi" não pode ser especificado</code></pre>
-<pre><code>## Warning in par(opar): parâmetro gráfico "cxy" não pode ser especificado</code></pre>
-<pre><code>## Warning in par(opar): parâmetro gráfico "din" não pode ser especificado</code></pre>
-<pre><code>## Warning in par(opar): parâmetro gráfico "page" não pode ser especificado</code></pre>
-<p>It doesn’t require highly stereotyped signals, although they work better on high quality recordings in which the amplitude of target signals is higher than the background noise (i.e. high signal-to-noise ratio). The function <code>ernergy_detector()</code> performs this type of detection. The syntax <code>package.name::function.name()</code> will be used here and throughout the vignette to highlight functions coming from packages other than <a href="https://github.com/maRce10/ohun">ohun</a>,</p>
+<p>This detector uses amplitude envelopes to infer the position of signals. Amplitude envelopes are representations of the variation in energy through time. The following code plots an amplitude envelope along with the spectrogram for the example data <code>lbh_2</code>:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># plot spectrogram and envelope</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="fu">cutw</span><span class="op">(</span><span class="va">lbh_2</span>, from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">1.5</span>, output <span class="op">=</span> <span class="st">"Wave"</span><span class="op">)</span>, ovlp <span class="op">=</span> <span class="fl">90</span>,
+    wl <span class="op">=</span> <span class="fl">300</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, env <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-11-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>It doesn’t require highly stereotyped signals, although they work better on high quality recordings in which the amplitude of target signals is higher than the background noise (i.e. high signal-to-noise ratio). The function <code>ernergy_detector()</code> performs this type of detection.</p>
 <p> </p>
 <div id="how-it-works" class="section level3">
 <h3 class="hasAnchor">
 <a href="#how-it-works" class="anchor"></a>How it works</h3>
 <p>We can understand how to use <code>ernergy_detector()</code> using simulating animal signals. We will do that using the function <code>simulate_songs()</code> from <a href="https://CRAN.R-project.org/package=warbleR">warbleR</a>. In this example we simulate a recording with 10 sounds with 2 different frequency ranges and durations:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install this package first if not available</span>
-<span class="co"># install.packages(" Sim.DiffProc")</span>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># install this package first if not installed install.packages('Sim.DiffProc')</span>
 
-<span class="co">#Creating vector for duration </span>
-<span class="va">durs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>
+<span class="co"># Creating vector for duration</span>
+<span class="va">durs</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.3</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fl">5</span><span class="op">)</span>
 
-<span class="co">#Creating simulated song</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">ss1</span> <span class="op">&lt;-</span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html">simulate_songs</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, durs <span class="op">=</span> <span class="va">durs</span>, freqs <span class="op">=</span> <span class="fl">5</span>, sig2 <span class="op">=</span> <span class="fl">0.01</span>, gaps <span class="op">=</span> <span class="fl">0.5</span>, selec.table <span class="op">=</span> <span class="cn">TRUE</span>, file.name <span class="op">=</span> <span class="st">"ss1"</span>, harms <span class="op">=</span> <span class="fl">1</span>, bgn <span class="op">=</span> <span class="fl">0.1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="co"># Creating simulated song</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
+<span class="va">simulated_1</span> <span class="op">&lt;-</span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html">simulate_songs</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, durs <span class="op">=</span> <span class="va">durs</span>, freqs <span class="op">=</span> <span class="fl">5</span>, sig2 <span class="op">=</span> <span class="fl">0.01</span>,
+    gaps <span class="op">=</span> <span class="fl">0.5</span>, harms <span class="op">=</span> <span class="fl">1</span>, bgn <span class="op">=</span> <span class="fl">0.1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, file.name <span class="op">=</span> <span class="st">"simulated_1"</span>,
+    selec.table <span class="op">=</span> <span class="cn">TRUE</span>, shape <span class="op">=</span> <span class="st">"cos"</span>, fin <span class="op">=</span> <span class="fl">0.3</span>, fout <span class="op">=</span> <span class="fl">0.35</span>, samp.rate <span class="op">=</span> <span class="fl">18</span><span class="op">)</span><span class="op">$</span><span class="va">wave</span></code></pre></div>
 <p> </p>
-<p>This is how the simulated recording looks like:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># plot spectrogram</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">45</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, grid <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-6-1.png" width="700" style="display: block; margin: auto;">  </p>
-<p>The signals in that recording can be detected using <code>ernergy_detector()</code> as follows:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Detecting all elements</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">ss1</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">10</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">0.001</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<p>This is how the spectrogram and amplitude envelope of the simulated recording look like:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># plot spectrogram and envelope</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, env <span class="op">=</span> <span class="cn">TRUE</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-13-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>Note that the amplitude envelope shows a high signal-to-noise ratio of the signals, which is ideal for energy-based detection. This can be conducted using <code>ernergy_detector()</code> as follows:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># run detection</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
+    min.duration <span class="op">=</span> <span class="fl">0.001</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="co"># plot spectro</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">45</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot detections</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-7-1.png" width="700" style="display: block; margin: auto;">  </p>
+<span class="co"># plot spectrogram and envelope</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, detection <span class="op">=</span> <span class="va">detection</span>, threshold <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;">  </p>
 <p>Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument <code>minimum.duration</code> to exclude short signals and keep only the longest signals:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Detecting all elements</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">ss1</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">10</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">0.6</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># run detection</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
+    min.duration <span class="op">=</span> <span class="fl">0.5</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot detections</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-8-1.png" width="700" style="display: block; margin: auto;">  </p>
-<p>We can use the argument <code>max.duration</code> to exclude long signals and keep the short signals:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Detecting all elements</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">ss1</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">10</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">0.001</span>, max.duration <span class="op">=</span> <span class="fl">0.6</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>We can use the argument <code>max.duration</code> to exclude long signals and keep the short ones:</p>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># run detection</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
+    min.duration <span class="op">=</span> <span class="fl">0.001</span>, max.duration <span class="op">=</span> <span class="fl">0.5</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
-<span class="fu">seewave</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/seewave/man/spectro.html">spectro</a></span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot detections</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-9-1.png" width="700" style="display: block; margin: auto;">  </p>
-<p>We can also focus the detection on specific frequency ranges using the argument <code>bp</code> (bandpass). By setting <code>bp = c(5, 8)</code>we can detect those signals found within that frequency range (5-8 kHz), which excludes signals below 5 kHz:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Detecting all elements</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">ss1</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">10</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">0.0001</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-16-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>We can also focus the detection on specific frequency ranges using the argument <code>bp</code> (bandpass). By setting <code>bp = c(5, 8)</code> we can detect those signals found within that frequency range (5-8 kHz), which excludes signals below 5 kHz:</p>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Detecting</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
+    min.duration <span class="op">=</span> <span class="fl">1e-04</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
-<span class="fu">spectro</span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
-
-<span class="co"># plot detections</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-10-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>The same logic can be applied to detect those signals found below 5 kHz. We just need to set <code>bp = (0, 6)</code>:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Detecting all elements</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="va">ss1</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">10</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">0.0001</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-17-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>The same logic can be applied to detect those signals found below 5 kHz. We just need to set the upper bound of the band pass filter below the range of the higher frequency signals (for instance <code>bp = (0, 6)</code>):</p>
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Detect</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
+    min.duration <span class="op">=</span> <span class="fl">1e-04</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
-<span class="fu">spectro</span><span class="op">(</span><span class="va">ss1</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">FALSE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, main <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Sys.time.html">Sys.time</a></span><span class="op">(</span><span class="op">)</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-18-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>Amplitude modulation (variation in amplitude across a signal) can be problematic for detection based on amplitude envelopes. We can also simulate some amplitude modulation using <code><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html">warbleR::simulate_songs()</a></code>:</p>
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># Creating simulated song</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span>
+<span class="va">simulated_2</span> <span class="op">&lt;-</span> <span class="fu">sim_songs</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, durs <span class="op">=</span> <span class="va">durs</span>, freqs <span class="op">=</span> <span class="fl">5</span>, sig2 <span class="op">=</span> <span class="fl">0.01</span>, gaps <span class="op">=</span> <span class="fl">0.5</span>,
+    harms <span class="op">=</span> <span class="fl">1</span>, bgn <span class="op">=</span> <span class="fl">0.1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, file.name <span class="op">=</span> <span class="st">"simulated_2"</span>, selec.table <span class="op">=</span> <span class="cn">TRUE</span>,
+    shape <span class="op">=</span> <span class="st">"cos"</span>, fin <span class="op">=</span> <span class="fl">0.3</span>, fout <span class="op">=</span> <span class="fl">0.35</span>, samp.rate <span class="op">=</span> <span class="fl">18</span>, am.amps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span>,
+        <span class="fl">0.1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span><span class="op">$</span><span class="va">wave</span>
 
-<span class="co"># plot detections</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p><img src="ohun_files/figure-html/unnamed-chunk-11-1.png" width="700" style="display: block; margin: auto;"></p>
-<p>Amplitude modulatio (variation in amplitude across a signal) can be problematic for detection based on amplitude envelopes. We can also simulate some amplitude modulation using <code><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html">warbleR::simulate_songs()</a></code>:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co">#Creating simulated song</span>
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
-<span class="va">ss2</span> <span class="op">&lt;-</span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html">simulate_songs</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span>, durs <span class="op">=</span> <span class="va">durs</span>, freqs <span class="op">=</span> <span class="fl">5</span>, sig2 <span class="op">=</span> <span class="fl">0.01</span>, gaps <span class="op">=</span> <span class="fl">0.5</span>, selec.table <span class="op">=</span> <span class="cn">TRUE</span>, file.name <span class="op">=</span> <span class="st">"ss1"</span>, harms <span class="op">=</span> <span class="fl">1</span>, bgn <span class="op">=</span> <span class="fl">0.1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, steps <span class="op">=</span> <span class="fl">10</span>, am.amps <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">0.1</span>, <span class="fl">2</span>, <span class="fl">3</span>, <span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
-
-<span class="fu">spectro</span><span class="op">(</span><span class="va">ss2</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p> </p>
+<span class="co"># plot spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-19-1.png" width="960" style="display: block; margin: auto;">  </p>
 <p>When signals have strong amplitude modulation they can be split during detection:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># detect sounds</span>
-<span class="va">sim_ad</span> <span class="op">&lt;-</span> <span class="fu">auto_detec</span><span class="op">(</span>flist <span class="op">=</span>  <span class="va">ss2</span><span class="op">$</span><span class="va">selec.table</span><span class="op">$</span><span class="va">sound.files</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, ssmooth <span class="op">=</span> <span class="fl">400</span>, threshold <span class="op">=</span> <span class="fl">50</span>, mindur <span class="op">=</span> <span class="fl">0.001</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
+    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
-<span class="fu">spectro</span><span class="op">(</span><span class="va">ss2</span><span class="op">$</span><span class="va">wave</span>, osc <span class="op">=</span> <span class="cn">TRUE</span>, scale <span class="op">=</span> <span class="cn">FALSE</span>, collevels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">0</span>, <span class="fl">5</span><span class="op">)</span>, fastdisp <span class="op">=</span> <span class="cn">TRUE</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>, heights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># plot spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p>There are two arguments that can deal with this: <code>holdtime</code> and <code>smooth</code>. <code>hold.time</code> allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merge different signals. For this example a <code>hold.time</code> of 0.2 ms can do the trick (we know gaps between signals are ~0.5 s long):</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># detect sounds</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
+    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, hold.time <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>
 
-<span class="co"># plot detection</span>
-<span class="kw">for</span><span class="op">(</span><span class="va">e</span> <span class="kw">in</span> <span class="fl">1</span><span class="op">:</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">)</span><span class="op">)</span>
- <span class="fu"><a href="https://rdrr.io/r/graphics/polygon.html">polygon</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">sim_ad</span><span class="op">$</span><span class="va">start</span><span class="op">[</span><span class="va">e</span><span class="op">]</span>, <span class="va">sim_ad</span><span class="op">$</span><span class="va">end</span><span class="op">[</span><span class="va">e</span><span class="op">]</span><span class="op">)</span>, 
-                  each <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span>, border <span class="op">=</span> <span class="st">"#07889B"</span>, 
-                  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/grDevices/adjustcolor.html">adjustcolor</a></span><span class="op">(</span><span class="st">"#07889B"</span>, alpha.f <span class="op">=</span> <span class="fl">0.12</span><span class="op">)</span>, 
-                  lwd <span class="op">=</span> <span class="fl">1.2</span><span class="op">)</span></code></pre></div>
-<p> </p>
-<ul>
-<li><p>Use the argument <code>holdtime</code> to merge selections from the same signal</p></li>
-<li><p>Try increasing <code>ssmooth</code> to merge selections from the same signal (do not use <code>holdtime</code>)</p></li>
-</ul>
+<span class="co"># plot spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;">  </p>
+<p><code>smooth</code> works by merging the amplitude envelope ‘hills’ of the split signals themselves. It smooths envelopes by applying a sliding window averaging of the amplitude values. It’s also given in milliseconds, control the size of the window:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># detect sounds</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
+    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, hold.time <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>
+
+<span class="co"># plot spectrogram</span>
+<span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
+<p><img src="ohun_files/figure-html/unnamed-chunk-22-1.png" width="960" style="display: block; margin: auto;">  </p>
 <p> </p>
 <p>Please cite <a href="https://github.com/maRce10/ohun">ohun</a> as follows:</p>
 <p>Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>
@@ -332,6 +475,7 @@
 <ol style="list-style-type: decimal">
 <li>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</li>
 <li>Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal acoustic signals. Methods Ecol Evol 8:184-191.</li>
+<li>Macmillan, N. A., &amp; Creelman, C. D. (2004). Detection theory: A user’s guide. Psychology press.</li>
 </ol>
 <p> </p>
 <hr>
@@ -360,17 +504,24 @@
 ## [5] seewave_2.1.8      tuneR_1.3.3.1     
 ## 
 ## loaded via a namespace (and not attached):
-##  [1] Rcpp_1.0.7        highr_0.9         bslib_0.2.5.1     compiler_4.1.0   
-##  [5] jquerylib_0.1.4   Sim.DiffProc_4.8  bitops_1.0-7      tools_4.1.0      
-##  [9] digest_0.6.27     jsonlite_1.7.2    evaluate_0.14     memoise_2.0.0    
-## [13] fftw_1.0-6        rlang_0.4.11      yaml_2.2.1        parallel_4.1.0   
-## [17] pkgdown_1.6.1     xfun_0.25         fastmap_1.1.0     stringr_1.4.0    
-## [21] desc_1.3.0        fs_1.5.0          sass_0.4.0        systemfonts_1.0.2
-## [25] rprojroot_2.0.2   R6_2.5.0          textshaping_0.3.5 dtw_1.22-3       
-## [29] pbapply_1.4-3     rmarkdown_2.9     magrittr_2.0.1    htmltools_0.5.1.1
-## [33] MASS_7.3-54       Deriv_4.1.3       ragg_1.1.3        proxy_0.4-26     
-## [37] stringi_1.7.4     signal_0.7-7      RCurl_1.98-1.4    cachem_1.0.5     
-## [41] crayon_1.4.1      rjson_0.2.20</code></pre>
+##  [1] Rcpp_1.0.7        fftw_1.0-6        assertthat_0.2.1  rprojroot_2.0.2  
+##  [5] digest_0.6.27     utf8_1.2.2        R6_2.5.0          Sim.DiffProc_4.8 
+##  [9] signal_0.7-7      evaluate_0.14     ggplot2_3.3.5     highr_0.9        
+## [13] pillar_1.6.1      rlang_0.4.11      jquerylib_0.1.4   rmarkdown_2.9    
+## [17] pkgdown_1.6.1     textshaping_0.3.5 desc_1.3.0        stringr_1.4.0    
+## [21] RCurl_1.98-1.4    munsell_0.5.0     proxy_0.4-26      Deriv_4.1.3      
+## [25] compiler_4.1.0    xfun_0.25         pkgconfig_2.0.3   systemfonts_1.0.2
+## [29] htmltools_0.5.1.1 tidyselect_1.1.1  tibble_3.1.3      gridExtra_2.3    
+## [33] dtw_1.22-3        fansi_0.5.0       viridisLite_0.4.0 crayon_1.4.1     
+## [37] dplyr_1.0.7       MASS_7.3-54       bitops_1.0-7      grid_4.1.0       
+## [41] jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.0   DBI_1.1.1        
+## [45] magrittr_2.0.1    formatR_1.11      scales_1.1.1      stringi_1.7.4    
+## [49] cachem_1.0.5      pbapply_1.4-3     viridis_0.6.1     fs_1.5.0         
+## [53] bslib_0.2.5.1     ellipsis_0.3.2    ragg_1.1.3        vctrs_0.3.8      
+## [57] generics_0.1.0    rjson_0.2.20      tools_4.1.0       glue_1.4.2       
+## [61] purrr_0.3.4       parallel_4.1.0    fastmap_1.1.0     yaml_2.2.1       
+## [65] colorspace_2.0-2  memoise_2.0.0     sass_0.4.0</code></pre>
+</div>
 </div>
   </div>
 

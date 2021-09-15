@@ -150,7 +150,7 @@
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame, typically the output of a detection optimization function (<code><a href='diagnose_detection.html'>diagnose_detection</a></code>, <code>optimize_find_peaks</code>, <code>optimize_auto_detec</code>) including the following detection performance diagnostics:</p><ul>
+    <p>A data frame, typically the output of a detection optimization function (<code><a href='diagnose_detection.html'>diagnose_detection</a></code>, <code><a href='optimize_energy_detector.html'>optimize_energy_detector</a></code>, <code><a href='optimize_template_detector.html'>optimize_template_detector</a></code>) including the following detection performance diagnostics:</p><ul>
 <li><p><code>true.positives</code>: number of signals in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.</p></li>
 <li><p><code>false.positives</code>: number of detections that don't match any of the signals in 'reference'. In a perfect detection routine it should be 0.</p></li>
 <li><p><code>false.negatives</code>: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.</p></li>
