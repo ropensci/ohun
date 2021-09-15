@@ -35,14 +35,14 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
 
 \item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.}
 
-\item{hold.time}{Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied).}
+\item{hold.time}{Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied).}
 
 \item{min.duration}{Numeric vector of length 1 giving the shortest duration (in
-seconds) of the signals to be detected. It removes signals below that
+ms) of the signals to be detected. It removes signals below that
 threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.}
 
 \item{max.duration}{Numeric vector of length 1 giving the longest duration (in
-seconds) of the signals to be detected. It removes signals above that
+ms) of the signals to be detected. It removes signals above that
 threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.}
 
 \item{parallel}{Numeric. Controls whether parallel computing is applied.
@@ -88,7 +88,7 @@ diagnose_detection(reference = lbh_selec_reference,
 detection = detec)
 
 # using hold time
-detec <- energy_detector(threshold = 0.1, hold.time = 0.15,
+detec <- energy_detector(threshold = 0.1, hold.time = 150,
 bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # diagnose detection
@@ -98,7 +98,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec)
 envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # then run detection providing 'envelopes' (but no 'files')
-detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 0.15, min.duration = 0.05)
+detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 150, min.duration = 0.05)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)

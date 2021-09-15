@@ -16,12 +16,12 @@
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
 #' @param smooth A numeric vector to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). \strong{Several values can be supplied for optimization}.
-#' @param hold.time Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied). \strong{Several values can be supplied for optimization}.
+#' @param hold.time Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied). \strong{Several values can be supplied for optimization}.
 #' @param min.duration Numeric vector giving the shortest duration (in
-#'   seconds) of the signals to be detected. It removes signals below that
+#'   ms) of the signals to be detected. It removes signals below that
 #'   threshold. \strong{Several values can be supplied for optimization}.
 #' @param max.duration Numeric vector giving the longest duration (in
-#'   seconds) of the signals to be detected. It removes signals above that
+#'   ms) of the signals to be detected. It removes signals above that
 #'   threshold. \strong{Several values can be supplied for optimization}.
 #' @param thinning Numeric vector in the range 0~1 indicating the proportional reduction of the number of
 #' samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
@@ -66,36 +66,36 @@
 #' # using smoothing and minimum duration
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 #' threshold = c(0.06, 0.1), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
-#' min.duration = 0.09)
+#' min.duration = 90)
 #'
 #' # with thinning and smoothing
 #' optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
 #'  threshold = c(0.06, 0.1, 0.15), smooth = c(7, 10), thinning = c(0.1, 0.01),
-#'  bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+#'  bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 #'
 #' # by sound file
 #' (opt_ed <- optimize_energy_detector(reference = lbh_selec_reference,
 #' path = tempdir(), threshold = c(0.06, 0.1, 0.15), smooth = 6.8, bp = c(2, 9),
-#' hop.size = 6.8, min.duration = 0.09, by.sound.file = TRUE))
+#' hop.size = 6.8, min.duration = 90, by.sound.file = TRUE))
 #'
 #' # summarize
 #' summarize_diagnostic(opt_ed)
 #'
 #' # using hold time
 #' (op_ed <- optimize_energy_detector(reference = lbh_selec_reference,
-#' threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), hop.size = 6.8,
+#' threshold = 0.1, hold.time = c(100, 150), bp = c(2, 9), hop.size = 6.8,
 #' path = tempdir()))
 #'
 #' # including previous output in new call
 #' optimize_energy_detector(reference = lbh_selec_reference, threshold = 0.1,
-#' hold.time = c(0.05, 0.2), previous.output = op_ed, smooth = 6.8,
+#' hold.time = c(50, 200), previous.output = op_ed, smooth = 6.8,
 #' bp = c(2, 9), hop.size = 7, path = tempdir())
 #'
 #' # having and extra file in files (simulating a file that should have no detetions)
 #' sub_reference <- lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ]
 #'
 #' optimize_energy_detector(reference = sub_reference, files = unique(lbh_selec_reference$sound.files),
-#' threshold = 0.1, hold.time = c(0.1, 0.15), bp = c(2, 9), smooth = 6.8,
+#' threshold = 0.1, hold.time = c(1, 150), bp = c(2, 9), smooth = 6.8,
 #' hop.size = 7, path = tempdir())
 #' }
 #'

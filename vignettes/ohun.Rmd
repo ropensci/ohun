@@ -325,11 +325,11 @@ labeled_spectro(wave = simulated_1, envelope = TRUE,  detection = detection, thr
 ```
 &nbsp;
 
-Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument `minimum.duration` to exclude short signals and keep only the longest signals:
+Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument `minimum.duration` to provide a time treshold (in ms) to exclude short signals and keep only the longest signals:
 ```{r eval = TRUE, echo = TRUE, fig.height=4, fig.width=10}
 
 # run detection
-detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8), threshold = 0.5, min.duration = 0.5, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8), threshold = 0.5, min.duration = 500, path = tempdir(), pb = FALSE)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_1,  detection = detection)
@@ -337,11 +337,11 @@ labeled_spectro(wave = simulated_1,  detection = detection)
 ```
 &nbsp;
 
-We can use the argument `max.duration` to exclude long signals and keep the short ones:
+We can use the argument `max.duration` (also in ms) to exclude long signals and keep the short ones:
 ```{r eval = TRUE, echo = TRUE, fig.height=4, fig.width=10}
 
 # run detection
-detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8),  threshold = 0.5, min.duration = 0.001, max.duration = 0.5, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8),  threshold = 0.5, min.duration = 1, max.duration = 500, path = tempdir(), pb = FALSE)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_1,  detection = detection)
@@ -353,7 +353,7 @@ We can also focus the detection on specific frequency ranges using the argument 
 ```{r, fig.height=4, fig.width=10, eval = TRUE, echo = TRUE}
 
 # Detecting 
-detection <- energy_detector(files = "simulated_1.wav", bp = c(5, 8),  threshold = 0.5, min.duration = 0.0001, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(5, 8),  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_1,  detection = detection)
@@ -365,7 +365,7 @@ The same logic can be applied to detect those signals found below 5 kHz. We just
 ```{r, fig.height=4, fig.width=10, eval = TRUE, echo = TRUE}
 
 # Detect
-detection <- energy_detector(files = "simulated_1.wav", bp = c(0, 6),  threshold = 0.5, min.duration = 0.0001, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(0, 6),  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_1,  detection = detection)
@@ -390,7 +390,7 @@ When signals have strong amplitude modulation they can be split during detection
 ```{r, fig.height=4.5, fig.width=10, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 0.0001, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
@@ -398,11 +398,11 @@ labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection 
 ```
 &nbsp;
 
-There are two arguments that can deal with this: `holdtime` and `smooth`. `hold.time` allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merge different signals. For this example a `hold.time` of 0.2 ms can do the trick (we know gaps between signals are ~0.5 s long):
+There are two arguments that can deal with this: `holdtime` and `smooth`. `hold.time` allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merges different signals. For this example a `hold.time` of 200 ms can do the trick (we know gaps between signals are ~0.5 s long):
 ```{r, fig.height=4.5, fig.width=10, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 0.0001, path = tempdir(), pb = FALSE, hold.time = 0.2)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE, hold.time = 200)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
@@ -410,12 +410,12 @@ labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection 
 ```
 &nbsp;
 
-`smooth` works by merging the amplitude envelope 'hills' of the split signals themselves. It smooths envelopes by applying a sliding window averaging of the amplitude values. It's also given in milliseconds, control the size of the window:  
+`smooth` works by merging the amplitude envelope 'hills' of the split signals themselves. It smooths envelopes by applying a sliding window averaging of amplitude values. It's also given in ms, which control the size of the window. A `smooth` of XX ms can merged back split signals from our example:  
 
 ```{r, fig.height=4.5, fig.width=10, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 0.0001, path = tempdir(), pb = FALSE, hold.time = 0.2)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE, smooth = 2)
 
 # plot spectrogram
 labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)

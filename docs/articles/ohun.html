@@ -382,20 +382,20 @@
 <span class="co"># plot spectrogram and envelope</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, detection <span class="op">=</span> <span class="va">detection</span>, threshold <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-14-1.png" width="960" style="display: block; margin: auto;">  </p>
-<p>Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument <code>minimum.duration</code> to exclude short signals and keep only the longest signals:</p>
+<p>Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument <code>minimum.duration</code> to provide a time treshold (in ms) to exclude short signals and keep only the longest signals:</p>
 <div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># run detection</span>
 <span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
-    min.duration <span class="op">=</span> <span class="fl">0.5</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    min.duration <span class="op">=</span> <span class="fl">500</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-15-1.png" width="960" style="display: block; margin: auto;">  </p>
-<p>We can use the argument <code>max.duration</code> to exclude long signals and keep the short ones:</p>
+<p>We can use the argument <code>max.duration</code> (also in ms) to exclude long signals and keep the short ones:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># run detection</span>
 <span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
-    min.duration <span class="op">=</span> <span class="fl">0.001</span>, max.duration <span class="op">=</span> <span class="fl">0.5</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    min.duration <span class="op">=</span> <span class="fl">1</span>, max.duration <span class="op">=</span> <span class="fl">500</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
@@ -404,7 +404,7 @@
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Detecting</span>
 <span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
-    min.duration <span class="op">=</span> <span class="fl">1e-04</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    min.duration <span class="op">=</span> <span class="fl">1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
@@ -413,7 +413,7 @@
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># Detect</span>
 <span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">6</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>,
-    min.duration <span class="op">=</span> <span class="fl">1e-04</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
+    min.duration <span class="op">=</span> <span class="fl">1</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
@@ -433,26 +433,26 @@
 <p>When signals have strong amplitude modulation they can be split during detection:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># detect sounds</span>
-<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1</span>,
     path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-20-1.png" width="960" style="display: block; margin: auto;">  </p>
-<p>There are two arguments that can deal with this: <code>holdtime</code> and <code>smooth</code>. <code>hold.time</code> allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merge different signals. For this example a <code>hold.time</code> of 0.2 ms can do the trick (we know gaps between signals are ~0.5 s long):</p>
+<p>There are two arguments that can deal with this: <code>holdtime</code> and <code>smooth</code>. <code>hold.time</code> allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merges different signals. For this example a <code>hold.time</code> of 200 ms can do the trick (we know gaps between signals are ~0.5 s long):</p>
 <div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># detect sounds</span>
-<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
-    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, hold.time <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1</span>,
+    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, hold.time <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-21-1.png" width="960" style="display: block; margin: auto;">  </p>
-<p><code>smooth</code> works by merging the amplitude envelope ‘hills’ of the split signals themselves. It smooths envelopes by applying a sliding window averaging of the amplitude values. It’s also given in milliseconds, control the size of the window:</p>
+<p><code>smooth</code> works by merging the amplitude envelope ‘hills’ of the split signals themselves. It smooths envelopes by applying a sliding window averaging of amplitude values. It’s also given in ms, which control the size of the window. A <code>smooth</code> of XX ms can merged back split signals from our example:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># detect sounds</span>
-<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1e-04</span>,
-    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, hold.time <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>
+<span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, min.duration <span class="op">=</span> <span class="fl">1</span>,
+    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span>, pb <span class="op">=</span> <span class="cn">FALSE</span>, smooth <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>
 
 <span class="co"># plot spectrogram</span>
 <span class="fu">labeled_spectro</span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">0.5</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>

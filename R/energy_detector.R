@@ -20,12 +20,12 @@
 #' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param threshold Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.
-#' @param hold.time Numeric vector of length 1. Specifies the time range at which selections will be merged (i.e. if 2 selections are separated by less than the specified hold.time they will be merged in to a single selection). Default is \code{0} (no hold time applied).
+#' @param hold.time Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied).
 #' @param min.duration Numeric vector of length 1 giving the shortest duration (in
-#'   seconds) of the signals to be detected. It removes signals below that
+#'   ms) of the signals to be detected. It removes signals below that
 #'   threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.
 #' @param max.duration Numeric vector of length 1 giving the longest duration (in
-#'   seconds) of the signals to be detected. It removes signals above that
+#'   ms) of the signals to be detected. It removes signals above that
 #'   threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
@@ -63,7 +63,7 @@
 #' detection = detec)
 #'
 #' # using hold time
-#' detec <- energy_detector(threshold = 0.1, hold.time = 0.15,
+#' detec <- energy_detector(threshold = 0.1, hold.time = 150,
 #' bp = c(2, 9), hop.size = 6.8, path = tempdir())
 #'
 #' # diagnose detection
@@ -73,7 +73,7 @@
 #' envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 #'
 #' # then run detection providing 'envelopes' (but no 'files')
-#' detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 0.15, min.duration = 0.05)
+#' detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 150, min.duration = 0.05)
 #'
 #' # diagnose detection
 #' diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
@@ -326,7 +326,7 @@ energy_detector <-
               # calculate overlapping selection after adding hope time
               for(e in 1:(nrow(detections_df) - 1)) {
                 # if overlap
-                  if (detections_df$end[e] + hold.time >= detections_df$start[e + 1]){
+                  if (detections_df$end[e] + hold.time / 1000 >= detections_df$start[e + 1]){
 
                     # return 1 if is the first merging
                     if (all(is.na(detections_df$ovlp.sels))) detections_df$ovlp.sels[c(e, e + 1)] <- 1
@@ -384,9 +384,9 @@ energy_detector <-
 
             #remove signals based on duration
             if (!is.null(min.duration))
-              detections_df <- detections_df[detections_df$duration > min.duration, ]
+              detections_df <- detections_df[detections_df$duration > min.duration / 1000, ]
             if (!is.null(max.duration))
-              detections_df <- detections_df[detections_df$duration < max.duration, ]
+              detections_df <- detections_df[detections_df$duration < max.duration / 1000, ]
           }
 
           return(detections_df)
