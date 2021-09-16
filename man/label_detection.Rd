@@ -32,36 +32,39 @@ The function identifies the rows in the output of a detection routine as true or
 }
 \examples{
 {
+# load data
+data("lbh_reference")
+
 # an extra one in detection (1 false positive)
-label_detection(reference = lbh_selec_reference[-1, ], detection = lbh_selec_reference)
+label_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
 
 # missing one in detection (all true positives)
-label_detection(reference = lbh_selec_reference, detection = lbh_selec_reference[-1, ])
+label_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
 
 # perfect detection (all true positives)
-label_detection(reference = lbh_selec_reference, detection = lbh_selec_reference)
+label_detection(reference = lbh_reference, detection = lbh_reference)
 
 # and extra sound file in reference (all true positives)
-label_detection(reference = lbh_selec_reference, detection =
-lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ])
+label_detection(reference = lbh_reference, detection =
+lbh_reference[lbh_reference$sound.files != "lbh1.wav", ])
 
 # and extra sound file in detection (some false positives)
 label_detection(reference =
-lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
-detection = lbh_selec_reference)
+lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
+detection = lbh_reference)
 
 # duplicate 1 detection row (to get 2 splits)
-label_detection(reference = lbh_selec_reference,
-detection = lbh_selec_reference[c(1, 1:nrow(lbh_selec_reference)), ])
+label_detection(reference = lbh_reference,
+detection = lbh_reference[c(1, 1:nrow(lbh_reference)), ])
 
 # merge 2 detections (to get split and merge)
-Y <- lbh_selec_reference
+Y <- lbh_reference
 Y$end[1] <- 1.2
-label_detection(reference = lbh_selec_reference, detection = Y)
+label_detection(reference = lbh_reference, detection = Y)
 
 # remove split to get only merge
 Y <- Y[-2, ]
-label_detection(reference = lbh_selec_reference, detection = Y)
+label_detection(reference = lbh_reference, detection = Y)
 }
 }
 \references{

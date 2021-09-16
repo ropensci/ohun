@@ -29,33 +29,36 @@
 #' @name diagnose_detection
 #' @details The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
 #' @examples {
+#' # load data
+#' data("lbh_reference")
+#'
 #' # perfect detection
-#' diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference)
+#' diagnose_detection(reference = lbh_reference, detection = lbh_reference)
 #'
 #' # missing one in detection
-#' diagnose_detection(reference = lbh_selec_reference, detection = lbh_selec_reference[-1, ])
+#' diagnose_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
 #'
 #' # an extra one in detection
-#' diagnose_detection(reference = lbh_selec_reference[-1, ], detection = lbh_selec_reference)
+#' diagnose_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
 #'
 #' # with time diagnostics
-#' diagnose_detection(reference = lbh_selec_reference[-1, ],
-#' detection = lbh_selec_reference, time.diagnostics = TRUE)
+#' diagnose_detection(reference = lbh_reference[-1, ],
+#' detection = lbh_reference, time.diagnostics = TRUE)
 #'
 #' # and extra sound file in reference
-#' diagnose_detection(reference = lbh_selec_reference,
+#' diagnose_detection(reference = lbh_reference,
 #' detection =
-#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ])
+#' lbh_reference[lbh_reference$sound.files != "lbh1", ])
 #'
 #' # and extra sound file in detection
 #' diagnose_detection(reference =
-#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
-#' detection = lbh_selec_reference)
+#' lbh_reference[lbh_reference$sound.files != "lbh1", ],
+#' detection = lbh_reference)
 #'
 #' # and extra sound file in detection by sound file
 #' dd <- diagnose_detection(reference =
-#' lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ],
-#' detection = lbh_selec_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
+#' lbh_reference[lbh_reference$sound.files != "lbh1", ],
+#' detection = lbh_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
 #'
 #' # get summary
 #' summarize_diagnostic(dd)

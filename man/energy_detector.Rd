@@ -5,7 +5,7 @@
 \title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
-power = 1, thinning = 1, bp = NULL, smooth = 5, threshold = 0.1,
+power = 1, thinning = 1, bp = NULL, smooth = 5, threshold = 5,
 hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
@@ -33,7 +33,7 @@ frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is use
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
-\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.}
+\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.}
 
 \item{hold.time}{Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied).}
 
@@ -63,45 +63,42 @@ This function takes a selections data frame or 'selection_table' ('reference') e
 \examples{
 {
 # Save example files into temporary working directory
-data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4"))
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
-writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
+data("lbh1", "lbh2", "lbh_reference")
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
 # using smoothing and minimum duration
-detec <- energy_detector(files = c("Phae.long1.wav", "Phae.long2.wav",
-"Phae.long3.wav", "Phae.long4.wav"),
-path = tempdir(), threshold = 0.6, smooth = 6.8,
+detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
+path = tempdir(), threshold = 60, smooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
 
 # diagnose detection
-diagnose_detection(reference = lbh_selec_reference,
+diagnose_detection(reference = lbh_reference,
 detection = detec)
 
 # without declaring 'files'
-detec <- energy_detector(path = tempdir(), threshold = 0.6, smooth = 6.8,
+detec <- energy_detector(path = tempdir(), threshold = 60, smooth = 6.8,
 bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 
 # diagnose detection
-diagnose_detection(reference = lbh_selec_reference,
+diagnose_detection(reference = lbh_reference,
 detection = detec)
 
 # using hold time
-detec <- energy_detector(threshold = 0.1, hold.time = 150,
+detec <- energy_detector(threshold = 10, hold.time = 150,
 bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # diagnose detection
-diagnose_detection(reference = lbh_selec_reference, detection = detec)
+diagnose_detection(reference = lbh_reference, detection = detec)
 
 # calculate envelopes first
 envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # then run detection providing 'envelopes' (but no 'files')
-detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 150, min.duration = 50)
+detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)
 
 # diagnose detection
-diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
+diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
 
 \dontrun{
 # USIN OTHER SOUND FILE FORMAT (flac program must be installed)
@@ -109,12 +106,11 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
  warbleR::wav_2_flac(path = tempdir())
 
  # change sound file extension to flac
- flac_reference <- lbh_selec_reference
+ flac_reference <- lbh_reference
  flac_reference$sound.files <- gsub(".wav", ".flac", flac_reference$sound.files)
 
  # run detection
- detec <- energy_detector(files = c("Phae.long1.flac", "Phae.long2.flac",
- "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 0.6,
+ detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,
  smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 
  # diagnose detection

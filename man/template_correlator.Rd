@@ -52,15 +52,14 @@ This function calculates the similarity of acoustic templates across sound files
 \examples{
 {
 #load example data
-data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4","lbh_selec_table"))
+data("lbh1", "lbh2", "lbh_reference")
 
 #save sound files
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
-writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
 # create template
-templ <- lbh_selec_reference[4,]
+templ <- lbh_reference[4,]
 templ2 <- selection_table(templ, extended = TRUE, confirm.extended = FALSE,
 path = tempdir())
 
@@ -74,18 +73,18 @@ path = tempdir())
 (tc_mfcc <- template_correlator(templates = templ, path = tempdir(), type = "mfcc"))
 
 # similar results (but no exactly the same) are found with the 3 methods
-# these are the correlation of the correlaction vectors
+# these are the correlation of the correlation vectors
 # fourier vs mel-auditory
-cor(tc_fr$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores,
-tc_ma$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores)
+cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores)
 
 # fourier vs mfcc
-cor(tc_fr$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores,
-tc_mfcc$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores)
+cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores)
 
 # mel-auditory vs mfcc
-cor(tc_ma$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores,
-tc_mfcc$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores)
+cor(tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores)
 
 # using an extended selection table
 templ_est <- selection_table(templ, extended = TRUE, confirm.extended = FALSE, path = tempdir())
@@ -93,8 +92,8 @@ templ_est <- selection_table(templ, extended = TRUE, confirm.extended = FALSE, p
 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")
 
 # produces the same result as templates in a regular data frame
-cor(tc_fr$`Phae.long2.wav-4/Phae.long2.wav`$correlation.scores,
-tc_fr_est$`Phae.long2.wav_4-1/Phae.long2.wav`$correlation.scores)
+cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+tc_fr_est$`lbh2.wav_4-1/lbh2.wav`$correlation.scores)
 }
 }
 \references{

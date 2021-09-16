@@ -7,7 +7,7 @@
 label_spectro(wave, reference = NULL, detection = NULL,
  envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5),
  palette = viridis::viridis, template.correlation = NULL,
- line.x.position = 2, ...)
+ line.x.position = 2, hop.size = NULL, ...)
 }
 \arguments{
 \item{wave}{A 'wave' class object.}
@@ -27,9 +27,11 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
 
 \item{palette}{Function with the color palette to be used on the spectrogram (as in \code{\link[seewave]{spectro}})}
 
-\item{template.correlation}{Numeric vector with the cross-correlation scores from \code{\link{template_correlator}}. If supplied the correlation is also plotted. Default is \code{NULL}.}
+\item{template.correlation}{List extracted from the output of \code{\link{template_correlator}} containing the correlation scores and metadata for an specific sound file/template dyad. For instance 'correlations[[1]]' where 'correlations' is the output of a \code{\link{template_correlator}} call. If supplied the correlation is also plotted. Default is \code{NULL}.}
 
 \item{line.x.position}{Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting signals. Default is 2.}
+
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.}
 
 \item{...}{Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.}
 }
@@ -45,16 +47,16 @@ This function plots spectrograms annotated with the position of signals. Mostly 
 \examples{
 {
 # load example data
-data(list = "Phae.long1")
+data(list = "lbh1", "lbh_reference")
 
 # adding labels
-label_spectro(wave = Phae.long1,
-reference = lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long1.wav", ],
+label_spectro(wave = lbh1,
+reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
 wl = 200, ovlp = 50, flim = c(1, 10))
 
 # adding envelope
-label_spectro(wave = Phae.long1,
-detection = lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long1.wav", ],
+label_spectro(wave = lbh1,
+detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
 wl = 200, ovlp = 50, flim = c(1, 10))
 
 # see the package vignette for more examples
@@ -67,7 +69,7 @@ wl = 200, ovlp = 50, flim = c(1, 10))
 }
 }
 \seealso{
-\code{\link{label_detection}}
+\code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr}).

@@ -15,34 +15,34 @@
 #'
 #' @examples {
 #' # load example data
-#' data(list = "Phae.long1")
+#' data("lbh1", "lbh_reference")
 #'
 #' # save sound files
-#' writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
+#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
 #'
-#' # template for the first sound file in 'lbh_selec_reference'
-#' templ1 <- lbh_selec_reference[1, ]
+#' # template for the first sound file in 'lbh_reference'
+#' templ1 <- lbh_reference[1, ]
 #'
 #' # generate template correlations
 #' tc <- template_correlator(templates = templ1, path = tempdir(),
-#' files = "Phae.long1.wav")
+#' files = "lbh1.wav")
 #'
 #' # template detection
 #' td <- template_detector(template.correlations = tc, threshold = 0.12)
 #'
 #' # this detection generates 2 split positives
-#' diagnose_detection(reference = lbh_selec_reference[lbh_selec_reference == "Phae.long1.wav", ],
+#' diagnose_detection(reference = lbh_reference[lbh_reference == "lbh1.wav", ],
 #' detection = td)
 #'
 #' # label detection
-#' ltd <- label_detection(reference = lbh_selec_reference[lbh_selec_reference == "Phae.long1.wav", ],
+#' ltd <- label_detection(reference = lbh_reference[lbh_reference == "lbh1.wav", ],
 #' detection = td)
 #'
 #' # now they can be filter to keep the detection with the highest score for each split
 #' ftd <- filter_detection(ltd)
 #'
 #' # splits must be 0
-#' diagnose_detection(reference = lbh_selec_reference[lbh_selec_reference == "Phae.long1.wav", ],
+#' diagnose_detection(reference = lbh_reference[lbh_reference == "lbh1.wav", ],
 #' detection = ftd)
 #' }
 #'

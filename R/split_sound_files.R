@@ -1,7 +1,7 @@
 #' Splits sound files
 #'
-#' \code{split_sound_files} splits sound files in shorter segments
-#' @usage split_sound_files(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL,
+#' \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
+#' @usage split_acoustic_data(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL,
 #'  parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL)
 #' @param path Directory path where sound files are found.
 #'  If \code{NULL} (default) then the current working directory is used.
@@ -18,19 +18,18 @@
 #' @family data manipulation
 #' @seealso \code{\link[warbleR]{cut_sels}}
 #' @export
-#' @name split_sound_files
+#' @name split_acoustic_data
 #' @return Wave files for each segment in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav') and a data frame in the R environment containing the name of the original sound files (org.sound.files), the name of the clips (sound.files) and the start and end of clips in the original files. Clips are saved in .wav format. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead.
 #' @details This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
 #' @examples
 #' {
 #' #load data and save to temporary working directory
-#' data(list = c("Phae.long1", "Phae.long2", "Phae.long3"))
-#' writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-#' writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-#' writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
+#' data("lbh1", "lbh2")
+#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
 #' #split files in 1 s files
-#' split_sound_files(sgmt.dur = 1, path = tempdir())
+#' split_acoustic_data(sgmt.dur = 1, path = tempdir())
 #'
 #' # Check this folder
 #' tempdir()
@@ -41,7 +40,7 @@
 #' }
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
 #last modification on aug-23-2021 (MAS)
-split_sound_files <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
+split_acoustic_data <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else

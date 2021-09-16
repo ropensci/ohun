@@ -32,43 +32,39 @@ This function infers signals occurrences from cross-correlation scores along sou
 \examples{
 {
 # load example data
-data(list = c("Phae.long1", "Phae.long2", "Phae.long3"))
+data("lbh1", "lbh2", "lbh_reference")
 
 # save sound files
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# template for the first sound file in 'lbh_selec_reference'
-templ1 <- lbh_selec_reference[1, ]
+# template for the first sound file in 'lbh_reference'
+templ1 <- lbh_reference[1, ]
 
 # generate template correlations
-tc <- template_correlator(templates = templ1, path = tempdir(), files = "Phae.long1.wav")
+tc <- template_correlator(templates = templ1, path = tempdir(), files = "lbh1.wav")
 
 # template detection
 td <- template_detector(template.correlations = tc, threshold = 0.4)
 
 # diagnose detection
 diagnose_detection(reference =
-lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long1.wav", ],
+lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
 detection = td)
 
-# template for the second and third sound file in 'lbh_selec_reference'
+# template for the second and third sound file in 'lbh_reference'
 # which have similar song types
-templ2 <- lbh_selec_reference[4, ]
+templ2 <- lbh_reference[4, ]
 
 # generate template correlations
 tc <- template_correlator(templates = templ2, path = tempdir(),
-files = c("Phae.long1.wav", "Phae.long2.wav"))
+files = c("lbh1.wav", "lbh2.wav"))
 
 # template detection
 td <- template_detector(template.correlations = tc, threshold = 0.3)
 
 # diagnose detection
-diagnose_detection(reference =
-lbh_selec_reference[lbh_selec_reference$sound.files \%in\% c("Phae.long3.wav",
-"Phae.long2.wav"), ],
-detection = td)
+diagnose_detection(reference = lbh_reference, detection = td)
 }
 }
 \references{

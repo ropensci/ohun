@@ -27,42 +27,40 @@
 #'
 #' @examples{
 #' # Save sound files to temporary working directory
-#' data(list = c("Phae.long4", "Phae.long2", "Phae.long3", "lbh_selec_reference"))
-#' writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
-#' writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-#' writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
+#' data("lbh1", "lbh2", "lbh_reference")
+#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
-#' # template for the fourth sound file in 'lbh_selec_reference'
-#' templ <- lbh_selec_reference[11, ]
+#' # template for the second sound file in 'lbh_reference'
+#' templ <- lbh_reference[11, ]
 #'
 #' # generate template correlations
 #' tc <- template_correlator(templates = templ, path = tempdir(),
-#' files = "Phae.long4.wav")
+#' files = "lbh2.wav")
 #'
 #' # using 2 threshold
 #' optimize_template_detector(template.correlations = tc, reference =
-#' lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long4.wav", ],
+#' lbh_reference[lbh_reference$sound.files == "lbh2.wav", ],
 #' threshold = c(0.2, 0.5))
 #'
 #' # using several thresholds
 #' optimize_template_detector(template.correlations = tc,
-#' reference = lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long4.wav", ],
+#' reference = lbh_reference[lbh_reference$sound.files == "lbh2.wav", ],
 #'  threshold = seq(0.5, 0.9, by = 0.05))
 #'
-#'  # template for the second and third sound file in 'lbh_selec_reference'
-#'  templ <- lbh_selec_reference[c(4, 7), ]
+#'  # template for the first and second sound file in 'lbh_reference'
+#'  templ <- lbh_reference[c(1, 11), ]
 #'
 #'  # generate template correlations
 #'  tc <- template_correlator(templates = templ, path = tempdir(),
-#'  files = c("Phae.long2.wav", "Phae.long3.wav"))
+#'  files = c("lbh1.wav", "lbh2.wav"))
 #'
 #' optimize_template_detector(template.correlations = tc, reference =
-#'   lbh_selec_reference[lbh_selec_reference$sound.files %in% c("Phae.long2.wav", "Phae.long3.wav"), ],
-#'  threshold = seq(0.5, 0.7, by = 0.1))
+#'   lbh_reference, threshold = seq(0.5, 0.7, by = 0.1))
 #'
 #'  # showing diagnostics by sound file
 #'  optimize_template_detector(template.correlations = tc, reference =
-#'  lbh_selec_reference[lbh_selec_reference$sound.files %in% c("Phae.long2.wav", "Phae.long3.wav"), ],
+#'  lbh_reference,
 #'  threshold = seq(0.5, 0.7, by = 0.1), by.sound.file = TRUE)
 #' }
 #'

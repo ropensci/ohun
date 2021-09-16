@@ -49,9 +49,9 @@ This function extracts the absolute amplitude envelopes of sound files. Can be u
 \examples{
 {
 # Save to temporary working directory
-data(list = c("Phae.long1", "Phae.long2"))
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
+data(list = c("lbh1", "lbh2"))
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
 # get raw absolute amplitude envelopes
 envs <- get_envelopes(path = tempdir())

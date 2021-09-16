@@ -4,7 +4,7 @@
 \alias{optimize_energy_detector}
 \title{Optimize energy-based signal detection}
 \usage{
-optimize_energy_detector(reference, files = NULL, threshold = 15, power = 1,
+optimize_energy_detector(reference, files = NULL, threshold = 5, power = 1,
  hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
@@ -17,7 +17,7 @@ for sound file name (sound.files), selection number (selec), and start and end t
 \item{files}{Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include signals with no signals.}
 
 \item{threshold}{A numeric vector specifying the amplitude threshold for detecting
-signals (in \%). Default is 15. \strong{Several values can be supplied for optimization}.}
+signals (in \%). Default is 5. \strong{Several values can be supplied for optimization}.}
 
 \item{power}{A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). \strong{Several values can be supplied for optimization}.}
 
@@ -84,45 +84,43 @@ This function takes a selections data frame or 'selection_table' ('reference')  
 \examples{
 {
 # Save example files into temporary working directory
-data(list = c("Phae.long1", "Phae.long2", "Phae.long3", "Phae.long4", "lbh_selec_reference"))
-writeWave(Phae.long1, file.path(tempdir(), "Phae.long1.wav"))
-writeWave(Phae.long2, file.path(tempdir(), "Phae.long2.wav"))
-writeWave(Phae.long3, file.path(tempdir(), "Phae.long3.wav"))
-writeWave(Phae.long4, file.path(tempdir(), "Phae.long4.wav"))
+data("lbh1", "lbh2", "lbh_reference")
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
 # using smoothing and minimum duration
-optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
-threshold = c(0.06, 0.1), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
+optimize_energy_detector(reference = lbh_reference, path = tempdir(),
+threshold = c(6, 10), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
 min.duration = 90)
 
 # with thinning and smoothing
-optimize_energy_detector(reference = lbh_selec_reference, path = tempdir(),
- threshold = c(0.06, 0.1, 0.15), smooth = c(7, 10), thinning = c(0.1, 0.01),
+optimize_energy_detector(reference = lbh_reference, path = tempdir(),
+ threshold = c(6, 10, 15), smooth = c(7, 10), thinning = c(0.1, 0.01),
  bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 
 # by sound file
-(opt_ed <- optimize_energy_detector(reference = lbh_selec_reference,
-path = tempdir(), threshold = c(0.06, 0.1, 0.15), smooth = 6.8, bp = c(2, 9),
+(opt_ed <- optimize_energy_detector(reference = lbh_reference,
+path = tempdir(), threshold = c(6, 10, 15), smooth = 6.8, bp = c(2, 9),
 hop.size = 6.8, min.duration = 90, by.sound.file = TRUE))
 
 # summarize
 summarize_diagnostic(opt_ed)
 
 # using hold time
-(op_ed <- optimize_energy_detector(reference = lbh_selec_reference,
-threshold = 0.1, hold.time = c(100, 150), bp = c(2, 9), hop.size = 6.8,
+(op_ed <- optimize_energy_detector(reference = lbh_reference,
+threshold = 10, hold.time = c(100, 150), bp = c(2, 9), hop.size = 6.8,
 path = tempdir()))
 
 # including previous output in new call
-optimize_energy_detector(reference = lbh_selec_reference, threshold = 0.1,
+optimize_energy_detector(reference = lbh_reference, threshold = 10,
 hold.time = c(50, 200), previous.output = op_ed, smooth = 6.8,
 bp = c(2, 9), hop.size = 7, path = tempdir())
 
 # having and extra file in files (simulating a file that should have no detetions)
-sub_reference <- lbh_selec_reference[lbh_selec_reference$sound.files != "Phae.long1.wav", ]
+sub_reference <- lbh_reference[lbh_reference$sound.files != "lbh1.wav", ]
 
-optimize_energy_detector(reference = sub_reference, files = unique(lbh_selec_reference$sound.files),
-threshold = 0.1, hold.time = c(1, 150), bp = c(2, 9), smooth = 6.8,
+optimize_energy_detector(reference = sub_reference, files = unique(lbh_reference$sound.files),
+threshold = 10, hold.time = c(1, 150), bp = c(2, 9), smooth = 6.8,
 hop.size = 7, path = tempdir())
 }
 

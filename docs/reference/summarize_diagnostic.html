@@ -182,20 +182,18 @@
     <pre class="examples"><span class='op'>{</span>
 <span class='co'># load example selection tables</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span>list <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"lbh_selec_reference"</span>, <span class='st'>"lbh_selec_table"</span><span class='op'>)</span><span class='op'>)</span>
-
-<span class='co'># 'lbh_selec_reference' has all signals annotated while 'lbh_selec_table' is missing a few</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"lbh_reference"</span><span class='op'>)</span>
 
 <span class='co'># run diagnose_detection() by sound file</span>
-<span class='va'>diag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_selec_table</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
+<span class='va'>diag</span> <span class='op'>&lt;-</span> <span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>,
+detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
 <span class='co'># summarize</span>
 <span class='fu'>summarize_diagnostic</span><span class='op'>(</span>diagnostic <span class='op'>=</span> <span class='va'>diag</span><span class='op'>)</span>
 
 <span class='co'># should be the same as this:</span>
-<span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_selec_table</span>, by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+<span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>,
+detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 <span class='op'>}</span>
 </pre>
   </div>

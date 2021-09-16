@@ -26,20 +26,18 @@
 #' {
 #' # load example selection tables
 #'
-#' data(list = c("lbh_selec_reference", "lbh_selec_table"))
-#'
-#' # 'lbh_selec_reference' has all signals annotated while 'lbh_selec_table' is missing a few
+#' data("lbh_reference")
 #'
 #' # run diagnose_detection() by sound file
-#' diag <- diagnose_detection(reference = lbh_selec_reference,
-#' detection = lbh_selec_table, by.sound.file = TRUE)
+#' diag <- diagnose_detection(reference = lbh_reference,
+#' detection = lbh_reference[-1, ], by.sound.file = TRUE)
 #'
 #' # summarize
 #' summarize_diagnostic(diagnostic = diag)
 #'
 #' # should be the same as this:
-#' diagnose_detection(reference = lbh_selec_reference,
-#' detection = lbh_selec_table, by.sound.file = FALSE)
+#' diagnose_detection(reference = lbh_reference,
+#' detection = lbh_reference[-1, ], by.sound.file = FALSE)
 #' }
 #' @seealso \code{\link{diagnose_detection}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})

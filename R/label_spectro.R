@@ -4,7 +4,7 @@
 #' @usage label_spectro(wave, reference = NULL, detection = NULL,
 #'  envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5),
 #'  palette = viridis::viridis, template.correlation = NULL,
-#'  line.x.position = 2, ...)
+#'  line.x.position = 2, hop.size = NULL, ...)
 #' @param wave A 'wave' class object.
 #' @param detection Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}).
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
@@ -15,8 +15,9 @@
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.
 #' @param collevels Numeric sequence of negative numbers to control color partitioning and amplitude values that are shown (as in \code{\link[seewave]{spectro}}).
 #' @param palette Function with the color palette to be used on the spectrogram (as in \code{\link[seewave]{spectro}})
-#' @param template.correlation Numeric vector with the cross-correlation scores from \code{\link{template_correlator}}. If supplied the correlation is also plotted. Default is \code{NULL}.
+#' @param template.correlation List extracted from the output of \code{\link{template_correlator}} containing the correlation scores and metadata for an specific sound file/template dyad. For instance 'correlations[[1]]' where 'correlations' is the output of a \code{\link{template_correlator}} call. If supplied the correlation is also plotted. Default is \code{NULL}.
 #' @param line.x.position Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting signals. Default is 2.
+#' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.
 #' @param ... Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.
 #' @return A spectrogram along with lines highlighting the position of signals in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.
 #' @export
@@ -25,16 +26,16 @@
 #'
 #' @examples {
 #' # load example data
-#' data(list = "Phae.long1")
+#' data(list = "lbh1", "lbh_reference")
 #'
 #'# adding labels
-#' label_spectro(wave = Phae.long1,
-#' reference = lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long1.wav", ],
+#' label_spectro(wave = lbh1,
+#' reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
 #' wl = 200, ovlp = 50, flim = c(1, 10))
 #'
 #' # adding envelope
-#' label_spectro(wave = Phae.long1,
-#' detection = lbh_selec_reference[lbh_selec_reference$sound.files == "Phae.long1.wav", ],
+#' label_spectro(wave = lbh1,
+#' detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
 #' wl = 200, ovlp = 50, flim = c(1, 10))
 #'
 #' # see the package vignette for more examples
@@ -43,10 +44,14 @@
 #' @references {
 #'#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
-#' @seealso \code{\link{label_detection}}
+#' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on oct-31-2021 (MAS)
-label_spectro <- function(wave, reference = NULL, detection = NULL, envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5), palette = viridis::viridis, template.correlation = NULL, line.x.position = 2, ...) {
+label_spectro <- function(wave, reference = NULL, detection = NULL, envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5), palette = viridis::viridis, template.correlation = NULL, line.x.position = 2, hop.size = NULL, ...) {
+
+  # adjust wl based on hope.size
+  if (!is.null(hop.size))
+    wl <- round(wave@samp.rate * hop.size / 1000, 0)
 
   # set graphic device
   on.exit(suppressWarnings(par(mfrow = c(1, 1), mar=c(5, 4, 4, 2) +0.1)))
@@ -92,13 +97,13 @@ label_spectro <- function(wave, reference = NULL, detection = NULL, envelope = F
 
     # add threshold line
     if (!is.null(threshold))
-      abline(h = par("usr")[4] * threshold, col = "#CF4446FF", lwd = 3)
+      abline(h = par("usr")[4] * threshold / 100, col = "#CF4446FF", lwd = 3)
   } else
     if (!is.null(template.correlation)) {
       # set graphic device for correlations
       par(mar = c(4,  4,  0.3,  1))
 
-      plot(x = seq(0, duration(wave), length.out = length(template.correlation)), y = template.correlation, type = "l", xlab = "Time (s)", ylab = "Correlation", col = "#07889B", lwd = 1.6, xaxs = "i")
+      plot(x = seq(template.correlation$template.duration / 2, duration(wave) - template.correlation$template.duration / 2, length.out = length(template.correlation$correlation.scores)), y = template.correlation$correlation.scores, type = "l", xlab = "Time (s)", ylab = "Correlation", col = "#07889B", lwd = 1.6, xaxs = "i", xlim  = c(0, duration(wave)))
 
       # add threshold line
       if (!is.null(threshold))

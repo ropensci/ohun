@@ -3,7 +3,7 @@
 \docType{package}
 \name{ohun}
 \alias{ohun}
-\title{ohun: Automatic detection of acoustic signals}
+\title{ohun: Optimizing acoustic signal detection}
 \description{
 ohun is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
 }
