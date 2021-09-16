@@ -124,7 +124,7 @@ template_detector <- function(template.correlations, parallel = 1, threshold, pb
   #  if no detections
   if (all(is.na(sel_table_df$start)) & verbose)
   write(file = "", x = "no signals above threshold were detected") else
-    if (all(sel_table_df$sound.files %in% list.files(eval(rlang::call_args(template.correlations$call_info$call)$path)))){
+    if (all(sel_table_df$sound.files %in% list.files(eval(rlang::call_args(template.correlations$call_info$call)$path))) & all(!is.na(sel_table_df$start))){
     sel_table_df <- selection_table(X = sel_table_df[!is.na(sel_table_df$start), ], path = eval(rlang::call_args(template.correlations$call_info$call)$path), parallel = parallel, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
 
   attributes(sel_table_df)$call <- base::match.call()

@@ -26,6 +26,6 @@ data(lbh_reference)
 \details{
 A data frame containing the start, end, low and high frequency of
 \emph{Phaethornis longirostris} (Long-billed Hermit) songs from the 2
-example sound files included in this package ('lbh_1' and 'lbh_2'). These two files are clips extracted from the xeno-canto's '154129' and '154138' recordings respectively.
+example sound files included in this package ('lbh_1' and 'lbh_2'). These two files are clips extracted from the xeno-canto's '154138' and '154129' recordings respectively.
 }
 \keyword{datasets}

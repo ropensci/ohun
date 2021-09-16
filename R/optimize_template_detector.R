@@ -116,7 +116,7 @@ optimize_template_detector <- function(template.correlations, reference, thresho
 
   # if previous output included
   if (!is.null(previous.output))
-    threshold <- threshold[threshold %in% previous.output$threshold]
+    threshold <- threshold[!threshold %in% previous.output$threshold]
 
   if (length(threshold) == 0){
     cat("all combinations were already evaluated on previous call to this function (based on 'pevious.output')")

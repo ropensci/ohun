@@ -73,75 +73,21 @@ library(ohun)
 ```
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
-
+source("~/Dropbox/R_package_testing/ohun/R/label_spectro.R")
 #load package
 library(ohun)
 
-load("../data/lbh_1.rda")
-load("../data/lbh_2.rda")
+load("../data/lbh2.rda")
+load("../data/lbh1.rda")
 load("../data/lbh_reference.rda")
 
 # for spectrograms
 par(mar = c(5, 4, 2, 2) + 0.1)
 
 # align figures
-opts_chunk$set(fig.align='center', tidy = TRUE) 
+opts_chunk$set(fig.align='center', tidy = TRUE, fig.height=4.5, fig.width=10) 
 ```
 &nbsp;
-
-Let's also create a couple of functions for plotting spectrograms along envelopes and/or highlighted detected signals:
-```{r}
-
-# function to plot spectrograms and amplitude envelopes together
-labeled_spectro <- function(wave, reference = NULL, detection = NULL, envelope = FALSE, threshold = NULL, ...) {
-
-  # set graphic device
-  opar <- par()
-  on.exit(par(opar))
-  if (envelope) 
-    par(mfrow = c(2, 1), mar = c(0,  4,  1,  1)) else
-  par(mar = c(4, 4, 1, 1))
-
-  # plot spectrogram
-  seewave::spectro(wave, grid = FALSE, scale = FALSE, oma = c(0, 0, 0 , 0), palette = viridis::viridis, collevels = seq(-100, 0, 5), axisX = if (envelope) FALSE else TRUE,...)
-  
-  # plot detection
-  if (!is.null(reference))
-  for(i in 1:nrow(reference))
-  lines(x = (reference[i, c("start", "end")]), y = c(2, 2), col = "#F7D03CFF", lwd = 7, lend = 2)
-  
-  # plot detection
-  if (!is.null(detection))
-  for(i in 1:nrow(detection))
-  lines(x = (detection[i, c("start", "end")]), y = c(1.7, 1.7), col = "#CF4446FF", lwd = 7, lend = 2)
-  
-  usr <- par("usr")
-  
-  # add legend
-  if (!is.null(detection) & !is.null(reference))
-legend(x = usr[2] * 0.84, y = usr[4] * 0.98, col = c("#F7D03CFF", "#CF4446FF"), legend = c("reference", "detection"), lwd = 4, bg = "#FFFFFFE6")
-
-  if (is.null(detection) & !is.null(reference))
-  legend(x = usr[2] * 0.84, y = usr[4] * 0.98, col = c("#F7D03CFF"), legend = c("reference"), lwd = 4, bg = "#FFFFFFE6")
-  
-  if (is.null(reference) & !is.null(detection))
-  legend(x = usr[2] * 0.84, y = usr[4] * 0.98, col = c("#CF4446FF"), legend = c("detection"), lwd = 4, bg = "#FFFFFFE6")
-  
-  if (envelope) {
-     # set graphic device for envelope
-  par(mar = c(4,  4,  1,  1))
-  
-  # plot envelope
-  seewave::env(wave, colwave = "#07889B")
-  
-  # add threshold line
-  if (!is.null(threshold))
-    abline(h = par("usr")[4] * threshold, col = "#CF4446FF", lwd = 3)
-  }
-}
-
-```
-
 
 ---
 
@@ -157,47 +103,51 @@ Broadly speaking, signal detection theory deals with the process of recovering s
 Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are two of the most commonly used:
 
 - **Sensitivity**: proportion of target signals that were detected (a.k.a. true positive rate or recall; *TPs / (TPs + FNs)*)
-- **Specificity**: proportion of detected items that correspond to target signals (*(TPs + FNs) / (TPs + FPs)*)
+- **Specificity**: proportion of detected items that correspond to target signals (*(TPs + FNs) / (TPs + FPs)*). This definition is sometimes refer to as false positive rate.
 
 <font size = "2">*(Note that metrics that make use of 'true negatives' cannot be easily applied in the context of acoustic signal detection as noise cannot always be partitioned in discrete units)*</font>
 
 A perfect detection will have no false positives or false negatives, which will result in both sensitivity and specificity equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (sensitivity = 1 & specificity < 1) and detecting only target signals but not all of them (sensitivity < 1 & specificity = 1) is warranted. The right balance between these two extremes will be given by the relative costs of missing signals and mistaking noise for signals. Hence, these indices provide an useful framework for diagnosing and optimizing the performance of a detection routine. 
 
-The package [ohun](https://github.com/maRce10/ohun) provides a set of tools to evaluate the performance of an acoustic signal detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target signals in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh_1' and 'lbh_2'), which can be used to illustrate detection performance evaluation. The example data can be visually explored as follows (the syntax `package_name::function_name()` will be used throughout the vignette to highlight functions coming from packages other than [ohun](https://github.com/maRce10/ohun)):  
+The package [ohun](https://github.com/maRce10/ohun) provides a set of tools to evaluate the performance of an acoustic signal detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target signals in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which can be used to illustrate detection performance evaluation. The example data can be visually explored as follows:  
 ```{r, eval = TRUE, fig.align='center', fig.height=4, fig.width=10, warning=FALSE}
 
 # load example data
-data(c("lbh_1", "lbh_2", "lbh_reference"))
+data("lbh1", "lbh2", "lbh_reference")
 
-# print spectrograms
-labeled_spectro(wave = lbh_1, reference = lbh_reference[lbh_reference$sound.files == "lbh_1.wav", ], wl = 200, ovlp = 50, flim = c(1, 10))
+# save sound file
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
 
-labeled_spectro(wave = lbh_2, reference = lbh_reference[lbh_reference$sound.files == "lbh_2.wav", ], wl = 200, ovlp = 50, flim = c(1, 10))
+# save sound file
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
+# print spectrogram
+label_spectro(wave = lbh1, reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ], wl = 200, ovlp = 50, flim = c(1, 10))
 
 ```
 
 The function `diagnose_detection()` evaluates the performance of a detection routine by comparing it to a reference table (which can be a data frame or 'selection_table' *sensu* [warbleR](https://CRAN.R-project.org/package=warbleR)). For intance, a perfect detection is given by comparing `lbh_reference` to itself:
 ```{r}
 
-lbh2_reference <- lbh_reference[lbh_reference$sound.files == "lbh_2.wav", ]
+lbh1_reference <- lbh_reference[lbh_reference$sound.files == "lbh1.wav", ]
 
 # diagnose
-diagnose_detection(reference = lbh2_reference, detection = lbh2_reference)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_reference, detection = lbh1_reference)[, c(1:3, 7:8)]
 
 ```
 &nbsp;
 
-Although this is a silly example, it shows the basic diagnostic indices, which include basic detection theory indices ('true.positives', 'false.positives', 'false.negatives', 'sensitivity' and 'specificity') mentioned above. We can play around with the reference table to see how these indices can be used to spot imperfect detection routines (and hopefully improve them!). For instance, we can remove some signals to see how this is reflected in the diagnostics. Getting rid of some rows in 'detection', simulating a detection with some false negatives, will affect the sensitivity but not the specificity:
+We will work only on a single sound file for convenience but the functions can work on several sound files at the time. The files should be found in a single working directory. Although the above example is a bit silly, it shows the basic diagnostic indices, which include basic detection theory indices ('true.positives', 'false.positives', 'false.negatives', 'sensitivity' and 'specificity') mentioned above. We can play around with the reference table to see how these indices can be used to spot imperfect detection routines (and hopefully improve them!). For instance, we can remove some signals to see how this is reflected in the diagnostics. Getting rid of some rows in 'detection', simulating a detection with some false negatives, will affect the sensitivity but not the specificity:
 ```{r, fig.align='center', fig.height=4, fig.width=10, warning=FALSE}
 
 # create new table
-lbh2_detection <- lbh2_reference[3:9, ]
+lbh1_detection <- lbh1_reference[3:9, ]
 
 # print spectrogram
-labeled_spectro(wave = lbh_2, reference = lbh2_reference, detection = lbh2_detection, wl = 200, ovlp = 50, flim = c(1, 10))
+label_spectro(wave = lbh1, reference = lbh1_reference, detection = lbh1_detection, wl = 200, ovlp = 50, flim = c(1, 10))
 
 # diagnose
-diagnose_detection(reference = lbh2_reference, detection = lbh2_detection)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_reference, detection = lbh1_detection)[, c(1:3, 7:8)]
 
 ```
 &nbsp;
@@ -206,10 +156,10 @@ Having some additional signals not in reference will do the opposite, reducing s
 ```{r, fig.align='center', fig.height=4, fig.width=10, warning=FALSE}
 
 # print spectrogram
-labeled_spectro(wave = lbh_2, detection = lbh2_reference, reference = lbh2_detection, wl = 200, ovlp = 50, flim = c(1, 10))
+label_spectro(wave = lbh1, detection = lbh1_reference, reference = lbh1_detection, wl = 200, ovlp = 50, flim = c(1, 10))
 
 # diagnose
-diagnose_detection(reference = lbh2_detection, detection = lbh2_reference)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_detection, detection = lbh1_reference)[, c(1:3, 7:8)]
 
 ```
 &nbsp;
@@ -224,17 +174,17 @@ In a perfect detection routine split and merged positives should be 0 while prop
 ```{r, fig.align='center', fig.height=4, fig.width=10, warning=FALSE}
 
 # create new table
-lbh2_detection <- lbh2_reference
+lbh1_detection <- lbh1_reference
 
 # add 'noise' to start
 set.seed(18)
-lbh2_detection$start <- lbh2_detection$start + rnorm(nrow(lbh2_detection),mean = 0, sd = 0.1)
+lbh1_detection$start <- lbh1_detection$start + rnorm(nrow(lbh1_detection),mean = 0, sd = 0.1)
 
 ## print spectrogram
-labeled_spectro(wave = lbh_2, reference = lbh2_reference, detection = lbh2_detection, wl = 200, ovlp = 50, flim = c(1, 10))
+label_spectro(wave = lbh1, reference = lbh1_reference, detection = lbh1_detection, wl = 200, ovlp = 50, flim = c(1, 10))
 
 # diagnose
-diagnose_detection(reference = lbh2_reference, detection = lbh2_detection)
+diagnose_detection(reference = lbh1_reference, detection = lbh1_detection)
 
 ```
 &nbsp;
@@ -243,7 +193,7 @@ In addition, the following diagnostic metrics related to the duration of the sig
 ```{r}
 
 # diagnose with time diagnostics
-diagnose_detection(reference = lbh2_reference[-1, ], detection = lbh2_detection[-10, ], time.diagnostics = TRUE)
+diagnose_detection(reference = lbh1_reference[-1, ], detection = lbh1_detection[-10, ], time.diagnostics = TRUE)
 
 ```
 &nbsp;
@@ -253,7 +203,7 @@ These additional metrics can be used to further filter out undesired signals bas
 Diagnostics can also be detailed by sound file:
 ```{r}
 # diagnose by sound file
-diagnostic <- diagnose_detection(reference = lbh2_reference, detection = lbh2_detection, by.sound.file = TRUE)
+diagnostic <- diagnose_detection(reference = lbh1_reference, detection = lbh1_detection, by.sound.file = TRUE)
 
 diagnostic
 ```
@@ -272,11 +222,11 @@ summarize_diagnostic(diagnostic)
 
 ## Energy-based detection
 
-This detector uses amplitude envelopes to infer the position of signals. Amplitude envelopes are representations of the variation in energy through time. The following code plots an amplitude envelope along with the spectrogram for the example data `lbh_2`:
+This detector uses amplitude envelopes to infer the position of signals. Amplitude envelopes are representations of the variation in energy through time. The following code plots an amplitude envelope along with the spectrogram for the example data `lbh1`:
 ```{r, fig.align='center', fig.height=4, fig.width=10, warning=FALSE}
 
 # plot spectrogram and envelope
-labeled_spectro(wave = cutw(lbh_2, from = 0, to = 1.5, output = "Wave"), ovlp = 90, wl = 300, flim = c(0, 10), env = TRUE)
+label_spectro(wave = cutw(lbh1, from = 0, to = 1.5, output = "Wave"), ovlp = 90, wl = 300, flim = c(0, 10), envelope = TRUE)
 
 ```
 &nbsp;
@@ -303,11 +253,11 @@ simulated_1 <- warbleR::simulate_songs(n = 10, durs = durs, freqs = 5, sig2 = 0.
 ```
 &nbsp;
 
-This is how the spectrogram and amplitude envelope of the simulated recording look like:
+The function call saves a '.wav' sound file in a temporary directory (`tempdir()`) and also returns a 'wave' object in the R environment. This outputs will be used to run energy-based detection and creating plots, respectively. This is how the spectrogram and amplitude envelope of the simulated recording look like:
 ```{r, fig.height=4, fig.width=10}
 
 # plot spectrogram and envelope
-labeled_spectro(wave = simulated_1, env = TRUE, fastdisp = TRUE)
+label_spectro(wave = simulated_1, env = TRUE, fastdisp = TRUE)
 
 ```
 &nbsp;
@@ -317,22 +267,31 @@ Note that the amplitude envelope shows a high signal-to-noise ratio of the signa
 ```{r, fig.height=4, fig.width=10}
 
 # run detection
-detection <- energy_detector(files = "simulated_1.wav", bp = c(2, 8), threshold = 0.5, min.duration = 0.001, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(2, 8), threshold = 0.5, smooth = 150, path = tempdir())
 
 # plot spectrogram and envelope
-labeled_spectro(wave = simulated_1, envelope = TRUE,  detection = detection, threshold = 0.5)
+label_spectro(wave = simulated_1, envelope = TRUE,  detection = detection, threshold = 0.5)
 
 ```
 &nbsp;
+
+The output is a  'selection_table'object (*sensu* [warbleR](https://CRAN.R-project.org/package=warbleR)):
+
+```{r}
+
+detection
+
+```
+
 
 Now we will make use of some additional arguments to filter out specific signals based on their structural features. For instance we can use the argument `minimum.duration` to provide a time treshold (in ms) to exclude short signals and keep only the longest signals:
 ```{r eval = TRUE, echo = TRUE, fig.height=4, fig.width=10}
 
 # run detection
-detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8), threshold = 0.5, min.duration = 500, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8), threshold = 0.5, min.duration = 500, smooth = 150, path = tempdir())
 
 # plot spectrogram
-labeled_spectro(wave = simulated_1,  detection = detection)
+label_spectro(wave = simulated_1, detection = detection)
 
 ```
 &nbsp;
@@ -341,10 +300,10 @@ We can use the argument `max.duration` (also in ms) to exclude long signals and 
 ```{r eval = TRUE, echo = TRUE, fig.height=4, fig.width=10}
 
 # run detection
-detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8),  threshold = 0.5, min.duration = 1, max.duration = 500, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8),  threshold = 0.5, smooth = 150, max.duration = 500, path = tempdir())
 
 # plot spectrogram
-labeled_spectro(wave = simulated_1,  detection = detection)
+label_spectro(wave = simulated_1,  detection = detection)
 
 ```
 &nbsp;
@@ -353,10 +312,10 @@ We can also focus the detection on specific frequency ranges using the argument 
 ```{r, fig.height=4, fig.width=10, eval = TRUE, echo = TRUE}
 
 # Detecting 
-detection <- energy_detector(files = "simulated_1.wav", bp = c(5, 8),  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(5, 8),  threshold = 0.5, smooth = 150, path = tempdir())
 
 # plot spectrogram
-labeled_spectro(wave = simulated_1,  detection = detection)
+label_spectro(wave = simulated_1,  detection = detection)
 
 ```
 &nbsp;
@@ -365,75 +324,221 @@ The same logic can be applied to detect those signals found below 5 kHz. We just
 ```{r, fig.height=4, fig.width=10, eval = TRUE, echo = TRUE}
 
 # Detect
-detection <- energy_detector(files = "simulated_1.wav", bp = c(0, 6),  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_1.wav", bp = c(0, 6),  threshold = 0.5, min.duration = 1, smooth = 150, path = tempdir())
 
 # plot spectrogram
-labeled_spectro(wave = simulated_1,  detection = detection)
+label_spectro(wave = simulated_1,  detection = detection)
 
 ```
 &nbsp;
 
 Amplitude modulation (variation in amplitude across a signal) can be problematic for detection based on amplitude envelopes. We can also simulate some amplitude modulation using `warbleR::simulate_songs()`:
-```{r, fig.height=4.5, fig.width=10, eval = TRUE, warning=FALSE, message=FALSE}
+```{r, eval = TRUE, warning=FALSE, message=FALSE}
 
 #Creating simulated song
 set.seed(12)
-simulated_2 <- sim_songs(n = 10, durs = durs, freqs = 5, sig2 = 0.01, gaps = 0.5, harms = 1, bgn = 0.1, path = tempdir(), file.name = "simulated_2", selec.table = TRUE, shape = "cos", fin = 0.3, fout = 0.35, samp.rate = 18, am.amps = c(1, 2, 3, 2, 0.1, 2, 3, 3, 2, 1))$wave
+sim_2 <- sim_songs(n = 10, durs = durs, freqs = 5, sig2 = 0.01, gaps = 0.5, harms = 1, bgn = 0.1, path = tempdir(), file.name = "simulated_2", selec.table = TRUE, shape = "cos", fin = 0.3, fout = 0.35, samp.rate = 18, am.amps = c(1, 2, 3, 2, 0.1, 2, 3, 3, 2, 1))
+
+# extract wave object and selection table
+simulated_2 <- sim_2$wave
+sim2_sel_table <- sim_2$selec.table
 
 # plot spectrogram
-labeled_spectro(wave = simulated_2, envelope = TRUE)
+label_spectro(wave = simulated_2, envelope = TRUE)
 
 ```
 &nbsp;
 
 When signals have strong amplitude modulation they can be split during detection:
-```{r, fig.height=4.5, fig.width=10, eval = TRUE}
+```{r, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, path = tempdir())
 
 # plot spectrogram
-labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
+label_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
 
 ```
 &nbsp;
 
 There are two arguments that can deal with this: `holdtime` and `smooth`. `hold.time` allows to merge split signals that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same signal but not too high so it merges different signals. For this example a `hold.time` of 200 ms can do the trick (we know gaps between signals are ~0.5 s long):
-```{r, fig.height=4.5, fig.width=10, eval = TRUE}
+```{r, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE, hold.time = 200)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), hold.time = 200)
 
 # plot spectrogram
-labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
+label_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
 
 ```
 &nbsp;
 
-`smooth` works by merging the amplitude envelope 'hills' of the split signals themselves. It smooths envelopes by applying a sliding window averaging of amplitude values. It's also given in ms, which control the size of the window. A `smooth` of XX ms can merged back split signals from our example:  
+`smooth` works by merging the amplitude envelope 'hills' of the split signals themselves. It smooths envelopes by applying a sliding window averaging of amplitude values. It's also given in ms, which control the size of the window. A `smooth` of 350 ms can merged back split signals from our example:  
 
-```{r, fig.height=4.5, fig.width=10, eval = TRUE}
+```{r, eval = TRUE}
 
 # detect sounds
-detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), pb = FALSE, smooth = 2)
+detection <- energy_detector(files = "simulated_2.wav",  threshold = 0.5, min.duration = 1, path = tempdir(), smooth = 350)
 
 # plot spectrogram
-labeled_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection)
+label_spectro(wave = simulated_2, envelope = TRUE, threshold = 0.5, detection = detection, smooth = 350)
 
 ```
 &nbsp;
 
+### Optimizing energy-based detection
+
+This last example using `ssmooth` can be used to showcase how the tunning parameters can be optimized. As explained above, to do this we need a reference table that contains the time position of the target signals. The function `optimize_energy_detector()` can be used finding the optimal parameter values. We must provide the range of parameter values that will be evaluated:
+
+```{r}
+
+optimize_energy_detector(reference = sim2_sel_table, files = "simulated_2.wav", threshold = 0.5, min.duration = 1, path = tempdir(), smooth = c(100, 250, 350))[, c(1, 3:6, 8:13, 18:19)]
+
+```
+
+The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (sensitivity & specificity = 1). However, only the routine with the highest `smooth` (last row) has no split signals ('split.positive' column). It also shows a better overlap to the reference signals ('proportional.overlap.true.positives' closer to 1).
+
+## Template-based detection
+
+This detection method is better suited for highly stereotyped signals and it's more robust to higher levels of background noise. The procedure is divided in two steps:
+
+- Estimating the cross-correlation of template(s) along sound files (`template_correlator()`)  
+- Detecting signals by applying a correlation threshold (`template_detector()`)  
+
+We can apply this method to detect the signals in the example 'lbh1' data as follows:
+```{r}
+
+# get correlations 
+correlations <- template_correlator(templates = lbh1_reference[1, , drop = FALSE], files = "lbh1.wav", path = tempdir())
+
+```
+&nbsp;
+
+The output is an object of class 'template_correlations', with its own printing method:
+```{r}
+
+correlations
+```
+&nbsp;
+
+This object can then be used to detect signals using `template_detector()`:
+```{r}
+
+# run detection 
+detection <- template_detector(template.correlations = correlations, threshold = 0.4)
+
+detection
+```
+&nbsp;
+
+We can explore it by plotting the spectrogram along with the detection and correlation scores:
+```{r, warning=FALSE}
+
+# plot spectrogram
+label_spectro(wave = lbh1,  detection = detection, template.correlation = correlations$`lbh1.wav-10/lbh1.wav`$correlation.scores, flim = c(0, 10), threshold = 0.4)
+
+
+```
+&nbsp;
+
+The performance can be evaluated using `diagnose_detection()`:
+```{r}
+
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+
+```
+&nbsp;
+
+## Optimizing template-based detection
+
+The function `optimize_template_detector()` allows to evaluate the performance unde different correlation thresholds:
+
+```{r}
+
+# run optimization
+optimization <- optimize_template_detector(template.correlations = correlations, reference = lbh1_reference, threshold = seq(0.1, 0.9, 0.05))
+
+```
+&nbsp;
+
+Additional threshold values can be evaluated without having to run it all over again. We just need to supplied the output from the previous run with the argument 'previous.output' (the same trick can be done when optimizing an energy-based detection):
+```{r}
+
+optimization <- optimize_template_detector(template.correlations = correlations, reference = lbh1_reference, threshold = c(0.01, 0.99), previous.output = optimization)
+
+```
+&nbsp;
+
+In this case several threshold values can achieved an optimal detection.
 
 &nbsp;
 
+## Detecting several templates
 
-Please cite [ohun](https://github.com/maRce10/ohun)  as follows:
+Several templates can be used within the same call. Here we correlate two templates on the two example sound files, one template from each sound file:
+```{r}
 
-Araya-Salas, M. (2020), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+# get correlations
+correlations <- template_correlator(templates = lbh_reference[c(1, 10), ], files = c("lbh1.wav", "lbh2.wav"), path = tempdir())
+
+# run detection 
+detection <- template_detector(template.correlations = correlations, threshold = 0.5)
+
+```
+&nbsp;
+
+Note that in these cases we can get the same signal detected several times (duplicates), one by each template. We can check if that is the case just by diagnosing the detection:
+```{r}
+
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+
+```
+&nbsp;
+
+Duplicates are shown as split positives. Fortunately, we can leave a single detected signal by leaving only those with the highest correlation. To do this we first need to label each row in the detection using `label_detection()` and then remove duplicates using `filter_detection()`:
+```{r}
+
+# labeling detection
+labeled <- label_detection(reference = lbh_reference, detection = detection)
+
+```
+
+This function adds a column ('detection.class') with the class label for each row:
+```{r}
+
+table(labeled$detection.class)
+
+```
+&nbsp;
+
+Now we can filter out duplicates and diagnose the detection again:
+```{r}
+# filter
+filtered <- filter_detection(labeled)
+
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = filtered)
+```
+&nbsp;
+
+We successfully get rid of duplicates and detected every single target signal.
+
+---
 
 
-<font size = "20">UNDER DEVELOPMENT</font>
+&nbsp; 
 
+<div class="alert alert-info">
+
+Please cite [ohun](https://github.com/maRce10/ohun) like this:
+
+Araya-Salas, M. (2021), *ohun: automatic detection of acoustic signals*. R package version 0.1.0.
+
+</div>
+
+```{r, eval = FALSE, echo=FALSE}
 Observaciones:
 
 avoid having overlapping selections in reference (check with overlapping_sels())
@@ -445,13 +550,16 @@ use hop.size instead of wl
 after split_sound_files() another function that returns the position in the original unsplit sound file
 
 count number of detections per unit of time
+```
+
 
 
 ## References
 
 1. Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal acoustic signals. Methods Ecol Evol 8:184-191.
-1. Macmillan, N. A., & Creelman, C. D. (2004). Detection theory: A user's guide. Psychology press.
+1. Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
+1. Macmillan, N. A., & Creelman, C.D. (2004). Detection theory: A user's guide. Psychology press.
 
 
 &nbsp; 
@@ -459,11 +567,9 @@ count number of detections per unit of time
 ---
 
 <font size="4">Session information</font>
-
 ```{r session info, echo=F}
 
 sessionInfo()
 
 ```
-
 

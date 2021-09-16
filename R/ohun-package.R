@@ -33,8 +33,9 @@
 #' @import methods
 #' @import stats
 #' @importFrom rlang call_args
+#' @importFrom viridis viridis inferno
 #' @importFrom knitr kable
-#' @importFrom crayon silver bold cyan italic red
+#' @importFrom crayon silver bold italic
 #' @importFrom methods is
 #' @importFrom tuneR writeWave
 #' @importFrom stats cor weighted.mean

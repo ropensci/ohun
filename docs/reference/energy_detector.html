@@ -180,7 +180,7 @@ frequency bandpass filter (in kHz). Default is <code>NULL</code>. This argument 
     <tr>
       <th>smooth</th>
       <td><p>A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by <code><a href='get_envelopes.html'>get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></td>
+with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by <code><a href='get_envelopes.html'>get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></td>
     </tr>
     <tr>
       <th>threshold</th>
@@ -252,7 +252,7 @@ detection <span class='op'>=</span> <span class='va'>detec</span><span class='op
 
 <span class='co'># without declaring 'files'</span>
 <span class='va'>detec</span> <span class='op'>&lt;-</span> <span class='fu'>energy_detector</span><span class='op'>(</span>path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, threshold <span class='op'>=</span> <span class='fl'>0.6</span>, smooth <span class='op'>=</span> <span class='fl'>6.8</span>,
-bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span><span class='op'>)</span>, hop.size <span class='op'>=</span> <span class='fl'>6.8</span>, min.duration <span class='op'>=</span> <span class='fl'>0.09</span><span class='op'>)</span>
+bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span><span class='op'>)</span>, hop.size <span class='op'>=</span> <span class='fl'>6.8</span>, min.duration <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span>
 
 <span class='co'># diagnose detection</span>
 <span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>,
@@ -269,7 +269,7 @@ bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.
 <span class='va'>envs</span> <span class='op'>&lt;-</span> <span class='fu'><a href='get_envelopes.html'>get_envelopes</a></span><span class='op'>(</span>bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span><span class='op'>)</span>, hop.size <span class='op'>=</span> <span class='fl'>6.8</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
 <span class='co'># then run detection providing 'envelopes' (but no 'files')</span>
-<span class='va'>detec</span> <span class='op'>&lt;-</span> <span class='fu'>energy_detector</span><span class='op'>(</span>envelopes <span class='op'>=</span> <span class='va'>envs</span>, threshold <span class='op'>=</span> <span class='fl'>0.1</span>, hold.time <span class='op'>=</span> <span class='fl'>150</span>, min.duration <span class='op'>=</span> <span class='fl'>0.05</span><span class='op'>)</span>
+<span class='va'>detec</span> <span class='op'>&lt;-</span> <span class='fu'>energy_detector</span><span class='op'>(</span>envelopes <span class='op'>=</span> <span class='va'>envs</span>, threshold <span class='op'>=</span> <span class='fl'>0.1</span>, hold.time <span class='op'>=</span> <span class='fl'>150</span>, min.duration <span class='op'>=</span> <span class='fl'>50</span><span class='op'>)</span>
 
 <span class='co'># diagnose detection</span>
 <span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_selec_reference</span>, detection <span class='op'>=</span> <span class='va'>detec</span>, time.diagnostics <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
@@ -286,7 +286,7 @@ bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.
  <span class='co'># run detection</span>
  <span class='va'>detec</span> <span class='op'>&lt;-</span> <span class='fu'>energy_detector</span><span class='op'>(</span>files <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='st'>"Phae.long1.flac"</span>, <span class='st'>"Phae.long2.flac"</span>,
  <span class='st'>"Phae.long3.flac"</span>, <span class='st'>"Phae.long4.flac"</span><span class='op'>)</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, threshold <span class='op'>=</span> <span class='fl'>0.6</span>,
- smooth <span class='op'>=</span> <span class='fl'>6.8</span>, bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span><span class='op'>)</span>, hop.size <span class='op'>=</span> <span class='fl'>6.8</span>, min.duration <span class='op'>=</span> <span class='fl'>0.09</span><span class='op'>)</span>
+ smooth <span class='op'>=</span> <span class='fl'>6.8</span>, bp <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='fl'>9</span><span class='op'>)</span>, hop.size <span class='op'>=</span> <span class='fl'>6.8</span>, min.duration <span class='op'>=</span> <span class='fl'>90</span><span class='op'>)</span>
 
  <span class='co'># diagnose detection</span>
  <span class='fu'><a href='diagnose_detection.html'>diagnose_detection</a></span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>flac_reference</span>, detection <span class='op'>=</span> <span class='va'>detec</span><span class='op'>)</span>

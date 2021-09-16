@@ -31,7 +31,7 @@ output (usually very large R objects / files). Default is  \code{1} (no thinning
 frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
+with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is normalized so 0 and 1 represent the lowest amplitude and highest amplitude respectively. Default is 0.1.}
 
@@ -81,7 +81,7 @@ detection = detec)
 
 # without declaring 'files'
 detec <- energy_detector(path = tempdir(), threshold = 0.6, smooth = 6.8,
-bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference,
@@ -98,7 +98,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec)
 envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
 
 # then run detection providing 'envelopes' (but no 'files')
-detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 150, min.duration = 0.05)
+detec <- energy_detector(envelopes = envs, threshold = 0.1, hold.time = 150, min.duration = 50)
 
 # diagnose detection
 diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diagnostics = TRUE)
@@ -115,7 +115,7 @@ diagnose_detection(reference = lbh_selec_reference, detection = detec, time.diag
  # run detection
  detec <- energy_detector(files = c("Phae.long1.flac", "Phae.long2.flac",
  "Phae.long3.flac", "Phae.long4.flac"), path = tempdir(), threshold = 0.6,
- smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+ smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
 
  # diagnose detection
  diagnose_detection(reference = flac_reference, detection = detec)

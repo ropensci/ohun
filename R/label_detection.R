@@ -142,11 +142,13 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
           splits <- if (length(x) != 0)
 max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id) %in% x]))  else 0
 
+          detection_class <- NA
           if (length(x) == 0) detection_class <- "false.positive"
           if (length(x) == 1 & splits == 1) detection_class <- "true.positive"
           if (length(x) == 1 & splits > 1) detection_class <- "true.positive (split)"
           if (length(x) > 1 & splits == 1) detection_class <- "true.positive (merged)"
           if (length(x) > 1 & splits > 1) detection_class <- "true.positive (split/merged)"
+
 
           return(detection_class)
             })
@@ -154,7 +156,9 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
         # add index of selection in reference
         sub_detec$reference.row <- sapply(true_positives_refer_row_id, function(x){
 
-          if (length(x) == 0) NA else paste(x, collapse = "-")
+          if (length(x) == 0) NA else
+            if (all(is.na(x))) NA else
+            paste(x, collapse = "-")
 
         })
 

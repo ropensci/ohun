@@ -151,6 +151,10 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
     if (is.null(files))
       files <- unique(reference$sound.files)
 
+    # if 'files' are found in reference
+    if (!any(files %in% reference$sound.files))
+      stop("Not a single sound file in the working directory is found in 'reference'")
+
       # get all possible combinations of parameters
       exp_grd <- expand.grid(threshold = threshold, power = power, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
 
@@ -158,9 +162,9 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 15, po
       if (!is.null(previous.output)){
 
         # create composed variable to find overlapping runs
-        previous.output$temp.label <- apply(previous.output[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
+        previous.output$temp.label <- apply(previous.output[, c("threshold", "smooth", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
 
-        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
+        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "smooth", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
 
         # remove composed variable
         previous.output$temp.label <- NULL

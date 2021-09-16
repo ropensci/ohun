@@ -80,7 +80,7 @@
 #' @references {
 #' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #'
-#' H. Khanna, S.L.L. Gaunt & D.A. McCallum (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234
+#' Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
 #'
 #' Lyon, R. H., & Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.
 #' }
@@ -319,7 +319,7 @@ print.template_correlations <- function(x, ...) {
   templates <- unique(sapply(files_templates, "[[", 1))
   files <- unique(sapply(files_templates, "[[", 2))
 
-  cat(crayon::silver(paste("* Contains", length(x) - 1, "correlation score vectors from"), length(templates), "template(s):\n", paste(crayon::italic(utils::head(templates), collapse = " ")), if( length(templates) > 6) paste("... and", length(templates) - 6, "more") else ""))
+  cat(crayon::silver(paste("* Contains", length(x) - 1, "correlation score vector(s) from"), length(templates), "template(s):\n", paste(crayon::italic(utils::head(templates), collapse = " ")), if( length(templates) > 6) paste("... and", length(templates) - 6, "more") else ""))
 
   cat(crayon::silver(paste("\n... and"), length(files), "sound files(s):\n", paste(crayon::italic(utils::head(files), collapse = " ")), if( length(files) > 6) paste("... and", length(files) - 6, "more") else ""))
 
