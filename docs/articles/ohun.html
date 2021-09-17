@@ -138,6 +138,17 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></code></pre></div>
 <p> </p>
 <hr>
+<div id="automatic-signal-detection" class="section level1">
+<h1 class="hasAnchor">
+<a href="#automatic-signal-detection" class="anchor"></a>Automatic signal detection</h1>
+<p>Finding the position of signals in a sound file is a challenging task. <a href="https://github.com/maRce10/ohun">ohun</a> offers two methods for automatic signal detection: template-based and energy-based detection. These methods are better suited for highly stereotyped or good signal-to-noise ratio (SNR) signals, respectively. If the target signals don’t fit these requirements, more elaborated methods (i.e. machine learning approaches) are warranted:</p>
+<center>
+<img src="analysis_workflow_v2.png" alt="automatic signal detection diagram" width="500" height="450">
+</center>
+<p> </p>
+<p>Still, a detection run using other software can be optimized with the tools provided in <a href="https://github.com/maRce10/ohun">ohun</a>.</p>
+<p> </p>
+</div>
 <div id="signal-detection-theory-applied-to-bioacoustics" class="section level1">
 <h1 class="hasAnchor">
 <a href="#signal-detection-theory-applied-to-bioacoustics" class="anchor"></a>Signal detection theory applied to bioacoustics</h1>
@@ -709,9 +720,19 @@
 </li>
 </ul>
 <p> </p>
+<hr>
+<div id="additional-tips" class="section level3">
+<h3 class="hasAnchor">
+<a href="#additional-tips" class="anchor"></a>Additional tips</h3>
+<ul>
+<li>Use your knowledge about the signal structure to determine the initial range for the tuning parameters in a detection optimization routine</li>
+<li>Make sure reference tables contain all target signals and only the target signals. The performance of the detection cannot be better than the reference itself.</li>
+<li>Avoid having overlapping signals or several signals as a single one (like a multi-syllable vocalization) in the reference table when running an energy-based detector</li>
+</ul>
 <div class="alert alert-info">
 <p>Please cite <a href="https://github.com/maRce10/ohun">ohun</a> like this:</p>
 <p>Araya-Salas, M. (2021), <em>ohun: automatic detection of acoustic signals</em>. R package version 0.1.0.</p>
+</div>
 </div>
 </div>
 <div id="references" class="section level2">
