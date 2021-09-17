@@ -93,6 +93,18 @@ opts_chunk$set(tidy = TRUE, fig.height=4.5, fig.width=10, warning = FALSE, messa
 
 ---
 
+# Automatic signal detection
+
+Finding the position of signals in a sound file is a challenging task. [ohun](https://github.com/maRce10/ohun) offers two methods for automatic signal detection: template-based and energy-based detection. These methods are better suited for highly stereotyped or good signal-to-noise ratio (SNR) signals, respectively. If the target signals don't fit these requirements, more elaborated methods (i.e. machine learning approaches) are warranted: 
+
+ <center><img src="analysis_workflow_v2.png" alt="automatic signal detection diagram" width="500" height="450"></center>
+
+&nbsp; 
+
+Still, a detection run using other software can be optimized with the tools provided in [ohun](https://github.com/maRce10/ohun). 
+
+&nbsp; 
+
 #  Signal detection theory applied to bioacoustics  
 
 Broadly speaking, signal detection theory deals with the process of recovering signals (i.e. target signals) from background noise (not necessarily acoustic noise) and it's widely used for optimizing this decision making process in the presence of uncertainty. During a detection routine, the detected 'items' can be classified into 4 classes:
@@ -562,6 +574,16 @@ Detection routines can take a long time when working with large amounts of acous
 - `thinning` argument (which reduces the size of the amplitude envelope) can also speed-up `energy_detector()`
 
 &nbsp; 
+
+---
+
+### Additional tips
+
+- Use your knowledge about the signal structure to determine the initial range for the tuning parameters in a detection optimization routine
+- Make sure reference tables contain all target signals and only the target signals. The performance of the detection cannot be better than the reference itself.
+- Avoid having overlapping signals or several signals as a single one (like a multi-syllable vocalization) in the reference table when running an energy-based detector
+
+
 
 <div class="alert alert-info">
 
