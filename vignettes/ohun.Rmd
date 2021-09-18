@@ -87,7 +87,7 @@ load("../data/lbh_reference.rda")
 par(mar = c(5, 4, 2, 2) + 0.1)
 
 # align figures
-opts_chunk$set(tidy = TRUE, fig.height=4.5, fig.width=10, warning = FALSE, message = FALSE) 
+opts_chunk$set(tidy = TRUE, fig.height=4.5, fig.width=10, warning = FALSE, message = FALSE, dpi = 96) 
 ```
 &nbsp;
 
@@ -97,7 +97,10 @@ opts_chunk$set(tidy = TRUE, fig.height=4.5, fig.width=10, warning = FALSE, messa
 
 Finding the position of signals in a sound file is a challenging task. [ohun](https://github.com/maRce10/ohun) offers two methods for automatic signal detection: template-based and energy-based detection. These methods are better suited for highly stereotyped or good signal-to-noise ratio (SNR) signals, respectively. If the target signals don't fit these requirements, more elaborated methods (i.e. machine learning approaches) are warranted: 
 
- <center><img src="analysis_workflow.png" alt="automatic signal detection diagram" width="500" height="450"></center>
+<figure>
+<center><img src="analysis_workflow.png" alt="automatic signal detection diagram" width="500" height="450"></center>
+<figcaption><i>Diagram depicting how target signal features can be used to tell the most adequate acoustic signal detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
+</figure> 
 
 &nbsp; 
 
@@ -132,8 +135,7 @@ lbh_reference
 ```
 &nbsp;
 
-This is a 'selection table', an object class provided by the package [warbleR](https://CRAN.R-project.org/package=warbleR) (see  see [`selection_table`](https://marce10.github.io/warbleR/reference/selection_table.html) for more details). Selection tables are basically data frames in which the contained information has been double-checked (using [`selection_table`](https://marce10.github.io/warbleR/reference/check_sels.html)). But they behave pretty much as data frames and can be easily converted to data frames:
-
+This is a 'selection table', an object class provided by the package [warbleR](https://CRAN.R-project.org/package=warbleR) (  see [`selection_table`](https://marce10.github.io/warbleR/reference/selection_table.html) for details). Selection tables are basically data frames in which the contained information has been double-checked (using [`selection_table`](https://marce10.github.io/warbleR/reference/check_sels.html)). But they behave pretty much as data frames and can be easily converted to data frames:
 ```{r}
 # convert to data frame
 as.data.frame(lbh_reference)
@@ -580,10 +582,11 @@ Detection routines can take a long time when working with large amounts of acous
 ### Additional tips
 
 - Use your knowledge about the signal structure to determine the initial range for the tuning parameters in a detection optimization routine
+- If people have a hard time figurin out where a signal occurs in a recording, detection algorithms will also have a hard time
 - Make sure reference tables contain all target signals and only the target signals. The performance of the detection cannot be better than the reference itself.
 - Avoid having overlapping signals or several signals as a single one (like a multi-syllable vocalization) in the reference table when running an energy-based detector
 
-
+---
 
 <div class="alert alert-info">
 
