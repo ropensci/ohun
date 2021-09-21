@@ -5,14 +5,14 @@
 
  The main features of the package are:
    - The use of reference annotations for detection optimization and diagnostic 
-   - The use of signal detection theory diagnostic parameters to evaluate detection performance 
-   - The batch processing of sound files for improve computational performance
+   - The use of signal detection theory indices to evaluate detection performance 
+   - Batch processing of sound files for improving computational performance
    
  The package offers functions for:
+   - Diagnose detection performance
+   - Optimize detection routines based on reference annotations
    - Energy-based detection
    - Template-based detection
-   - Diagnose detection precision
-   - Optimize detection routines based on reference annotations
    
 All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
 

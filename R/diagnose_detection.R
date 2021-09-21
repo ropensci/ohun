@@ -20,7 +20,7 @@
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{proportional.overlap.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
+#'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged
 #'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
@@ -122,7 +122,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
               mean.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]),
               mean.duration.false.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]),
               mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
-              proportional.overlap.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
+              overlap.to.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
               sensitivity = length(detected_reference_rows) / nrow(sub_ref),
               specificity =  if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0,
@@ -158,7 +158,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           mean.duration.true.positives = NA,
           mean.duration.false.positives = NA,
           mean.duration.false.negatives = sapply(setdiff(reference$sound.files, unique(labeled_detection$sound.files)), function(x) mean((reference$end - reference$start)[reference$sound.files == x])),
-          proportional.overlap.true.positives = NA,
+          overlap.to.true.positives = NA,
           proportional.duration.true.positives = NA,
           sensitivity = 0,
           specificity =  0,
@@ -179,7 +179,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   mean.duration.true.positives = NA,
   mean.duration.false.positives = NA,
   mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x) mean(reference$end - reference$start)),
-  proportional.overlap.true.positives = NA,
+  overlap.to.true.positives = NA,
   proportional.duration.true.positives = NA,
   sensitivity = 0,
   specificity =  0,

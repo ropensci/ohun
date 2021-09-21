@@ -13,7 +13,7 @@
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{proportional.overlap.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
+#'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
@@ -49,7 +49,7 @@
 summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
 
   # basic columns required in 'diagnostic'
-  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "proportional.overlap.true.positives", "sensitivity", "specificity")
+  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "overlap.to.true.positives", "sensitivity", "specificity")
 
   #check diagnostic
   if (any(!(basic_colms %in% colnames(diagnostic))))
@@ -82,7 +82,7 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
       false.negatives = sum(Y$false.negatives, na.rm = TRUE),
       split.positives = sum(Y$split.positives, na.rm = TRUE),
       merged.positives = sum(Y$merged.positives, na.rm = TRUE),
-      proportional.overlap.true.positives = if(any(!is.na(Y$proportional.overlap.true.positives))) stats::weighted.mean(x = Y$proportional.overlap.true.positives, w = Y$true.positives, na.rm = TRUE) else NA,
+      overlap.to.true.positives = if(any(!is.na(Y$overlap.to.true.positives))) stats::weighted.mean(x = Y$overlap.to.true.positives, w = Y$true.positives, na.rm = TRUE) else NA,
       ..combined.extra.colms = x,
       stringsAsFactors = FALSE
     )
