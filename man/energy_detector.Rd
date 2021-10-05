@@ -5,7 +5,7 @@
 \title{Detects the start and end of acoustic signals}
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = NULL, hop.size = 11.6, wl = NULL,
-power = 1, thinning = 1, bp = NULL, smooth = 5, threshold = 5,
+thinning = 1, bp = NULL, smooth = 5, threshold = 5,
 hold.time = 0, min.duration = NULL, max.duration = NULL, parallel = 1, pb = TRUE)
 }
 \arguments{
@@ -19,8 +19,6 @@ If \code{NULL} (default) then the current working directory is used.}
 \item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
 
 \item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
-
-\item{power}{A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{thinning}{Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples

@@ -1,7 +1,7 @@
 #' @title Optimize energy-based signal detection
 #'
 #' @description Optimize energy-based signal detection under different correlation treshold values
-#' @usage optimize_energy_detector(reference, files = NULL, threshold = 5, power = 1,
+#' @usage optimize_energy_detector(reference, files = NULL, threshold = 5,
 #'  hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
 #'  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
 #'  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
@@ -11,7 +11,6 @@
 #' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include signals with no signals.
 #' @param threshold A numeric vector specifying the amplitude threshold for detecting
 #'   signals (in \%). Default is 5. \strong{Several values can be supplied for optimization}.
-#' @param power A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). \strong{Several values can be supplied for optimization}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
 #' @param smooth A numeric vector to smooth the amplitude envelope
@@ -103,7 +102,7 @@
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on dec-21-2021 (MAS)
 
-optimize_energy_detector <- function(reference, files = NULL, threshold = 5, power = 1, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
+optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
 
   # hopsize
   if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
@@ -154,15 +153,15 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pow
       stop("Not a single sound file in the working directory is found in 'reference'")
 
       # get all possible combinations of parameters
-      exp_grd <- expand.grid(threshold = threshold, power = power, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
+      exp_grd <- expand.grid(threshold = threshold, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
 
       # if previous output included
       if (!is.null(previous.output)){
 
         # create composed variable to find overlapping runs
-        previous.output$temp.label <- apply(previous.output[, c("threshold", "smooth", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
+        previous.output$temp.label <- apply(previous.output[, c("threshold", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
 
-        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "smooth", "power", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
+        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
 
         # remove composed variable
         previous.output$temp.label <- NULL
@@ -182,7 +181,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pow
 
        eng_det_l <- warbleR:::pblapply_wrblr_int(X = 1:nrow(exp_grd), pbar = pb, cl = 1, FUN = function(x){
 
-          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, power = exp_grd$power[x], hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
+          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
 
           # make factor a character vector
           eng_det$sound.files <- as.character(eng_det$sound.files)

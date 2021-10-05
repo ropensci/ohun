@@ -60,6 +60,10 @@
 # last modification on jan-03-2020 (MAS)
 template_detector <- function(template.correlations, parallel = 1, threshold, pb = TRUE, verbose = TRUE)
 {
+
+  # save start time
+  start_time <- proc.time()
+
   # check xc.output being a autodetec.output object
   if (!(is(template.correlations, "template_correlations")))
     stop("'template.correlations' must be and object of class 'template_correlations'")
@@ -128,6 +132,8 @@ template_detector <- function(template.correlations, parallel = 1, threshold, pb
 
   attributes(sel_table_df)$call <- base::match.call()
 
+  # add elapsed time
+  attributes(sel_table_df)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
 }
   return(sel_table_df)
 }

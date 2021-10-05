@@ -4,7 +4,7 @@
 \alias{optimize_energy_detector}
 \title{Optimize energy-based signal detection}
 \usage{
-optimize_energy_detector(reference, files = NULL, threshold = 5, power = 1,
+optimize_energy_detector(reference, files = NULL, threshold = 5,
  hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
@@ -18,8 +18,6 @@ for sound file name (sound.files), selection number (selec), and start and end t
 
 \item{threshold}{A numeric vector specifying the amplitude threshold for detecting
 signals (in \%). Default is 5. \strong{Several values can be supplied for optimization}.}
-
-\item{power}{A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). \strong{Several values can be supplied for optimization}.}
 
 \item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
 

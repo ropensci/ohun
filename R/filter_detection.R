@@ -56,6 +56,9 @@
 # function to filter detection based on overlap
 filter_detection <- function(detection, by = "overlap", filter = "max", parallel = 1, pb = TRUE){
 
+  # save start time
+  start_time <- proc.time()
+
   #if reference is not a data frame
   if (!any(is.data.frame(detection), is_selection_table(detection)))
     stop("'detection' is not of a class 'data.frame' or 'selection_table'")
@@ -116,6 +119,9 @@ filter_detection <- function(detection, by = "overlap", filter = "max", parallel
 
     # fix call
     attributes(filtered_detection)$call <- base::match.call()
+
+    # add elapsed time
+    attributes(filtered_detection)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
   }
   # remove column with row names
   filtered_detection$..row.id <- NULL
