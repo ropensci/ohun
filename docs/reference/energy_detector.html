@@ -134,7 +134,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>energy_detector</span><span class='op'>(</span>files <span class='op'>=</span> <span class='cn'>NULL</span>, envelopes <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
-power <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>,
+thinning <span class='op'>=</span> <span class='fl'>1</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>,
 hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <span class='op'>=</span> <span class='cn'>NULL</span>, max.duration <span class='op'>=</span> <span class='cn'>NULL</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -162,10 +162,6 @@ If <code>NULL</code> (default) then the current working directory is used.</p></
       <td><p>A numeric vector of length 1 specifying the window length of the spectrogram. Default is <code>NULL</code>. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).</p></td>
     </tr>
     <tr>
-      <th>power</th>
-      <td><p>A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). This argument is used internally by <code><a href='get_envelopes.html'>get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></td>
-    </tr>
-    <tr>
       <th>thinning</th>
       <td><p>Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
@@ -184,7 +180,7 @@ with a sum smooth function. It controls the time 'neighborhood' (in ms) in which
     </tr>
     <tr>
       <th>threshold</th>
-      <td><p>Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.</p></td>
+      <td><p>Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.</p></td>
     </tr>
     <tr>
       <th>hold.time</th>

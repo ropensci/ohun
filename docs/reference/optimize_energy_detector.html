@@ -133,7 +133,7 @@
     <p>Optimize energy-based signal detection under different correlation treshold values</p>
     </div>
 
-    <pre class="usage"><span class='fu'>optimize_energy_detector</span><span class='op'>(</span><span class='va'>reference</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>, power <span class='op'>=</span> <span class='fl'>1</span>,
+    <pre class="usage"><span class='fu'>optimize_energy_detector</span><span class='op'>(</span><span class='va'>reference</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>,
  hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <span class='op'>=</span> <span class='cn'>NULL</span>,
  max.duration <span class='op'>=</span> <span class='cn'>NULL</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>,
  by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, previous.output <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
@@ -155,10 +155,6 @@ for sound file name (sound.files), selection number (selec), and start and end t
       <th>threshold</th>
       <td><p>A numeric vector specifying the amplitude threshold for detecting
 signals (in %). Default is 5. <strong>Several values can be supplied for optimization</strong>.</p></td>
-    </tr>
-    <tr>
-      <th>power</th>
-      <td><p>A numeric vector indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change). <strong>Several values can be supplied for optimization</strong>.</p></td>
     </tr>
     <tr>
       <th>hop.size</th>

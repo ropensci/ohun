@@ -1,6 +1,6 @@
 ---
 title: <center><font size="7"><b><i>ohun</i>&#x3A; optimizing acoustic signal detection</b></font></center>
-pagetitle: Introduction to warbleR
+pagetitle: Introduction to ohun
 author: 
 - <center><a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a></center>
 date:  <center>"`r Sys.Date()`"</center>
@@ -423,7 +423,9 @@ This last example using `smooth` can be used to showcase how the tunning paramet
 
 ```{r}
 
-optimize_energy_detector(reference = sim2_sel_table, files = "simulated_2.wav", threshold = 50, min.duration = 1, path = tempdir(), smooth = c(100, 250, 350))[, c(1, 3:6, 8:13, 18:19)]
+optim_detection <- optimize_energy_detector(reference = sim2_sel_table, files = "simulated_2.wav", threshold = 50, min.duration = 1, path = tempdir(), smooth = c(100, 250, 350))
+
+optim_detection[, c(1, 2:5, 7:12, 17:18)]
 
 ```
 &nbsp;

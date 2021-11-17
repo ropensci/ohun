@@ -31,7 +31,7 @@ frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is use
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
-\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.}
+\item{threshold}{Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.}
 
 \item{hold.time}{Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied).}
 

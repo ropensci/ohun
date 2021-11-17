@@ -109,7 +109,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           sub_ref <- reference[reference$sound.files == z, ]
 
           # get row index in reference for detected signals
-          detected_reference_rows <- unique(na.omit(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(x, "-"))))))
+          detected_reference_rows <- unique(na.omit(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(as.character(x), "-"))))))
 
         performance <- data.frame(
               sound.files = z,

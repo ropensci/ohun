@@ -134,7 +134,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NULL</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
-power <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -160,10 +160,6 @@ frequency bandpass filter (in kHz). Default is <code>NULL</code>.</p></td>
     <tr>
       <th>wl</th>
       <td><p>A numeric vector of length 1 specifying the window length of the spectrogram. Default is <code>NULL</code>. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).</p></td>
-    </tr>
-    <tr>
-      <th>power</th>
-      <td><p>A numeric vector of length 1 indicating a power factor applied to the amplitude envelope. Increasing power will reduce low amplitude modulations and increase high amplitude modulations, in order to reduce background noise. Default is 1 (no change).</p></td>
     </tr>
     <tr>
       <th>parallel</th>
