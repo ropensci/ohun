@@ -522,12 +522,13 @@
 ## 3                 0.8719212           1           1</code></pre>
 <p> </p>
 <p>The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (sensitivity &amp; specificity = 1). However, only the routine with the highest <code>smooth</code> (last row) has no split signals (‘split.positive’ column). It also shows a better overlap to the reference signals (‘overlap.to.true.positives’ closer to 1).</p>
-<p>In addition there are two complementary functions tfor optimizing energy-based detection routines: <code><a href="../reference/feature_reference.html">feature_reference()</a></code> and <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/feature_reference.html">feature_reference()</a></code> allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to <code>lbh_reference</code>:</p>
+<p>In addition, there are two complementary functions for optimizing energy-based detection routines: <code><a href="../reference/feature_reference.html">feature_reference()</a></code> and <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/feature_reference.html">feature_reference()</a></code> allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to <code>lbh_reference</code>:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="../reference/feature_reference.html">feature_reference</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="../reference/feature_reference.html">feature_reference</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <pre><code>##              min       mean      max      
 ## sel.duration 0.1179572 0.142605  0.1637317
 ## gap.duration 0.6249714 0.6809194 0.8116104
+## duty.cycle   0.2709495 0.2366186 0.3052803
 ## bottom.freq  1.8085    NA        NA       
 ## top.freq     NA        NA        9.5295</code></pre>
 <p> </p>

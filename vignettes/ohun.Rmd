@@ -436,10 +436,10 @@ optim_detection[, c(1, 2:5, 7:12, 17:18)]
 
 The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (sensitivity & specificity = 1). However, only the routine with the highest `smooth` (last row) has no split signals ('split.positive' column). It also shows a better overlap to the reference signals ('overlap.to.true.positives' closer to 1).
 
-In addition there are two complementary functions tfor optimizing energy-based detection routines: `feature_reference()` and `merge_overlaps()`. `feature_reference()` allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to `lbh_reference`:
+In addition, there are two complementary functions for optimizing energy-based detection routines: `feature_reference()` and `merge_overlaps()`. `feature_reference()` allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to `lbh_reference`:
 ```{r}
 
-feature_reference(reference = lbh_reference)
+feature_reference(reference = lbh_reference, path = tempdir())
 
 ```
 &nbsp;
