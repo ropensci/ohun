@@ -134,7 +134,7 @@
     </div>
 
     <pre class="usage"><span class='fu'>diagnose_detection</span><span class='op'>(</span><span class='va'>reference</span>, <span class='va'>detection</span>, by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>,
-time.diagnostics <span class='op'>=</span> <span class='cn'>FALSE</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+time.diagnostics <span class='op'>=</span> <span class='cn'>FALSE</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, path <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -164,6 +164,10 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
       <th>pb</th>
       <td><p>Logical argument to control progress bar. Default is <code>TRUE</code>.</p></td>
     </tr>
+    <tr>
+      <th>path</th>
+      <td><p>Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is <code>NULL</code>.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -178,7 +182,8 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <li><p><code>mean.duration.false.positives</code>: mean duration of false positives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>mean.duration.false.negatives</code>: mean duration of false negatives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>overlap.to.true.positives</code>: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.</p></li>
-<li><p><code>proportional.duration.true.positives</code>: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged</p></li>
+<li><p><code>proportional.duration.true.positives</code>: ratio of duration of true positives to the duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.</p></li>
+<li><p><code>duty.cycle</code>: proportion of a sound file in which sounds were detected. Only included when <code>time.diagnostics = TRUE</code> and <code>path</code> is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.</p></li>
 <li><p><code>sensitivity</code>: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 <li><p><code>specificity</code>: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 </ul>
@@ -231,8 +236,6 @@ detection <span class='op'>=</span> <span class='va'>lbh_reference</span>, time.
 
 <span class='co'># get summary</span>
 <span class='fu'><a href='summarize_diagnostic.html'>summarize_diagnostic</a></span><span class='op'>(</span><span class='va'>dd</span><span class='op'>)</span>
-
-
 <span class='op'>}</span>
 </pre>
   </div>

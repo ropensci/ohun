@@ -4,12 +4,12 @@
 \alias{get_envelopes}
 \title{Extract absolute amplitude envelopes}
 \usage{
-get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
+get_envelopes(path = ".", files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
 parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
-If \code{NULL} (default) then the current working directory is used.}
+The current working directory is used as default.}
 
 \item{files}{character vector or indicating the sound files that will be analyzed.}
 

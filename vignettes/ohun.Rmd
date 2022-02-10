@@ -421,6 +421,10 @@ label_spectro(wave = simulated_2, envelope = TRUE, threshold = 50, detection = d
 ```
 &nbsp;
 
+The function has some additional arguments for further filtering detections (`peak.amplitude`) and speeding up analysis (`thinning` and `parallel`).
+
+&nbsp;
+
 ### Optimizing energy-based detection
 
 This last example using `smooth` can be used to showcase how the tunning parameters can be optimized. As explained above, to do this we need a reference table that contains the time position of the target signals. The function `optimize_energy_detector()` can be used finding the optimal parameter values. We must provide the range of parameter values that will be evaluated:

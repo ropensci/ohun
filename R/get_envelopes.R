@@ -1,10 +1,10 @@
 #' @title  Extract absolute amplitude envelopes
 #'
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
-#' @usage get_envelopes(path = NULL, files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
+#' @usage get_envelopes(path = ".", files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
 #' parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 #' @param path Character string containing the directory path where the sound files are located.
-#' If \code{NULL} (default) then the current working directory is used.
+#'The current working directory is used as default.
 #' @param files character vector or indicating the sound files that will be analyzed.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}.
@@ -65,7 +65,7 @@
 #last modification on aug-31-2021 (MAS)
 
 get_envelopes <-
-  function(path = NULL,
+  function(path = ".",
            files = NULL,
            bp = NULL,
            hop.size = 11.6,

@@ -2,7 +2,7 @@
 #'
 #' @description \code{diagnose_detection} evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table
 #' @usage diagnose_detection(reference, detection, by.sound.file = FALSE,
-#' time.diagnostics = FALSE, parallel = 1, pb = TRUE)
+#' time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the signals) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no signals are found in those files, so detection from those files are all false positives.
 #' @param by.sound.file Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE}, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
@@ -10,6 +10,7 @@
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
+#' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
 #'  \item \code{true.positives}: number of signals in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
@@ -21,7 +22,8 @@
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
-#'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged
+#'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
+#'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
 #'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  }
@@ -62,8 +64,6 @@
 #'
 #' # get summary
 #' summarize_diagnostic(dd)
-#'
-#'
 #' }
 #' @seealso \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
@@ -72,7 +72,7 @@
 #' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
 # last modification on sept-2021 (MAS)
-diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE)
+diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
 {
 
   # make it a data frame if selection table
@@ -124,10 +124,20 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
               mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
               overlap.to.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
-              sensitivity = length(detected_reference_rows) / nrow(sub_ref),
-              specificity =  if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0,
               stringsAsFactors = FALSE
             )
+
+        # add duty cycle
+        if (!is.null(path) & time.diagnostics){
+
+          # get file durations
+          performance$duty.cycle <- sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
+        }
+
+
+        # add sensitivity and specificity
+        performance$sensitivity <- length(detected_reference_rows) / nrow(sub_ref)
+        performance$specificity <-  if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
 
           # replace NaNs with NA
           for(i in 1:ncol(performance))
@@ -146,9 +156,9 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
 
       # add diagnostics of files in reference but not in detection
-      if (any(!reference$sound.files %in% unique(labeled_detection$sound.files)))
+      if (any(!reference$sound.files %in% unique(labeled_detection$sound.files))){
 
-        performance_list[[length(performance_list) + 1]] <- data.frame(
+       no_detec <- data.frame(
           sound.files = setdiff(reference$sound.files, unique(labeled_detection$sound.files)),
           true.positives = 0,
           false.positives = 0,
@@ -165,11 +175,18 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           stringsAsFactors = FALSE
         )
 
+       # add duty cycle
+       if (!is.null(path) & time.diagnostics)
+         no_detec$duty.cycle <- 0
 
+       performance_list[[length(performance_list) + 1]] <- no_detec
+
+}
       # put in a single data frame
       performance_df <- do.call(rbind, performance_list)
 
-} else  performance_df <- data.frame(
+} else  {
+  performance_df <- data.frame(
   sound.files = unique(reference$sound.files),
   true.positives = 0,
   false.positives = 0,
@@ -184,15 +201,24 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   sensitivity = 0,
   specificity =  0,
   stringsAsFactors = FALSE
-  )
+)
+  # add duty cycle
+  if (!is.null(path) & time.diagnostics)
+    performance_df$duty.cycle <- 0
+
+}
+
+  # sort columns
+  performance_df <- performance_df[ , na.omit(match(c("sound.files", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "sensitivity", "specificity"), names(performance_df)))]
 
 # summarize across sound files
 if (!by.sound.file)
-  performance_df <- summarize_diagnostic(diagnostic = performance_df, time.diagnostics = time.diagnostics)
+  performance_df <-
+    summarize_diagnostic(diagnostic = performance_df, time.diagnostics = time.diagnostics)
 
 # remove time diagnostics
 if (!time.diagnostics)
-  performance_df <- performance_df[ , grep(".duration.", names(performance_df), invert = TRUE)]
+  performance_df <- performance_df[ , grep(".duration.|duty", names(performance_df), invert = TRUE)]
 
 # fix row names
 rownames(performance_df) <- 1:nrow(performance_df)

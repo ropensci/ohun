@@ -133,7 +133,7 @@
     <p><code>get_envelopes</code> extracts absolute amplitude envelopes to speed up energy detection</p>
     </div>
 
-    <pre class="usage"><span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NULL</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>get_envelopes</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"."</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
 parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, normalize <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -142,7 +142,7 @@ parallel <span class='op'>=</span> <span class='fl'>1</span>, thinning <span cla
     <tr>
       <th>path</th>
       <td><p>Character string containing the directory path where the sound files are located.
-If <code>NULL</code> (default) then the current working directory is used.</p></td>
+The current working directory is used as default.</p></td>
     </tr>
     <tr>
       <th>files</th>

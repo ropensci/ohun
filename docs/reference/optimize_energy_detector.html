@@ -134,9 +134,9 @@
     </div>
 
     <pre class="usage"><span class='fu'>optimize_energy_detector</span><span class='op'>(</span><span class='va'>reference</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>,
- hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <span class='op'>=</span> <span class='cn'>NULL</span>,
- max.duration <span class='op'>=</span> <span class='cn'>NULL</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>,
- by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, previous.output <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
+peak.amplitude <span class='op'>=</span> <span class='fl'>0</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, hold.time <span class='op'>=</span> <span class='fl'>0</span>,
+min.duration <span class='op'>=</span> <span class='cn'>NULL</span>, max.duration <span class='op'>=</span> <span class='cn'>NULL</span>, thinning <span class='op'>=</span> <span class='fl'>1</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>,
+ by.sound.file <span class='op'>=</span> <span class='cn'>FALSE</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='st'>"."</span>, previous.output <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -155,6 +155,10 @@ for sound file name (sound.files), selection number (selec), and start and end t
       <th>threshold</th>
       <td><p>A numeric vector specifying the amplitude threshold for detecting
 signals (in %). Default is 5. <strong>Several values can be supplied for optimization</strong>.</p></td>
+    </tr>
+    <tr>
+      <th>peak.amplitude</th>
+      <td><p>Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see <code><a href='https://marce10.github.io/warbleR/reference/sound_pressure_level.html'>sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals(i.e. high specificity and low sensitivity). Default is 0. <strong>Several values can be supplied for optimization</strong>.</p></td>
     </tr>
     <tr>
       <th>hop.size</th>
@@ -213,7 +217,7 @@ frequency bandpass filter (in kHz). Default is <code>NULL</code>.  This argument
     <tr>
       <th>path</th>
       <td><p>Character string containing the directory path where the sound files are located.
-If <code>NULL</code> (default) then the current working directory is used.</p></td>
+The current working directory is used as default.</p></td>
     </tr>
     <tr>
       <th>previous.output</th>
@@ -234,13 +238,14 @@ If <code>NULL</code> (default) then the current working directory is used.</p></
 <li><p><code>mean.duration.false.negatives</code>: mean duration of false negatives (in s). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>overlap.to.true.positives</code>: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.</p></li>
 <li><p><code>proportional.duration.true.positives</code>: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when <code>time.diagnostics = TRUE</code>.</p></li>
+<li><p><code>duty.cycle</code>: proportion of a sound file in which sounds were detected. Only included when <code>time.diagnostics = TRUE</code> and <code>path</code> is supplied.</p></li>
 <li><p><code>sensitivity</code>: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 <li><p><code>specificity</code>: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using <code><a href='energy_detector.html'>energy_detector</a></code>.</p>
+    <p>This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using <code><a href='energy_detector.html'>energy_detector</a></code>.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>

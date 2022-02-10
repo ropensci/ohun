@@ -133,9 +133,9 @@
     <p><code>energy_detector</code> detects the start and end of acoustic signals based on energy and time attributes</p>
     </div>
 
-    <pre class="usage"><span class='fu'>energy_detector</span><span class='op'>(</span>files <span class='op'>=</span> <span class='cn'>NULL</span>, envelopes <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='cn'>NULL</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
-thinning <span class='op'>=</span> <span class='fl'>1</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>,
-hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <span class='op'>=</span> <span class='cn'>NULL</span>, max.duration <span class='op'>=</span> <span class='cn'>NULL</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>energy_detector</span><span class='op'>(</span>files <span class='op'>=</span> <span class='cn'>NULL</span>, envelopes <span class='op'>=</span> <span class='cn'>NULL</span>, path <span class='op'>=</span> <span class='st'>"."</span>, hop.size <span class='op'>=</span> <span class='fl'>11.6</span>, wl <span class='op'>=</span> <span class='cn'>NULL</span>,
+thinning <span class='op'>=</span> <span class='fl'>1</span>, bp <span class='op'>=</span> <span class='cn'>NULL</span>, smooth <span class='op'>=</span> <span class='fl'>5</span>, threshold <span class='op'>=</span> <span class='fl'>5</span>, peak.amplitude <span class='op'>=</span> <span class='fl'>0</span>,
+hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <span class='op'>=</span> <span class='fl'>0</span>, max.duration <span class='op'>=</span> <span class='cn'>Inf</span>, parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,7 +151,7 @@ hold.time <span class='op'>=</span> <span class='fl'>0</span>, min.duration <spa
     <tr>
       <th>path</th>
       <td><p>Character string containing the directory path where the sound files are located.
-If <code>NULL</code> (default) then the current working directory is used.</p></td>
+The current working directory is used as default.</p></td>
     </tr>
     <tr>
       <th>hop.size</th>
@@ -166,7 +166,7 @@ If <code>NULL</code> (default) then the current working directory is used.</p></
       <td><p>Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 than those needed to accurately represent amplitude variation in time, which affects the size of the
-output (usually very large R objects / files). Default is  <code>1</code> (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using <code><a href='https://rdrr.io/r/stats/approxfun.html'>approx</a></code>. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. This argument is used internally by <code><a href='get_envelopes.html'>get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></td>
+output (usually very large R objects / files). Default is <code>1</code> (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using <code><a href='https://rdrr.io/r/stats/approxfun.html'>approx</a></code>. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. This argument is used internally by <code><a href='get_envelopes.html'>get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></td>
     </tr>
     <tr>
       <th>bp</th>
@@ -183,6 +183,10 @@ with a sum smooth function. It controls the time 'neighborhood' (in ms) in which
       <td><p>Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.</p></td>
     </tr>
     <tr>
+      <th>peak.amplitude</th>
+      <td><p>Numeric vector of length 1 with the minimum peak amplitude value. Detections below that value are excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see <code><a href='https://marce10.github.io/warbleR/reference/sound_pressure_level.html'>sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals. Default is 0.</p></td>
+    </tr>
+    <tr>
       <th>hold.time</th>
       <td><p>Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is <code>0</code> (no hold time applied).</p></td>
     </tr>
@@ -190,13 +194,13 @@ with a sum smooth function. It controls the time 'neighborhood' (in ms) in which
       <th>min.duration</th>
       <td><p>Numeric vector of length 1 giving the shortest duration (in
 ms) of the signals to be detected. It removes signals below that
-threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.</p></td>
+threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration. Default is 0 (i.e. no filtering based on minimum duration).</p></td>
     </tr>
     <tr>
       <th>max.duration</th>
       <td><p>Numeric vector of length 1 giving the longest duration (in
 ms) of the signals to be detected. It removes signals above that
-threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.</p></td>
+threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.  Default is <code>Inf</code> (i.e. no filtering based on maximum duration).</p></td>
     </tr>
     <tr>
       <th>parallel</th>
@@ -215,7 +219,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
   sound file. If no signal was detected for a sound file it is not included in the output data frame.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a template detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using <code><a href='template_detector.html'>template_detector</a></code>.</p>
+    <p>This function detects the time position of target signals based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those signals with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.</p>
     <h2 class="hasAnchor" id="references"><a class="anchor" href="#references"></a>References</h2>
 
     <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>

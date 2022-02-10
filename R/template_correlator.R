@@ -2,7 +2,7 @@
 #'
 #' \code{template_correlator} estimates templates cross-correlation across multiple sound files.
 #' @usage template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-#' wn ='hanning', cor.method = "pearson", parallel = 1, path = NULL,
+#' wn ='hanning', cor.method = "pearson", parallel = 1, path = ".",
 #' pb = TRUE, type = "fourier", fbtype = "mel", ...)
 #' @param templates 'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the signal(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
 #' selection number (selec), and start and end time of signal (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.
@@ -16,7 +16,7 @@
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #' It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param path Character string containing the directory path where the sound files are located.
-#' If \code{NULL} (default) then the current working directory is used.
+#'The current working directory is used as default.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param files Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.
 #' @param type A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using \code{\link[seewave]{spectro}}; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using \code{\link[tuneR]{melfcc}}) or "auditory-spectrum" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using \code{\link[tuneR]{melfcc}}). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.
@@ -87,7 +87,7 @@
 
 template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
                   wn ='hanning', cor.method = "pearson", parallel = 1,
-                  path = NULL, pb = TRUE, type = "fourier", fbtype = "mel", ...)
+                  path = ".", pb = TRUE, type = "fourier", fbtype = "mel", ...)
 {
   #check path to working directory
   if (is.null(path)) path <- getwd() else

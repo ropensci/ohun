@@ -1,10 +1,10 @@
 #' Splits sound files
 #'
 #' \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
-#' @usage split_acoustic_data(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL,
+#' @usage split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
 #'  parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL)
 #' @param path Directory path where sound files are found.
-#'  If \code{NULL} (default) then the current working directory is used.
+#' The current working directory is used as default.
 #' @param sgmt.dur Numeric. Duration (in s) of segments in which sound files would be split. Sound files shorter than 'sgmt.dur' won't be split. Ignored if 'sgmts' is supplied.
 #' @param sgmts Numeric. Number of segments in which to split each sound file. If supplied 'sgmt.dur' is ignored.
 #' @param files Character vector indicating the subset of files that will be split.
@@ -40,7 +40,7 @@
 #' }
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
 #last modification on aug-23-2021 (MAS)
-split_acoustic_data <- function(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
+split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else

@@ -133,7 +133,7 @@
     <p><code>split_acoustic_data</code> splits sound files (and corresponding selection tables) in shorter segments</p>
     </div>
 
-    <pre class="usage"><span class='fu'>split_acoustic_data</span><span class='op'>(</span>path <span class='op'>=</span> <span class='cn'>NULL</span>, sgmt.dur <span class='op'>=</span> <span class='fl'>10</span>, sgmts <span class='op'>=</span> <span class='cn'>NULL</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>,
+    <pre class="usage"><span class='fu'>split_acoustic_data</span><span class='op'>(</span>path <span class='op'>=</span> <span class='st'>"."</span>, sgmt.dur <span class='op'>=</span> <span class='fl'>10</span>, sgmts <span class='op'>=</span> <span class='cn'>NULL</span>, files <span class='op'>=</span> <span class='cn'>NULL</span>,
  parallel <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, only.sels <span class='op'>=</span> <span class='cn'>FALSE</span>, X <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -142,7 +142,7 @@
     <tr>
       <th>path</th>
       <td><p>Directory path where sound files are found.
-If <code>NULL</code> (default) then the current working directory is used.</p></td>
+The current working directory is used as default.</p></td>
     </tr>
     <tr>
       <th>sgmt.dur</th>

@@ -4,12 +4,12 @@
 \alias{split_acoustic_data}
 \title{Splits sound files}
 \usage{
-split_acoustic_data(path = NULL, sgmt.dur = 10, sgmts = NULL, files = NULL,
+split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
  parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL)
 }
 \arguments{
 \item{path}{Directory path where sound files are found.
-If \code{NULL} (default) then the current working directory is used.}
+The current working directory is used as default.}
 
 \item{sgmt.dur}{Numeric. Duration (in s) of segments in which sound files would be split. Sound files shorter than 'sgmt.dur' won't be split. Ignored if 'sgmts' is supplied.}
 

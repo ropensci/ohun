@@ -59,7 +59,7 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
     ), "column(s) not found in 'diagnostics'"))
 
   # get extra column names (ideally should include tuning parameters)
-  extra_colms <- setdiff(colnames(diagnostic), c(basic_colms, c("sound.files", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "proportional.duration.true.positives")))
+  extra_colms <- setdiff(colnames(diagnostic), c(basic_colms, c("sound.files", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "proportional.duration.true.positives", "duty.cycle")))
 
   # create column combining all extra columns
   diagnostic$..combined.extra.colms <- if (length(extra_colms) > 0)
@@ -95,6 +95,8 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
       summ_diagnostic$mean.duration.false.negatives <- if(any(!is.na(Y$mean.duration.false.negatives))) stats::weighted.mean(x = Y$mean.duration.false.negatives, w = Y$true.positives, na.rm = TRUE) else NA
       summ_diagnostic$proportional.duration.true.positives <- if(any(!is.na(Y$proportional.duration.true.positives))) stats::weighted.mean(x = Y$proportional.duration.true.positives, w = Y$true.positives, na.rm = TRUE) else NA
 
+      if (any(names(diagnostic) == "duty.cycle"))
+        summ_diagnostic$duty.cycle <- mean(Y$duty.cycle, na.rm = TRUE)
     }
 
     # add sensitivity and specificity at the end

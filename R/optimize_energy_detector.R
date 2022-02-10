@@ -2,15 +2,16 @@
 #'
 #' @description Optimize energy-based signal detection under different correlation treshold values
 #' @usage optimize_energy_detector(reference, files = NULL, threshold = 5,
-#'  hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL,
-#'  max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
-#'  by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL)
+#' peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0,
+#' min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
+#'  by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL)
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
 #' (start and end). \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include signals with no signals.
 #' @param threshold A numeric vector specifying the amplitude threshold for detecting
 #'   signals (in \%). Default is 5. \strong{Several values can be supplied for optimization}.
+#' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals(i.e. high specificity and low sensitivity). Default is 0. \strong{Several values can be supplied for optimization}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
 #' @param smooth A numeric vector to smooth the amplitude envelope
@@ -33,7 +34,7 @@
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param path Character string containing the directory path where the sound files are located.
-#' If \code{NULL} (default) then the current working directory is used.
+#'The current working directory is used as default.
 #' @param previous.output Data frame with the output of a previous run of this function. This will be used to include previous results in the new output and avoid recalculating detection performance for parameter combinations previously evaluated.
 #' @return A data frame in which each row shows the result of a detection job with a particular combination of tuning parameters (including in the data frame). It also includes the following diagnostic metrics:
 #' \itemize{
@@ -47,12 +48,13 @@
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied.
 #'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  }
 #' @export
 #' @name optimize_energy_detector
-#' @details This function takes a selections data frame or 'selection_table' ('reference')  estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.
+#' @details This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.
 #'
 #' @examples{
 #' # Save example files into temporary working directory
@@ -102,7 +104,7 @@
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on dec-21-2021 (MAS)
 
-optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = NULL, previous.output = NULL){
+optimize_energy_detector <- function(reference, files = NULL, threshold = 5, peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL){
 
   # hopsize
   if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
@@ -153,7 +155,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop
       stop("Not a single sound file in the working directory is found in 'reference'")
 
       # get all possible combinations of parameters
-      exp_grd <- expand.grid(threshold = threshold, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
+      exp_grd <- expand.grid(threshold = threshold, peak.amplitude = peak.amplitude, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)
 
       # if previous output included
       if (!is.null(previous.output)){
@@ -161,7 +163,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop
         # create composed variable to find overlapping runs
         previous.output$temp.label <- apply(previous.output[, c("threshold", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
 
-        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
+        exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "peak.amplitude", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
 
         # remove composed variable
         previous.output$temp.label <- NULL
@@ -178,10 +180,9 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop
       cat(paste(nrow(exp_grd), "combinations will be evaluated:"))
        cat("\n")
 
-
        eng_det_l <- warbleR:::pblapply_wrblr_int(X = 1:nrow(exp_grd), pbar = pb, cl = 1, FUN = function(x){
 
-          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
+          eng_det <- energy_detector(files = files, envelopes = NULL, threshold = exp_grd$threshold[x], peak.amplitude = exp_grd$peak.amplitude[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
 
           # make factor a character vector
           eng_det$sound.files <- as.character(eng_det$sound.files)
@@ -194,7 +195,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, hop
          return(eng_det)
           })
 
-      performance_l <- lapply(eng_det_l, function(Z) suppressWarnings(diagnose_detection(reference = reference, detection = Z, by.sound.file = by.sound.file, time.diagnostics = TRUE, pb = FALSE, parallel = parallel)))
+      performance_l <- lapply(eng_det_l, function(Z) suppressWarnings(diagnose_detection(reference = reference, detection = Z, by.sound.file = by.sound.file, time.diagnostics = TRUE, pb = FALSE, parallel = parallel, path = path)))
 
       performance <- do.call(rbind, performance_l)
 

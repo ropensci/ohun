@@ -5,7 +5,7 @@
 \title{Evaluate the performance of a signal detection procedure}
 \usage{
 diagnose_detection(reference, detection, by.sound.file = FALSE,
-time.diagnostics = FALSE, parallel = 1, pb = TRUE)
+time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
@@ -20,6 +20,8 @@ time.diagnostics = FALSE, parallel = 1, pb = TRUE)
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
+
+\item{path}{Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.}
 }
 \value{
 A data frame including the following detection performance diagnostics:
@@ -33,7 +35,8 @@ A data frame including the following detection performance diagnostics:
  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
- \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged
+ \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
+ \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
  }
@@ -79,8 +82,6 @@ detection = lbh_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
 
 # get summary
 summarize_diagnostic(dd)
-
-
 }
 }
 \references{

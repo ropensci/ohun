@@ -4,8 +4,8 @@ citEntry(entry = "MISC",
         title = "ohun: automatic detection of acoustic signals",
         author = personList(as.person("M. Araya-Salas")),
         year = "2021",
-#        journal = "Methods in Ecology and Evolution",
-#        url = "http://dx.doi.org/10.1111/2041-210X.12624",
+#        journal = "",
+#        url = "",
         textVersion = "Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0"
 )
 

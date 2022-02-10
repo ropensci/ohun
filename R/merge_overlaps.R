@@ -69,8 +69,6 @@ merge_overlaps <- function(X, pb = TRUE, parallel = 1){
 } else
   ov_sls <- X
 
-
-
   # rename rows
   rownames(ov_sls) <- 1:nrow(ov_sls)
 
