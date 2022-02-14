@@ -80,7 +80,7 @@
 
       
 
-      </header><script src="ohun_files/header-attrs-2.9/header-attrs.js"></script><div class="row">
+      </header><script src="ohun_files/header-attrs-2.10/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip><center>
@@ -91,7 +91,7 @@
 </center></h4>
             
             <h4 class="date"><center>
-“2022-02-10”
+“2022-02-14”
 </center></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/maRce10/ohun/blob/master/vignettes/ohun.Rmd"><code>vignettes/ohun.Rmd</code></a></small>
@@ -527,15 +527,15 @@
 <p>In addition, there are two complementary functions for optimizing energy-based detection routines: <code><a href="../reference/feature_reference.html">feature_reference()</a></code> and <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/feature_reference.html">feature_reference()</a></code> allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to <code>lbh_reference</code>:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="../reference/feature_reference.html">feature_reference</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>##                min       mean      max      
-## sel.duration   0.1179572 0.142605  0.1637317
-## gap.duration   0.6249714 0.6809194 0.8116104
-## duty.cycle     0.2366186 0.2709495 0.3052803
-## peak.amplitude 47.73582  55.56213  62.00757 
-## bottom.freq    1.8085    2.105058  2.365    
-## top.freq       8.4861    8.817437  9.5295</code></pre>
+<pre><code>##                   min   mean    max
+## sel.duration   117.96 142.60 163.73
+## gap.duration   624.97 680.92 811.61
+## duty.cycle       0.24   0.27   0.31
+## peak.amplitude  47.74  55.56  62.01
+## bottom.freq      1.81   2.11   2.37
+## top.freq         8.49   8.82   9.53</code></pre>
 <p> </p>
-<p>Features related to selection duration can be used to set the ‘max.duration’ and ‘min.duration’ values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance. Note that duty cycle is not included as a diagnostic in other functions but it can also be estimated on detections using <code>feature_reference</code>.</p>
+<p>Features related to selection duration can be used to set the ‘max.duration’ and ‘min.duration’ values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance. Peak amplitude can be used to keep only those signals with the highest intensity, mostly useful for routines in which only a subset of the target signals present in the recordings is needed.</p>
 <p><code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code> finds time-overlapping selections in reference tables and collapses them into a single selection. Overlapping selections would more likely appear as a single amplitude ‘hill’ and thus would be detected as a single signal. So <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code> can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.</p>
 </div>
 </div>
@@ -770,18 +770,18 @@
 <p> </p>
 <hr>
 <p><font size="4">Session information</font></p>
-<pre><code>## R version 4.1.0 (2021-05-18)
+<pre><code>## R version 4.1.1 (2021-08-10)
 ## Platform: x86_64-pc-linux-gnu (64-bit)
 ## Running under: Ubuntu 20.04.2 LTS
 ## 
 ## Matrix products: default
-## BLAS:   /usr/lib/x86_64-linux-gnu/atlas/libblas.so.3.10.3
-## LAPACK: /usr/lib/x86_64-linux-gnu/atlas/liblapack.so.3.10.3
+## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0
+## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0
 ## 
 ## locale:
-##  [1] LC_CTYPE=pt_BR.UTF-8       LC_NUMERIC=C              
-##  [3] LC_TIME=es_CR.UTF-8        LC_COLLATE=pt_BR.UTF-8    
-##  [5] LC_MONETARY=es_CR.UTF-8    LC_MESSAGES=pt_BR.UTF-8   
+##  [1] LC_CTYPE=es_ES.UTF-8       LC_NUMERIC=C              
+##  [3] LC_TIME=es_CR.UTF-8        LC_COLLATE=es_ES.UTF-8    
+##  [5] LC_MONETARY=es_CR.UTF-8    LC_MESSAGES=es_ES.UTF-8   
 ##  [7] LC_PAPER=es_CR.UTF-8       LC_NAME=C                 
 ##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            
 ## [11] LC_MEASUREMENT=es_CR.UTF-8 LC_IDENTIFICATION=C       
@@ -798,18 +798,18 @@
 ##  [5] digest_0.6.29     utf8_1.2.2        R6_2.5.1          Sim.DiffProc_4.8 
 ##  [9] signal_0.7-7      evaluate_0.14     highr_0.9         ggplot2_3.3.5    
 ## [13] pillar_1.6.4      rlang_1.0.1       rstudioapi_0.13   jquerylib_0.1.4  
-## [17] rmarkdown_2.9     pkgdown_1.6.1     textshaping_0.3.5 desc_1.3.0       
+## [17] rmarkdown_2.10    pkgdown_1.6.1     textshaping_0.3.5 desc_1.3.0       
 ## [21] stringr_1.4.0     RCurl_1.98-1.6    munsell_0.5.0     proxy_0.4-26     
-## [25] Deriv_4.1.3       compiler_4.1.0    xfun_0.29         pkgconfig_2.0.3  
+## [25] Deriv_4.1.3       compiler_4.1.1    xfun_0.29         pkgconfig_2.0.3  
 ## [29] systemfonts_1.0.2 htmltools_0.5.2   tidyselect_1.1.1  tibble_3.1.6     
-## [33] gridExtra_2.3     dtw_1.22-3        fansi_1.0.0       viridisLite_0.4.0
-## [37] crayon_1.4.2      dplyr_1.0.7       MASS_7.3-54       bitops_1.0-7     
-## [41] grid_4.1.0        jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.1  
+## [33] gridExtra_2.3     dtw_1.22-3        fansi_1.0.2       viridisLite_0.4.0
+## [37] crayon_1.5.0      dplyr_1.0.7       MASS_7.3-54       bitops_1.0-7     
+## [41] grid_4.1.1        jsonlite_1.7.2    gtable_0.3.0      lifecycle_1.0.1  
 ## [45] DBI_1.1.1         formatR_1.11      magrittr_2.0.2    scales_1.1.1     
-## [49] cli_3.1.0         stringi_1.7.6     cachem_1.0.5      pbapply_1.5-0    
+## [49] cli_3.1.0         stringi_1.7.6     cachem_1.0.6      pbapply_1.5-0    
 ## [53] viridis_0.6.2     fs_1.5.0          bslib_0.2.5.1     ellipsis_0.3.2   
 ## [57] ragg_1.1.3        vctrs_0.3.8       generics_0.1.0    rjson_0.2.21     
-## [61] tools_4.1.0       glue_1.6.1        purrr_0.3.4       parallel_4.1.0   
+## [61] tools_4.1.1       glue_1.6.1        purrr_0.3.4       parallel_4.1.1   
 ## [65] fastmap_1.1.0     yaml_2.2.2        colorspace_2.0-2  memoise_2.0.0    
 ## [69] sass_0.4.0</code></pre>
 </div>

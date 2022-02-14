@@ -448,7 +448,7 @@ feature_reference(reference = lbh_reference, path = tempdir())
 ```
 &nbsp;
 
-Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance. Note that duty cycle is not included as a diagnostic in other functions but it can also be estimated on detections using `feature_reference`.
+Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance. Peak amplitude can be used to keep only those signals with the highest intensity, mostly useful for routines in which only a subset of the target signals present in the recordings is needed.
 
 `merge_overlaps()` finds time-overlapping selections in reference tables and collapses them into a single selection. Overlapping selections would more likely appear as a single amplitude 'hill' and thus would be detected as a single signal. So `merge_overlaps()` can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.
 
