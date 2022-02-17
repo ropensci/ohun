@@ -74,8 +74,8 @@ library(ohun)
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
 
-source("~/Dropbox/R_package_testing/ohun/R/template_detector.R")
-source("~/Dropbox/R_package_testing/ohun/R/label_spectro.R")
+source("~/Dropbox/R_package_testing/ohun/R/get_templates.R")
+# source("~/Dropbox/R_package_testing/ohun/R/label_spectro.R")
 #load package
 library(ohun)
 
@@ -135,7 +135,7 @@ lbh_reference
 ```
 &nbsp;
 
-This is a 'selection table', an object class provided by the package [warbleR](https://CRAN.R-project.org/package=warbleR) (  see [`selection_table`](https://marce10.github.io/warbleR/reference/selection_table.html) for details). Selection tables are basically data frames in which the contained information has been double-checked (using [`selection_table`](https://marce10.github.io/warbleR/reference/check_sels.html)). But they behave pretty much as data frames and can be easily converted to data frames:
+This is a 'selection table', an object class provided by the package [warbleR](https://CRAN.R-project.org/package=warbleR) (see [`selection_table()`](https://marce10.github.io/warbleR/reference/selection_table.html) for details). Selection tables are basically data frames in which the contained information has been double-checked (using warbleR's [`check_sels()`](https://marce10.github.io/warbleR/reference/check_sels.html)). But they behave pretty much as data frames and can be easily converted to data frames:
 ```{r}
 # convert to data frame
 as.data.frame(lbh_reference)
@@ -454,16 +454,28 @@ Features related to selection duration can be used to set the 'max.duration' and
 
 ## Template-based detection
 
-This detection method is better suited for highly stereotyped signals. As it doesn't depend on the signal-to-noise ratio it's more robust to higher levels of background noise. The procedure is divided in two steps:
+This detection method is better suited for highly stereotyped signals. As it doesn't depend on the signal-to-noise ratio it's more robust to higher levels of background noise. The procedure is divided in three steps:
 
+- Choosing the right template (`get_templates()`)
 - Estimating the cross-correlation scores of templates along sound files (`template_correlator()`)  
 - Detecting signals by applying a correlation threshold (`template_detector()`)  
 
-This method can be used to detect the signals in the example 'lbh1' data as follows:
+
+The function `get_templates()` can help you find a template closer to the average acoustic structure of the signals in a reference table. This is done by finding the signals closer to the centroid of the acoustic space. When the acoustic space is not supplied ('acoustic.space' argument) the function estimates it by measuring several acoustic parameters using the function [`spectro_analysis()`](https://marce10.github.io/warbleR/reference/spectro_analysis.html) from [`warbleR`](https://marce10.github.io/warbleR)) and summarizing it with Principal Component Analysis (after z-transforming parameters). If only 1 template is required the function returns the signal closest to the acoustic space centroid. The rationale here is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space. These 'mean structure' templates can be obtained as follows:   
+
+```{r}
+
+# get mean structure template
+template <- get_templates(reference = lbh1_reference, path = tempdir())
+
+```
+&nbsp;
+
+Then, the template can be used to detect similar signals in the example 'lbh1' data:
 ```{r}
 
 # get correlations 
-correlations <- template_correlator(templates = lbh1_reference[1, ], files = "lbh1.wav", path = tempdir())
+correlations <- template_correlator(templates = template, files = "lbh1.wav", path = tempdir())
 
 ```
 &nbsp;
