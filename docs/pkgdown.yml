@@ -1,7 +1,7 @@
-pandoc: 2.14.0.3
+pandoc: 2.11.4
 pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   ohun: ohun.html
-last_built: 2022-02-14T22:26Z
+last_built: 2022-02-22T19:01Z
 

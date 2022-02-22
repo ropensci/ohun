@@ -162,7 +162,7 @@ The function `diagnose_detection()` evaluates the performance of a detection rou
 lbh1_reference <- lbh_reference[lbh_reference$sound.files == "lbh1.wav", ]
 
 # diagnose
-diagnose_detection(reference = lbh1_reference, detection = lbh1_reference)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_reference, detection = lbh1_reference)[, c(1:3, 7:9)]
 
 ```
 &nbsp;
@@ -177,7 +177,7 @@ lbh1_detection <- lbh1_reference[3:9, ]
 label_spectro(wave = lbh1, reference = lbh1_reference, detection = lbh1_detection, hop.size = 10, ovlp = 50, flim = c(1, 10))
 
 # diagnose
-diagnose_detection(reference = lbh1_reference, detection = lbh1_detection)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_reference, detection = lbh1_detection)[, c(1:3, 7:9)]
 
 ```
 &nbsp;
@@ -189,7 +189,7 @@ Having some additional signals not in reference will do the opposite, reducing p
 label_spectro(wave = lbh1, detection = lbh1_reference, reference = lbh1_detection, hop.size = 10, ovlp = 50, flim = c(1, 10))
 
 # diagnose
-diagnose_detection(reference = lbh1_detection, detection = lbh1_reference)[, c(1:3, 7:8)]
+diagnose_detection(reference = lbh1_detection, detection = lbh1_reference)[, c(1:3, 7:9)]
 
 ```
 &nbsp;
