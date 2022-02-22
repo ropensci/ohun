@@ -11,7 +11,7 @@
 #' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include signals with no signals.
 #' @param threshold A numeric vector specifying the amplitude threshold for detecting
 #'   signals (in \%). Default is 5. \strong{Several values can be supplied for optimization}.
-#' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals(i.e. high specificity and low sensitivity). Default is 0. \strong{Several values can be supplied for optimization}.
+#' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals(i.e. high precision and low recall). Default is 0. \strong{Several values can be supplied for optimization}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
 #' @param smooth A numeric vector to smooth the amplitude envelope
@@ -49,8 +49,8 @@
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied.
-#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{recall}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{precision}: Proportion of detections that correspond to signals in 'reference'. In a perfect detection routine it should be 1.
 #'  }
 #' @export
 #' @name optimize_energy_detector

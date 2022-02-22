@@ -15,8 +15,9 @@
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{recall}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{precision}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
 #'  }
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the signals ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
 #' @export
@@ -49,7 +50,7 @@
 summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
 
   # basic columns required in 'diagnostic'
-  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "overlap.to.true.positives", "sensitivity", "specificity")
+  basic_colms <- c("true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "overlap.to.true.positives", "recall", "precision", "f1.score")
 
   #check diagnostic
   if (any(!(basic_colms %in% colnames(diagnostic))))
@@ -99,9 +100,10 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
         summ_diagnostic$duty.cycle <- mean(Y$duty.cycle, na.rm = TRUE)
     }
 
-    # add sensitivity and specificity at the end
-    summ_diagnostic$sensitivity <- sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
-    summ_diagnostic$specificity <- if (any(Y$specificity != 0)) 1 - (sum(Y$false.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.positives, na.rm = TRUE))) else 0
+    # add recall precision and f1.score at the end
+    summ_diagnostic$recall <- sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
+    summ_diagnostic$precision <- if (any(Y$precision != 0)) 1 - (sum(Y$false.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.positives, na.rm = TRUE))) else 0
+    summ_diagnostic$f1.score <- 2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall))
 
     # replace NaNs with NA
     for(i in 1:ncol(summ_diagnostic))

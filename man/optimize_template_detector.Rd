@@ -31,8 +31,8 @@ A data frame in which each row shows the result of a detection job for each cuto
  \item \code{false.negatives}: number of signals in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
  \item \code{split.positives}: number of signals in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
  \item \code{merged.positives}: number of signals in 'detection' that were overlapped by more than 1 detection (i.e. signals that were merged). In a perfect detection routine it should be 0.
- \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
- \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+ \item \code{recall}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+ \item \code{precision}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
  }
 }
 \description{

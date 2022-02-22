@@ -24,8 +24,9 @@
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference signal to the duration of the reference signal.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of signals in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
-#'  \item \code{sensitivity}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
-#'  \item \code{specificity}: Proportion of detections that correspond to signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{recall}: Proportion of signals in 'reference' that were detected. In a perfect detection routine it should be 1.
+#'  \item \code{precision}: Proportion of detections that correspond to signals in 'reference'. In a perfect detection routine it should be 1.
+#'  \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
 #'  }
 #' @export
 #' @name diagnose_detection
@@ -135,9 +136,10 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
         }
 
 
-        # add sensitivity and specificity
-        performance$sensitivity <- length(detected_reference_rows) / nrow(sub_ref)
-        performance$specificity <-  if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
+        # add recall, precision and f1
+        performance$recall <- length(detected_reference_rows) / nrow(sub_ref)
+        performance$precision <- if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
+        performance$f1.score <- 2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall))
 
           # replace NaNs with NA
           for(i in 1:ncol(performance))
@@ -149,7 +151,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           performance$mean.duration.true.positives[is.na(performance$mean.duration.true.positives) | performance$true.positives == 0] <- NA
 
           # make sensitvities higher than 1 (because of split positives) 1
-          performance$sensitivity[performance$sensitivity > 1] <- 1
+          performance$recall[performance$recall > 1] <- 1
 
           return(performance)
           })
@@ -170,8 +172,9 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           mean.duration.false.negatives = sapply(setdiff(reference$sound.files, unique(labeled_detection$sound.files)), function(x) mean((reference$end - reference$start)[reference$sound.files == x])),
           overlap.to.true.positives = NA,
           proportional.duration.true.positives = NA,
-          sensitivity = 0,
-          specificity =  0,
+          recall = 0,
+          precision =  0,
+          f1.score = 0,
           stringsAsFactors = FALSE
         )
 
@@ -198,8 +201,9 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x) mean(reference$end - reference$start)),
   overlap.to.true.positives = NA,
   proportional.duration.true.positives = NA,
-  sensitivity = 0,
-  specificity =  0,
+  recall = 0,
+  precision = 0,
+  f1.score = 0,
   stringsAsFactors = FALSE
 )
   # add duty cycle
@@ -209,7 +213,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 }
 
   # sort columns
-  performance_df <- performance_df[ , na.omit(match(c("sound.files", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "sensitivity", "specificity"), names(performance_df)))]
+  performance_df <- performance_df[ , na.omit(match(c("sound.files", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "recall", "precision", "f1.score"), names(performance_df)))]
 
 # summarize across sound files
 if (!by.sound.file)

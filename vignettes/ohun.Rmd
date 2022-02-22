@@ -74,8 +74,6 @@ library(ohun)
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
 
-source("~/Dropbox/R_package_testing/ohun/R/get_templates.R")
-# source("~/Dropbox/R_package_testing/ohun/R/label_spectro.R")
 #load package
 library(ohun)
 
@@ -117,14 +115,15 @@ Broadly speaking, signal detection theory deals with the process of recovering s
 - **False negatives (FNs)**: signals incorrectly identified as 'background noise'
 - **True negatives (TNs)**: background noise correctly identified as 'background noise'
 
-Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are two useful indices in the context of acoustic signal detection included in [ohun](https://github.com/maRce10/ohun):
+Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are three useful indices in the context of acoustic signal detection included in [ohun](https://github.com/maRce10/ohun):
 
-- **Sensitivity**: proportion of target signals that were detected (a.k.a. true positive rate or recall; *TPs / (TPs + FNs)*)
-- **Specificity**: proportion of detected items that correspond to target signals (*(TPs + FNs) / (TPs + FPs)*). This definition differs from more traditional ones that focus on true negative occurrences. In our case it refers to the specificity to target signals.
+- **Recall**: correct detections relative to total detections (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
+- **Precision**: correct detections relative to total detections (*TPs / (TPs + FPs)*).
+- **F1 score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
 
 <font size = "2">*(Metrics that make use of 'true negatives' cannot be easily applied in the context of acoustic signal detection as noise cannot always be partitioned in discrete units)*</font>
 
-A perfect detection will have no false positives or false negatives, which will result in both sensitivity and specificity equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (sensitivity = 1 & specificity < 1) and detecting only target signals but not all of them (sensitivity < 1 & specificity = 1) is warranted. The right balance between these two extremes will be given by the relative costs of missing signals and mistaking noise for signals. Hence, these indices provide an useful framework for diagnosing and optimizing the performance of a detection routine. 
+A perfect detection will have no false positives or false negatives, which will result in both recall and precision equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (recall = 1 & precision < 1) and detecting only target signals but not all of them (recall < 1 & precision = 1) is warranted. The right balance between these two extremes will be given by the relative costs of missing signals and mistaking noise for signals. Hence, these indices provide an useful framework for diagnosing and optimizing the performance of a detection routine. 
 
 The package [ohun](https://github.com/maRce10/ohun) provides a set of tools to evaluate the performance of an acoustic signal detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target signals in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which can be used to illustrate detection performance evaluation. The example data can be explored as follows:  
 ```{r, eval = TRUE, }
@@ -168,7 +167,7 @@ diagnose_detection(reference = lbh1_reference, detection = lbh1_reference)[, c(1
 ```
 &nbsp;
 
-We will work mostly with a single sound file for convenience but the functions can work on several sound files at the time. The files should be found in a single working directory. Although the above example is a bit silly, it shows the basic diagnostic indices, which include basic detection theory indices ('true.positives', 'false.positives', 'false.negatives', 'sensitivity' and 'specificity') mentioned above. We can play around with the reference table to see how these indices can be used to spot imperfect detection routines (and hopefully improve them!). For instance, we can remove some signals to see how this is reflected in the diagnostics. Getting rid of some rows in 'detection', simulating a detection with some false negatives, will affect the sensitivity but not the specificity:
+We will work mostly with a single sound file for convenience but the functions can work on several sound files at the time. The files should be found in a single working directory. Although the above example is a bit silly, it shows the basic diagnostic indices, which include basic detection theory indices ('true.positives', 'false.positives', 'false.negatives', 'recall' and 'precision') mentioned above. We can play around with the reference table to see how these indices can be used to spot imperfect detection routines (and hopefully improve them!). For instance, we can remove some signals to see how this is reflected in the diagnostics. Getting rid of some rows in 'detection', simulating a detection with some false negatives, will affect the recall but not the precision:
 ```{r}
 
 # create new table
@@ -183,7 +182,7 @@ diagnose_detection(reference = lbh1_reference, detection = lbh1_detection)[, c(1
 ```
 &nbsp;
 
-Having some additional signals not in reference will do the opposite, reducing specificity but not sensitivity. We can do this simply by switching the tables:
+Having some additional signals not in reference will do the opposite, reducing precision but not recall. We can do this simply by switching the tables:
 ```{r, }
 
 # print spectrogram
@@ -438,7 +437,7 @@ optim_detection[, c(1, 2:5, 7:12, 17:18)]
 ```
 &nbsp;
 
-The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (sensitivity & specificity = 1). However, only the routine with the highest `smooth` (last row) has no split signals ('split.positive' column). It also shows a better overlap to the reference signals ('overlap.to.true.positives' closer to 1).
+The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (recall & precision = 1). However, only the routine with the highest `smooth` (last row) has no split signals ('split.positive' column). It also shows a better overlap to the reference signals ('overlap.to.true.positives' closer to 1).
 
 In addition, there are two complementary functions for optimizing energy-based detection routines: `feature_reference()` and `merge_overlaps()`. `feature_reference()` allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to `lbh_reference`:
 ```{r}
@@ -620,7 +619,7 @@ Detection routines can take a long time when working with large amounts of acous
 - Several templates representing the range of variation in signal structure can be used to detect semi-stereotyped signals
 - Make sure reference tables contain all target signals and only the target signals. The performance of the detection cannot be better than the reference itself.
 - Avoid having overlapping signals or several signals as a single one (like a multi-syllable vocalization) in the reference table when running an energy-based detector
-- Low-specificity can be improved by training a classification model (e.g. random forest) to tell signals from noise  
+- Low-precision can be improved by training a classification model (e.g. random forest) to tell signals from noise  
 
 ---
 
