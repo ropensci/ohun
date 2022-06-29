@@ -161,7 +161,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pea
       if (!is.null(previous.output)){
 
         # create composed variable to find overlapping runs
-        previous.output$temp.label <- apply(previous.output[, c("threshold", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
+        previous.output$temp.label <- apply(previous.output[, c("threshold", "peak.amplitude", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-")
 
         exp_grd <- exp_grd[!apply(exp_grd[, c("threshold", "peak.amplitude", "smooth", "hold.time", "min.duration", "max.duration", "thinning")], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
 

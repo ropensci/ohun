@@ -1,14 +1,8 @@
 pandoc: 1.19.2.1
 pkgdown: 1.4.1
 pkgdown_sha: ~
-articles: 
-- title: vignettes
-  navbar: vignettes
-  contents:
-  - starts_with("Intro")
-  - starts_with("warbleR_workflow_01")
-  - starts_with("warbleR_workflow_02")
-  - starts_with("warbleR_workflow_03")
+contents:
+  - starts_with("ohun")
 template:
   params:
     bootswatch: spacelab
