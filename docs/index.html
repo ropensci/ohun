@@ -20,8 +20,6 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
-    
-
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -34,12 +32,18 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ohun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
+<li>
+  <a href="index.html">
+    <span class="fas fa-home fa-lg"></span>
+     
+  </a>
+</li>
 <li>
   <a href="articles/ohun.html">Get started</a>
 </li>
@@ -49,7 +53,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/maRce10/ohun/" class="external-link">
+  <a href="https://github.com/maRce10/ohun/">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -66,69 +70,90 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div class="section level1">
-<div class="page-header"><h1 id="ohun-optimizing-acoustic-signal-detection">ohun: Optimizing acoustic signal detection<a class="anchor" aria-label="anchor" href="#ohun-optimizing-acoustic-signal-detection"></a>
-</h1></div>
-<p><a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.</p>
-<p>The main features of the package are: - The use of reference annotations for detection optimization and diagnostic - The use of signal detection theory indices to evaluate detection performance - Batch processing of sound files for improving computational performance</p>
-<p>The package offers functions for: - Diagnose detection performance - Optimize detection routines based on reference annotations - Energy-based detection - Template-based detection</p>
+<div id="ohun-optimizing-acoustic-signal-detection" class="section level1">
+<div class="page-header"><h1 class="hasAnchor">
+<a href="#ohun-optimizing-acoustic-signal-detection" class="anchor"></a>ohun: optimizing acoustic signal detection</h1></div>
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<p><a href="https://github.com/maRce10/ohun">ohun</a> is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.</p>
+<p>The main features of the package are:</p>
+<ul>
+<li>The use of reference annotations for detection optimization and diagnostic</li>
+<li>The use of signal detection theory indices to evaluate detection performance</li>
+<li>Batch processing of sound files for improving computational performance</li>
+</ul>
+<p>The package offers functions for:</p>
+<ul>
+<li>Diagnose detection performance</li>
+<li>Optimize detection routines based on reference annotations</li>
+<li>Energy-based detection</li>
+<li>Template-based detection</li>
+</ul>
 <p>All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’ format.</p>
-<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a>:</p>
+<p>To install the latest developmental version from <a href="https://github.com/">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes">remotes</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span>
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span>
 
 <span class="co">#load package</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/" class="external-link">ohun</a></span><span class="op">)</span></code></pre></div>
-<p>Please cite <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> as follows:</p>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></code></pre></div>
+<p>Please cite <a href="https://github.com/maRce10/ohun">ohun</a> as follows:</p>
 <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>
 </div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2 data-toc-skip>Links</h2>
+<h2>Links</h2>
 <ul class="list-unstyled">
-<li><a href="https://github.com/maRce10/ohun/" class="external-link">Browse source code</a></li>
-<li><a href="https://github.com/maRce10/ohun/issues/" class="external-link">Report a bug</a></li>
+<li>Browse source code at <br><a href="https://github.com/maRce10/ohun/">https://​github.com/​maRce10/​ohun/​</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/maRce10/ohun/issues/">https://​github.com/​maRce10/​ohun/​issues/​</a>
+</li>
 </ul>
 </div>
-
 <div class="license">
-<h2 data-toc-skip>License</h2>
+<h2>License</h2>
 <ul class="list-unstyled">
 <li>GPL (&gt;= 2)</li>
 </ul>
 </div>
-
-
 <div class="citation">
-<h2 data-toc-skip>Citation</h2>
+<h2>Citation</h2>
 <ul class="list-unstyled">
-<li><a href="authors.html#citation">Citing ohun</a></li>
+<li><a href="authors.html">Citing ohun</a></li>
 </ul>
 </div>
-
 <div class="developers">
-<h2 data-toc-skip>Developers</h2>
+<h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Marcelo Araya-Salas <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3594-619X" target="orcid.widget" aria-label="ORCID" class="external-link"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
+<li>Marcelo Araya-Salas <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0003-3594-619X" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
-
-
-  </div>
+  <div class="dev-status">
+<h2>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://lifecycle.r-lib.org/articles/stages.html"><img src="https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg" alt="lifecycle"></a></li>
+<li><a href="https://cran.r-project.org/package=ohun"><img src="https://tinyverse.netlify.com/badge/ohun" alt="Dependencies"></a></li>
+<li><a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active The project has reached a stable, usable state and is being actively developed."></a></li>
+<li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/licence-GPL--3-blue.svg" alt="Licence"></a></li>
+<li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-3.2.4-6666ff.svg" alt="minimal R version"></a></li>
+<li><a href="commits/develop"><img src="https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square" alt="packageversion"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2022--06--29-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="https://cran.r-project.org/package=ohun"><img src="https://www.r-pkg.org/badges/version/ohun" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cranlogs.r-pkg.org/badges/grand-total/ohun"><img src="https://cranlogs.r-pkg.org/badges/grand-total/ohun" alt="Total Downloads"></a></li>
+</ul>
+</div>
+</div>
 </div>
 
 
       <footer><div class="copyright">
-  <p></p>
-<p>Developed by Marcelo Araya-Salas.</p>
+  <p>Developed by Marcelo Araya-Salas.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
@@ -136,8 +161,6 @@
 
   
 
-
-  
 
   </body>
 </html>

@@ -1,34 +1,60 @@
-# ohun: Optimizing acoustic signal detection
+ohun: optimizing acoustic signal detection
+================
 
+<!-- README.md is generated from README.Rmd. Please edit that file -->
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
+[![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)
+[![Project Status: Active The project has reached a stable, usable state
+and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![minimal R
+version](https://img.shields.io/badge/R%3E%3D-3.2.4-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2022--06--29-yellowgreen.svg)](/commits/master)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
- The main features of the package are:
-   - The use of reference annotations for detection optimization and diagnostic 
-   - The use of signal detection theory indices to evaluate detection performance 
-   - Batch processing of sound files for improving computational performance
-   
- The package offers functions for:
-   - Diagnose detection performance
-   - Optimize detection routines based on reference annotations
-   - Energy-based detection
-   - Template-based detection
-   
-All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the
+automatic detection of acoustic signals, providing functions to diagnose
+and optimize detection routines. Detections from other software can also
+be explored and optimized.
 
+The main features of the package are:
 
-To install the latest developmental version from [github](https://github.com/) you will need the R package [devtools](https://cran.r-project.org/package=devtools):
+-   The use of reference annotations for detection optimization and
+    diagnostic
+-   The use of signal detection theory indices to evaluate detection
+    performance
+-   Batch processing of sound files for improving computational
+    performance
 
-```r
-devtools::install_github("maRce10/ohun")
+The package offers functions for:
+
+-   Diagnose detection performance
+-   Optimize detection routines based on reference annotations
+-   Energy-based detection
+-   Template-based detection
+
+All functions allow the parallelization of tasks, which distributes the
+tasks among several processors to improve computational efficiency. The
+package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’
+format.
+
+To install the latest developmental version from
+[github](https://github.com/) you will need the R package
+[remotes](https://cran.r-project.org/package=remotes):
+
+``` r
+remotes::install_github("maRce10/ohun")
 
 #load package
 library(ohun)
-
 ```
-
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
-
+Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R
+package version 0.1.0.
