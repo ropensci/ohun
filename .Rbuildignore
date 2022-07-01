@@ -4,4 +4,4 @@
 testing
 docs
 pkgdown
-^\.README\.Rmd$
+README\.Rmd$
