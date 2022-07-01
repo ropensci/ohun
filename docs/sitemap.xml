@@ -1,93 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://marce10.github.io/ohun/404.html</loc>
   </url>
   <url>
-    <loc>/articles/index.html</loc>
+    <loc>https://marce10.github.io/ohun/articles/index.html</loc>
   </url>
   <url>
-    <loc>/articles/ohun.html</loc>
+    <loc>https://marce10.github.io/ohun/articles/ohun.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://marce10.github.io/ohun/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://marce10.github.io/ohun/index.html</loc>
   </url>
   <url>
-    <loc>/reference/diagnose_detection.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/diagnose_detection.html</loc>
   </url>
   <url>
-    <loc>/reference/energy_detector.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/energy_detector.html</loc>
   </url>
   <url>
-    <loc>/reference/feature_reference.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/feature_reference.html</loc>
   </url>
   <url>
-    <loc>/reference/filter_detection.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/filter_detection.html</loc>
   </url>
   <url>
-    <loc>/reference/get_envelopes.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/get_envelopes.html</loc>
   </url>
   <url>
-    <loc>/reference/get_templates.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/get_templates.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/label_detection.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/label_detection.html</loc>
   </url>
   <url>
-    <loc>/reference/label_spectro.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/label_spectro.html</loc>
   </url>
   <url>
-    <loc>/reference/lbh1.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/lbh1.html</loc>
   </url>
   <url>
-    <loc>/reference/lbh2.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/lbh2.html</loc>
   </url>
   <url>
-    <loc>/reference/lbh_1.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/lbh_1.html</loc>
   </url>
   <url>
-    <loc>/reference/lbh_2.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/lbh_2.html</loc>
   </url>
   <url>
-    <loc>/reference/lbh_reference.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/lbh_reference.html</loc>
   </url>
   <url>
-    <loc>/reference/merge_overlaps.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/merge_overlaps.html</loc>
   </url>
   <url>
-    <loc>/reference/ohun.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/ohun.html</loc>
   </url>
   <url>
-    <loc>/reference/optimize_energy_detector.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/optimize_energy_detector.html</loc>
   </url>
   <url>
-    <loc>/reference/optimize_template_detector.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/optimize_template_detector.html</loc>
   </url>
   <url>
-    <loc>/reference/print.envelopes.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/print.envelopes.html</loc>
   </url>
   <url>
-    <loc>/reference/print.template_correlations.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/print.template_correlations.html</loc>
   </url>
   <url>
-    <loc>/reference/split_acoustic_data.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/split_acoustic_data.html</loc>
   </url>
   <url>
-    <loc>/reference/split_sound_files.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/split_sound_files.html</loc>
   </url>
   <url>
-    <loc>/reference/summarize_diagnostic.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/summarize_diagnostic.html</loc>
   </url>
   <url>
-    <loc>/reference/template_correlator.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/template_correlator.html</loc>
   </url>
   <url>
-    <loc>/reference/template_detector.html</loc>
+    <loc>https://marce10.github.io/ohun/reference/template_detector.html</loc>
   </url>
 </urlset>
