@@ -51,8 +51,8 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_templates</span><span class="op">(</span><span class="va">reference</span>, acoustic.space <span class="op">=</span> <span class="cn">NULL</span>, variance.cutoff <span class="op">=</span> <span class="fl">0.7</span>, path <span class="op">=</span> <span class="st">"."</span>,
-n.templates <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">get_templates</span><span class="op">(</span><span class="va">reference</span>, acoustic.space <span class="op">=</span> <span class="cn">NULL</span>, path <span class="op">=</span> <span class="st">"."</span>,
+n.sub.spaces <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,40 +61,25 @@ n.templates <span class="op">=</span> <span class="fl">1</span>, <span class="va
 <dd><p>Selection table (using the warbleR package's format, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with columns
 for sound file name (sound.files), selection number (selec), and start and end time of signal
 (start and end).</p></dd>
-
-
 <dt>acoustic.space</dt>
-<dd><p>Numeric matrix or data frame with the dimensions of a custom acoustic space to be used for finding templates. if not supplied the acoustic space is calculated internally (default). Optional.</p></dd>
-
-
-<dt>variance.cutoff</dt>
-<dd><p>Numeric vector of length 1 with the variance cutoff (&gt; 0 &amp; &lt;= 1) for choosing which principal components will be used as acoustic space dimensions. Default is 0.7. Only used if 'acoustic.space' is not supplied.</p></dd>
-
-
+<dd><p>Numeric matrix or data frame with the two dimensions of a custom acoustic space to be used for finding templates. if not supplied the acoustic space is calculated internally (default). Optional. Note that the function assumes that 'reference' and 'acoustic.space' refer to the same signals and similarly ordered.</p></dd>
 <dt>path</dt>
 <dd><p>Character string containing the directory path where the sound files are located.
 The current working directory is used as default.</p></dd>
-
-
-<dt>n.templates</dt>
-<dd><p>Integer vector of length 1 with the number of templates to be returned. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that are representative of the acoustic space, defined as those equally spaced across the distribution of distances to the centroid.</p></dd>
-
-
+<dt>n.sub.spaces</dt>
+<dd><p>Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces.</p></dd>
 <dt>...</dt>
 <dd><p>Additional arguments to be passed to <code><a href="https://marce10.github.io/warbleR/reference/spectro_analysis.html" class="external-link">spectro_analysis</a></code> for further customization when measuring parameters to calculate the acoustic space.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p>The function returns a 'selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame (if sound files can't be found) containing the start and end of each signal by
+    <p>The function returns a 'selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame (if sound files can't be found) containing the start and end of each signal by
   sound file. If no signal was detected for a sound file it is not included in the output data frame.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function finds signals that are representative of the acoustic variation of the signals in a reference table. This is done by finding the signals closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function <code><a href="https://marce10.github.io/warbleR/reference/spectro_analysis.html" class="external-link">spectro_analysis</a></code> and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function <code><a href="https://rdrr.io/r/stats/prcomp.html" class="external-link">prcomp</a></code>. The rationale here is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space.
-If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space, defined as those equally spaced across the distribution of distances to the centroid. A column 'distance.quantile' is included in the output selection table that identifies the quantile of the distance to the centroid that each selection represents. Custom acoustic spaces can be supplied with argument 'acoustic.space'.</p>
+    <p>This function finds signals from a reference table that are representative of the acoustic variation. This is done by finding the signals closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function <code><a href="https://marce10.github.io/warbleR/reference/spectro_analysis.html" class="external-link">spectro_analysis</a></code> and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function <code><a href="https://rdrr.io/r/stats/prcomp.html" class="external-link">prcomp</a></code>. The rationale here is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space.
+If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal size slices from a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -122,7 +107,7 @@ modified version of the timer function from seewave.</p>
 <span class="va">template</span> <span class="op">&lt;-</span> <span class="fu">get_templates</span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
 <span class="co"># get 3 templates</span>
-<span class="va">template</span> <span class="op">&lt;-</span> <span class="fu">get_templates</span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, n.templates <span class="op">=</span> <span class="fl">3</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
+<span class="va">template</span> <span class="op">&lt;-</span> <span class="fu">get_templates</span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, n.sub.spaces <span class="op">=</span> <span class="fl">3</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 <span class="op">}</span>
 
 </code></pre></div>
@@ -136,7 +121,7 @@ modified version of the timer function from seewave.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

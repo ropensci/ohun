@@ -66,7 +66,7 @@
 
 
 <div class="row">
-  <main id="main" class="col-md-9"><div class="page-header">
+  <main id="main"><div class="page-header">
       <img src="" class="logo" alt=""><h1><center><font size="7"><b><i>ohun</i>: optimizing acoustic signal detection</b></font></center></h1>
                         <h4 data-toc-skip class="author"><center>
 <a href="https://marceloarayasalas.weebly.com" class="external-link">Marcelo Araya-Salas,
@@ -74,7 +74,7 @@ PhD</a>
 </center></h4>
             
             <h4 data-toc-skip class="date"><center>
-“2022-07-01”
+“2022-07-04”
 </center></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/maRce10/ohun/blob/HEAD/vignettes/ohun.Rmd" class="external-link"><code>vignettes/ohun.Rmd</code></a></small>
@@ -120,10 +120,10 @@ the tasks among several processors to improve computational efficiency.
 The package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’
 format.</p>
 <hr>
-<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">devtools</a>:</p>
+<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">remotes</a>:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install pacakge</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/remote-reexports.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span>
 
 <span class="co">#load package</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></code></pre></div>
@@ -734,8 +734,9 @@ templates can be obtained as follows:</p>
 <div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># get mean structure template</span>
 <span class="va">template</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code><span class="co">## <span style="color: #555555;">3 principal components were kept which explained 0.73 of the variance</span></span></code></pre>
-<p> </p>
+<pre><code><span class="co">## <span style="color: #555555;">The first 2 principal components explained 0.53 of the variance</span></span></code></pre>
+<p><img src="ohun_files/figure-html/unnamed-chunk-27-1.png" width="960">
+ </p>
 <p>Then, the template can be used to detect similar signals in the
 example ‘lbh1’ data:</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
@@ -752,7 +753,7 @@ own printing method:</p>
 <span class="co"><span style="color: #555555;">## </span><span style="color: #555555; font-style: italic;">template_correlator(templates = template, files = "lbh1.wav",  </span></span>
 <span class="co"><span style="color: #555555; font-style: italic;">## </span> <span style="color: #555555; font-style: italic;">path = tempdir()) </span></span>
 <span class="co"><span style="color: #555555; font-style: italic;">## </span><span style="color: #555555;">* Contains 1 correlation score vector(s) from 1 template(s):</span></span>
-<span class="co"><span style="color: #555555;">##  </span><span style="color: #555555; font-style: italic;">lbh1.wav-16</span><span style="color: #555555;"> </span></span>
+<span class="co"><span style="color: #555555;">##  </span><span style="color: #555555; font-style: italic;">lbh1.wav-15</span><span style="color: #555555;"> </span></span>
 <span class="co"><span style="color: #555555;">## ... and 1 sound files(s):</span></span>
 <span class="co"><span style="color: #555555;">##  </span><span style="color: #555555; font-style: italic;">lbh1.wav</span><span style="color: #555555;"> </span></span>
 <span class="co"><span style="color: #555555;">##  * Created by </span><span style="color: #555555; font-weight: bold;">ohun </span><span style="color: #555555;">0.1.0</span></span></code></pre>
@@ -769,16 +770,16 @@ own printing method:</p>
 <span class="co"><span style="color: #555555;">## </span><span style="color: #555555; font-style: italic;">template_detector(template.correlations = correlations, threshold = 0.4) </span></span>
 <span class="co"><span style="color: #555555; font-style: italic;">## </span></span>
 <span class="co"><span style="color: #555555; font-weight: bold;">## Contains:</span><span style="color: #555555;"> </span></span>
-<span class="co"><span style="color: #555555;">## *  A selection table data frame with 16 rows and 6 columns: </span></span>
+<span class="co"><span style="color: #555555;">## *  A selection table data frame with 27 rows and 6 columns: </span></span>
 <span class="co"><span style="color: #555555;">## |sound.files | selec|  start|    end|template    | scores|</span></span>
 <span class="co"><span style="color: #555555;">## |:-----------|-----:|------:|------:|:-----------|------:|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     1| 0.0816| 0.2347|lbh1.wav-16 | 0.7158|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     2| 0.5709| 0.7241|lbh1.wav-16 | 0.7246|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     3| 1.0602| 1.2134|lbh1.wav-16 | 0.6442|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     4| 1.1302| 1.2833|lbh1.wav-16 | 0.4265|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     5| 1.3399| 1.4930|lbh1.wav-16 | 0.4010|</span></span>
-<span class="co"><span style="color: #555555;">## |lbh1.wav    |     6| 1.7127| 1.8659|lbh1.wav-16 | 0.7724|</span></span>
-<span class="co"><span style="color: #555555;">## ... and 10 more row(s) </span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     1| 0.0931| 0.2498|lbh1.wav-15 | 0.6030|</span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     2| 0.1281| 0.2848|lbh1.wav-15 | 0.4416|</span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     3| 0.1514| 0.3080|lbh1.wav-15 | 0.4028|</span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     4| 0.1746| 0.3313|lbh1.wav-15 | 0.4072|</span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     5| 0.5705| 0.7272|lbh1.wav-15 | 0.7269|</span></span>
+<span class="co"><span style="color: #555555;">## |lbh1.wav    |     6| 0.6054| 0.7621|lbh1.wav-15 | 0.4089|</span></span>
+<span class="co"><span style="color: #555555;">## ... and 21 more row(s) </span></span>
 <span class="co"><span style="color: #555555;">## </span></span>
 <span class="co"><span style="color: #555555;">##  * A data frame (check.results) generated by check_sels() (as attribute) </span></span>
 <span class="co"><span style="color: #555555;">## created by warbleR 1.1.27</span></span></code></pre>
@@ -797,9 +798,9 @@ detection and correlation scores:</p>
 <code class="sourceCode R"><span class="co"># diagnose</span>
 <span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">##   true.positives false.positives false.negatives split.positives</span>
-<span class="co">## 1             10               1               0               5</span>
+<span class="co">## 1             10               0               0              10</span>
 <span class="co">##   merged.positives overlap.to.true.positives recall precision f1.score</span>
-<span class="co">## 1                0                 0.8610092      1 0.9090909 0.952381</span></code></pre>
+<span class="co">## 1                0                 0.7230055      1         1        1</span></code></pre>
 <p> </p>
 <div class="section level4">
 <h4 id="optimizing-template-based-detection">Optimizing template-based detection<a class="anchor" aria-label="anchor" href="#optimizing-template-based-detection"></a>
@@ -815,22 +816,22 @@ evaluate the performance under different correlation thresholds:</p>
 <code class="sourceCode R"><span class="co"># print output</span>
 <span class="va">optimization</span></code></pre></div>
 <pre><code><span class="co">##   threshold   templates true.positives false.positives false.negatives</span>
-<span class="co">## 1       0.1 lbh1.wav-16             10              43               0</span>
-<span class="co">## 2       0.2 lbh1.wav-16             10              32               0</span>
-<span class="co">## 3       0.3 lbh1.wav-16             10               3               0</span>
-<span class="co">## 4       0.4 lbh1.wav-16             10               1               0</span>
-<span class="co">## 5       0.5 lbh1.wav-16             10               0               0</span>
+<span class="co">## 1       0.1 lbh1.wav-15             10              42               0</span>
+<span class="co">## 2       0.2 lbh1.wav-15             10              22               0</span>
+<span class="co">## 3       0.3 lbh1.wav-15             10               4               0</span>
+<span class="co">## 4       0.4 lbh1.wav-15             10               0               0</span>
+<span class="co">## 5       0.5 lbh1.wav-15             10               0               0</span>
 <span class="co">##   split.positives merged.positives overlap.to.true.positives recall precision</span>
-<span class="co">## 1              10                0                 0.5100857      1 0.1886792</span>
-<span class="co">## 2              10                0                 0.5826374      1 0.2380952</span>
-<span class="co">## 3              10                0                 0.6703757      1 0.7692308</span>
-<span class="co">## 4               5                0                 0.8610092      1 0.9090909</span>
-<span class="co">## 5               0                0                 0.9611086      1 1.0000000</span>
+<span class="co">## 1              10                0                 0.5172444      1 0.1923077</span>
+<span class="co">## 2              10                0                 0.5588146      1 0.3125000</span>
+<span class="co">## 3              10                0                 0.6129631      1 0.7142857</span>
+<span class="co">## 4              10                0                 0.7230055      1 1.0000000</span>
+<span class="co">## 5               0                0                 0.9478477      1 1.0000000</span>
 <span class="co">##    f1.score</span>
-<span class="co">## 1 0.3174603</span>
-<span class="co">## 2 0.3846154</span>
-<span class="co">## 3 0.8695652</span>
-<span class="co">## 4 0.9523810</span>
+<span class="co">## 1 0.3225806</span>
+<span class="co">## 2 0.4761905</span>
+<span class="co">## 3 0.8333333</span>
+<span class="co">## 4 1.0000000</span>
 <span class="co">## 5 1.0000000</span></code></pre>
 <p> </p>
 <p>Additional threshold values can be evaluated without having to run it
@@ -843,29 +844,29 @@ be done when optimizing an energy-based detection):</p>
     threshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span><span class="op">)</span>, previous.output <span class="op">=</span> <span class="va">optimization</span><span class="op">)</span></code></pre></div>
 <pre><code><span class="co">## 2 thresholds will be evaluated:</span></code></pre>
 <pre><code><span class="co">##   threshold   templates true.positives false.positives false.negatives</span>
-<span class="co">## 1       0.1 lbh1.wav-16             10              43               0</span>
-<span class="co">## 2       0.2 lbh1.wav-16             10              32               0</span>
-<span class="co">## 3       0.3 lbh1.wav-16             10               3               0</span>
-<span class="co">## 4       0.4 lbh1.wav-16             10               1               0</span>
-<span class="co">## 5       0.5 lbh1.wav-16             10               0               0</span>
-<span class="co">## 6       0.6 lbh1.wav-16             10               0               0</span>
-<span class="co">## 7       0.7 lbh1.wav-16              7               0               3</span>
+<span class="co">## 1       0.1 lbh1.wav-15             10              42               0</span>
+<span class="co">## 2       0.2 lbh1.wav-15             10              22               0</span>
+<span class="co">## 3       0.3 lbh1.wav-15             10               4               0</span>
+<span class="co">## 4       0.4 lbh1.wav-15             10               0               0</span>
+<span class="co">## 5       0.5 lbh1.wav-15             10               0               0</span>
+<span class="co">## 6       0.6 lbh1.wav-15              9               0               1</span>
+<span class="co">## 7       0.7 lbh1.wav-15              2               0               8</span>
 <span class="co">##   split.positives merged.positives overlap.to.true.positives recall precision</span>
-<span class="co">## 1              10                0                 0.5100857    1.0 0.1886792</span>
-<span class="co">## 2              10                0                 0.5826374    1.0 0.2380952</span>
-<span class="co">## 3              10                0                 0.6703757    1.0 0.7692308</span>
-<span class="co">## 4               5                0                 0.8610092    1.0 0.9090909</span>
-<span class="co">## 5               0                0                 0.9611086    1.0 1.0000000</span>
-<span class="co">## 6               0                0                 0.9611086    1.0 1.0000000</span>
-<span class="co">## 7               0                0                 0.9545278    0.7 1.0000000</span>
+<span class="co">## 1              10                0                 0.5172444    1.0 0.1923077</span>
+<span class="co">## 2              10                0                 0.5588146    1.0 0.3125000</span>
+<span class="co">## 3              10                0                 0.6129631    1.0 0.7142857</span>
+<span class="co">## 4              10                0                 0.7230055    1.0 1.0000000</span>
+<span class="co">## 5               0                0                 0.9478477    1.0 1.0000000</span>
+<span class="co">## 6               0                0                 0.9551485    0.9 1.0000000</span>
+<span class="co">## 7               0                0                 0.9874463    0.2 1.0000000</span>
 <span class="co">##    f1.score</span>
-<span class="co">## 1 0.3174603</span>
-<span class="co">## 2 0.3846154</span>
-<span class="co">## 3 0.8695652</span>
-<span class="co">## 4 0.9523810</span>
+<span class="co">## 1 0.3225806</span>
+<span class="co">## 2 0.4761905</span>
+<span class="co">## 3 0.8333333</span>
+<span class="co">## 4 1.0000000</span>
 <span class="co">## 5 1.0000000</span>
-<span class="co">## 6 1.0000000</span>
-<span class="co">## 7 0.8235294</span></code></pre>
+<span class="co">## 6 0.9473684</span>
+<span class="co">## 7 0.3333333</span></code></pre>
 <p> </p>
 <p>In this case several threshold values can achieved an optimal
 detection.</p>
@@ -1012,18 +1013,18 @@ user’s guide. Psychology press.</li>
 <p> </p>
 <hr>
 <p><font size="4">Session information</font></p>
-<pre><code><span class="co">## R version 4.1.1 (2021-08-10)</span>
+<pre><code><span class="co">## R version 4.2.0 (2022-04-22)</span>
 <span class="co">## Platform: x86_64-pc-linux-gnu (64-bit)</span>
-<span class="co">## Running under: Ubuntu 20.04.2 LTS</span>
+<span class="co">## Running under: Ubuntu 22.04 LTS</span>
 <span class="co">## </span>
 <span class="co">## Matrix products: default</span>
-<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.9.0</span>
-<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.9.0</span>
+<span class="co">## BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.10.0</span>
+<span class="co">## LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.10.0</span>
 <span class="co">## </span>
 <span class="co">## locale:</span>
-<span class="co">##  [1] LC_CTYPE=es_ES.UTF-8       LC_NUMERIC=C              </span>
-<span class="co">##  [3] LC_TIME=es_CR.UTF-8        LC_COLLATE=es_ES.UTF-8    </span>
-<span class="co">##  [5] LC_MONETARY=es_CR.UTF-8    LC_MESSAGES=es_ES.UTF-8   </span>
+<span class="co">##  [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C              </span>
+<span class="co">##  [3] LC_TIME=es_CR.UTF-8        LC_COLLATE=en_US.UTF-8    </span>
+<span class="co">##  [5] LC_MONETARY=es_CR.UTF-8    LC_MESSAGES=en_US.UTF-8   </span>
 <span class="co">##  [7] LC_PAPER=es_CR.UTF-8       LC_NAME=C                 </span>
 <span class="co">##  [9] LC_ADDRESS=C               LC_TELEPHONE=C            </span>
 <span class="co">## [11] LC_MEASUREMENT=es_CR.UTF-8 LC_IDENTIFICATION=C       </span>
@@ -1040,19 +1041,19 @@ user’s guide. Psychology press.</li>
 <span class="co">##  [5] rprojroot_2.0.3   digest_0.6.29     utf8_1.2.2        R6_2.5.1         </span>
 <span class="co">##  [9] Sim.DiffProc_4.8  signal_0.7-7      evaluate_0.15     highr_0.9        </span>
 <span class="co">## [13] ggplot2_3.3.6     pillar_1.7.0      rlang_1.0.3       rstudioapi_0.13  </span>
-<span class="co">## [17] jquerylib_0.1.4   rmarkdown_2.14    pkgdown_2.0.5     textshaping_0.3.6</span>
-<span class="co">## [21] desc_1.4.1        stringr_1.4.0     RCurl_1.98-1.7    munsell_0.5.0    </span>
-<span class="co">## [25] proxy_0.4-27      Deriv_4.1.3       compiler_4.1.1    xfun_0.31        </span>
+<span class="co">## [17] jquerylib_0.1.4   rmarkdown_2.14    pkgdown_2.0.3     textshaping_0.3.6</span>
+<span class="co">## [21] desc_1.4.1        stringr_1.4.0     RCurl_1.98-1.6    munsell_0.5.0    </span>
+<span class="co">## [25] proxy_0.4-26      Deriv_4.1.3       compiler_4.2.0    xfun_0.31        </span>
 <span class="co">## [29] pkgconfig_2.0.3   systemfonts_1.0.4 htmltools_0.5.2   tidyselect_1.1.2 </span>
 <span class="co">## [33] tibble_3.1.7      gridExtra_2.3     codetools_0.2-18  dtw_1.22-3       </span>
 <span class="co">## [37] fansi_1.0.3       viridisLite_0.4.0 crayon_1.5.1      dplyr_1.0.9      </span>
-<span class="co">## [41] shinyBS_0.61.1    MASS_7.3-54       bitops_1.0-7      grid_4.1.1       </span>
-<span class="co">## [45] jsonlite_1.8.0    gtable_0.3.0      lifecycle_1.0.1   DBI_1.1.3        </span>
+<span class="co">## [41] shinyBS_0.61.1    MASS_7.3-57       bitops_1.0-7      grid_4.2.0       </span>
+<span class="co">## [45] jsonlite_1.8.0    gtable_0.3.0      lifecycle_1.0.1   DBI_1.1.2        </span>
 <span class="co">## [49] magrittr_2.0.3    formatR_1.12      scales_1.2.0      cli_3.3.0        </span>
 <span class="co">## [53] stringi_1.7.6     cachem_1.0.6      pbapply_1.5-0     viridis_0.6.2    </span>
 <span class="co">## [57] fs_1.5.2          bslib_0.3.1       ellipsis_0.3.2    ragg_1.2.2       </span>
 <span class="co">## [61] vctrs_0.4.1       generics_0.1.2    rjson_0.2.21      iterators_1.0.14 </span>
-<span class="co">## [65] tools_4.1.1       glue_1.6.2        purrr_0.3.4       parallel_4.1.1   </span>
+<span class="co">## [65] tools_4.2.0       glue_1.6.2        purrr_0.3.4       parallel_4.2.0   </span>
 <span class="co">## [69] fastmap_1.1.0     yaml_2.3.5        colorspace_2.0-3  soundgen_2.5.1   </span>
 <span class="co">## [73] memoise_2.0.1     sass_0.4.1</span></code></pre>
 </div>
@@ -1070,7 +1071,7 @@ user’s guide. Psychology press.</li>
 
 <div class="pkgdown-footer-right">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer>
