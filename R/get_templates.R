@@ -2,21 +2,23 @@
 #'
 #' @description \code{get_templates} find the signals that are closer to the acoustic space  centroid (i.e. close to the average acoustic structure) in a reference table.
 #' @usage get_templates(reference, acoustic.space = NULL, path = ".",
-#' n.sub.spaces = 1, ...)
+#' n.sub.spaces = 1, plot = TRUE, color = "#21908C4D", ...)
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
 #' (start and end).
 #' @param acoustic.space Numeric matrix or data frame with the two dimensions of a custom acoustic space to be used for finding templates. if not supplied the acoustic space is calculated internally (default). Optional. Note that the function assumes that 'reference' and 'acoustic.space' refer to the same signals and similarly ordered.
 #' @param path Character string containing the directory path where the sound files are located.
 #'The current working directory is used as default.
-#'@param n.sub.spaces Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal size slices from a circle centered at the centroid of the acoustic space.
+#'@param n.sub.spaces Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space.
+#' @param plot Logical to control if the plot is created. Default is \code{TRUE}.
+#' @param color Character string with the point color. Default is '#21908C4D'.
 #' @param ... Additional arguments to be passed to \code{\link[warbleR]{spectro_analysis}} for further customization when measuring parameters to calculate the acoustic space.
 #' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each signal by
 #'   sound file. If no signal was detected for a sound file it is not included in the output data frame.
 #' @export
 #' @name get_templates
 #' @details This function finds signals from a reference table that are representative of the acoustic variation. This is done by finding the signals closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function \code{\link[warbleR]{spectro_analysis}} and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function \code{\link[stats]{prcomp}}. The rationale is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space.
-#' If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal size slices from a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
+#' If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -44,6 +46,8 @@ get_templates <-
            acoustic.space = NULL,
            path = ".",
            n.sub.spaces = 1,
+           plot = TRUE,
+           color = "#21908C4D",
            ...) {
 
      if (!is.null(acoustic.space))
@@ -75,9 +79,21 @@ get_templates <-
 
       # keep those as acoustic space
       acoustic.space <- pca$x[, 1:2]
-    }
 
-    template_indx <- find_templates(reference = reference, n.sub.spaces = n.sub.spaces, space = acoustic.space, plot = TRUE)
+      plot_labs <- c("PC1", "PC2")
+    } else {
+
+      if (length(dim(acoustic.space)) != 2)
+        stop("Acoustic space must be either a data frame or a matrix with 2 column")
+
+      if (ncol(acoustic.space) != 2)
+        stop("Acoustic space must have 2 columns")
+
+      plot_labs <- if (!is.null(colnames(acoustic.space))) colnames(acoustic.space) else
+c("Dimension 1", "Dimension 2")
+      }
+
+    template_indx <- find_templates(reference = reference, n.sub.spaces = n.sub.spaces, space = acoustic.space, plot = plot, color = color, xlab = plot_labs[1], ylab = plot_labs[2])
 
     template_indx <- template_indx[!is.na(template_indx)]
 
@@ -94,7 +110,7 @@ get_templates <-
 
 
 # internal function to find (and plot) templates in the acoustic space
-find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = TRUE)
+find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = TRUE, color = "#21908C4D", xlab = "Dimension 1", ylab = "Dimension 2")
 {
   x <- rep(1, n.sub.spaces)
   space <- space[, 1:2]
@@ -120,7 +136,7 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
   }
 
   if (plot)
-  plot(space[, 1] + mean_dim1, space[, 2] + mean_dim2, pch = 20, cex = 2, col = "#4401544D", xlab = "Dimension 1", ylab = "Dimension 2")
+  plot(space[, 1] + mean_dim1, space[, 2] + mean_dim2, pch = 20, cex = 2, col = color, xlab = xlab, ylab = ylab)
 
   # get polygon for each sub space
   if (n.sub.spaces > 1)
@@ -128,10 +144,8 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
     n <- max(2, floor(100 * dx[i])) # 100 equivalent to edges in pie()
     P <- t2xy(seq.int(x[i], x[i + 1], length.out = n))
 
-    if (plot){
-    lines(c(P$x[1], 0) + mean_dim1, c(P$y[1], 0) + mean_dim2, lty = 3)
-    lines(c(0, P$x[n]) + mean_dim1, c(0, P$y[n]) + mean_dim2, lty = 3)
-}
+    if (plot)
+    lines(c(P$x[1], 0) + mean_dim1, c(P$y[1], 0) + mean_dim2, lty = 3, col = "gray", lwd = 3)
 
     pol_df <- data.frame(x = c(P$x, 0), y = c(P$y, 0))
     poly <- sp::Polygons(list(sp::Polygon(pol_df)), ID = 1)
