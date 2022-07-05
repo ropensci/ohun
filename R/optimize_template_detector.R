@@ -158,7 +158,6 @@ optimize_template_detector <- function(template.correlations, reference, thresho
     diagnostics <- do.call(rbind, diagnostics_list)
 
     # summarize sound files
-    if (by.sound.file)
       threshold <- rep(threshold, each = nrow(diagnostics_list[[1]]))
 
     # add thresholds to output
