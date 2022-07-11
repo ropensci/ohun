@@ -20,6 +20,7 @@ The main features of the package are:
 
 The package offers functions for:
 
+   - Curate references and acoustic data sets
    - Diagnose detection performance
    - Optimize detection routines based on reference annotations
    - Energy-based detection

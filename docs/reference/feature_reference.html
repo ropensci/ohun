@@ -59,29 +59,18 @@ units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>reference</dt>
 <dd><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.</p></dd>
-
-
 <dt>path</dt>
 <dd><p>Character string containing the directory path where the sound files are located. If supplied then duty cycle and peak frequency features are returned. These features are more helpful for tuning a energy-based detection. Default is <code>NULL</code>.</p></dd>
-
-
 <dt>by.sound.file</dt>
 <dd><p>Logical argument to control whether features are summarized across sound files (when <code>by.sound.file = FALSE</code>, and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is <code>FALSE</code>.</p></dd>
-
-
 <dt>units</dt>
 <dd><p>A character vector of length 2 with the units to be used for time and frequency parameters, in that order. Default is <code>c("ms", "kHz")</code>. It can also take 's' and 'Hz'.</p></dd>
-
-
 <dt>digits</dt>
 <dd><p>Numeric vector of length 1 with the number of decimals to include. Default is 2.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p>The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections). If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file in which sounds were detected) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).</p>
+    <p>The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections) and of the number of annotations by sound file. If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file in which sounds were detected) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -125,7 +114,7 @@ units <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

@@ -3,7 +3,7 @@ pkgdown: 2.0.3
 pkgdown_sha: ~
 articles:
   ohun: ohun.html
-last_built: 2022-07-11T18:57Z
+last_built: 2022-07-11T21:29Z
 urls:
   reference: https://marce10.github.io/ohun/reference
   article: https://marce10.github.io/ohun/articles

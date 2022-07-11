@@ -42,12 +42,12 @@ editor_options:
 
 - The use of reference annotations for detection optimization and diagnostic 
 - The use of signal detection theory indices to evaluate detection performance 
-- Batch processing of sound files for improving computational performance
 
 &nbsp;
 
 <font size = "4">The package offers functions for: </font>
 
+- Curate references and acoustic data sets
 - Diagnose detection performance
 - Optimize detection routines based on reference annotations
 - Energy-based detection

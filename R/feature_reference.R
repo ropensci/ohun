@@ -8,7 +8,7 @@
 #' @param by.sound.file Logical argument to control whether features are summarized across sound files (when \code{by.sound.file = FALSE}, and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
 #' @param units A character vector of length 2 with the units to be used for time and frequency parameters, in that order. Default is \code{c("ms", "kHz")}. It can also take 's' and 'Hz'.
 #' @param digits Numeric vector of length 1 with the number of decimals to include. Default is 2.
-#' @return The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections). If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file in which sounds were detected) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).
+#' @return The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections) and of the number of annotations by sound file. If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file in which sounds were detected) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).
 #' @export
 #' @name feature_reference
 #' @details The function extract quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
@@ -37,10 +37,11 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
   if (is(reference, "extended_selection_table"))
     stop("The function is not defined for class 'extended_selection_table'. Use 'selection_table' or 'data.frame' instea.")
 
-  internal_feature_reference <- function(reference, path = NULL){
+  internal_feature_reference <- function(reference, path = NULL, total.annotations = FALSE){
 
     reference$duration <- reference$end - reference$start
     reference <- warbleR::gaps(X = reference, pb = FALSE)
+    count_annotations <- table(reference$sound.files)
 
     output <- data.frame(min.sel.duration = min(reference$duration, na.rm = TRUE))
     output$mean.sel.duration <- mean(reference$duration, na.rm = TRUE)
@@ -48,6 +49,13 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
     suppressWarnings(output$min.gap.duration <- min(reference$gaps, na.rm = TRUE))
     suppressWarnings(output$mean.gap.duration <- mean(reference$gaps, na.rm = TRUE))
     suppressWarnings(output$max.gap.duration <- max(reference$gaps, na.rm = TRUE))
+
+    if (total.annotations)
+      output$annotations <- nrow(reference) else
+      {
+    output$min.annotations <- min(count_annotations)
+    output$mean.annotations <- mean(count_annotations)
+    output$max.annotations <- max(count_annotations)}
 
     # frequency range descriptors
     if (!is.null(reference$bottom.freq) & !is.null(reference$top.freq)){
@@ -87,11 +95,11 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
     by.sound.file <- TRUE
 
   if (!by.sound.file)
-    output <- internal_feature_reference(reference, path) else {
+    output <- internal_feature_reference(reference, path, total.annotations = FALSE) else {
 
       output_list <- lapply(unique(reference$sound.files), function(x){
 
-        sub_output <- internal_feature_reference(reference = reference[reference$sound.files == x, ], path)
+        sub_output <- internal_feature_reference(reference = reference[reference$sound.files == x, ], path, total.annotations = TRUE)
         sub_output$sound.files <- x
         return(sub_output)
       })
@@ -122,7 +130,7 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
     output <- matrix(unlist(other_feats), ncol = 3, byrow = TRUE)
   colnames(output) <- c("min", "mean", "max")
 
-  row_names <-  c("sel.duration", "gap.duration", "duty.cycle", "peak.amplitude", "bottom.freq", "top.freq")
+  row_names <-  c("sel.duration", "gap.duration", "annotations", "duty.cycle", "peak.amplitude", "bottom.freq", "top.freq")
 
   if (is.null(path))
     row_names <- grep("duty.cycle|peak.amplitude", row_names, value = TRUE, invert = TRUE)
