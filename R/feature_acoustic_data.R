@@ -30,7 +30,7 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   # get information by sound file
   info_files <- warbleR::info_sound_files(path = path, pb = FALSE)
 
-  # get file size (should be)
+  # get file size (should be removed after updating warbleR to )
   info_files$wav.size <- file.size(file.path(path, info_files$sound.files)) / 1000000
 
   cat(crayon::silver(paste0("Features of the acoustic data set in '", crayon::bold(paste0(normalizePath(path), "':")))))
