@@ -27,8 +27,10 @@
 
 feature_acoustic_data <- function(path = ".", digits = 2) {
 
+  # get information by sound file
   info_files <- warbleR::info_sound_files(path = path, pb = FALSE)
 
+  # get file size (should be)
   info_files$wav.size <- file.size(file.path(path, info_files$sound.files)) / 1000000
 
   cat(crayon::silver(paste0("Features of the acoustic data set in '", crayon::bold(paste0(normalizePath(path), "':")))))
@@ -72,10 +74,10 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
 
  # number of channels
  tab_ch <- table(info_files$channels)
- tab_ch <- paste0(names(tab_ch), " channels", " (", tab_ch, ")")
+ tab_ch <- paste0(names(tab_ch), " channel(s)", " (", tab_ch, ")")
  tab_ch <- paste(tab_ch, collapse =  "; ")
 
- ch_message <- paste0("\n* ", length(unique(info_files$channels)), " number of channel(s) ", "(", tab_ch, ")")
+ ch_message <- paste0("\n* ", length(unique(info_files$channels)), " number of channels ", "(", tab_ch, ")")
  if (length(unique(info_files$channels)) > 1)
    cat(crayon::red(ch_message)) else
      cat(crayon::silver(ch_message))
