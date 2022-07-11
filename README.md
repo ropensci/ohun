@@ -8,27 +8,24 @@ ohun: optimizing acoustic signal detection
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Licence](https://img.shields.io/badge/licence-GPL--3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Licence](https://img.shields.io/badge/https://img.shields.io/badge/licence-GPL--2-blue.svg.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2022--07--01-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2022--07--11-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automatic detection of acoustic signals, providing functions to diagnose
-and optimize detection routines. Detections from other software can also
-be explored and optimized.
+and optimize detection routines.
 
 The main features of the package are:
 
--   The use of reference annotations for detection optimization and
-    diagnostic
+-   The use of reference annotations for detection diagnostic and
+    optimization
 -   The use of signal detection theory indices to evaluate detection
-    performance
--   Batch processing of sound files for improving computational
     performance
 
 The package offers functions for:

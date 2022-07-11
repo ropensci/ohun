@@ -11,14 +11,13 @@ editor_options:
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines.
 
 The main features of the package are:
  
-   - The use of reference annotations for detection optimization and diagnostic 
+   - The use of reference annotations for detection diagnostic and optimization 
    - The use of signal detection theory indices to evaluate detection performance 
-   - Batch processing of sound files for improving computational performance
-   
+
 The package offers functions for:
 
    - Diagnose detection performance

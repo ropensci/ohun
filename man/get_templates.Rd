@@ -5,7 +5,7 @@
 \title{Find templates more similar to other signals in a reference table}
 \usage{
 get_templates(reference, acoustic.space = NULL, path = ".",
-n.sub.spaces = 1, ...)
+n.sub.spaces = 1, plot = TRUE, color = "#21908C4D", ...)
 }
 \arguments{
 \item{reference}{Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
@@ -17,7 +17,11 @@ for sound file name (sound.files), selection number (selec), and start and end t
 \item{path}{Character string containing the directory path where the sound files are located.
 The current working directory is used as default.}
 
-\item{n.sub.spaces}{Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal size slices from a circle centered at the centroid of the acoustic space.}
+\item{n.sub.spaces}{Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space.}
+
+\item{plot}{Logical to control if the plot is created. Default is \code{TRUE}.}
+
+\item{color}{Character string with the point color. Default is '#21908C4D'.}
 
 \item{...}{Additional arguments to be passed to \code{\link[warbleR]{spectro_analysis}} for further customization when measuring parameters to calculate the acoustic space.}
 }
@@ -30,7 +34,7 @@ The function returns a 'selection_table' (warbleR package's formats, see \code{\
 }
 \details{
 This function finds signals from a reference table that are representative of the acoustic variation. This is done by finding the signals closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function \code{\link[warbleR]{spectro_analysis}} and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function \code{\link[stats]{prcomp}}. The rationale is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space.
-If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal size slices from a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
+If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
 }
 \examples{
 {
