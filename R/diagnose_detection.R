@@ -2,7 +2,7 @@
 #'
 #' @description \code{diagnose_detection} evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table
 #' @usage diagnose_detection(reference, detection, by.sound.file = FALSE,
-#' time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
+#' time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL, by = NULL)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the signals) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no signals are found in those files, so detection from those files are all false positives.
 #' @param by.sound.file Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE}, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
@@ -11,6 +11,7 @@
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
+#' @param by Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
 #'  \item \code{true.positives}: number of signals in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
@@ -30,7 +31,7 @@
 #'  }
 #' @export
 #' @name diagnose_detection
-#' @details The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
+#' @details The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected. The function takes any overlap between detected signals and target signals as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'.
 #' @examples {
 #' # load data
 #' data("lbh_reference")
@@ -73,9 +74,28 @@
 #' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
 #' }
 # last modification on sept-2021 (MAS)
-diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
+diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL, by = NULL)
 {
+  # do it by
+  # run the function for each subset split by "by"
+  if (!is.null(by)){
+    split_X <- split(x = det, f = det[, by])
 
+    split_diagnostic <- warbleR:::pblapply_wrblr_int(X = 1:length(split_X), cl = 1, pbar = pb, FUN = function(x) {
+
+      by_diag <- diagnose_detection(reference = reference, detection = split_X[[x]], pb = FALSE, parallel = parallel, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
+
+      # add by label
+      by_diag$by <- names(split_X)[x]
+
+      # order columns
+      by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
+    })
+
+    performance_df <- do.call(rbind, split_diagnostic)
+
+    } else
+  {
   # make it a data frame if selection table
   if (warbleR::is_selection_table(detection))
     detection <- as.data.frame(detection)
@@ -226,5 +246,6 @@ if (!time.diagnostics)
 
 # fix row names
 rownames(performance_df) <- 1:nrow(performance_df)
-    return(performance_df)
+}
+  return(performance_df)
 }

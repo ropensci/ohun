@@ -19,7 +19,7 @@
 #' @seealso \code{\link[warbleR]{cut_sels}}
 #' @export
 #' @name split_acoustic_data
-#' @return Wave files for each segment in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav') and a data frame in the R environment containing the name of the original sound files (org.sound.files), the name of the clips (sound.files) and the start and end of clips in the original files. Clips are saved in .wav format. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead.
+#' @return Wave files for each segment in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav') and a data frame in the R environment containing the name of the original sound files (original.sound.files), the name of the clips (sound.files) and the start and end of clips in the original files. Clips are saved in .wav format. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead.
 #' @details This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
 #' @examples
 #' {
@@ -107,15 +107,15 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     if (sq[length(sq)] != wvdr$duration[wvdr$sound.files == x])
       sq <- c(sq, wvdr$duration[wvdr$sound.files == x])
 
-    out <- data.frame(org.sound.files = x, sound.files = paste0(gsub("\\.wav$|\\.wac$|\\.mp3$|\\.flac$", "", x, ignore.case = TRUE), "-", 1:(length(sq) - 1), ".wav"), start = sq[-length(sq)], end = sq[-1], stringsAsFactors = FALSE)
+    out <- data.frame(original.sound.files = x, sound.files = paste0(gsub("\\.wav$|\\.wac$|\\.mp3$|\\.flac$", "", x, ignore.case = TRUE), "-", 1:(length(sq) - 1), ".wav"), start = sq[-length(sq)], end = sq[-1], stringsAsFactors = FALSE)
       } else # if segment duration is longer or equal
-        out <- data.frame(org.sound.files = x, sound.files = x, start = 0, end = wvdr$duration[wvdr$sound.files == x], stringsAsFactors = FALSE)
+        out <- data.frame(original.sound.files = x, sound.files = x, start = 0, end = wvdr$duration[wvdr$sound.files == x], stringsAsFactors = FALSE)
     } else {
       # get start and end of segments
       sq <- seq(from = 0, to = wvdr$duration[wvdr$sound.files == x], length.out = sgmts + 1)
 
       # put in data frame
-      out <- data.frame(org.sound.files = x, sound.files = paste0(gsub("\\.wav$|\\.wac$|\\.mp3$|\\.flac$", "", x, ignore.case = TRUE), "-", 1:(length(sq) - 1), ".wav"), start = sq[-length(sq)], end = sq[-1], stringsAsFactors = FALSE)
+      out <- data.frame(original.sound.files = x, sound.files = paste0(gsub("\\.wav$|\\.wac$|\\.mp3$|\\.flac$", "", x, ignore.case = TRUE), "-", 1:(length(sq) - 1), ".wav"), start = sq[-length(sq)], end = sq[-1], stringsAsFactors = FALSE)
       }
 
     return(out)
@@ -132,10 +132,10 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     cl <- parallel::makePSOCKcluster(getOption("cl.cores", parallel)) else cl <- parallel
 
     # split using a loop only the ones that are shorter than segments
-    a_l <- warbleR:::pblapply_wrblr_int(pbar = pb, X = which(split.df$org.sound.files != split.df$sound.files), cl =  cl, FUN = function(x) {
+    a_l <- warbleR:::pblapply_wrblr_int(pbar = pb, X = which(split.df$original.sound.files != split.df$sound.files), cl =  cl, FUN = function(x) {
 
   # read clip
-  clip <- warbleR::read_sound_file(X = split.df$org.sound.files[x], from = split.df$start[x], to = split.df$end[x], path = path)
+  clip <- warbleR::read_sound_file(X = split.df$original.sound.files[x], from = split.df$start[x], to = split.df$end[x], path = path)
 
   # save
   tuneR::writeWave(extensible = FALSE, object = clip, filename = file.path(path, split.df$sound.files[x]))
@@ -153,7 +153,7 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     ## cbind new file data and X to get overlapping sels
     # make analogous columns on both data frames
     split.df$new.sound.files <- split.df$sound.files
-    split.df$sound.files <- split.df$org.sound.files
+    split.df$sound.files <- split.df$original.sound.files
     split.df$bottom.freq <- split.df$top.freq <- NA
     X$new.sound.files <- NA
 
@@ -180,7 +180,7 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     org.sls.df <- ovlp.df[is.na(ovlp.df$new.sound.files), ]
 
     # re-add other columns
-    X$org.sound.files <- X$sound.files
+    X$original.sound.files <- X$sound.files
     org.sls.df <- merge(org.sls.df, X[, setdiff(names(X), clms)], by = "sel.id")
 
     # order columns

@@ -5,7 +5,7 @@
 \title{Evaluate the performance of a signal detection procedure}
 \usage{
 diagnose_detection(reference, detection, by.sound.file = FALSE,
-time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL)
+time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL, by = NULL)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
@@ -22,6 +22,8 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
 \item{path}{Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.}
+
+\item{by}{Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.}
 }
 \value{
 A data frame including the following detection performance diagnostics:
@@ -46,7 +48,7 @@ A data frame including the following detection performance diagnostics:
 \code{diagnose_detection} evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table
 }
 \details{
-The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected.
+The function evaluates the performance of a signal detection procedure by comparing its output selection table to a reference selection table in which all signals of interest have been selected. The function takes any overlap between detected signals and target signals as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'.
 }
 \examples{
 {
