@@ -91,7 +91,12 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
       # order columns
       by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
-    })
+
+      # rename by column
+      names(by_diag)[1] <- by
+
+      return(by_diag)
+      })
 
     performance_df <- do.call(rbind, split_diagnostic)
 
