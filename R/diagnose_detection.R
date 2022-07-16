@@ -79,14 +79,15 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   # do it by
   # run the function for each subset split by "by"
   if (!is.null(by)){
-    split_X <- split(x = det, f = det[, by])
 
-    split_diagnostic <- warbleR:::pblapply_wrblr_int(X = 1:length(split_X), cl = 1, pbar = pb, FUN = function(x) {
+    split_det <- split(x = detection, f = detection[, by])
 
-      by_diag <- diagnose_detection(reference = reference, detection = split_X[[x]], pb = FALSE, parallel = parallel, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
+    split_diagnostic <- warbleR:::pblapply_wrblr_int(X = 1:length(split_det), cl = 1, pbar = pb, FUN = function(x) {
+
+      by_diag <- diagnose_detection(reference = reference, detection = split_det[[x]], pb = FALSE, parallel = parallel, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
 
       # add by label
-      by_diag$by <- names(split_X)[x]
+      by_diag$by <- names(split_det)[x]
 
       # order columns
       by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
