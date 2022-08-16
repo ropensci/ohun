@@ -5,5 +5,5 @@
 #' @description \code{lbh2} a wave object with is a long-billed hermit songs extracted from xeno-cantos '154129' recording.
 #'
 #'
-#' @source Marcelo Araya Salas, warbleR
+#' @source Marcelo Araya-Salas
 "lbh2"

@@ -1,6 +1,6 @@
-#' @title Detects the start and end of acoustic signals
+#' @title Detects the start and end of sound events
 #'
-#' @description \code{energy_detector} detects the start and end of acoustic signals based on energy and time attributes
+#' @description \code{energy_detector} detects the start and end of sound events based on energy and time attributes
 #' @usage energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL,
 #' thinning = 1, bp = NULL, smooth = 5, threshold = 5, peak.amplitude = 0,
 #' hold.time = 0, min.duration = 0, max.duration = Inf, parallel = 1, pb = TRUE)
@@ -18,23 +18,23 @@
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
-#' @param threshold Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting signal occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.
-#' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. Detections below that value are excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the signal (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target signals compared to non-target signals or when keeping only the best examples of the target signals. Default is 0.
+#' @param threshold Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting sound event occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.
+#' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. Detections below that value are excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events. Default is 0.
 #' @param hold.time Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied).
 #' @param min.duration Numeric vector of length 1 giving the shortest duration (in
-#'   ms) of the signals to be detected. It removes signals below that
-#'   threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration. Default is 0 (i.e. no filtering based on minimum duration).
+#'   ms) of the sound events to be detected. It removes sound events below that
+#'   threshold. If 'hold.time' is supplied sound events are first merged and then filtered by duration. Default is 0 (i.e. no filtering based on minimum duration).
 #' @param max.duration Numeric vector of length 1 giving the longest duration (in
-#'   ms) of the signals to be detected. It removes signals above that
-#'   threshold. If 'hold.time' is supplied signals are first merged and then filtered by duration.  Default is \code{Inf} (i.e. no filtering based on maximum duration).
+#'   ms) of the sound events to be detected. It removes sound events above that
+#'   threshold. If 'hold.time' is supplied sound events are first merged and then filtered by duration.  Default is \code{Inf} (i.e. no filtering based on maximum duration).
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each signal by
-#'   sound file. If no signal was detected for a sound file it is not included in the output data frame.
+#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each sound event by
+#'   sound file. If no sound event was detected for a sound file it is not included in the output data frame.
 #' @export
 #' @name energy_detector
-#' @details This function detects the time position of target signals based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those signals with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
+#' @details This function detects the time position of target sound events based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -95,7 +95,7 @@
 #' }
 #'
 #' @references {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 #' @seealso \code{\link{optimize_energy_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
@@ -206,7 +206,7 @@ energy_detector <-
         if (is.null(files))
           files <- names(envelopes)[-length(envelopes)]
 
-   # function for detecting signals (i is the file name)
+   # function for detecting sound events (i is the file name)
     detect_FUN <-
       function(file,
                wl,
@@ -258,7 +258,7 @@ energy_detector <-
               return(out)
           }))
 
-          ## FIX IF START OR END OF SIGNALS IS NOT INCLUDED IN SOUND FILE
+          ## FIX IF START OR END OF sound eventS IS NOT INCLUDED IN SOUND FILE
           # get start and end of detections
           # starts are the positive ones
           starts <- cross_thresh[cross_thresh > 0]
@@ -376,7 +376,7 @@ energy_detector <-
               } else detections_df <- no_ovlp # if not return non-overlapping
             }
 
-            #remove signals based on duration
+            #remove sound events based on duration
             if (min.duration > 0)
               detections_df <- detections_df[detections_df$duration > min.duration / 1000, ]
             if (max.duration < Inf)

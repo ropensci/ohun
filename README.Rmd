@@ -1,5 +1,5 @@
 ---
-title: "ohun: optimizing acoustic signal detection"
+title: "ohun: optimizing sound event detection"
 output: github_document
 editor_options: 
   chunk_output_type: console
@@ -11,7 +11,7 @@ editor_options:
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines.
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines.
 
 The main features of the package are:
  
@@ -42,4 +42,4 @@ library(ohun)
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.

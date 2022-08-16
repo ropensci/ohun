@@ -8,7 +8,7 @@
 An object of class \code{Wave} of length 110250.
 }
 \source{
-Marcelo Araya Salas, warbleR
+Marcelo Araya-Salas
 }
 \usage{
 data(lbh1)

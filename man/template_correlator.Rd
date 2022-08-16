@@ -9,8 +9,8 @@ wn ='hanning', cor.method = "pearson", parallel = 1, path = ".",
 pb = TRUE, type = "fourier", fbtype = "mel", ...)
 }
 \arguments{
-\item{templates}{'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the signal(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
-selection number (selec), and start and end time of signal (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.}
+\item{templates}{'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
+selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.}
 
 \item{files}{Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.}
 
@@ -41,13 +41,13 @@ The current working directory is used as default.}
 \item{...}{Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.}
 }
 \value{
-The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer signal ocurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
+The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
 }
 \description{
 \code{template_correlator} estimates templates cross-correlation across multiple sound files.
 }
 \details{
-This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier tranformation, time-frequency representations from auditory scales (including ceptral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for infering signal ocurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
+This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier tranformation, time-frequency representations from auditory scales (including ceptral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for infering sound event ocurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
 }
 \examples{
 {
@@ -98,7 +98,7 @@ tc_fr_est$`lbh2.wav_4-1/lbh2.wav`$correlation.scores)
 }
 \references{
 {
-Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 
 Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.
 

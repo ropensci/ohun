@@ -61,66 +61,41 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>wave</dt>
 <dd><p>A 'wave' class object.</p></dd>
-
-
 <dt>reference</dt>
-<dd><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals). Must contained at least the following columns: "sound.files", "selec", "start" and "end".</p></dd>
-
-
+<dd><p>Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".</p></dd>
 <dt>detection</dt>
-<dd><p>Data frame or 'selection.table' with the detection (start and end of the signals) Must contained at least the following columns: "sound.files", "selec", "start" and "end".</p></dd>
-
-
+<dd><p>Data frame or 'selection.table' with the detection (start and end of the sound events) Must contained at least the following columns: "sound.files", "selec", "start" and "end".</p></dd>
 <dt>envelope</dt>
 <dd><p>Logical to control whether the amplitude envelope is plotted. Default is <code>FALSE</code>.</p></dd>
-
-
 <dt>threshold</dt>
 <dd><p>A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is <code>NULL</code>.</p></dd>
-
-
 <dt>smooth</dt>
 <dd><p>A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.</p></dd>
-
-
 <dt>collevels</dt>
 <dd><p>Numeric sequence of negative numbers to control color partitioning and amplitude values that are shown (as in <code><a href="https://rdrr.io/pkg/seewave/man/spectro.html" class="external-link">spectro</a></code>).</p></dd>
-
-
 <dt>palette</dt>
 <dd><p>Function with the color palette to be used on the spectrogram (as in <code><a href="https://rdrr.io/pkg/seewave/man/spectro.html" class="external-link">spectro</a></code>)</p></dd>
-
-
 <dt>template.correlation</dt>
 <dd><p>List extracted from the output of <code><a href="template_correlator.html">template_correlator</a></code> containing the correlation scores and metadata for an specific sound file/template dyad. For instance 'correlations[[1]]' where 'correlations' is the output of a <code><a href="template_correlator.html">template_correlator</a></code> call. If supplied the correlation is also plotted. Default is <code>NULL</code>.</p></dd>
-
-
 <dt>line.x.position</dt>
-<dd><p>Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting signals. Default is 2.</p></dd>
-
-
+<dd><p>Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting sound events. Default is 2.</p></dd>
 <dt>hop.size</dt>
 <dd><p>A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.</p></dd>
-
-
 <dt>...</dt>
 <dd><p>Additional arguments to be passed to  <code><a href="https://rdrr.io/pkg/seewave/man/spectro.html" class="external-link">spectro</a></code> for further spectrogram customization.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p>A spectrogram along with lines highlighting the position of signals in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.</p>
+    <p>A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function plots spectrograms annotated with the position of signals. Mostly created for graphs included in the vignette. Only works on a single 'wave' object at the time.</p>
+    <p>This function plots spectrograms annotated with the position of sound events. Mostly created for graphs included in the vignette. Only works on a single 'wave' object at the time.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.</p>
+    <p>#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -161,7 +136,7 @@ wl <span class="op">=</span> <span class="fl">200</span>, ovlp <span class="op">
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

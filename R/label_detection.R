@@ -1,21 +1,21 @@
-#' @title Evaluate the performance of a signal detection procedure
+#' @title Evaluate the performance of a sound event detection procedure
 #'
-#' @description \code{label_detection} evaluates the performance of a signal detection procedure comparing the output selection table to a reference selection table
+#' @description \code{label_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
 #' @usage label_detection(reference, detection, parallel = 1, pb = TRUE)
-#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
-#' @param detection Data frame or 'selection.table' with the detections (start and end of the signals) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no signals are found in those files, so detection from those files are all false positives.
+#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
+#' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
 #' \itemize{
 #'  \item \code{detection.class}: indicates the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
-#'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected signal (only supplied for true positives).
-#'  \item \code{overlap}: contains the proportion of the reference signal that is overlapped in time by the detection (only supplied for true positives).
+#'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected sound event (only supplied for true positives).
+#'  \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (only supplied for true positives).
 #'  }
 #' @export
 #' @name label_detection
-#' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all signals of interest have been selected.
+#' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.
 #' @examples {
 #' # load data
 #' data("lbh_reference")
@@ -55,7 +55,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on jul-16-2021 (MAS)
 label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
@@ -127,7 +127,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
 
         if (nrow(sub_detec) > 0){
 
-        # get index of reference signals to which each detection overlaps
+        # get index of reference sound events to which each detection overlaps
         true_positives_refer_row_id <- lapply(1:nrow(sub_detec), function(y){
 
           # defined as any detection that overlaps with the template selections

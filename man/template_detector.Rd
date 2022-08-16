@@ -13,7 +13,7 @@ template_detector(template.correlations, parallel = 1, threshold, pb = TRUE,
 \item{parallel}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
-\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting signal occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.}
+\item{threshold}{Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting sound event occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
@@ -21,13 +21,13 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 }
 \value{
 The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) with the start and end and correlation score for the
-detected signals.
+detected sound events.
 }
 \description{
-\code{template_detector} find signal occurrences in cross-correlation vectors from \code{\link{template_correlator}}
+\code{template_detector} find sound event occurrences in cross-correlation vectors from \code{\link{template_correlator}}
 }
 \details{
-This function infers signals occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected signals as well as the cross-correlation score ('scores' column) for each detection.
+This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection.
 }
 \examples{
 {
@@ -69,7 +69,7 @@ diagnose_detection(reference = lbh_reference, detection = td)
 }
 \references{
 {
-Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 }
 }
 \seealso{

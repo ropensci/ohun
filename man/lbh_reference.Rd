@@ -3,13 +3,13 @@
 \docType{data}
 \name{lbh_reference}
 \alias{lbh_reference}
-\title{Example data frame of a selection table including all signals of interests.}
+\title{Example data frame of a selection table including all sound events of interests.}
 \format{
 A data frame with 19 rows and 6 variables: \describe{
  \item{sound.files}{recording names}
  \item{selec}{selection numbers within recording}
- \item{start}{start times of selected signal}
- \item{end}{end times of selected signal}
+ \item{start}{start times of selected sound event}
+ \item{end}{end times of selected sound event}
  \item{bottom.freq}{lower limit of frequency range}
  \item{top.freq}{upper limit of frequency range}
 }

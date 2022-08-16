@@ -2,7 +2,7 @@
 #'
 #' @description \code{merge_overlaps} merges several overlapping selections a single selection
 #' @usage merge_overlaps(X, pb = TRUE, parallel = 1)
-#' @param X Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the signals). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
+#' @param X Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param parallel Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
@@ -28,7 +28,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on jan-2022 (MAS)
 

@@ -1,24 +1,24 @@
-#' @title Find templates more similar to other signals in a reference table
+#' @title Find templates representative of the structural variation of sound events
 #'
-#' @description \code{get_templates} find the signals that are closer to the acoustic space  centroid (i.e. close to the average acoustic structure) in a reference table.
+#' @description \code{get_templates} find the sound events that are closer to the acoustic space centroid (i.e. close to the average acoustic structure) in a reference table.
 #' @usage get_templates(reference, acoustic.space = NULL, path = ".",
 #' n.sub.spaces = 1, plot = TRUE, color = "#21908C4D", ...)
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
-#' for sound file name (sound.files), selection number (selec), and start and end time of signal
+#' for sound file name (sound.files), selection number (selec), and start and end time of sound event
 #' (start and end).
-#' @param acoustic.space Numeric matrix or data frame with the two dimensions of a custom acoustic space to be used for finding templates. if not supplied the acoustic space is calculated internally (default). Optional. Note that the function assumes that 'reference' and 'acoustic.space' refer to the same signals and similarly ordered.
+#' @param acoustic.space Numeric matrix or data frame with the two dimensions of a custom acoustic space to be used for finding templates. if not supplied the acoustic space is calculated internally (default). Optional. Note that the function assumes that 'reference' and 'acoustic.space' refer to the same sound events and similarly ordered.
 #' @param path Character string containing the directory path where the sound files are located.
 #'The current working directory is used as default.
-#'@param n.sub.spaces Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the signal closer to the centroid is returned. If higher than 1 the function returns additional signals that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space.
+#'@param n.sub.spaces Integer vector of length 1 with the number of sub-spaces to split the total acoustic space. If 1 only the sound event closer to the centroid is returned. If higher than 1 the function returns additional sound events that those closer to the centroids of the sub-spaces. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space.
 #' @param plot Logical to control if the plot is created. Default is \code{TRUE}.
 #' @param color Character string with the point color. Default is '#21908C4D'.
 #' @param ... Additional arguments to be passed to \code{\link[warbleR]{spectro_analysis}} for further customization when measuring parameters to calculate the acoustic space.
-#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each signal by
-#'   sound file. If no signal was detected for a sound file it is not included in the output data frame.
+#' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each sound event by
+#'   sound file.
 #' @export
 #' @name get_templates
-#' @details This function finds signals from a reference table that are representative of the acoustic variation. This is done by finding the signals closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function \code{\link[warbleR]{spectro_analysis}} and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function \code{\link[stats]{prcomp}}. The rationale is that a signal closest to the average signal structure is more likely to share structural features with most signals across the acoustic space than a signal in the periphery of the space.
-#' If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional signals are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
+#' @details This function finds sound events (from a reference table) that are representative of the acoustic structure variation of all sound events. This is done by finding the events closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic parameters using the function \code{\link[warbleR]{spectro_analysis}} and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function \code{\link[stats]{prcomp}}. The rationale is that a sound event closest to the average structure is more likely to share structural features with most events across the acoustic space than a sound event in the periphery of the space.
+#' If only 1 template is required the function returns that closest to the acoustic space centroid. If more than 1 templated is required additional sound events are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -34,7 +34,7 @@
 #' }
 #'
 #' @references {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 #' @seealso \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a

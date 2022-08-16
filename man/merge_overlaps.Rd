@@ -7,7 +7,7 @@
 merge_overlaps(X, pb = TRUE, parallel = 1)
 }
 \arguments{
-\item{X}{Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the signals). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{X}{Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
@@ -41,7 +41,7 @@ merge_overlaps(lbh_ref2)
 }
 \references{
 {
-Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 }
 }
 \seealso{

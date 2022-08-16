@@ -64,7 +64,7 @@ detection = ftd)
 }
 \references{
 {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 }
 }
 \seealso{

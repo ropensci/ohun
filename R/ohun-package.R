@@ -1,6 +1,6 @@
-#' ohun: Optimizing acoustic signal detection
+#' ohun: Optimizing sound event detection
 #'
-#' ohun is intended to facilitate the automatic detection of acoustic signals, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+#' ohun is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
 #'
 #' The main features of the package are:
 #'   \itemize{

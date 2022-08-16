@@ -59,75 +59,48 @@ pb <span class="op">=</span> <span class="cn">TRUE</span>, type <span class="op"
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>templates</dt>
-<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the signal(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
-selection number (selec), and start and end time of signal (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.</p></dd>
-
-
+<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
+selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.</p></dd>
 <dt>files</dt>
 <dd><p>Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.</p></dd>
-
-
 <dt>hop.size</dt>
 <dd><p>A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.</p></dd>
-
-
 <dt>wl</dt>
 <dd><p>A numeric vector of length 1 specifying the window length of the spectrogram. Default is <code>NULL</code>. If supplied, 'hop.size' is ignored.</p></dd>
-
-
 <dt>ovlp</dt>
 <dd><p>Numeric vector of length 1 specifying % of overlap between two
 consecutive windows, as in <code><a href="https://rdrr.io/pkg/seewave/man/spectro.html" class="external-link">spectro</a></code>. Default is 0. High values of ovlp
 slow down the function but may produce more accurate results.</p></dd>
-
-
 <dt>wn</dt>
 <dd><p>A character vector of length 1 specifying the window name as in <code><a href="https://rdrr.io/pkg/seewave/man/ftwindow.html" class="external-link">ftwindow</a></code>.</p></dd>
-
-
 <dt>cor.method</dt>
 <dd><p>A character vector of length 1 specifying the correlation method as in <code><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></code>.</p></dd>
-
-
 <dt>parallel</dt>
 <dd><p>Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).</p></dd>
-
-
 <dt>path</dt>
 <dd><p>Character string containing the directory path where the sound files are located.
 The current working directory is used as default.</p></dd>
-
-
 <dt>pb</dt>
 <dd><p>Logical argument to control progress bar. Default is <code>TRUE</code>.</p></dd>
-
-
 <dt>type</dt>
 <dd><p>A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using <code><a href="https://rdrr.io/pkg/seewave/man/spectro.html" class="external-link">spectro</a></code>; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using <code><a href="https://rdrr.io/pkg/tuneR/man/melfcc.html" class="external-link">melfcc</a></code>) or "auditory-spectrum" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using <code><a href="https://rdrr.io/pkg/tuneR/man/melfcc.html" class="external-link">melfcc</a></code>). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.</p></dd>
-
-
 <dt>fbtype</dt>
 <dd><p>Character vector indicating the auditory frequency scale to use: "mel", "bark", "htkmel", "fcmel".</p></dd>
-
-
 <dt>...</dt>
 <dd><p>Additional arguments to be passed to <code><a href="https://rdrr.io/pkg/tuneR/man/melfcc.html" class="external-link">melfcc</a></code> for further customization when using auditory scales.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p>The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer signal ocurrences using <code><a href="template_detector.html">template_detector</a></code> or to graphically explore template correlations across sound files using <code><a href="https://marce10.github.io/warbleR/reference/full_spectrograms.html" class="external-link">full_spectrograms</a></code>.</p>
+    <p>The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using <code><a href="template_detector.html">template_detector</a></code> or to graphically explore template correlations across sound files using <code><a href="https://marce10.github.io/warbleR/reference/full_spectrograms.html" class="external-link">full_spectrograms</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier tranformation, time-frequency representations from auditory scales (including ceptral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function <code><a href="template_detector.html">template_detector</a></code>). So the output of this function (and object of 'template_correlations') must be input into <code><a href="template_detector.html">template_detector</a></code> for infering signal ocurrences. <code><a href="optimize_template_detector.html">optimize_template_detector</a></code> can be used to optimize template detection.</p>
+    <p>This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier tranformation, time-frequency representations from auditory scales (including ceptral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function <code><a href="template_detector.html">template_detector</a></code>). So the output of this function (and object of 'template_correlations') must be input into <code><a href="template_detector.html">template_detector</a></code> for infering sound event ocurrences. <code><a href="optimize_template_detector.html">optimize_template_detector</a></code> can be used to optimize template detection.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.Khanna H., Gaunt S.L.L.  &amp; McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.Lyon, R. H., &amp; Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.</p>
+    <p>Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.Khanna H., Gaunt S.L.L.  &amp; McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.Lyon, R. H., &amp; Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -196,7 +169,7 @@ path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

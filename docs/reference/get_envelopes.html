@@ -60,55 +60,34 @@ parallel <span class="op">=</span> <span class="fl">1</span>, thinning <span cla
     <dl><dt>path</dt>
 <dd><p>Character string containing the directory path where the sound files are located.
 The current working directory is used as default.</p></dd>
-
-
 <dt>files</dt>
 <dd><p>character vector or indicating the sound files that will be analyzed.</p></dd>
-
-
 <dt>bp</dt>
 <dd><p>Numeric vector of length 2 giving the lower and upper limits of a
 frequency bandpass filter (in kHz). Default is <code>NULL</code>.</p></dd>
-
-
 <dt>hop.size</dt>
 <dd><p>A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.</p></dd>
-
-
 <dt>wl</dt>
 <dd><p>A numeric vector of length 1 specifying the window length of the spectrogram. Default is <code>NULL</code>. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).</p></dd>
-
-
 <dt>parallel</dt>
 <dd><p>Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).</p></dd>
-
-
 <dt>thinning</dt>
 <dd><p>Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
 than those needed to accurately represent amplitude variation in time, which affects the size of the
 output (usually very large R objects / files). Default is <code>1</code> (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by linear interpolation using <code><a href="https://rdrr.io/r/stats/approxfun.html" class="external-link">approx</a></code>. Note that thinning may decrease time precision and that the higher the thinning the less precise the time detection. It's generally not advised if no smoothing ('smooth' argument) is applied.</p></dd>
-
-
 <dt>pb</dt>
 <dd><p>Logical argument to control progress bar. Default is <code>TRUE</code>.</p></dd>
-
-
 <dt>smooth</dt>
 <dd><p>A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).</p></dd>
-
-
 <dt>normalize</dt>
 <dd><p>Logical argument to control if envelopes are normalized to a 0-1 range.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    
-
-<p>An object of class 'envelopes'.</p>
+    <p>An object of class 'envelopes'.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -116,7 +95,7 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
-    <p>Araya-Salas, M., &amp; Smith-Vidaurre, G. (2017). warbleR: An R package to streamline analysis of animal acoustic signals. Methods in Ecology and Evolution, 8(2), 184-191.</p>
+    <p>Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -138,7 +117,7 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
 <span class="co"># get raw absolute amplitude envelopes</span>
 <span class="va">envs</span> <span class="op">&lt;-</span> <span class="fu">get_envelopes</span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
 
-<span class="co"># extract segment for the first signal in the first sound file</span>
+<span class="co"># extract segment for the first sound event in the first sound file</span>
 <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">envs</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">$</span><span class="va">envelope</span>
 
 <span class="co"># and plot it</span>
@@ -172,7 +151,7 @@ normalize <span class="op">=</span> <span class="cn">FALSE</span><span class="op
 </div>
 
 <div class="pkgdown-footer-right">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.5.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.</p>
 </div>
 
     </footer></div>

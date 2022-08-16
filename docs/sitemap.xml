@@ -1,6 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://marce10.github.io/ohun/404.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/articles/index.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/articles/ohun.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/authors.html</loc>
+  </url>
+  <url>
     <loc>https://marce10.github.io/ohun/index.html</loc>
   </url>
   <url>
@@ -25,6 +37,9 @@
     <loc>https://marce10.github.io/ohun/reference/get_templates.html</loc>
   </url>
   <url>
+    <loc>https://marce10.github.io/ohun/reference/index.html</loc>
+  </url>
+  <url>
     <loc>https://marce10.github.io/ohun/reference/label_detection.html</loc>
   </url>
   <url>
@@ -35,6 +50,12 @@
   </url>
   <url>
     <loc>https://marce10.github.io/ohun/reference/lbh2.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/reference/lbh_1.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/reference/lbh_2.html</loc>
   </url>
   <url>
     <loc>https://marce10.github.io/ohun/reference/lbh_reference.html</loc>
@@ -61,6 +82,9 @@
     <loc>https://marce10.github.io/ohun/reference/split_acoustic_data.html</loc>
   </url>
   <url>
+    <loc>https://marce10.github.io/ohun/reference/split_sound_files.html</loc>
+  </url>
+  <url>
     <loc>https://marce10.github.io/ohun/reference/summarize_diagnostic.html</loc>
   </url>
   <url>
@@ -68,8 +92,5 @@
   </url>
   <url>
     <loc>https://marce10.github.io/ohun/reference/template_detector.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/articles/ohun.html</loc>
   </url>
 </urlset>

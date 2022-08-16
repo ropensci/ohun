@@ -34,7 +34,7 @@
 #' # get raw absolute amplitude envelopes
 #' envs <- get_envelopes(path = tempdir())
 #'
-#' # extract segment for the first signal in the first sound file
+#' # extract segment for the first sound event in the first sound file
 #' x <- envs[[1]]$envelope
 #'
 #' # and plot it
@@ -58,7 +58,7 @@
 #' }
 #'
 #' @references {
-#' Araya-Salas, M., & Smith-Vidaurre, G. (2017). warbleR: An R package to streamline analysis of animal acoustic signals. Methods in Ecology and Evolution, 8(2), 184-191.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 #' @seealso \code{\link{energy_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
@@ -293,7 +293,7 @@ env_ohun_int <-
           )
       }
 
-    #detect signals based on amplitude (modified from seewave::timer function)
+    #detect sound events based on amplitude (modified from seewave::timer function)
     amp_vector <- wave_obj@left
 
     # original number of samples

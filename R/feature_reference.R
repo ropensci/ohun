@@ -3,12 +3,12 @@
 #' @description \code{feature_reference} extracts quantitative characteristics of a reference table
 #' @usage feature_reference(reference, path = NULL, by.sound.file = FALSE,
 #' units = c("ms", "kHz"), digits = 2)
-#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the signals) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.
+#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle and peak frequency features are returned. These features are more helpful for tuning a energy-based detection. Default is \code{NULL}.
 #' @param by.sound.file Logical argument to control whether features are summarized across sound files (when \code{by.sound.file = FALSE}, and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
 #' @param units A character vector of length 2 with the units to be used for time and frequency parameters, in that order. Default is \code{c("ms", "kHz")}. It can also take 's' and 'Hz'.
 #' @param digits Numeric vector of length 1 with the number of decimals to include. Default is 2.
-#' @return The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections) and of the number of annotations by sound file. If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file corresponding to target signals) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).
+#' @return The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections) and of the number of annotations by sound file. If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file corresponding to target sound events) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).
 #' @export
 #' @name feature_reference
 #' @details The function extract quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform bandpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
@@ -28,7 +28,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references {
-#' Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0.
+#' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on jan-2022 (MAS)
 
@@ -80,7 +80,7 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
       output$max.duty.cycle <- max(durs$duty.cycle, na.rm = TRUE)
 
       # measure peak amplitude
-      peak_amp <- warbleR::sound_pressure_level(reference, peak.amplitude = TRUE, path = path, pb = FALSE)
+      peak_amp <- warbleR::sound_pressure_level(reference, type = "peak", path = path, pb = FALSE)
 
     output$min.peak.amplitude <- min(peak_amp$peak.amplitude, na.rm = TRUE)
     output$mean.peak.amplitude <- mean(peak_amp$peak.amplitude, na.rm = TRUE)
