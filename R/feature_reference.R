@@ -11,7 +11,7 @@
 #' @return The function returns the mean, minimum and maximum duration of selections and gaps (time intervals between selections) and of the number of annotations by sound file. If frequency range columns are included in the reference table (i.e. "bottom.freq" and "top.freq") the minimum bottom frequency ('min.bottom.freq') and the maximum top frequency ('max.top.freq') are also estimated. Finally, if the path to the sound files in 'reference' is supplied the duty cycle (fraction of a sound file corresponding to target sound events) and peak amplitude (highest amplitude in a detection) are also returned. If `by.sound.file = FALSE` a matrix with features in rows is returned. Otherwise a data frame is returned in which each row correspond to a sound file. By default, time features are returned in 'ms' while frequency features in 'kHz' (but see 'units' argument).
 #' @export
 #' @name feature_reference
-#' @details The function extract quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform bandpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
+#' @details The function extracts quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform bandpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
 #' @examples {
 #' # load data and save example files into temporary working directory
 #' data("lbh1", "lbh2", "lbh_reference")
@@ -103,7 +103,6 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
         sub_output$sound.files <- x
         return(sub_output)
       })
-
 
       output <- do.call(rbind, output_list)
 

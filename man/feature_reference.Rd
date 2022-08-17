@@ -25,7 +25,7 @@ The function returns the mean, minimum and maximum duration of selections and ga
 \code{feature_reference} extracts quantitative characteristics of a reference table
 }
 \details{
-The function extract quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform bandpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
+The function extracts quantitative features from reference tables that can inform the range of values to be used in a energy-based detection optimization routine. Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform bandpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance.
 }
 \examples{
 {

@@ -113,6 +113,12 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
     # remove rows with no info
   detection <- detection[!is.na(detection$start), ]
 
+  # message if more sound files in detection than in reference
+  extra_detec_sf <- setdiff(detection$sound.files, reference$sound.files)
+
+  if (length(extra_detec_sf))
+    on.exit(warning("There is at least one additional sound file in 'detection' not found in 'reference'"))
+
   if (nrow(detection) > 0)
   {
     # double checking happens inside label_detection()
@@ -161,7 +167,6 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           performance$duty.cycle <- sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
         }
 
-
         # add recall, precision and f1
         performance$recall <- length(detected_reference_rows) / nrow(sub_ref)
         performance$precision <- if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
@@ -176,12 +181,8 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           performance$mean.duration.false.positives[is.na(performance$mean.duration.false.positives) | performance$false.positives == 0] <- NA
           performance$mean.duration.true.positives[is.na(performance$mean.duration.true.positives) | performance$true.positives == 0] <- NA
 
-          # make sensitvities higher than 1 (because of split positives) 1
-          performance$recall[performance$recall > 1] <- 1
-
           return(performance)
           })
-
 
       # add diagnostics of files in reference but not in detection
       if (any(!reference$sound.files %in% unique(labeled_detection$sound.files))){
