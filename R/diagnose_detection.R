@@ -32,7 +32,7 @@
 #'  }
 #' @export
 #' @name diagnose_detection
-#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through bipartite graph matching (using the R package igraph).
+#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through bipartite graph matching (using the R package igraph). Priority for assigning a detection to a reference is given by the amount of time overlap.
 #' @examples {
 #' # load data
 #' data("lbh_reference")
