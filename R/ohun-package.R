@@ -36,6 +36,7 @@
 #' @importFrom viridis viridis inferno
 #' @importFrom knitr kable
 #' @importFrom crayon silver bold italic
+#' @importFrom igraph max_bipartite_match E as_data_frame graph_from_incidence_matrix
 #' @importFrom methods is
 #' @importFrom tuneR writeWave
 #' @importFrom stats cor weighted.mean

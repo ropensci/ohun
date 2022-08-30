@@ -1,6 +1,6 @@
-#' @title Evaluate the performance of a sound event detection procedure
+#' @title Label detections from a sound event detection procedure
 #'
-#' @description \code{label_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
+#' @description \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
 #' @usage label_detection(reference, detection, parallel = 1, pb = TRUE)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
@@ -114,7 +114,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
       cl <- parallel
 
     # look at detections matching 1 training selection at the time
-    labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X =  unique(detection$sound.files), FUN = function(z){
+    labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X = unique(detection$sound.files), FUN = function(z){
 
         # get subset from detection for that sound file
         sub_detec <- as.data.frame(detection[detection$sound.files == z, ])
@@ -138,7 +138,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
 
           })
 
-        # conver to label
+        # convert to label
         sub_detec$detection.class <- sapply(true_positives_refer_row_id, function(x){
 
           # count how many times the reference selection overlapped (splits)
@@ -151,7 +151,6 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
           if (length(x) == 1 & splits > 1) detection_class <- "true.positive (split)"
           if (length(x) > 1 & splits == 1) detection_class <- "true.positive (merged)"
           if (length(x) > 1 & splits > 1) detection_class <- "true.positive (split/merged)"
-
 
           return(detection_class)
             })
@@ -174,11 +173,90 @@ max(table(unlist(true_positives_refer_row_id)[unlist(true_positives_refer_row_id
 
         ovlp <- min(sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_detec$start[x], sub_detec$end[x] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]]) / (sub_ref$end[sub_ref$..row.id == sub_detec$reference.row[x]] - sub_ref$start[sub_ref$..row.id == sub_detec$reference.row[x]])
 
-        if (ovlp > 1) ovlp <- 1
         return(ovlp)
         })
+
+        # use maximum bipartite graph matching to solve ambiguous detections
+        if (any(sapply(true_positives_refer_row_id, length) > 1)){
+          # get index of merges and splits
+          ambiguous_positives <- table(unlist(true_positives_refer_row_id))
+          ambiguous_positives <- unique(c(names(ambiguous_positives)[ambiguous_positives > 1],
+          unique(unlist(true_positives_refer_row_id[sapply(true_positives_refer_row_id, length) > 1]))))
+
+          # get clean positives
+          unambiguous_positives <- names(table(unlist(true_positives_refer_row_id[sapply(true_positives_refer_row_id, length) == 1])))
+          if (length(unambiguous_positives) > 0)
+            unambiguous_positives <- unambiguous_positives[!unambiguous_positives %in% ambiguous_positives]
+
+          ambiguous_detecs <- which(sapply(true_positives_refer_row_id, function(x) any(x %in% ambiguous_positives)))
+
+          # get matrix to find maximum bipartite graph
+          ovlp_mat <- matrix(rep(0, (length(ambiguous_positives) * length(ambiguous_detecs))), ncol = length(ambiguous_detecs), dimnames = list(ambiguous_positives, ambiguous_detecs))
+
+          # fill out with proportion of overlap for those in which overlap was already calculated
+        for(i in ambiguous_detecs)
+          for(j in true_positives_refer_row_id[[i]]){
+            ovlp_mat[as.character(j), as.character(i)] <- if (!is.na(sub_detec$overlap[i])) sub_detec$overlap[i] else
+              min(sub_ref$end[sub_ref$..row.id == j] - sub_detec$start[i], sub_detec$end[i] - sub_ref$start[sub_ref$..row.id == j]) / (sub_ref$end[sub_ref$..row.id == j] - sub_ref$start[sub_ref$..row.id == j])
           }
-        } else{
+
+          # convert overlaps == 1 to 0.9999 (igraph ignores those equal to 1)
+          org_ovlp_mat <- ovlp_mat
+          ovlp_mat[ovlp_mat > 1] <- 0.99999
+
+
+          # convert to graph
+          ovlp_graph <- igraph::graph_from_incidence_matrix(ovlp_mat)
+
+          #convert to data frame
+          df_ovlp_graph <- igraph::as_data_frame(ovlp_graph)
+
+          # add amount of overlap as weights
+          igraph::E(ovlp_graph)$weight <- sapply(1:nrow(df_ovlp_graph), function(x) ovlp_mat[df_ovlp_graph$from[x], df_ovlp_graph$to[x]])
+
+          # plot just to troubleshoot
+          # plot.igraph(ovlp_graph, layout = layout_as_bipartite,
+          #             vertex.color=c("green","cyan")[V(ovlp_graph)$type+1], edge.width=(3*E(g)$weight), vertex.size = 40)
+
+          # get maximum bipartite graph
+          bigraph_results <- igraph::max_bipartite_match(ovlp_graph)$matching
+
+          # keep only detection results
+          bigraph_results <- bigraph_results[-c(1:length(ambiguous_positives))]
+
+          # get those that remain true positives
+          bigraph_true_positives <- names(bigraph_results)[!is.na(bigraph_results)]
+
+          # get those that change to false positives
+          bigraph_false_positives <- names(bigraph_results)[is.na(bigraph_results)]
+
+          # fix labels on sub detec
+          sub_detec$reference.row[as.numeric(bigraph_true_positives)] <- paste(sub_detec$reference.row[as.numeric(bigraph_true_positives)], " (", bigraph_results[bigraph_true_positives], ")", sep = "")
+
+          # add selected matching reference to unambiguous detections
+          sub_detec$reference.row[!1:nrow(sub_detec) %in% ambiguous_detecs] <- paste(sub_detec$reference.row[!1:nrow(sub_detec) %in% ambiguous_detecs], " (", sub_detec$reference.row[!1:nrow(sub_detec) %in% ambiguous_detecs], ")", sep = "")
+
+
+          # add overlaps to those that were selected as true positives
+          sub_detec$overlap[as.numeric(bigraph_true_positives)] <- sapply(bigraph_true_positives, function(x)
+                   org_ovlp_mat[df_ovlp_graph$from[df_ovlp_graph$to == x & df_ovlp_graph$from == bigraph_results[x]], x]
+    )
+
+          # re label those that turned out to be false positivies
+          if (length(bigraph_false_positives) > 0)
+            sub_detec$detection.class[as.numeric(bigraph_false_positives)] <- gsub(pattern = "true", replacement = "false", sub_detec$detection.class[as.numeric(bigraph_false_positives)])
+        } else
+# add matching reference in parenthesis
+          sub_detec$reference.row[!is.na(sub_detec$reference.row)] <- paste(sub_detec$reference.row[!is.na(sub_detec$reference.row)], " (", sub_detec$reference.row[!is.na(sub_detec$reference.row)], ")", sep = "")
+
+        # make 1 overlaps higher than 1
+        if (any(!is.na(sub_detec$overlap))){
+          sub_detec$overlap[sub_detec$overlap > 1] <- 1
+          sub_detec$overlap <- round(sub_detec$overlap, 2)
+}
+
+
+        }} else{
           sub_detec$detection.class <- "false.positive"
           sub_detec$reference.row <- NA
           sub_detec$overlap <- NA

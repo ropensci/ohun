@@ -14,11 +14,12 @@
 #' @param by Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
+#'  \item \code{total.detections}: total number of detections
 #'  \item \code{true.positives}: number of sound events in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
-#'  \item \code{false.positives}: number of detections that don't match any of the sound events in 'reference'. In a perfect detection routine it should be 0.
+#'  \item \code{false.positives}: number of detections that don't match (i.e. don't overlap with) any of the sound events in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
 #'  \item \code{split.positives}: number of sound events in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
-#'  \item \code{merged.positives}: number of sound events in 'detection' that were overlapped by more than 1 detection (i.e. sound events that were merged). In a perfect detection routine it should be 0.
+#'  \item \code{merged.positives}: number of sound events in 'reference' that were overlapped by a detection that also overlaps with other sound events in 'reference' (i.e. sound events that were merged into a single detection). In a perfect detection routine it should be 0.
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
@@ -31,7 +32,7 @@
 #'  }
 #' @export
 #' @name diagnose_detection
-#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'.
+#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through bipartite graph matching (using the R package igraph).
 #' @examples {
 #' # load data
 #' data("lbh_reference")
@@ -129,9 +130,16 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
     # duration of corresponding selection in reference
     labeled_detection$reference.duration <- sapply(1:nrow(labeled_detection), function(x){
-      if (is.na(labeled_detection$reference.row[x])) NA  else
-        if (grepl("-", labeled_detection$reference.row[x]))  NA else
-          reference$end[as.numeric(labeled_detection$reference.row[x])] - reference$start[as.numeric(labeled_detection$reference.row[x])]
+      if (is.na(labeled_detection$reference.row[x]) | !grepl("\\(", labeled_detection$reference.row[x])) NA else
+        {
+          # get matching reference
+          list_ref_row <- strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
+          list_ref_row <- list_ref_row[length(list_ref_row)]
+          list_ref_row <- as.numeric(gsub("\\)", "", list_ref_row))
+          dur <- reference$end[list_ref_row] - reference$start[list_ref_row]
+
+          return(dur)
+          }
     })
 
         # look at detections matching 1 training selection at the time
@@ -144,14 +152,23 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
           # get row index in reference for detected sound events
           detected_reference_rows <- unique(na.omit(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(as.character(x), "-"))))))
 
+          detected_reference_rows <- unique(sapply(grep(labeled_detection$detection.class, pattern = "^true.positive"), function(x){
+            ref_row <- strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
+            ref_row <- ref_row[length(ref_row)]
+            ref_row <- as.numeric(gsub("\\)", "", ref_row))
+            return(ref_row)
+          }))
+
         performance <- data.frame(
               sound.files = z,
-              true.positives = length(detected_reference_rows),
+              total.detections = nrow(sub_detec),
+              true.positives = sum(grepl("^true.positive", x = sub_detec$detection.class)),
               false.positives = sum(grepl("false", sub_detec$detection.class)),
               false.negatives = sum(!sub_ref$..row.id %in% detected_reference_rows),
               split.positives = length(unique(
                 unlist(lapply(sub_detec$reference.row[grepl("split)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
-              merged.positives = sum(grepl("merge", sub_detec$detection.class)),
+              merged.positives = length(unique(
+                unlist(lapply(sub_detec$reference.row[grepl("merged)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
               mean.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]),
               mean.duration.false.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]),
               mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
@@ -168,8 +185,10 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
         }
 
         # add recall, precision and f1
-        performance$recall <- length(detected_reference_rows) / nrow(sub_ref)
-        performance$precision <- if (nrow(sub_detec) > 0 & length(detected_reference_rows) > 0) length(detected_reference_rows) / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
+        performance$recall <- performance$true.positives / nrow(sub_ref)
+        # performance$precision <- if (nrow(sub_detec) > 0 & performance$true.positives > 0) performance$true.positives / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
+        performance$precision <-if (nrow(sub_detec) > 0 & performance$true.positives > 0) (performance$true.positives / performance$total.detections) else 0
+
         performance$f1.score <- 2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall))
 
           # replace NaNs with NA
@@ -189,6 +208,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
        no_detec <- data.frame(
           sound.files = setdiff(reference$sound.files, unique(labeled_detection$sound.files)),
+          total.detections = 0,
           true.positives = 0,
           false.positives = 0,
           false.negatives = sapply(setdiff(reference$sound.files, unique(labeled_detection$sound.files)), function(x) sum(reference$sound.files == x)),
@@ -218,6 +238,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 } else  {
   performance_df <- data.frame(
   sound.files = unique(reference$sound.files),
+  total.detections = 0,
   true.positives = 0,
   false.positives = 0,
   false.negatives = sapply(unique(reference$sound.files), function(x) sum(reference$sound.files == x)),
@@ -240,7 +261,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 }
 
   # sort columns
-  performance_df <- performance_df[ , na.omit(match(c("sound.files", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "recall", "precision", "f1.score"), names(performance_df)))]
+  performance_df <- performance_df[ , na.omit(match(c("sound.files", "total.detections", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "recall", "precision", "f1.score"), names(performance_df)))]
 
 # summarize across sound files
 if (!by.sound.file)

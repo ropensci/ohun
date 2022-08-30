@@ -2,7 +2,7 @@
 % Please edit documentation in R/label_detection.R
 \name{label_detection}
 \alias{label_detection}
-\title{Evaluate the performance of a sound event detection procedure}
+\title{Label detections from a sound event detection procedure}
 \usage{
 label_detection(reference, detection, parallel = 1, pb = TRUE)
 }
@@ -25,7 +25,7 @@ A data frame or selection table (if 'detection' was also a selection table, warb
  }
 }
 \description{
-\code{label_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
+\code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
 }
 \details{
 The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.
