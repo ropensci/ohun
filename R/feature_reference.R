@@ -35,7 +35,7 @@
 feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, units = c("ms", "kHz"), digits = 2) {
 
   if (is(reference, "extended_selection_table"))
-    stop("The function is not defined for class 'extended_selection_table'. Use 'selection_table' or 'data.frame' instea.")
+    stop2("The function is not defined for class 'extended_selection_table'. Use 'selection_table' or 'data.frame' instea.")
 
   internal_feature_reference <- function(reference, path = NULL, total.annotations = FALSE){
 

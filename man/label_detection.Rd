@@ -19,9 +19,9 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \value{
 A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
 \itemize{
- \item \code{detection.class}: indicates the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
- \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected sound event (only supplied for true positives).
- \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (only supplied for true positives).
+ \item \code{detection.class}: indicates the class of each detection. Eight possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)',  'true.positive (split/merged)', 'false.positive (split)', 'false.positive (merged)' and 'galse.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
+ \item \code{reference.row}: contains the index of the row in 'reference' of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
+ \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
  }
 }
 \description{

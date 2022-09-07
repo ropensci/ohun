@@ -107,19 +107,19 @@
 optimize_energy_detector <- function(reference, files = NULL, threshold = 5, peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0, min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE, by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL){
 
   # hopsize
-  if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
+  if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
 
-  if (is_extended_selection_table(reference)) stop("This function cannot take extended selection tables ('reference' argument)")
+  if (is_extended_selection_table(reference)) stop2("This function cannot take extended selection tables ('reference' argument)")
 
   #if reference is not a data frame
   if (!any(is.data.frame(reference), is_selection_table(reference)))
-    stop("reference is not of a class 'data.frame' or 'selection_table'")
+    stop2("reference is not of a class 'data.frame' or 'selection_table'")
 
   #check if all columns are found
   if (any(!(c(
     "sound.files", "selec", "start", "end"
   ) %in% colnames(reference))))
-    stop(paste(paste(
+    stop2(paste(paste(
       c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
                                                     "start", "end") %in% colnames(reference))], collapse =
         ", "
@@ -127,15 +127,15 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pea
 
   #if there are NAs in start or end stop
   if (any(is.na(c(reference$end, reference$start))))
-    stop("NAs found in start and/or end columns")
+    stop2("NAs found in start and/or end columns")
 
   #if end or start are not numeric stop
   if (any(!is(reference$end, "numeric"),!is(reference$start, "numeric")))
-    stop("'start' and 'end' must be numeric")
+    stop2("'start' and 'end' must be numeric")
 
   #if any start higher than end stop
   if (any(reference$end - reference$start <= 0))
-    stop(paste(
+    stop2(paste(
       "Start is higher than or equal to end in",
       length(which(reference$end - reference$start <= 0)),
       "case(s)"
@@ -143,7 +143,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pea
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else
-    if (!dir.exists(path)) stop("'path' provided does not exist") else
+    if (!dir.exists(path)) stop2("'path' provided does not exist") else
       path <- normalizePath(path)
 
     # if files not supplied then used those from reference
@@ -152,7 +152,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pea
 
     # if 'files' are found in reference
     if (!any(files %in% reference$sound.files))
-      stop("Not a single sound file in the working directory is found in 'reference'")
+      stop2("Not a single sound file in the working directory is found in 'reference'")
 
       # get all possible combinations of parameters
       exp_grd <- expand.grid(threshold = threshold, peak.amplitude = peak.amplitude, smooth = smooth, hold.time = hold.time, min.duration = if(is.null(min.duration)) -Inf else min.duration, max.duration = if(is.null(max.duration)) Inf else max.duration, thinning = thinning)

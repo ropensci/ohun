@@ -52,7 +52,7 @@ get_templates <-
 
      if (!is.null(acoustic.space))
       if (nrow(reference) != nrow(acoustic.space))
-        stop("'reference' and 'acoustic.space' must have the same number of columns")
+        stop2("'reference' and 'acoustic.space' must have the same number of columns")
 
     if (is.null(acoustic.space)) {
       spectral_parameters <- spectro_analysis(reference, path = path, ...)
@@ -84,10 +84,10 @@ get_templates <-
     } else {
 
       if (length(dim(acoustic.space)) != 2)
-        stop("Acoustic space must be either a data frame or a matrix with 2 column")
+        stop2("Acoustic space must be either a data frame or a matrix with 2 column")
 
       if (ncol(acoustic.space) != 2)
-        stop("Acoustic space must have 2 columns")
+        stop2("Acoustic space must have 2 columns")
 
       plot_labs <- if (!is.null(colnames(acoustic.space))) colnames(acoustic.space) else
 c("Dimension 1", "Dimension 2")

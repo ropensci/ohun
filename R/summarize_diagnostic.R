@@ -56,7 +56,7 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
 
   #check diagnostic
   if (any(!(basic_colms %in% colnames(diagnostic))))
-    stop(paste(paste(
+    stop2(paste(paste(
       basic_colms[!(basic_colms %in% colnames(diagnostic))], collapse =
         ", "
     ), "column(s) not found in 'diagnostics'"))

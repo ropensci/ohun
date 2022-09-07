@@ -92,42 +92,42 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
   #check path to working directory
   if (is.null(path)) path <- getwd() else
     if (!dir.exists(path))
-      stop("'path' provided does not exist") else
+      stop2("'path' provided does not exist") else
         path <- normalizePath(path)
 
       # hopsize
-      if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
+      if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
 
   #if there are NAs in start or end stop
-  if (any(is.na(c(templates$end, templates$start)))) stop("NAs found in start and/or end")
+  if (any(is.na(c(templates$end, templates$start)))) stop2("NAs found in start and/or end")
 
   #if wl is not vector or length!=1 stop
       if (!is.null(wl)){
-    if (!is.numeric(wl)) stop("'wl' must be a numeric vector of length 1") else {
-    if (!is.vector(wl)) stop("'wl' must be a numeric vector of length 1") else{
-      if (!length(wl) == 1) stop("'wl' must be a numeric vector of length 1")}}}
+    if (!is.numeric(wl)) stop2("'wl' must be a numeric vector of length 1") else {
+    if (!is.vector(wl)) stop2("'wl' must be a numeric vector of length 1") else{
+      if (!length(wl) == 1) stop2("'wl' must be a numeric vector of length 1")}}}
 
   #if ovlp is not vector or length!=1 stop
-  if (!is.numeric(ovlp)) stop("'ovlp' must be a numeric vector of length 1") else {
-    if (!is.vector(ovlp)) stop("'ovlp' must be a numeric vector of length 1") else{
-      if (!length(ovlp) == 1) stop("'ovlp' must be a numeric vector of length 1")}}
+  if (!is.numeric(ovlp)) stop2("'ovlp' must be a numeric vector of length 1") else {
+    if (!is.vector(ovlp)) stop2("'ovlp' must be a numeric vector of length 1") else{
+      if (!length(ovlp) == 1) stop2("'ovlp' must be a numeric vector of length 1")}}
 
   # check files or list files in working directory
       if (!is.null(files)) {
         if (any(!is.character(files),!is.vector(files)))
-          stop("'files' must be a character vector")
+          stop2("'files' must be a character vector")
 
         # check files are in working directory
-        if (!any(files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop("At least one sound files in 'files' was not found")
+        if (!any(files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop2("At least one sound files in 'files' was not found")
         } else files <- list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE)
 
     # check if files in templates are in path
         if (!is_extended_selection_table(templates))
-          if (!any(templates$sound.files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop("At least one sound files in 'templates' was not found in the working directory or 'path' supplied")
+          if (!any(templates$sound.files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop2("At least one sound files in 'templates' was not found in the working directory or 'path' supplied")
 
   # If parallel is not numeric
-  if (!is.numeric(parallel)) stop("'parallel' must be a numeric vector of length 1")
-  if (any(!(parallel %% 1 == 0),parallel < 1)) stop("'parallel' should be a positive integer")
+  if (!is.numeric(parallel)) stop2("'parallel' must be a numeric vector of length 1")
+  if (any(!(parallel %% 1 == 0),parallel < 1)) stop2("'parallel' should be a positive integer")
 
   # get sampling rate of files
     info_sf <- warbleR::info_sound_files(path = path, pb = FALSE)
@@ -137,10 +137,10 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
 
     # check if sampling rate in files and template is the same
     if (length(unique(info_sf$sample.rate)) > 1)
-      stop("sampling rate must be the same for all templates and sound files")
+      stop2("sampling rate must be the same for all templates and sound files")
 
   # check sampling rate is the same for all templates if not a selection table
-      if (is_extended_selection_table(templates) & length(unique(attr(templates, "check.results")$sample.rate)) > 1) stop("sampling rate must be the same for all templates and sound files")
+      if (is_extended_selection_table(templates) & length(unique(attr(templates, "check.results")$sample.rate)) > 1) stop2("sampling rate must be the same for all templates and sound files")
 
     # check sampling rate is the same for templates and sound files if not a selection table
     if (is_extended_selection_table(templates))

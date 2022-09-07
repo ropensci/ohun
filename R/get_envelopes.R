@@ -81,54 +81,54 @@ get_envelopes <-
     if (is.null(path))
       path <- getwd() else
       if (!dir.exists(path))
-        stop("'path' provided does not exist") else
+        stop2("'path' provided does not exist") else
       path <- normalizePath(path)
 
         # hopsize
-        if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
+        if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
 
     #if bp is not vector or length!=2 stop
     if (!is.null(bp))
     {
       if (!is.vector(bp))
-        stop("'bp' must be a numeric vector of length 2")  else {
+        stop2("'bp' must be a numeric vector of length 2")  else {
         if (!length(bp) == 2)
-          stop("'bp' must be a numeric vector of length 2")
+          stop2("'bp' must be a numeric vector of length 2")
       }
     }
 
     #if smooth is not vector or length!=1 stop
       if (!is.vector(smooth))
-        stop("'smooth' must be a numeric vector of length 1") else {
+        stop2("'smooth' must be a numeric vector of length 1") else {
         if (!length(smooth) == 1)
-          stop("'smooth' must be a numeric vector of length 1")
+          stop2("'smooth' must be a numeric vector of length 1")
       }
 
     #if thinning is not vector or length!=1 between 1 and 0
     if (!is.vector(thinning) | !is.numeric(thinning))
-      stop("'thinning' must be a numeric vector of length 1")
+      stop2("'thinning' must be a numeric vector of length 1")
         if (thinning[1] > 1 | thinning[1] <= 0)
-          stop("'thinning' must be greater than 0 and lower than or equal to 1")
+          stop2("'thinning' must be greater than 0 and lower than or equal to 1")
 
     #if wl is not vector or length!=1 stop
     if (!is.null(wl)) {
       if (!is.vector(wl))
-        stop("'wl' must be a numeric vector of length 1") else {
+        stop2("'wl' must be a numeric vector of length 1") else {
         if (!length(wl) == 1)
-          stop("'wl' must be a numeric vector of length 1")
+          stop2("'wl' must be a numeric vector of length 1")
       }
     }
 
     #if files is not character vector
     if (!is.null(files) &
         any(!is.character(files),!is.vector(files)))
-      stop("'files' must be a character vector")
+      stop2("'files' must be a character vector")
 
     #if parallel is not numeric
     if (!is.numeric(parallel))
-      stop("'parallel' must be a numeric vector of length 1")
+      stop2("'parallel' must be a numeric vector of length 1")
     if (any(!(parallel %% 1 == 0), parallel < 1))
-      stop("'parallel' should be a positive integer")
+      stop2("'parallel' should be a positive integer")
 
     #return error if not all sound files were found
     if (is.null(files))
@@ -138,10 +138,10 @@ get_envelopes <-
                    if (!all(files %in% list.files(path = path,
                                                   pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
                                                   ignore.case = TRUE)))
-                     stop("Some (or all) sound files were not found")
+                     stop2("Some (or all) sound files were not found")
 
     if (length(files) == 0)
-      stop("no sound files found in working directory or 'path' supplied")
+      stop2("no sound files found in working directory or 'path' supplied")
 
     #Apply over each sound file
     # set clusters for windows OS
@@ -328,7 +328,7 @@ env_ohun_int <-
     # thin
     if (thinning < 1) {
 
-      if (n.samples * thinning < 10)  stop("thinning is too high, no enough samples left for at least 1 sound file")
+      if (n.samples * thinning < 10)  stop2("thinning is too high, no enough samples left for at least 1 sound file")
 
       # reduce size of envelope
       envp <-

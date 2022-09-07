@@ -61,13 +61,13 @@ filter_detection <- function(detection, by = "overlap", filter = "max", parallel
 
   #if reference is not a data frame
   if (!any(is.data.frame(detection), is_selection_table(detection)))
-    stop("'detection' is not of a class 'data.frame' or 'selection_table'")
+    stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
 
   if (is.null(detection$detection.class))
-    stop("'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()")
+    stop2("'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()")
 
   if (!by %in% names(detection))
-    stop("'by' column not found")
+    stop2("'by' column not found")
 
   # add row id column to la
   detection$..row.id <- 1:nrow(detection)

@@ -127,75 +127,75 @@ energy_detector <-
     if (is.null(path))
       path <- getwd() else
       if (!dir.exists(path))
-        stop("'path' supplied does not exist") else
+        stop2("'path' supplied does not exist") else
       path <- normalizePath(path)
 
         # hopsize
-        if (!is.numeric(hop.size) | hop.size < 0) stop("'hop.size' must be a positive number")
+        if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
 
     #if bp is not vector or length!=2 stop
     if (!is.null(bp))
     {
       if (!is.vector(bp))
-        stop("'bp' must be a numeric vector of length 2")  else {
+        stop2("'bp' must be a numeric vector of length 2")  else {
         if (!length(bp) == 2)
-          stop("'bp' must be a numeric vector of length 2")
+          stop2("'bp' must be a numeric vector of length 2")
       }
     }
 
     #if smooth is not vector or length!=1 stop
       if (!is.vector(smooth))
-        stop("'smooth' must be a numeric vector of length 1") else {
+        stop2("'smooth' must be a numeric vector of length 1") else {
         if (!length(smooth) == 1)
-          stop("'smooth' must be a numeric vector of length 1")
+          stop2("'smooth' must be a numeric vector of length 1")
       }
 
     #if thinning is not vector or length!=1 between 1 and 0
     if (!is.vector(thinning) | !is.numeric(thinning))
-      stop("'thinning' must be a numeric vector of length 1")
+      stop2("'thinning' must be a numeric vector of length 1")
         if (thinning[1] > 1 | thinning[1] <= 0)
-          stop("'thinning' must be greater than 0 and lower than or equal to 1")
+          stop2("'thinning' must be greater than 0 and lower than or equal to 1")
 
     #if wl is not vector or length!=1 stop
     if (!is.null(wl)){
       if (!is.vector(wl))
-        stop("'wl' must be a numeric vector of length 1") else {
+        stop2("'wl' must be a numeric vector of length 1") else {
         if (!length(wl) == 1)
-          stop("'wl' must be a numeric vector of length 1")
+          stop2("'wl' must be a numeric vector of length 1")
       }
     }
 
     #if threshold is not vector or length!=1 stop
       if (!is.numeric(threshold))
-      stop("'threshold' must be a numeric vector of length 1")
+      stop2("'threshold' must be a numeric vector of length 1")
       if (!is.vector(threshold))
-        stop("'threshold' must be a numeric vector of length 1")
+        stop2("'threshold' must be a numeric vector of length 1")
         if (!length(threshold) == 1)
-          stop("'threshold' must be a numeric vector of length 1")
+          stop2("'threshold' must be a numeric vector of length 1")
         if(threshold >= 100 | threshold <= 0)
-          stop("'threshold' must be a number > 0 and < 100")
+          stop2("'threshold' must be a number > 0 and < 100")
 
     #if files is not character vector
     if (!is.null(files) &
         any(!is.character(files),!is.vector(files)))
-      stop("'files' must be a character vector")
+      stop2("'files' must be a character vector")
 
     #if parallel is not numeric
     if (!is.numeric(parallel))
-      stop("'parallel' must be a numeric vector of length 1")
+      stop2("'parallel' must be a numeric vector of length 1")
     if (any(!(parallel %% 1 == 0), parallel < 1))
-      stop("'parallel' should be a positive integer")
+      stop2("'parallel' should be a positive integer")
 
     # check hold time
       if (!is.numeric(hold.time))
-        stop("'hold.time' must be a numeric vector of length 1")
+        stop2("'hold.time' must be a numeric vector of length 1")
 
     # if files and envelopes are not supplied
       if (is.null(files) & is.null(envelopes)){
           files <- list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE)
 
           if (length(files) == 0)
-          stop("No files found in the working directory or 'path' supplied")
+          stop2("No files found in the working directory or 'path' supplied")
 }
 
         # either files or envelopes must be supplied

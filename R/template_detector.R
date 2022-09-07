@@ -66,17 +66,17 @@ template_detector <- function(template.correlations, parallel = 1, threshold, pb
 
   # check xc.output being a autodetec.output object
   if (!(is(template.correlations, "template_correlations")))
-    stop("'template.correlations' must be and object of class 'template_correlations'")
+    stop2("'template.correlations' must be and object of class 'template_correlations'")
 
   #if threshold is not vector or length!=1 stop
   if (!is.numeric(threshold))
-    stop("'threshold' must be a numeric vector of length 1")
+    stop2("'threshold' must be a numeric vector of length 1")
   if (!is.vector(threshold))
-    stop("'threshold' must be a numeric vector of length 1")
+    stop2("'threshold' must be a numeric vector of length 1")
   if (!length(threshold) == 1)
-    stop("'threshold' must be a numeric vector of length 1")
+    stop2("'threshold' must be a numeric vector of length 1")
   if(threshold >= 1 | threshold <= 0)
-    stop("'threshold' must be a number between 0 and 1")
+    stop2("'threshold' must be a number between 0 and 1")
 
   # set clusters for windows OS or more decent OSs
   if (Sys.info()[1] == "Windows" & parallel > 1)

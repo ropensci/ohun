@@ -9,9 +9,9 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
 #' \itemize{
-#'  \item \code{detection.class}: indicates the class of each detection. Five possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)' and 'true.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
-#'  \item \code{reference.row}: contains the index of the row in 'reference' that corresponds to the detected sound event (only supplied for true positives).
-#'  \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (only supplied for true positives).
+#'  \item \code{detection.class}: indicates the class of each detection. Eight possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)',  'true.positive (split/merged)', 'false.positive (split)', 'false.positive (merged)' and 'galse.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
+#'  \item \code{reference.row}: contains the index of the row in 'reference' of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
+#'  \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
 #'  }
 #' @export
 #' @name label_detection
@@ -60,23 +60,23 @@
 # last modification on jul-16-2021 (MAS)
 label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
 {
-  if (is_extended_selection_table(reference)) stop("This function cannot take extended selection tables ('reference' argument)")
+  if (is_extended_selection_table(reference)) stop2("This function cannot take extended selection tables ('reference' argument)")
 
-  if (is_extended_selection_table(detection)) stop("This function cannot take extended selection tables ('detection' argument)")
+  if (is_extended_selection_table(detection)) stop2("This function cannot take extended selection tables ('detection' argument)")
 
   #if reference is not a data frame
   if (!any(is.data.frame(reference), is_selection_table(reference)))
-    stop("'reference' is not of a class 'data.frame' or 'selection_table'")
+    stop2("'reference' is not of a class 'data.frame' or 'selection_table'")
 
   #if reference is not a data frame
   if (!any(is.data.frame(detection), is_selection_table(detection)))
-    stop("'detection' is not of a class 'data.frame' or 'selection_table'")
+    stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
 
   #check if all columns are found in reference
   if (any(!(c(
     "sound.files", "selec", "start", "end"
   ) %in% colnames(reference))))
-    stop(paste(paste(
+    stop2(paste(paste(
       c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
                                                     "start", "end") %in% colnames(reference))], collapse =
         ", "
@@ -86,7 +86,7 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
   if (any(!(c(
     "sound.files", "selec", "start", "end"
   ) %in% colnames(detection))))
-    stop(paste(paste(
+    stop2(paste(paste(
       c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
                                                     "start", "end") %in% colnames(detection))], collapse =
         ", "
@@ -94,11 +94,11 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
 
   #if there are NAs in start or end stop (reference)
   if (any(is.na(c(reference$end, reference$start))))
-    stop("NAs found in start and/or end columns")
+    stop2("NAs found in start and/or end columns")
 
   #if any start higher than end stop
   if (any(reference$end - reference$start <= 0))
-    stop(paste(
+    stop2(paste(
       "Start is higher than or equal to end in",
       length(which(reference$end - reference$start <= 0)),
       "case(s) in 'reference'"
