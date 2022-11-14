@@ -183,7 +183,7 @@ optimize_energy_detector <- function(reference, files = NULL, threshold = 5, pea
 
        eng_det_l <- warbleR:::pblapply_wrblr_int(X = 1:nrow(exp_grd), pbar = pb, cl = 1, FUN = function(x){
 
-          eng_det <- energy_detector(files = files, envelopes = envelopes, threshold = exp_grd$threshold[x], peak.amplitude = exp_grd$peak.amplitude[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
+          eng_det <- energy_detector(files = if (is.null(envelopes)) files else NULL, envelopes = envelopes, threshold = exp_grd$threshold[x], peak.amplitude = exp_grd$peak.amplitude[x], smooth = exp_grd$smooth[x], min.duration = exp_grd$min.duration[x], max.duration = exp_grd$max.duration[x], thinning = exp_grd$thinning[x], parallel = parallel, pb = FALSE, hold.time = exp_grd$hold.time[x], bp = bp, path = path, hop.size = hop.size, wl = wl)
 
           # make factor a character vector
           eng_det$sound.files <- as.character(eng_det$sound.files)
