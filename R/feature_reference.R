@@ -82,9 +82,9 @@ feature_reference <- function(reference, path = NULL, by.sound.file = FALSE, uni
       # measure peak amplitude
       peak_amp <- warbleR::sound_pressure_level(reference, type = "peak", path = path, pb = FALSE)
 
-    output$min.peak.amplitude <- min(peak_amp$peak.amplitude, na.rm = TRUE)
-    output$mean.peak.amplitude <- mean(peak_amp$peak.amplitude, na.rm = TRUE)
-    output$max.peak.amplitude <- max(peak_amp$peak.amplitude, na.rm = TRUE)
+    output$min.peak.amplitude <- min(peak_amp$SPL, na.rm = TRUE)
+    output$mean.peak.amplitude <- mean(peak_amp$SPL, na.rm = TRUE)
+    output$max.peak.amplitude <- max(peak_amp$SPL, na.rm = TRUE)
       }
 
     return(output)
