@@ -143,8 +143,8 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     return(NULL)
   })
 
-  # make it a vector
-  a <- unlist(a_l)
+  # # make it a vector
+  # a <- unlist(a_l)
   }
 
   # calculate position of selection in newly created clips
@@ -164,7 +164,7 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     clms <- if (!is.null(X$bottom.freq) & !is.null(X$top.freq)) c("sound.files", "new.sound.files", "selec", "start", "end", "bottom.freq", "top.freq") else c("sound.files", "new.sound.files", "selec", "start", "end")
 
     # bind together
-    ovlp.df <- rbind(X[, clms], split.df[, clms])
+    ovlp.df <- rbind(data.frame(X[, clms]), split.df[, clms])
 
     # add unique id for each selection
     ovlp.df$sel.id <- paste(ovlp.df$sound.files, ovlp.df$selec, sep = "-")
@@ -178,7 +178,7 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     # split in new files rows and selection rows
     new.sf.df <- ovlp.df[!is.na(ovlp.df$new.sound.files) & !is.na(ovlp.df$indx.row), ]
     org.sls.df <- ovlp.df[is.na(ovlp.df$new.sound.files), ]
-
+    org.sls.df$sel.id <- paste(org.sls.df$sound.files, org.sls.df$selec, sep = "-")
     # re-add other columns
     X$original.sound.files <- X$sound.files
     org.sls.df <- merge(org.sls.df, X[, setdiff(names(X), clms)], by = "sel.id")
