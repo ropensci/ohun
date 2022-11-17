@@ -205,7 +205,7 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
       contained.sls$start[contained.sls$start < 0] <- 0
       wav_header <- read_wave(X = Y$new.sound.files, path = path, header = TRUE)
       wav_duration <- wav_header$samples / wav_header$sample.rate
-      contained.sls$end[contained.sls$end > Y$end] <- wav_duration
+      contained.sls$end[contained.sls$end > wav_duration] <- wav_duration
 
       return(contained.sls)
       } else
