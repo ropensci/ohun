@@ -2,12 +2,12 @@
 #'
 #' @description \code{diagnose_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
 #' @usage diagnose_detection(reference, detection, by.sound.file = FALSE,
-#' time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL, by = NULL)
+#' time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param by.sound.file Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE}, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the sound events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
@@ -20,9 +20,9 @@
 #'  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
 #'  \item \code{split.positives}: number of sound events in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
 #'  \item \code{merged.positives}: number of sound events in 'reference' that were overlapped by a detection that also overlaps with other sound events in 'reference' (i.e. sound events that were merged into a single detection). In a perfect detection routine it should be 0.
-#'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.true.positives}: mean duration of true positives (in ms). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in ms). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in ms). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
@@ -75,7 +75,7 @@
 #' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on sept-2021 (MAS)
-diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, parallel = 1, pb = TRUE, path = NULL, by = NULL)
+diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL)
 {
   # do it by
   # run the function for each subset split by "by"
@@ -85,7 +85,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
     split_diagnostic <- warbleR:::pblapply_wrblr_int(X = 1:length(split_det), cl = 1, pbar = pb, FUN = function(x) {
 
-      by_diag <- diagnose_detection(reference = reference, detection = split_det[[x]], pb = FALSE, parallel = parallel, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
+      by_diag <- diagnose_detection(reference = reference, detection = split_det[[x]], pb = FALSE, cores = cores, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
 
       # add by label
       by_diag$by <- names(split_det)[x]
@@ -123,7 +123,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   if (nrow(detection) > 0)
   {
     # double checking happens inside label_detection()
-    labeled_detection <- label_detection(reference = reference, detection = detection, parallel = parallel, pb = pb)
+    labeled_detection <- label_detection(reference = reference, detection = detection, cores = cores, pb = pb)
 
     # # add row labels to reference for getting false negatives
     reference$..row.id <- 1:nrow(reference)
@@ -169,9 +169,9 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
                 unlist(lapply(sub_detec$reference.row[grepl("split)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
               merged.positives = length(unique(
                 unlist(lapply(sub_detec$reference.row[grepl("merged)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
-              mean.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]),
-              mean.duration.false.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]),
-              mean.duration.false.negatives = mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]),
+              mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]) * 1000, 0),
+              mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]) * 1000, 0),
+              mean.duration.false.negatives = round(mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]) * 1000, 0),
               overlap.to.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
               stringsAsFactors = FALSE
@@ -186,7 +186,6 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
 
         # add recall, precision and f1
         performance$recall <- performance$true.positives / nrow(sub_ref)
-        # performance$precision <- if (nrow(sub_detec) > 0 & performance$true.positives > 0) performance$true.positives / (nrow(sub_ref) + sum(grep("false", sub_detec$detection.class))) else 0
         performance$precision <-if (nrow(sub_detec) > 0 & performance$true.positives > 0) (performance$true.positives / performance$total.detections) else 0
 
         performance$f1.score <- 2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall))
@@ -246,7 +245,7 @@ diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time
   merged.positives = NA,
   mean.duration.true.positives = NA,
   mean.duration.false.positives = NA,
-  mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x) mean(reference$end - reference$start)),
+  mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x) mean(reference$end - reference$start)) * 1000,
   overlap.to.true.positives = NA,
   proportional.duration.true.positives = NA,
   recall = 0,

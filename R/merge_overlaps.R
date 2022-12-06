@@ -1,10 +1,10 @@
 #' @title Merge overlapping selections
 #'
 #' @description \code{merge_overlaps} merges several overlapping selections a single selection
-#' @usage merge_overlaps(X, pb = TRUE, parallel = 1)
+#' @usage merge_overlaps(X, pb = TRUE, cores = 1)
 #' @param X Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @return If any time-overlapping selection is found it returns a data frame in which overlapping selections are collapse into a single selection.
 #' @export
@@ -32,18 +32,18 @@
 #' }
 # last modification on jan-2022 (MAS)
 
-merge_overlaps <- function(X, pb = TRUE, parallel = 1){
+merge_overlaps <- function(X, pb = TRUE, cores = 1){
 
   # merged overlapping selections
   if (pb)
     write(file = "", x = "Detecting overlapping selections:")
-  ov_sls <- overlapping_sels(X, pb = pb, verbose = FALSE, parallel = parallel)
+  ov_sls <- overlapping_sels(X, pb = pb, verbose = FALSE, parallel = cores)
 
   if (any(!is.na(ov_sls$ovlp.sels)))
   {
     if (pb)
       write(file = "", x = "Merging overlapping selections:")
-  merges_l <- warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = parallel, function(x){
+  merges_l <- warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x){
 
     if (!is.na(x)){
 

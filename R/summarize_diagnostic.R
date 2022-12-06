@@ -12,8 +12,8 @@
 #'  \item \code{split.positives}: number of sound events in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
 #'  \item \code{merged.positives}: number of sound events in 'reference' that were overlapped by a detection that also overlaps with other sound events in 'reference' (i.e. sound events that were merged into a single detection). In a perfect detection routine it should be 0.
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.false.positives}: mean duration of false positives (in ms). Only included when \code{time.diagnostics = TRUE}.
+#'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in ms). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
@@ -94,9 +94,9 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
     # add time diagnostics
     if (time.diagnostics){
 
-      summ_diagnostic$mean.duration.true.positives <- if(any(!is.na(Y$mean.duration.true.positives))) stats::weighted.mean(x = Y$mean.duration.true.positives, w = Y$true.positives, na.rm = TRUE) else NA
-      summ_diagnostic$mean.duration.false.positives <- if(any(!is.na(Y$mean.duration.false.positives))) stats::weighted.mean(x = Y$mean.duration.false.positives, w = Y$true.positives, na.rm = TRUE) else NA
-      summ_diagnostic$mean.duration.false.negatives <- if(any(!is.na(Y$mean.duration.false.negatives))) stats::weighted.mean(x = Y$mean.duration.false.negatives, w = Y$true.positives, na.rm = TRUE) else NA
+      summ_diagnostic$mean.duration.true.positives <- if(any(!is.na(Y$mean.duration.true.positives))) round(stats::weighted.mean(x = Y$mean.duration.true.positives, w = Y$true.positives, na.rm = TRUE), 0) else NA
+      summ_diagnostic$mean.duration.false.positives <- if(any(!is.na(Y$mean.duration.false.positives))) round(stats::weighted.mean(x = Y$mean.duration.false.positives, w = Y$true.positives, na.rm = TRUE), 0) else NA
+      summ_diagnostic$mean.duration.false.negatives <- if(any(!is.na(Y$mean.duration.false.negatives))) round(stats::weighted.mean(x = Y$mean.duration.false.negatives, w = Y$true.positives, na.rm = TRUE), 0) else NA
       summ_diagnostic$proportional.duration.true.positives <- if(any(!is.na(Y$proportional.duration.true.positives))) stats::weighted.mean(x = Y$proportional.duration.true.positives, w = Y$true.positives, na.rm = TRUE) else NA
 
       if (any(names(diagnostic) == "duty.cycle"))
@@ -105,7 +105,6 @@ summarize_diagnostic <- function(diagnostic, time.diagnostics = FALSE){
 
     # add recall precision and f1.score at the end
     summ_diagnostic$recall <- sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
-    # summ_diagnostic$precision <- if (any(Y$precision != 0)) 1 - (sum(Y$false.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.positives, na.rm = TRUE))) else 0
     summ_diagnostic$precision <- if (any(Y$precision != 0)) (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$total.detections, na.rm = TRUE))) else 0
     summ_diagnostic$f1.score <- 2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall))
 

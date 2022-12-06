@@ -5,7 +5,7 @@
 \title{Acoustic templates correlator using time-frequency cross-correlation}
 \usage{
 template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-wn ='hanning', cor.method = "pearson", parallel = 1, path = ".",
+wn ='hanning', cor.method = "pearson", cores = 1, path = ".",
 pb = TRUE, type = "fourier", fbtype = "mel", ...)
 }
 \arguments{
@@ -26,7 +26,7 @@ slow down the function but may produce more accurate results.}
 
 \item{cor.method}{A character vector of length 1 specifying the correlation method as in \code{\link[stats]{cor}}.}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{path}{Character string containing the directory path where the sound files are located.

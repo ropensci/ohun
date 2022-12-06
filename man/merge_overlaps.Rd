@@ -4,14 +4,14 @@
 \alias{merge_overlaps}
 \title{Merge overlapping selections}
 \usage{
-merge_overlaps(X, pb = TRUE, parallel = 1)
+merge_overlaps(X, pb = TRUE, cores = 1)
 }
 \arguments{
 \item{X}{Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 }
 \value{

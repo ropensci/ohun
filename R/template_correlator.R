@@ -2,7 +2,7 @@
 #'
 #' \code{template_correlator} estimates templates cross-correlation across multiple sound files.
 #' @usage template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-#' wn ='hanning', cor.method = "pearson", parallel = 1, path = ".",
+#' wn ='hanning', cor.method = "pearson", cores = 1, path = ".",
 #' pb = TRUE, type = "fourier", fbtype = "mel", ...)
 #' @param templates 'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
 #' selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.
@@ -13,7 +13,7 @@
 #' slow down the function but may produce more accurate results.
 #' @param wn A character vector of length 1 specifying the window name as in \code{\link[seewave]{ftwindow}}.
 #' @param cor.method A character vector of length 1 specifying the correlation method as in \code{\link[stats]{cor}}.
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #' It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param path Character string containing the directory path where the sound files are located.
 #'The current working directory is used as default.
@@ -86,7 +86,7 @@
 # last modification on aug-25-2021 (MAS)
 
 template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-                  wn ='hanning', cor.method = "pearson", parallel = 1,
+                  wn ='hanning', cor.method = "pearson", cores = 1,
                   path = ".", pb = TRUE, type = "fourier", fbtype = "mel", ...)
 {
   #check path to working directory
@@ -125,9 +125,9 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
         if (!is_extended_selection_table(templates))
           if (!any(templates$sound.files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop2("At least one sound files in 'templates' was not found in the working directory or 'path' supplied")
 
-  # If parallel is not numeric
-  if (!is.numeric(parallel)) stop2("'parallel' must be a numeric vector of length 1")
-  if (any(!(parallel %% 1 == 0),parallel < 1)) stop2("'parallel' should be a positive integer")
+  # If cores is not numeric
+  if (!is.numeric(cores)) stop2("'cores' must be a numeric vector of length 1")
+  if (any(!(cores %% 1 == 0),cores < 1)) stop2("'cores' should be a positive integer")
 
   # get sampling rate of files
     info_sf <- warbleR::info_sound_files(path = path, pb = FALSE)
@@ -242,9 +242,9 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
     return(cors)
   }
 
-  # set parallel cores
-  if (Sys.info()[1] == "Windows" & parallel > 1)
-    cl <- parallel::makePSOCKcluster(getOption("cl.cores", parallel)) else cl <- parallel
+  # set cores cores
+  if (Sys.info()[1] == "Windows" & cores > 1)
+    cl <- parallel::makePSOCKcluster(getOption("cl.cores", cores)) else cl <- cores
 
   # get correlation
   corr_vector_list <- warbleR:::pblapply_wrblr_int(pbar = pb, X = 1:nrow(compare.matrix), cl = cl, FUN = function(e, cor.meth = cor.method) {

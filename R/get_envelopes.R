@@ -2,7 +2,7 @@
 #'
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
 #' @usage get_envelopes(path = ".", files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-#' parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
+#' cores = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 #' @param path Character string containing the directory path where the sound files are located.
 #'The current working directory is used as default.
 #' @param files character vector or indicating the sound files that will be analyzed.
@@ -10,7 +10,7 @@
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
 #' @param wl A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param thinning Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of
 #' samples used to represent amplitude envelopes (i.e. the thinning of the envelopes). Usually amplitude envelopes have many more samples
@@ -70,7 +70,7 @@ get_envelopes <-
            bp = NULL,
            hop.size = 11.6,
            wl = NULL,
-           parallel = 1,
+           cores = 1,
            thinning = 1,
            pb = TRUE,
            smooth = 5,
@@ -124,11 +124,11 @@ get_envelopes <-
         any(!is.character(files),!is.vector(files)))
       stop2("'files' must be a character vector")
 
-    #if parallel is not numeric
-    if (!is.numeric(parallel))
-      stop2("'parallel' must be a numeric vector of length 1")
-    if (any(!(parallel %% 1 == 0), parallel < 1))
-      stop2("'parallel' should be a positive integer")
+    #if cores is not numeric
+    if (!is.numeric(cores))
+      stop2("'cores' must be a numeric vector of length 1")
+    if (any(!(cores %% 1 == 0), cores < 1))
+      stop2("'cores' should be a positive integer")
 
     #return error if not all sound files were found
     if (is.null(files))
@@ -145,9 +145,9 @@ get_envelopes <-
 
     #Apply over each sound file
     # set clusters for windows OS
-    if (Sys.info()[1] == "Windows" & parallel > 1)
-      cl <- parallel::makeCluster(parallel) else
-      cl <- parallel
+    if (Sys.info()[1] == "Windows" & cores > 1)
+      cl <- parallel::makeCluster(cores) else
+      cl <- cores
 
     # run function over sound files or selections in loop
     env_list <- warbleR:::pblapply_wrblr_int(pbar = pb,
@@ -160,7 +160,7 @@ get_envelopes <-
               bp,
               hop.size,
               wl,
-              parallel,
+              cores,
               thinning,
               pb,
               smooth,
@@ -257,7 +257,7 @@ env_ohun_int <-
            bp,
            hop.size,
            wl,
-           parallel,
+           cores,
            thinning,
            pb,
            smooth,

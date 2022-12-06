@@ -5,7 +5,7 @@
 \title{Splits sound files}
 \usage{
 split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
- parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL)
+ cores = 1, pb = TRUE, only.sels = FALSE, X = NULL)
 }
 \arguments{
 \item{path}{Directory path where sound files are found.
@@ -17,7 +17,7 @@ The current working directory is used as default.}
 
 \item{files}{Character vector indicating the subset of files that will be split.}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}. Only used when}

@@ -9,10 +9,13 @@ Encoding: UTF-8
 URL: https://marce10.github.io/ohun/
 BugReports: https://github.com/maRce10/ohun/issues/
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Repository: CRAN
 Language: en-US
 Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")))
 Date/Publication: 2016-04-19 08:12:11
 Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson, rlang, sp, igraph
 Depends: R (>= 3.2.1), tuneR, warbleR (>= 1.1.28)
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

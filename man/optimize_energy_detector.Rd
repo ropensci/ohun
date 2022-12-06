@@ -6,7 +6,7 @@
 \usage{
 optimize_energy_detector(reference, files = NULL, threshold = 5,
 peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0,
-min.duration = NULL, max.duration = NULL, thinning = 1, parallel = 1, pb = TRUE,
+min.duration = NULL, max.duration = NULL, thinning = 1, cores = 1, pb = TRUE,
  by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL)
 }
 \arguments{
@@ -43,7 +43,7 @@ samples used to represent amplitude envelopes (i.e. the thinning of the envelope
 than those needed to accurately represent amplitude variation in time, which affects the size of the
 output (usually very large R objects / files). Default is  \code{1} (no thinning). Higher sampling rates may afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. \strong{Several values can be supplied for optimization}.}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{pb}{Logical argument to control progress bar and messages. Default is \code{TRUE}.}
@@ -68,9 +68,9 @@ A data frame in which each row shows the result of a detection job with a partic
  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
  \item \code{split.positives}: number of sound events in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
  \item \code{merged.positives}: number of sound events in 'detection' that were overlapped by more than 1 detection (i.e. sound events that were merged). In a perfect detection routine it should be 0.
- \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
- \item \code{mean.duration.false.positives}: mean duration of false positives (in s). Only included when \code{time.diagnostics = TRUE}.
- \item \code{mean.duration.false.negatives}: mean duration of false negatives (in s). Only included when \code{time.diagnostics = TRUE}.
+ \item \code{mean.duration.true.positives}: mean duration of true positives (in ms). Only included when \code{time.diagnostics = TRUE}.
+ \item \code{mean.duration.false.positives}: mean duration of false positives (in ms). Only included when \code{time.diagnostics = TRUE}.
+ \item \code{mean.duration.false.negatives}: mean duration of false negatives (in ms). Only included when \code{time.diagnostics = TRUE}.
  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to th duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged. Only included when \code{time.diagnostics = TRUE}.
  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied.

@@ -5,7 +5,7 @@
 \title{Extract absolute amplitude envelopes}
 \usage{
 get_envelopes(path = ".", files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-parallel = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
+cores = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
@@ -20,7 +20,7 @@ frequency bandpass filter (in kHz). Default is \code{NULL}.}
 
 \item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{thinning}{Numeric vector of length 1 in the range 0~1 indicating the proportional reduction of the number of

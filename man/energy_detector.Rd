@@ -6,7 +6,7 @@
 \usage{
 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL,
 thinning = 1, bp = NULL, smooth = 5, threshold = 5, peak.amplitude = 0,
-hold.time = 0, min.duration = 0, max.duration = Inf, parallel = 1, pb = TRUE)
+hold.time = 0, min.duration = 0, max.duration = Inf, cores = 1, pb = TRUE)
 }
 \arguments{
 \item{files}{Character vector indicating the sound files that will be analyzed. Optional. If 'files' and 'envelopes' are not supplied then the function will work on all supported format sound files in the working directory.}
@@ -45,7 +45,7 @@ threshold. If 'hold.time' is supplied sound events are first merged and then fil
 ms) of the sound events to be detected. It removes sound events above that
 threshold. If 'hold.time' is supplied sound events are first merged and then filtered by duration.  Default is \code{Inf} (i.e. no filtering based on maximum duration).}
 
-\item{parallel}{Numeric. Controls whether parallel computing is applied.
+\item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}

@@ -1,10 +1,10 @@
 #' @title Label detections from a sound event detection procedure
 #'
 #' @description \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
-#' @usage label_detection(reference, detection, parallel = 1, pb = TRUE)
+#' @usage label_detection(reference, detection, cores = 1, pb = TRUE)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
@@ -58,7 +58,7 @@
 #' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on jul-16-2021 (MAS)
-label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
+label_detection <- function(reference, detection, cores = 1, pb = TRUE)
 {
   if (is_extended_selection_table(reference)) stop2("This function cannot take extended selection tables ('reference' argument)")
 
@@ -109,9 +109,9 @@ label_detection <- function(reference, detection, parallel = 1, pb = TRUE)
   reference$..row.id <- 1:nrow(reference)
 
   # set clusters for windows OS
-  if (Sys.info()[1] == "Windows" & parallel > 1)
-    cl <- parallel::makeCluster(parallel) else
-      cl <- parallel
+  if (Sys.info()[1] == "Windows" & cores > 1)
+    cl <- parallel::makeCluster(cores) else
+      cl <- cores
 
     # look at detections matching 1 training selection at the time
     labeled_detections_list <- warbleR:::pblapply_wrblr_int(pbar = pb, cl = cl, X = unique(detection$sound.files), FUN = function(z){

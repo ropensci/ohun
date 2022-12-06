@@ -2,13 +2,13 @@
 #'
 #' \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
 #' @usage split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
-#'  parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL)
+#'  cores = 1, pb = TRUE, only.sels = FALSE, X = NULL)
 #' @param path Directory path where sound files are found.
 #' The current working directory is used as default.
 #' @param sgmt.dur Numeric. Duration (in s) of segments in which sound files would be split. Sound files shorter than 'sgmt.dur' won't be split. Ignored if 'sgmts' is supplied.
 #' @param sgmts Numeric. Number of segments in which to split each sound file. If supplied 'sgmt.dur' is ignored.
 #' @param files Character vector indicating the subset of files that will be split.
-#' @param parallel Numeric. Controls whether parallel computing is applied.
+#' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}. Only used when
 #' @param only.sels Logical argument to control if only the data frame is returned (no wave files are saved). Default is \code{FALSE}.
@@ -40,7 +40,7 @@
 #' }
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
 #last modification on aug-23-2021 (MAS)
-split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL, parallel = 1, pb = TRUE, only.sels = FALSE, X = NULL){
+split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL, cores = 1, pb = TRUE, only.sels = FALSE, X = NULL){
 
   #check path to working directory
   if (is.null(path)) path <- getwd() else
@@ -86,9 +86,9 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
     } else
     if (!is.numeric(sgmts)) stop2("'sgmts' must be numeric")
 
-  # If parallel is not numeric
-  if (!is.numeric(parallel)) stop2("'parallel' must be a numeric vector of length 1")
-  if (any(!(parallel %% 1 == 0),parallel < 1)) stop2("'parallel' should be a positive integer")
+  # If cores is not numeric
+  if (!is.numeric(cores)) stop2("'cores' must be a numeric vector of length 1")
+  if (any(!(cores %% 1 == 0),cores < 1)) stop2("'cores' should be a positive integer")
 
   # measure wav duration
   wvdr <- warbleR::duration_wavs(path = path, files = files)
@@ -128,8 +128,8 @@ split_acoustic_data <- function(path = ".", sgmt.dur = 10, sgmts = NULL, files =
   if (!only.sels){
 
   # set clusters for windows OS
-  if (Sys.info()[1] == "Windows" & parallel > 1)
-    cl <- parallel::makePSOCKcluster(getOption("cl.cores", parallel)) else cl <- parallel
+  if (Sys.info()[1] == "Windows" & cores > 1)
+    cl <- parallel::makePSOCKcluster(getOption("cl.cores", cores)) else cl <- cores
 
     # split using a loop only the ones that are shorter than segments
     a_l <- warbleR:::pblapply_wrblr_int(pbar = pb, X = which(split.df$original.sound.files != split.df$sound.files), cl =  cl, FUN = function(x) {
