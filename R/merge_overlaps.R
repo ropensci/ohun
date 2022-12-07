@@ -32,42 +32,44 @@
 #' }
 # last modification on jan-2022 (MAS)
 
-merge_overlaps <- function(X, pb = TRUE, cores = 1){
-
+merge_overlaps <- function(X, pb = TRUE, cores = 1) {
   # merged overlapping selections
   if (pb)
     write(file = "", x = "Detecting overlapping selections:")
-  ov_sls <- overlapping_sels(X, pb = pb, verbose = FALSE, parallel = cores)
+  ov_sls <-
+    overlapping_sels(X,
+                     pb = pb,
+                     verbose = FALSE,
+                     parallel = cores)
 
   if (any(!is.na(ov_sls$ovlp.sels)))
   {
     if (pb)
       write(file = "", x = "Merging overlapping selections:")
-  merges_l <- warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x){
+    merges_l <-
+      warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x) {
+        if (!is.na(x)) {
+          Y <- ov_sls[ov_sls$ovlp.sels == x & !is.na(ov_sls$ovlp.sels), ]
+          Y$end[1] <- max(Y$end)
 
-    if (!is.na(x)){
+          if (!is.null(Y$bottom.freq))
+            Y$bottom.freq[1] <- min(Y$bottom.freq)
 
-      Y <- ov_sls[ov_sls$ovlp.sels == x & !is.na(ov_sls$ovlp.sels), ]
-      Y$end[1] <- max(Y$end)
+          if (!is.null(Y$top.freq))
+            Y$top.freq[1] <- max(Y$top.freq)
 
-      if (!is.null(Y$bottom.freq))
-        Y$bottom.freq[1] <- min(Y$bottom.freq)
+          # return first row
+          Y <- Y[1, ]
+        } else
+          Y <- ov_sls[is.na(ov_sls$ovlp.sels), ]
+        return(Y)
+      })
 
-      if (!is.null(Y$top.freq))
-        Y$top.freq[1] <- max(Y$top.freq)
+    ov_sls <- do.call(rbind, merges_l)
 
-      # return first row
-      Y <- Y[1, ]
-    } else
-      Y <- ov_sls[is.na(ov_sls$ovlp.sels), ]
-    return(Y)
-  })
-
-  ov_sls <- do.call(rbind, merges_l)
-
-  ov_sls$ovlp.sels <- NULL
-} else
-  ov_sls <- X
+    ov_sls$ovlp.sels <- NULL
+  } else
+    ov_sls <- X
 
   # rename rows
   rownames(ov_sls) <- 1:nrow(ov_sls)
@@ -75,4 +77,3 @@ merge_overlaps <- function(X, pb = TRUE, cores = 1){
   return(ov_sls)
 
 }
-

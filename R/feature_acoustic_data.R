@@ -26,75 +26,103 @@
 # last modification on jul-2022 (MAS)
 
 feature_acoustic_data <- function(path = ".", digits = 2) {
-
   # get information by sound file
   info_files <- warbleR::info_sound_files(path = path, pb = FALSE)
 
   # get file size (should be removed after updating warbleR to )
-  info_files$wav.size <- file.size(file.path(path, info_files$sound.files)) / 1000000
+  info_files$wav.size <-
+    file.size(file.path(path, info_files$sound.files)) / 1000000
 
-  cat(crayon::silver(paste0("Features of the acoustic data set in '", crayon::bold(paste0(normalizePath(path), "':")))))
+  cat(crayon::silver(paste0(
+    "Features of the acoustic data set in '", crayon::bold(paste0(normalizePath(path), "':"))
+  )))
 
   # number of files
   cat(crayon::silver(paste("\n*", nrow(info_files), "sound files")))
 
- # formats
+  # formats
   pos <- regexpr("\\.([[:alnum:]]+)$", info_files$sound.files)
-  extensions <- ifelse(pos > -1L, substring(info_files$sound.files, pos + 1L), "")
+  extensions <-
+    ifelse(pos > -1L, substring(info_files$sound.files, pos + 1L), "")
   extensions <- tolower(extensions)
   extensions <- paste0(".", extensions)
   tab_ext <- table(extensions)
   tab_ext <- paste0(names(tab_ext), " (", tab_ext, ")")
   tab_ext <- paste(tab_ext, collapse =  "; ")
 
- format_message <- paste0("\n* ", length(unique(extensions)), " file format(s) ", "(", tab_ext, ")")
-    if ( length(unique(extensions)) > 1)
-  cat(crayon::red(format_message)) else
+  format_message <-
+    paste0("\n* ", length(unique(extensions)), " file format(s) ", "(", tab_ext, ")")
+  if (length(unique(extensions)) > 1)
+    cat(crayon::red(format_message)) else
     cat(crayon::silver(format_message))
 
   # sampling rates
- tab_sr <- table(info_files$sample.rate)
- tab_sr <- paste0(names(tab_sr), " kHz", " (", tab_sr, ")")
- tab_sr <- paste(tab_sr, collapse =  "; ")
+  tab_sr <- table(info_files$sample.rate)
+  tab_sr <- paste0(names(tab_sr), " kHz", " (", tab_sr, ")")
+  tab_sr <- paste(tab_sr, collapse =  "; ")
 
- sr_message <- paste0("\n* ", length(unique(info_files$sample.rate)), " sampling rate(s) ", "(", tab_sr, ")")
- if ( length(unique(info_files$sample.rate)) > 1)
-   cat(crayon::red(sr_message)) else
-     cat(crayon::silver(sr_message))
+  sr_message <-
+    paste0("\n* ", length(unique(info_files$sample.rate)), " sampling rate(s) ", "(", tab_sr, ")")
+  if (length(unique(info_files$sample.rate)) > 1)
+    cat(crayon::red(sr_message)) else
+    cat(crayon::silver(sr_message))
 
- # bit depths
- tab_bd <- table(info_files$bits)
- tab_bd <- paste0(names(tab_bd), " bits", " (", tab_bd, ")")
- tab_bd <- paste(tab_bd, collapse =  "; ")
+  # bit depths
+  tab_bd <- table(info_files$bits)
+  tab_bd <- paste0(names(tab_bd), " bits", " (", tab_bd, ")")
+  tab_bd <- paste(tab_bd, collapse =  "; ")
 
- bd_message <- paste0("\n* ", length(unique(info_files$bits)), " bit depth(s) ", "(", tab_bd, ")")
- if (length(unique(info_files$bits)) > 1)
-   cat(crayon::red(bd_message)) else
-     cat(crayon::silver(bd_message))
+  bd_message <-
+    paste0("\n* ", length(unique(info_files$bits)), " bit depth(s) ", "(", tab_bd, ")")
+  if (length(unique(info_files$bits)) > 1)
+    cat(crayon::red(bd_message)) else
+    cat(crayon::silver(bd_message))
 
- # number of channels
- tab_ch <- table(info_files$channels)
- tab_ch <- paste0(names(tab_ch), " channel(s)", " (", tab_ch, ")")
- tab_ch <- paste(tab_ch, collapse =  "; ")
+  # number of channels
+  tab_ch <- table(info_files$channels)
+  tab_ch <- paste0(names(tab_ch), " channel(s)", " (", tab_ch, ")")
+  tab_ch <- paste(tab_ch, collapse =  "; ")
 
- ch_message <- paste0("\n* ", length(unique(info_files$channels)), " number of channels ", "(", tab_ch, ")")
- if (length(unique(info_files$channels)) > 1)
-   cat(crayon::red(ch_message)) else
-     cat(crayon::silver(ch_message))
+  ch_message <-
+    paste0("\n* ", length(unique(info_files$channels)), " number of channels ", "(", tab_ch, ")")
+  if (length(unique(info_files$channels)) > 1)
+    cat(crayon::red(ch_message)) else
+    cat(crayon::silver(ch_message))
 
- # duration
- dur_message <- paste0("\n* File duration range: ", round(min(info_files$duration), digits), "-", round(max(info_files$duration), digits), " s (mean: ", round(mean(info_files$duration), digits), " s)")
+  # duration
+  dur_message <-
+    paste0(
+      "\n* File duration range: ",
+      round(min(info_files$duration), digits),
+      "-",
+      round(max(info_files$duration), digits),
+      " s (mean: ",
+      round(mean(info_files$duration), digits),
+      " s)"
+    )
 
- cat(crayon::silver(dur_message))
+  cat(crayon::silver(dur_message))
 
- # file size
- tab_sz <- table(info_files$channels)
- tab_sz <- paste0(names(tab_sz), " MB", " (", tab_sz, ")")
- tab_sz <- paste(tab_sz, collapse =  "; ")
- dur_message <- paste0("\n* File size range: ", round(min(info_files$wav.size), digits), "-", round(max(info_files$wav.size), digits), " MB (mean: ", round(mean(info_files$wav.size), digits), " MB)")
+  # file size
+  tab_sz <- table(info_files$channels)
+  tab_sz <- paste0(names(tab_sz), " MB", " (", tab_sz, ")")
+  tab_sz <- paste(tab_sz, collapse =  "; ")
+  dur_message <-
+    paste0(
+      "\n* File size range: ",
+      round(min(info_files$wav.size), digits),
+      "-",
+      round(max(info_files$wav.size), digits),
+      " MB (mean: ",
+      round(mean(info_files$wav.size), digits),
+      " MB)"
+    )
 
- cat(crayon::silver(dur_message))
+  cat(crayon::silver(dur_message))
 
- cat(crayon::italic(crayon::silver("\n (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')")))
+  cat(crayon::italic(
+    crayon::silver(
+      "\n (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')"
+    )
+  ))
 }
-

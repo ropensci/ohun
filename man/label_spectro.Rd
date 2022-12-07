@@ -42,7 +42,7 @@ A spectrogram along with lines highlighting the position of sound events in 'ref
 \code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-corelation scores
 }
 \details{
-This function plots spectrograms annotated with the position of sound events. Mostly created for graphs included in the vignette. Only works on a single 'wave' object at the time.
+This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
 }
 \examples{
 {

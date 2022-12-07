@@ -22,7 +22,7 @@
 #' @return A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.
 #' @export
 #' @name label_spectro
-#' @details This function plots spectrograms annotated with the position of sound events. Mostly created for graphs included in the vignette. Only works on a single 'wave' object at the time.
+#' @details This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
 #'
 #' @examples {
 #' # load example data
@@ -47,67 +47,148 @@
 #' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 #last modification on oct-31-2021 (MAS)
-label_spectro <- function(wave, reference = NULL, detection = NULL, envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5), palette = viridis::viridis, template.correlation = NULL, line.x.position = 2, hop.size = NULL, ...) {
+label_spectro <-
+  function(wave,
+           reference = NULL,
+           detection = NULL,
+           envelope = FALSE,
+           threshold = NULL,
+           smooth = 5,
+           collevels = seq(-100, 0, 5),
+           palette = viridis::viridis,
+           template.correlation = NULL,
+           line.x.position = 2,
+           hop.size = NULL,
+           ...) {
+    # adjust wl based on hope.size
+    if (!is.null(hop.size))
+      wl <- round(wave@samp.rate * hop.size / 1000, 0)
 
-  # adjust wl based on hope.size
-  if (!is.null(hop.size))
-    wl <- round(wave@samp.rate * hop.size / 1000, 0)
+    # set graphic device
+    on.exit(suppressWarnings(par(
+      mfrow = c(1, 1), mar = c(5, 4, 4, 2) + 0.1
+    )))
 
-  # set graphic device
-  on.exit(suppressWarnings(par(mfrow = c(1, 1), mar=c(5, 4, 4, 2) +0.1)))
-
-  if (envelope | !is.null(template.correlation))
-    par(mfrow = c(2, 1), mar = c(0,  4,  1,  1)) else
+    if (envelope | !is.null(template.correlation))
+      par(mfrow = c(2, 1), mar = c(0,  4,  1,  1))
+    else
       par(mar = c(4, 4, 1, 1))
 
-  # plot spectrogram
-  seewave::spectro(wave = wave, grid = FALSE, scale = FALSE, palette = palette, collevels = collevels, axisX = if (envelope | !is.null(template.correlation)) FALSE else TRUE,...)
+    # plot spectrogram
+    seewave::spectro(
+      wave = wave,
+      grid = FALSE,
+      scale = FALSE,
+      palette = palette,
+      collevels = collevels,
+      axisX = if (envelope |
+                  !is.null(template.correlation))
+        FALSE
+      else
+        TRUE,
+      ...
+    )
 
-  # plot detection
-  if (!is.null(reference))
-    for(i in 1:nrow(reference))
-      lines(x = (reference[i, c("start", "end")]), y = rep(line.x.position, 2), col = "#F7D03CFF", lwd = 7, lend = 2)
+    # plot detection
+    if (!is.null(reference))
+      for (i in 1:nrow(reference))
+        lines(
+          x = (reference[i, c("start", "end")]),
+          y = rep(line.x.position, 2),
+          col = "#F7D03CFF",
+          lwd = 7,
+          lend = 2
+        )
 
-  # plot detection
-  if (!is.null(detection))
-    for(i in 1:nrow(detection))
-      lines(x = (detection[i, c("start", "end")]), y = rep(line.x.position - 0.3, 2), col = "#CF4446FF", lwd = 7, lend = 2)
+    # plot detection
+    if (!is.null(detection))
+      for (i in 1:nrow(detection))
+        lines(
+          x = (detection[i, c("start", "end")]),
+          y = rep(line.x.position - 0.3, 2),
+          col = "#CF4446FF",
+          lwd = 7,
+          lend = 2
+        )
 
-  usr <- par("usr")
+    usr <- par("usr")
 
-  # add legend
-  if (!is.null(detection) & !is.null(reference))
-    legend(x = usr[2] * 0.98, y = usr[4] * 0.98, col = c("#F7D03CFF", "#CF4446FF"), legend = c("reference", "detection"), lwd = 4, bg = "#FFFFFFE6", xjust = 1, yjust = 1)
+    # add legend
+    if (!is.null(detection) & !is.null(reference))
+      legend(
+        x = usr[2] * 0.98,
+        y = usr[4] * 0.98,
+        col = c("#F7D03CFF", "#CF4446FF"),
+        legend = c("reference", "detection"),
+        lwd = 4,
+        bg = "#FFFFFFE6",
+        xjust = 1,
+        yjust = 1
+      )
 
-  if (is.null(detection) & !is.null(reference))
-    legend(x = usr[2] * 0.98, y = usr[4] * 0.98, col = c("#F7D03CFF"), legend = c("reference"), lwd = 4, bg = "#FFFFFFE6",  xjust = 1, yjust = 1)
+    if (is.null(detection) & !is.null(reference))
+      legend(
+        x = usr[2] * 0.98,
+        y = usr[4] * 0.98,
+        col = c("#F7D03CFF"),
+        legend = c("reference"),
+        lwd = 4,
+        bg = "#FFFFFFE6",
+        xjust = 1,
+        yjust = 1
+      )
 
-  if (is.null(reference) & !is.null(detection))
-    legend(x = usr[2] * 0.98, y = usr[4] * 0.98, col = c("#CF4446FF"), legend = c("detection"), lwd = 4, bg = "#FFFFFFE6",  xjust = 1, yjust = 1)
+    if (is.null(reference) & !is.null(detection))
+      legend(
+        x = usr[2] * 0.98,
+        y = usr[4] * 0.98,
+        col = c("#CF4446FF"),
+        legend = c("detection"),
+        lwd = 4,
+        bg = "#FFFFFFE6",
+        xjust = 1,
+        yjust = 1
+      )
 
-  if (envelope) {
-    # set graphic device for envelope
-    par(mar = c(4,  4,  0.3,  1))
-
-    if (!is.null(smooth))
-      smooth <- round(wave@samp.rate * smooth  / 1000, 0)
-
-    # plot envelope
-    seewave::env(wave, colwave = "#07889B", ssmooth = smooth)
-
-    # add threshold line
-    if (!is.null(threshold))
-      abline(h = par("usr")[4] * threshold / 100, col = "#CF4446FF", lwd = 3)
-  } else
-    if (!is.null(template.correlation)) {
-      # set graphic device for correlations
+    if (envelope) {
+      # set graphic device for envelope
       par(mar = c(4,  4,  0.3,  1))
 
-      plot(x = seq(template.correlation$template.duration / 2, duration(wave) - template.correlation$template.duration / 2, length.out = length(template.correlation$correlation.scores)), y = template.correlation$correlation.scores, type = "l", xlab = "Time (s)", ylab = "Correlation", col = "#07889B", lwd = 1.6, xaxs = "i", xlim  = c(0, duration(wave)))
+      if (!is.null(smooth))
+        smooth <- round(wave@samp.rate * smooth  / 1000, 0)
+
+      # plot envelope
+      seewave::env(wave, colwave = "#07889B", ssmooth = smooth)
 
       # add threshold line
       if (!is.null(threshold))
-        abline(h = threshold, col = "#CF4446FF", lwd = 3)
+        abline(h = par("usr")[4] * threshold / 100,
+               col = "#CF4446FF",
+               lwd = 3)
+    } else
+      if (!is.null(template.correlation)) {
+        # set graphic device for correlations
+        par(mar = c(4,  4,  0.3,  1))
 
-    }
-}
+        plot(
+          x = seq(
+            template.correlation$template.duration / 2,
+            duration(wave) - template.correlation$template.duration / 2,
+            length.out = length(template.correlation$correlation.scores)
+          ),
+          y = template.correlation$correlation.scores,
+          type = "l",
+          xlab = "Time (s)",
+          ylab = "Correlation",
+          col = "#07889B",
+          lwd = 1.6,
+          xaxs = "i",
+          xlim  = c(0, duration(wave))
+        )
+
+        # add threshold line
+        if (!is.null(threshold))
+          abline(h = threshold, col = "#CF4446FF", lwd = 3)
+
+      }
+  }

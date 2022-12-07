@@ -13,7 +13,7 @@
 #' detected sound events.
 #' @export
 #' @name template_detector
-#' @details This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection.
+#' @details This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection. \strong{Note that the detected sounds are assumed to have the same duration as the template, so their start and end correspond to the correlation peak position +/- half the template duration}.
 #' @examples
 #' {
 #' # load example data
@@ -58,87 +58,142 @@
 #' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on jan-03-2020 (MAS)
-template_detector <- function(template.correlations, cores = 1, threshold, pb = TRUE, verbose = TRUE)
-{
+template_detector <-
+  function(template.correlations,
+           cores = 1,
+           threshold,
+           pb = TRUE,
+           verbose = TRUE)
+  {
+    # save start time
+    start_time <- proc.time()
 
-  # save start time
-  start_time <- proc.time()
+    # check xc.output being a autodetec.output object
+    if (!(is(template.correlations, "template_correlations")))
+      stop2("'template.correlations' must be and object of class 'template_correlations'")
 
-  # check xc.output being a autodetec.output object
-  if (!(is(template.correlations, "template_correlations")))
-    stop2("'template.correlations' must be and object of class 'template_correlations'")
+    #if threshold is not vector or length!=1 stop
+    if (!is.numeric(threshold))
+      stop2("'threshold' must be a numeric vector of length 1")
+    if (!is.vector(threshold))
+      stop2("'threshold' must be a numeric vector of length 1")
+    if (!length(threshold) == 1)
+      stop2("'threshold' must be a numeric vector of length 1")
+    if (threshold >= 1 | threshold <= 0)
+      stop2("'threshold' must be a number between 0 and 1")
 
-  #if threshold is not vector or length!=1 stop
-  if (!is.numeric(threshold))
-    stop2("'threshold' must be a numeric vector of length 1")
-  if (!is.vector(threshold))
-    stop2("'threshold' must be a numeric vector of length 1")
-  if (!length(threshold) == 1)
-    stop2("'threshold' must be a numeric vector of length 1")
-  if(threshold >= 1 | threshold <= 0)
-    stop2("'threshold' must be a number between 0 and 1")
+    # set clusters for windows OS or more decent OSs
+    if (Sys.info()[1] == "Windows" & cores > 1)
+      cl <-
+        parallel::makePSOCKcluster(getOption("cl.cores", cores)) else
+      cl <- cores
 
-  # set clusters for windows OS or more decent OSs
-  if (Sys.info()[1] == "Windows" & cores > 1)
-    cl <- parallel::makePSOCKcluster(getOption("cl.cores", cores)) else cl <- cores
+    # loop over scores of each dyad
+    sel_table_list <-
+      warbleR:::pblapply_wrblr_int(
+        pbar = pb,
+        X = 1:(length(template.correlations) - 1),
+        cl = cl,
+        FUN = function(i) {
+          # extract data for a dyad
+          temp_cor <- template.correlations[[i]]
 
-  # loop over scores of each dyad
-    sel_table_list <- warbleR:::pblapply_wrblr_int(pbar = pb, X = 1:(length(template.correlations) - 1), cl = cl, FUN = function(i){
+          ## get peaks as the ones higher than previous and following scores
+          peak_position <-
+            which(c(FALSE, diff(temp_cor$correlation.scores) > 0) &
+                    c(rev(diff(
+                      rev(temp_cor$correlation.scores)
+                    ) > 0), FALSE) & temp_cor$correlation.scores > threshold)
 
-      # extract data for a dyad
-      temp_cor <- template.correlations[[i]]
+          # get peaks and their scores
+          scores <- temp_cor$correlation.scores[peak_position]
+          peak_time <-
+            seq(0,
+                temp_cor$file.duration,
+                length.out = length(temp_cor$correlation.scores))[peak_position]
 
-      ## get peaks as the ones higher than previous and following scores
-      peak_position <- which(c(FALSE, diff(temp_cor$correlation.scores) > 0) & c(rev(diff(rev(temp_cor$correlation.scores)) > 0), FALSE) & temp_cor$correlation.scores > threshold)
+          # get peak position fixing by removing half the duration of the sound event at the start and end of the sound file
+          peak_time <-
+            seq(
+              temp_cor$template.duration / 2,
+              temp_cor$file.duration - temp_cor$template.duration / 2,
+              length.out = length(temp_cor$correlation.scores)
+            )[peak_position]
 
-      # get peaks and their scores
-      scores <- temp_cor$correlation.scores[peak_position]
-      peak_time <- seq(0, temp_cor$file.duration, length.out = length(temp_cor$correlation.scores))[peak_position]
+          # get file and template names
+          file_template <-
+            strsplit(names(template.correlations)[i], "/")[[1]]
 
-      # get peak position fixing by removing half the duration of the sound event at the start and end of the sound file
-      peak_time <- seq(temp_cor$template.duration / 2, temp_cor$file.duration - temp_cor$template.duration / 2, length.out = length(temp_cor$correlation.scores))[peak_position]
+          # calculate starts as the peak location minus half the template duration
+          starts <-
+            if (length(peak_time) > 0)
+              peak_time - (temp_cor$template.duration / 2) else
+            NA
+          # cannot be negative
+          starts[starts < 0] <- 0
 
-      # get file and template names
-      file_template <- strsplit(names(template.correlations)[i], "/")[[1]]
+          # calculate starts as the peak location minus half the template duration
+          ends <-
+            if (length(peak_time) > 0)
+              peak_time + (temp_cor$template.duration / 2) else
+            NA
 
-      # calculate starts as the peak location minus half the template duration
-      starts <- if (length(peak_time) > 0) peak_time - (temp_cor$template.duration / 2) else NA
-      # cannot be negative
-      starts[starts < 0] <- 0
+          # cannot be higher than file duration
+          ends[ends > temp_cor$file.duration] <- temp_cor$file.duration
 
-      # calculate starts as the peak location minus half the template duration
-      ends <- if (length(peak_time) > 0) peak_time + (temp_cor$template.duration / 2) else NA
+          # put results in an extended selection table
+          sel_table <-
+            data.frame(
+              sound.files = file_template[2],
+              selec = if (length(scores) > 0)
+                seq_len(length(scores)) else
+                1,
+              start = starts,
+              end = ends,
+              template = file_template[1],
+              scores = if (length(scores) > 0)
+                scores else
+                NA
+            )
 
-      # cannot be higher than file duration
-      ends[ends > temp_cor$file.duration] <- temp_cor$file.duration
+          return(sel_table)
+        }
+      )
 
-      # put results in an extended selection table
-      sel_table <- data.frame(sound.files = file_template[2], selec = if (length(scores) > 0) seq_len(length(scores)) else 1, start = starts, end = ends, template = file_template[1], scores = if (length(scores) > 0) scores else NA)
+    # put results in a data frame
+    sel_table_df <- do.call(rbind, sel_table_list)
 
-      return(sel_table)
-  })
+    # relabel rows
+    rownames(sel_table_df) <- 1:nrow(sel_table_df)
 
-  # put results in a data frame
-  sel_table_df <- do.call(rbind, sel_table_list)
+    # get path from corrrelation call
+    corr_call_path <-
+      try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
 
-  # relabel rows
-  rownames(sel_table_df) <- 1:nrow(sel_table_df)
+    if (is(corr_call_path, 'try-error') |
+        is.null(corr_call_path))
+      corr_call_path <- getwd()
 
-  # get path from corrrelation call
-  corr_call_path <- try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
+    #  if no detections
+    if (all(is.na(sel_table_df$start)) & verbose)
+      write(file = "", x = "no sound events above threshold were detected") else
+      if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
+          all(!is.na(sel_table_df$start))) {
+        sel_table_df <-
+          selection_table(
+            X = sel_table_df[!is.na(sel_table_df$start),],
+            path = corr_call_path,
+            parallel = cores,
+            pb = FALSE,
+            verbose = FALSE,
+            fix.selec = TRUE
+          )
 
-  if(is(corr_call_path, 'try-error') | is.null(corr_call_path)) corr_call_path <- getwd()
+        attributes(sel_table_df)$call <- base::match.call()
 
-  #  if no detections
-  if (all(is.na(sel_table_df$start)) & verbose)
-  write(file = "", x = "no sound events above threshold were detected") else
-    if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) & all(!is.na(sel_table_df$start))){
-    sel_table_df <- selection_table(X = sel_table_df[!is.na(sel_table_df$start), ], path = corr_call_path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
-
-  attributes(sel_table_df)$call <- base::match.call()
-
-  # add elapsed time
-  attributes(sel_table_df)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
-}
-  return(sel_table_df)
-}
+        # add elapsed time
+        attributes(sel_table_df)$elapsed.time.s <-
+          as.vector((proc.time() - start_time)[3])
+      }
+    return(sel_table_df)
+  }

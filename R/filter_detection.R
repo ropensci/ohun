@@ -54,77 +54,92 @@
 #last modification on oct-31-2021 (MAS)
 
 # function to filter detection based on overlap
-filter_detection <- function(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE){
+filter_detection <-
+  function(detection,
+           by = "overlap",
+           filter = "max",
+           cores = 1,
+           pb = TRUE) {
+    # save start time
+    start_time <- proc.time()
 
-  # save start time
-  start_time <- proc.time()
+    #if reference is not a data frame
+    if (!any(is.data.frame(detection), is_selection_table(detection)))
+      stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
 
-  #if reference is not a data frame
-  if (!any(is.data.frame(detection), is_selection_table(detection)))
-    stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
+    if (is.null(detection$detection.class))
+      stop2(
+        "'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()"
+      )
 
-  if (is.null(detection$detection.class))
-    stop2("'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()")
+    if (!by %in% names(detection))
+      stop2("'by' column not found")
 
-  if (!by %in% names(detection))
-    stop2("'by' column not found")
+    # add row id column to la
+    detection$..row.id <- 1:nrow(detection)
 
-  # add row id column to la
-  detection$..row.id <- 1:nrow(detection)
+    # split in false and true positives
+    false.positives <-
+      as.data.frame(detection[grep("false.positive", detection$detection.class),])
+    true.positives <-
+      as.data.frame(detection[grep("true.positive", detection$detection.class, FALSE),])
 
-  # split in false and true positives
-  false.positives <- as.data.frame(detection[grep("false.positive", detection$detection.class), ])
-  true.positives <- as.data.frame(detection[grep("true.positive", detection$detection.class, FALSE), ])
-
-  # set clusters for windows OS
-  if (Sys.info()[1] == "Windows" & cores > 1)
-    cl <- parallel::makeCluster(cores) else
+    # set clusters for windows OS
+    if (Sys.info()[1] == "Windows" & cores > 1)
+      cl <- parallel::makeCluster(cores) else
       cl <- cores
 
-  # run loop over every detected signal in the reference
-  filter_tp_list <- warbleR:::pblapply_wrblr_int(X = unique(unlist(sapply(true.positives$reference.row, function(x) unlist(strsplit(x, "-")), USE.NAMES = FALSE))), cl = cl, pbar = pb, function(x){
+    # run loop over every detected signal in the reference
+    filter_tp_list <-
+      warbleR:::pblapply_wrblr_int(X = unique(unlist(
+        sapply(true.positives$reference.row, function(x)
+          unlist(strsplit(x, "-")), USE.NAMES = FALSE)
+      )), cl = cl, pbar = pb, function(x) {
+        # get those detection that overlapped with x
+        X <-
+          true.positives[sapply(true.positives$reference.row, function(y)
+            any(unlist(strsplit(y, "-")) == x)),]
 
-    # get those detection that overlapped with x
-    X <- true.positives[sapply(true.positives$reference.row, function(y) any(unlist(strsplit(y, "-")) == x)), ]
+        # order by 'by'
+        X <- X[order(X[, by, drop = TRUE], decreasing = TRUE),]
 
-    # order by 'by'
-    X <- X[order(X[, by, drop = TRUE], decreasing = TRUE), ]
+        # filter
+        if (filter == "max")
+          X <- X[1, , drop = FALSE] else
+          X <- X[nrow(X), , drop = FALSE]
 
-    # filter
-    if (filter == "max")
-      X <- X[1, , drop = FALSE] else
-        X <- X[nrow(X), , drop = FALSE]
+        return(X)
+      })
 
-    return(X)
-  })
+    # put together in a data frame
+    filter_tp_df <- do.call(rbind, filter_tp_list)
 
-  # put together in a data frame
-  filter_tp_df <- do.call(rbind, filter_tp_list)
+    # add false positives
+    filtered_detection <- rbind(false.positives, filter_tp_df)
 
-  # add false positives
-  filtered_detection <- rbind(false.positives, filter_tp_df)
+    #sort back
+    filtered_detection <-
+      filtered_detection[order(filtered_detection$..row.id),]
 
-  #sort back
-  filtered_detection <- filtered_detection[order(filtered_detection$..row.id), ]
+    # convert back to selection table
+    if (is_selection_table(detection)) {
+      #keep only those rows in filtered_detections
+      detection <-
+        detection[detection$..row.id %in% filtered_detection$..row.id,]
+      detection <- detection[order(detection$..row.id),]
 
-  # convert back to selection table
-  if (is_selection_table(detection)){
+      # overwrite labeled_detections
+      filtered_detection <- detection
 
-    #keep only those rows in filtered_detections
-    detection <- detection[detection$..row.id %in% filtered_detection$..row.id, ]
-    detection <- detection[order(detection$..row.id), ]
+      # fix call
+      attributes(filtered_detection)$call <- base::match.call()
 
-    # overwrite labeled_detections
-    filtered_detection <- detection
+      # add elapsed time
+      attributes(filtered_detection)$elapsed.time.s <-
+        as.vector((proc.time() - start_time)[3])
+    }
+    # remove column with row names
+    filtered_detection$..row.id <- NULL
 
-    # fix call
-    attributes(filtered_detection)$call <- base::match.call()
-
-    # add elapsed time
-    attributes(filtered_detection)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
+    return(filtered_detection)
   }
-  # remove column with row names
-  filtered_detection$..row.id <- NULL
-
-  return(filtered_detection)
-}

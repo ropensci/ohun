@@ -85,213 +85,354 @@
 #' }
 # last modification on aug-25-2021 (MAS)
 
-template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-                  wn ='hanning', cor.method = "pearson", cores = 1,
-                  path = ".", pb = TRUE, type = "fourier", fbtype = "mel", ...)
-{
-  #check path to working directory
-  if (is.null(path)) path <- getwd() else
-    if (!dir.exists(path))
-      stop2("'path' provided does not exist") else
-        path <- normalizePath(path)
+template_correlator <-
+  function(templates,
+           files = NULL,
+           hop.size = 11.6,
+           wl = NULL,
+           ovlp = 0,
+           wn = 'hanning',
+           cor.method = "pearson",
+           cores = 1,
+           path = ".",
+           pb = TRUE,
+           type = "fourier",
+           fbtype = "mel",
+           ...)
+  {
+    #check path to working directory
+    if (is.null(path))
+      path <- getwd() else
+      if (!dir.exists(path))
+        stop2("'path' provided does not exist") else
+      path <- normalizePath(path)
 
-      # hopsize
-      if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
+    # hopsize
+    if (!is.numeric(hop.size) |
+        hop.size < 0)
+      stop2("'hop.size' must be a positive number")
 
-  #if there are NAs in start or end stop
-  if (any(is.na(c(templates$end, templates$start)))) stop2("NAs found in start and/or end")
+    #if there are NAs in start or end stop
+    if (any(is.na(c(templates$end, templates$start))))
+      stop2("NAs found in start and/or end")
 
-  #if wl is not vector or length!=1 stop
-      if (!is.null(wl)){
-    if (!is.numeric(wl)) stop2("'wl' must be a numeric vector of length 1") else {
-    if (!is.vector(wl)) stop2("'wl' must be a numeric vector of length 1") else{
-      if (!length(wl) == 1) stop2("'wl' must be a numeric vector of length 1")}}}
+    #if wl is not vector or length!=1 stop
+    if (!is.null(wl)) {
+      if (!is.numeric(wl))
+        stop2("'wl' must be a numeric vector of length 1") else {
+        if (!is.vector(wl))
+          stop2("'wl' must be a numeric vector of length 1") else {
+          if (!length(wl) == 1)
+            stop2("'wl' must be a numeric vector of length 1")
+        }
+      }
+    }
 
-  #if ovlp is not vector or length!=1 stop
-  if (!is.numeric(ovlp)) stop2("'ovlp' must be a numeric vector of length 1") else {
-    if (!is.vector(ovlp)) stop2("'ovlp' must be a numeric vector of length 1") else{
-      if (!length(ovlp) == 1) stop2("'ovlp' must be a numeric vector of length 1")}}
+    #if ovlp is not vector or length!=1 stop
+    if (!is.numeric(ovlp))
+      stop2("'ovlp' must be a numeric vector of length 1") else {
+      if (!is.vector(ovlp))
+        stop2("'ovlp' must be a numeric vector of length 1") else {
+        if (!length(ovlp) == 1)
+          stop2("'ovlp' must be a numeric vector of length 1")
+      }
+    }
 
-  # check files or list files in working directory
-      if (!is.null(files)) {
-        if (any(!is.character(files),!is.vector(files)))
-          stop2("'files' must be a character vector")
+    # check files or list files in working directory
+    if (!is.null(files)) {
+      if (any(!is.character(files), !is.vector(files)))
+        stop2("'files' must be a character vector")
 
-        # check files are in working directory
-        if (!any(files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop2("At least one sound files in 'files' was not found")
-        } else files <- list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE)
+      # check files are in working directory
+      if (!any(
+        files %in% list.files(
+          path = path,
+          pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
+          ignore.case = TRUE
+        )
+      ))
+        stop2("At least one sound files in 'files' was not found")
+    } else
+      files <-
+        list.files(path = path,
+                   pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
+                   ignore.case = TRUE)
 
     # check if files in templates are in path
-        if (!is_extended_selection_table(templates))
-          if (!any(templates$sound.files %in% list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE))) stop2("At least one sound files in 'templates' was not found in the working directory or 'path' supplied")
+    if (!is_extended_selection_table(templates))
+      if (!any(
+        templates$sound.files %in% list.files(
+          path = path,
+          pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
+          ignore.case = TRUE
+        )
+      ))
+        stop2(
+          "At least one sound files in 'templates' was not found in the working directory or 'path' supplied"
+        )
 
-  # If cores is not numeric
-  if (!is.numeric(cores)) stop2("'cores' must be a numeric vector of length 1")
-  if (any(!(cores %% 1 == 0),cores < 1)) stop2("'cores' should be a positive integer")
+    # If cores is not numeric
+    if (!is.numeric(cores))
+      stop2("'cores' must be a numeric vector of length 1")
+    if (any(!(cores %% 1 == 0), cores < 1))
+      stop2("'cores' should be a positive integer")
 
-  # get sampling rate of files
+    # get sampling rate of files
     info_sf <- warbleR::info_sound_files(path = path, pb = FALSE)
 
     # get subset of files in 'files' and 'templates'
-    info_sf <- info_sf[info_sf$sound.files %in% c(files, if (!is_extended_selection_table(templates)) templates$sound.files else NULL), ]
+    info_sf <-
+      info_sf[info_sf$sound.files %in% c(files, if (!is_extended_selection_table(templates))
+        templates$sound.files else
+          NULL),]
 
     # check if sampling rate in files and template is the same
     if (length(unique(info_sf$sample.rate)) > 1)
       stop2("sampling rate must be the same for all templates and sound files")
 
-  # check sampling rate is the same for all templates if not a selection table
-      if (is_extended_selection_table(templates) & length(unique(attr(templates, "check.results")$sample.rate)) > 1) stop2("sampling rate must be the same for all templates and sound files")
+    # check sampling rate is the same for all templates if not a selection table
+    if (is_extended_selection_table(templates) &
+        length(unique(attr(templates, "check.results")$sample.rate)) > 1)
+      stop2("sampling rate must be the same for all templates and sound files")
 
     # check sampling rate is the same for templates and sound files if not a selection table
     if (is_extended_selection_table(templates))
       if (unique(attr(templates, "check.results")$sample.rate) != unique(info_sf$sample.rate))
 
         # set bottom and top freq if not supplied
-        if (is.null(templates$bottom.freq)){
+        if (is.null(templates$bottom.freq)) {
           templates$top.freq <- unique(info_sf$sample.rate) / 2
           templates$bottom.freq <- 0
         }
 
-  # add selection id column to templates
-  templates$selection.id <- paste(templates$sound.files, templates$selec, sep = "-")
+    # add selection id column to templates
+    templates$selection.id <-
+      paste(templates$sound.files, templates$selec, sep = "-")
 
-  # create compare.matrix
-  compare.matrix <- expand.grid(templates = templates$selection.id, files = files)
+    # create compare.matrix
+    compare.matrix <-
+      expand.grid(templates = templates$selection.id, files = files)
 
 
-  # function to get spectrogram matrices
-  spc_FUN <- function(j, pth, W, hop, wlg, ovl, w, bndpss, nbnds, entire = FALSE, fbt, ...) {
+    # function to get spectrogram matrices
+    spc_FUN <-
+      function(j,
+               pth,
+               W,
+               hop,
+               wlg,
+               ovl,
+               w,
+               bndpss,
+               nbnds,
+               entire = FALSE,
+               fbt,
+               ...) {
+        # read entire sound file
+        if (entire)
+          clp <- warbleR::read_sound_file(X = j, path = pth) else
+          clp <- warbleR::read_sound_file(X = W,
+                                          index = j,
+                                          path = pth)
 
-    # read entire sound file
-    if (entire)
-      clp <- warbleR::read_sound_file(X = j, path = pth) else
-    clp <- warbleR::read_sound_file(X = W, index = j, path = pth)
+        # adjust wl based on hope.size
+        if (is.null(wlg))
+          wlg <- round(clp@samp.rate * hop / 1000, 0)
 
-      # adjust wl based on hope.size
-      if (is.null(wlg))
-        wlg <- round(clp@samp.rate * hop / 1000, 0)
+        # make wl even if odd
+        if (!(wlg %% 2) == 0)
+          wlg <- wlg + 1
 
-      # make wl even if odd
-      if (!(wlg %% 2) == 0) wlg <- wlg + 1
+        # steps for time bins
+        steps <-  seq(1, length(clp@left) - wlg, wlg - (ovlp * wlg / 100))
 
-    # steps for time bins
-    steps <-  seq(1, length(clp@left) - wlg, wlg - (ovlp * wlg/100))
+        if (type == "fourier") {
+          spc <-
+            warbleR:::stft_wrblr_int(
+              wave = matrix(clp@left),
+              f = clp@samp.rate,
+              wl = wlg,
+              zp = 0,
+              step = steps,
+              wn = w,
+              fftw = FALSE,
+              scale = TRUE,
+              complex = FALSE
+            )
 
-    if (type == "fourier"){
-    spc <- warbleR:::stft_wrblr_int(wave = matrix(clp@left), f = clp@samp.rate, wl = wlg, zp = 0, step = steps, wn = w, fftw = FALSE, scale = TRUE, complex = FALSE)
+          # calculate freq values for spc rows
+          freq <-
+            seq(0,
+                (clp@samp.rate / 2) - (clp@samp.rate / wlg),
+                length.out = nrow(spc)) / 1000
 
-    # calculate freq values for spc rows
-    freq <- seq(0, (clp@samp.rate / 2) - (clp@samp.rate / wlg), length.out = nrow(spc)) / 1000
+          # apply bandpass
+          spc <- spc[freq >= bndpss[1] & freq <= bndpss[2],]
 
-    # apply bandpass
-    spc <- spc[freq >= bndpss[1] & freq <= bndpss[2], ]
+          # log amplitude values
+          spc <- 20 * log10(spc)
 
-    # log amplitude values
-    spc <- 20 * log10(spc)
+        } else
+        {
+          # calculate MFCCs
+          melfcc_output <-
+            melfcc(
+              clp,
+              hoptime = (steps[2] - steps[1]) / clp@samp.rate,
+              wintime =  wlg / clp@samp.rate,
+              fbtype = fbt,
+              spec_out = TRUE,
+              frames_in_rows = FALSE,
+              minfreq = bndpss[1] * 1000,
+              maxfreq = bndpss[2] * 1000,
+              ...
+            )
 
-  } else
-    {
-      # calculate MFCCs
-      melfcc_output <- melfcc(clp, hoptime = (steps[2]- steps[1]) / clp@samp.rate, wintime =  wlg / clp@samp.rate, fbtype = fbt, spec_out = TRUE, frames_in_rows = FALSE, minfreq = bndpss[1] * 1000, maxfreq = bndpss[2] * 1000, ...)
+          if (type == "mfcc")
+            spc <- melfcc_output$cepstra
 
-      if (type == "mfcc")
-      spc <- melfcc_output$cepstra
+          if (type == "mel-auditory")
+            spc <- melfcc_output$aspectrum
 
-      if (type == "mel-auditory")
-        spc <- melfcc_output$aspectrum
+          # log amplitude values
+          spc <- 20 * log10(spc + abs(min(spc)) + 10)
+        }
 
-      # log amplitude values
-      spc <- 20 * log10(spc + abs(min(spc)) + 10)
+        # replace inf by NA
+        spc[is.infinite(spc)] <- NA
+
+        return(spc)
       }
 
-    # replace inf by NA
-    spc[is.infinite(spc)] <- NA
+    # create function to calculate correlation between 2 spectrograms
+    XC_FUN <- function(spc1, spc2, cm = cor.method) {
+      # define short and long envelope for sliding one (short) over the other (long)
+      if (ncol(spc1) > ncol(spc2)) {
+        lg.spc <- spc1
+        shrt.spc <- spc2
+      } else {
+        lg.spc <- spc2
+        shrt.spc <- spc1
+      }
 
-    return(spc)
-  }
+      # get length of shortest minus 1 (1 if same length so it runs a single correlation)
+      shrt.lgth <- ncol(shrt.spc) - 1
 
-  # create function to calculate correlation between 2 spectrograms
-  XC_FUN <- function(spc1, spc2, cm = cor.method){
+      # steps for sliding one signal over the other
+      stps <- ncol(lg.spc) - ncol(shrt.spc)
 
-    # define short and long envelope for sliding one (short) over the other (long)
-    if(ncol(spc1) > ncol(spc2)) {
-      lg.spc <- spc1
-      shrt.spc <- spc2
-    } else {
-      lg.spc <- spc2
-      shrt.spc <- spc1
+      # set sequence of steps, if <= 1 then just 1 step
+      if (stps <= 1)
+        stps <- 1 else
+        stps <- 1:stps
+
+      # calculate correlations at each step
+      cors <- sapply(stps, function(x, cor.method = cm) {
+        warbleR::try_na(cor(
+          c(lg.spc[, x:(x + shrt.lgth)]),
+          c(shrt.spc),
+          method = cm,
+          use = 'pairwise.complete.obs'
+        ))
+      })
+
+      # make negative values 0
+      cors[cors < 0] <- 0
+
+      return(cors)
     }
 
-    # get length of shortest minus 1 (1 if same length so it runs a single correlation)
-    shrt.lgth <- ncol(shrt.spc) - 1
+    # set cores cores
+    if (Sys.info()[1] == "Windows" & cores > 1)
+      cl <-
+      parallel::makePSOCKcluster(getOption("cl.cores", cores)) else
+      cl <- cores
 
-    # steps for sliding one signal over the other
-    stps <- ncol(lg.spc) - ncol(shrt.spc)
+    # get correlation
+    corr_vector_list <-
+      warbleR:::pblapply_wrblr_int(
+        pbar = pb,
+        X = 1:nrow(compare.matrix),
+        cl = cl,
+        FUN = function(e, cor.meth = cor.method) {
+          # set bandpass to template frequency range
+          bp <-
+            c(templates$bottom.freq[templates$selection.id %in% compare.matrix$templates[e]], templates$top.freq[templates$selection.id %in% compare.matrix$templates[e]])
 
-    # set sequence of steps, if <= 1 then just 1 step
-    if (stps <= 1) stps <- 1 else stps <- 1:stps
+          spc_template <-
+            spc_FUN(
+              j = which(templates$selection.id == compare.matrix$templates[e]),
+              pth = path,
+              W = templates,
+              hop = hop.size,
+              wlg = wl,
+              ovl = ovlp,
+              w = wn,
+              bndpss = bp,
+              fbt = fbtype,
+              ...
+            )
 
-    # calculate correlations at each step
-    cors <- sapply(stps, function(x, cor.method = cm) {
-      warbleR::try_na(cor(c(lg.spc[, x:(x + shrt.lgth)]), c(shrt.spc), method = cm, use ='pairwise.complete.obs'))
-    })
+          spc_file <-
+            spc_FUN(
+              j = compare.matrix$files[e],
+              pth = path,
+              hop = hop.size,
+              wlg = wl,
+              ovl = ovlp,
+              w = wn,
+              entire = TRUE,
+              bndpss = bp,
+              fbt = fbtype,
+              ...
+            )
 
-    # make negative values 0
-    cors[cors < 0] <- 0
+          # get cross correlation
+          corr_vector <-
+            XC_FUN(spc1 = spc_template,
+                   spc2 = spc_file,
+                   cm = cor.meth)
 
-    return(cors)
-  }
+          # get header to extract metadata
+          file_header <-
+            warbleR::read_sound_file(X = compare.matrix$files[e],
+                                     path = path,
+                                     header = TRUE)
 
-  # set cores cores
-  if (Sys.info()[1] == "Windows" & cores > 1)
-    cl <- parallel::makePSOCKcluster(getOption("cl.cores", cores)) else cl <- cores
-
-  # get correlation
-  corr_vector_list <- warbleR:::pblapply_wrblr_int(pbar = pb, X = 1:nrow(compare.matrix), cl = cl, FUN = function(e, cor.meth = cor.method) {
-
-    # set bandpass to template frequency range
-    bp <- c(templates$bottom.freq[templates$selection.id %in% compare.matrix$templates[e]], templates$top.freq[templates$selection.id %in% compare.matrix$templates[e]])
-
-      spc_template <- spc_FUN(j = which(templates$selection.id == compare.matrix$templates[e]), pth = path, W = templates, hop = hop.size, wlg = wl, ovl = ovlp, w = wn, bndpss = bp, fbt = fbtype, ...)
-
-      spc_file <- spc_FUN(j = compare.matrix$files[e], pth = path, hop = hop.size, wlg = wl, ovl = ovlp, w = wn, entire = TRUE, bndpss = bp, fbt = fbtype, ...)
-
-    # get cross correlation
-    corr_vector <- XC_FUN(spc1 = spc_template, spc2 = spc_file, cm = cor.meth)
-
-    # get header to extract metadata
-    file_header <- warbleR::read_sound_file(X = compare.matrix$files[e], path = path, header = TRUE)
-
-    template_duration <- templates$end[templates$selection.id == compare.matrix$templates[e]] - templates$start[templates$selection.id == compare.matrix$templates[e]]
+          template_duration <-
+            templates$end[templates$selection.id == compare.matrix$templates[e]] - templates$start[templates$selection.id == compare.matrix$templates[e]]
 
 
-    output <- list(correlation.scores = corr_vector,
-                   template.duration = template_duration,
-                   file.duration = file_header$samples / file_header$sample.rate,
-                   sampling.freq = file_header$sample.rate
+          output <- list(
+            correlation.scores = corr_vector,
+            template.duration = template_duration,
+            file.duration = file_header$samples / file_header$sample.rate,
+            sampling.freq = file_header$sample.rate
+          )
+
+          return(output)
+        }
+      )
+
+    # add template and file names
+    names(corr_vector_list) <-
+      apply(compare.matrix, 1, paste, collapse = "/")
+
+    # add call info
+    corr_vector_list[[length(corr_vector_list) + 1]]  <- list(
+      parameters = lapply(as.list(base::match.call())[-1], eval),
+      call = base::match.call(),
+      ohun.version =  packageVersion("ohun")
     )
 
-    return(output)
-    })
+    names(corr_vector_list)[length(corr_vector_list)] <- "call_info"
 
-  # add template and file names
-  names(corr_vector_list) <- apply(compare.matrix, 1, paste, collapse = "/")
+    # add class envelopes
+    class(corr_vector_list) <- c("list", "template_correlations")
 
-  # add call info
-  corr_vector_list[[length(corr_vector_list) + 1]]  <- list(
-    parameters = lapply(as.list(base::match.call())[-1], eval),
-    call = base::match.call(),
-    ohun.version =  packageVersion("ohun")
-  )
+    return(corr_vector_list)
 
-  names(corr_vector_list)[length(corr_vector_list)] <- "call_info"
-
-  # add class envelopes
-  class(corr_vector_list) <- c("list", "template_correlations")
-
-  return(corr_vector_list)
-
-}
+  }
 
 
 ##############################################################################################################
@@ -305,10 +446,18 @@ template_correlator <- function(templates, files = NULL, hop.size = 11.6, wl = N
 #' @export
 
 print.template_correlations <- function(x, ...) {
+  cat(crayon::black(paste(
+    "Object of class",
+    crayon::bold("'template_correlations' \n")
+  )))
 
-  cat(crayon::black(paste("Object of class", crayon::bold("'template_correlations' \n"))))
-
-  cat(crayon::silver(paste("* The output of the following", crayon::italic("template_correlator()"), "call: \n")))
+  cat(crayon::silver(
+    paste(
+      "* The output of the following",
+      crayon::italic("template_correlator()"),
+      "call: \n"
+    )
+  ))
 
   cll <- paste0(deparse(x$call_info$call))
   cat(crayon::silver(crayon::italic(gsub("    ", "", cll), "\n")))
@@ -318,11 +467,32 @@ print.template_correlations <- function(x, ...) {
   templates <- unique(sapply(files_templates, "[[", 1))
   files <- unique(sapply(files_templates, "[[", 2))
 
-  cat(crayon::silver(paste("* Contains", length(x) - 1, "correlation score vector(s) from"), length(templates), "template(s):\n", paste(crayon::italic(utils::head(templates), collapse = " ")), if( length(templates) > 6) paste("... and", length(templates) - 6, "more") else ""))
+  cat(crayon::silver(
+    paste("* Contains", length(x) - 1, "correlation score vector(s) from"),
+    length(templates),
+    "template(s):\n",
+    paste(crayon::italic(utils::head(templates), collapse = " ")),
+    if (length(templates) > 6)
+      paste("... and", length(templates) - 6, "more") else
+      ""
+  ))
 
-  cat(crayon::silver(paste("\n... and"), length(files), "sound files(s):\n", paste(crayon::italic(utils::head(files), collapse = " ")), if( length(files) > 6) paste("... and", length(files) - 6, "more") else ""))
+  cat(crayon::silver(
+    paste("\n... and"),
+    length(files),
+    "sound files(s):\n",
+    paste(crayon::italic(utils::head(files), collapse = " ")),
+    if (length(files) > 6)
+      paste("... and", length(files) - 6, "more") else
+      ""
+  ))
 
   # print ohun version
-  cat(crayon::silver(paste0("\n * Created by ", crayon::bold("ohun "), x$call_info$ohun.version)))
+  cat(crayon::silver(
+    paste0(
+      "\n * Created by ",
+      crayon::bold("ohun "),
+      x$call_info$ohun.version
+    )
+  ))
 }
-

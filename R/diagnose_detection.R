@@ -75,204 +75,307 @@
 #' Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
 #' }
 # last modification on sept-2021 (MAS)
-diagnose_detection <- function(reference, detection, by.sound.file = FALSE, time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL)
-{
-  # do it by
-  # run the function for each subset split by "by"
-  if (!is.null(by)){
+diagnose_detection <-
+  function(reference,
+           detection,
+           by.sound.file = FALSE,
+           time.diagnostics = FALSE,
+           cores = 1,
+           pb = TRUE,
+           path = NULL,
+           by = NULL)
+  {
+    # do it by
+    # run the function for each subset split by "by"
+    if (!is.null(by)) {
+      split_det <- split(x = detection, f = detection[, by])
 
-    split_det <- split(x = detection, f = detection[, by])
+      split_diagnostic <-
+        warbleR:::pblapply_wrblr_int(
+          X = 1:length(split_det),
+          cl = 1,
+          pbar = pb,
+          FUN = function(x) {
+            by_diag <-
+              diagnose_detection(
+                reference = reference,
+                detection = split_det[[x]],
+                pb = FALSE,
+                cores = cores,
+                time.diagnostics = time.diagnostics,
+                path = path,
+                by.sound.file = by.sound.file
+              )
 
-    split_diagnostic <- warbleR:::pblapply_wrblr_int(X = 1:length(split_det), cl = 1, pbar = pb, FUN = function(x) {
+            # add by label
+            by_diag$by <- names(split_det)[x]
 
-      by_diag <- diagnose_detection(reference = reference, detection = split_det[[x]], pb = FALSE, cores = cores, time.diagnostics = time.diagnostics, path = path, by.sound.file = by.sound.file)
+            # order columns
+            by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
 
-      # add by label
-      by_diag$by <- names(split_det)[x]
+            # rename by column
+            names(by_diag)[1] <- by
 
-      # order columns
-      by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
+            return(by_diag)
+          }
+        )
 
-      # rename by column
-      names(by_diag)[1] <- by
-
-      return(by_diag)
-      })
-
-    performance_df <- do.call(rbind, split_diagnostic)
+      performance_df <- do.call(rbind, split_diagnostic)
 
     } else
-  {
-  # make it a data frame if selection table
-  if (warbleR::is_selection_table(detection))
-    detection <- as.data.frame(detection)
+    {
+      # make it a data frame if selection table
+      if (warbleR::is_selection_table(detection))
+        detection <- as.data.frame(detection)
 
-  # make it a data frame if selection table
-  if (warbleR::is_selection_table(reference))
-    reference <- as.data.frame(reference)
+      # make it a data frame if selection table
+      if (warbleR::is_selection_table(reference))
+        reference <- as.data.frame(reference)
 
-    # remove rows with no info
-  detection <- detection[!is.na(detection$start), ]
+      # remove rows with no info
+      detection <- detection[!is.na(detection$start),]
 
-  # message if more sound files in detection than in reference
-  extra_detec_sf <- setdiff(detection$sound.files, reference$sound.files)
+      # message if more sound files in detection than in reference
+      extra_detec_sf <-
+        setdiff(detection$sound.files, reference$sound.files)
 
-  if (length(extra_detec_sf))
-    on.exit(warning("There is at least one additional sound file in 'detection' not found in 'reference'"))
+      if (length(extra_detec_sf))
+        on.exit(warning(
+          "There is at least one additional sound file in 'detection' not found in 'reference'"
+        ))
 
-  if (nrow(detection) > 0)
-  {
-    # double checking happens inside label_detection()
-    labeled_detection <- label_detection(reference = reference, detection = detection, cores = cores, pb = pb)
+      if (nrow(detection) > 0)
+      {
+        # double checking happens inside label_detection()
+        labeled_detection <-
+          label_detection(
+            reference = reference,
+            detection = detection,
+            cores = cores,
+            pb = pb
+          )
 
-    # # add row labels to reference for getting false negatives
-    reference$..row.id <- 1:nrow(reference)
+        # # add row labels to reference for getting false negatives
+        reference$..row.id <- 1:nrow(reference)
 
-    # duration of corresponding selection in reference
-    labeled_detection$reference.duration <- sapply(1:nrow(labeled_detection), function(x){
-      if (is.na(labeled_detection$reference.row[x]) | !grepl("\\(", labeled_detection$reference.row[x])) NA else
-        {
-          # get matching reference
-          list_ref_row <- strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
-          list_ref_row <- list_ref_row[length(list_ref_row)]
-          list_ref_row <- as.numeric(gsub("\\)", "", list_ref_row))
-          dur <- reference$end[list_ref_row] - reference$start[list_ref_row]
+        # duration of corresponding selection in reference
+        labeled_detection$reference.duration <-
+          sapply(1:nrow(labeled_detection), function(x) {
+            if (is.na(labeled_detection$reference.row[x]) |
+                !grepl("\\(", labeled_detection$reference.row[x]))
+              NA else
+            {
+              # get matching reference
+              list_ref_row <-
+                strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
+              list_ref_row <- list_ref_row[length(list_ref_row)]
+              list_ref_row <- as.numeric(gsub("\\)", "", list_ref_row))
+              dur <-
+                reference$end[list_ref_row] - reference$start[list_ref_row]
 
-          return(dur)
-          }
-    })
+              return(dur)
+            }
+          })
 
         # look at detections matching 1 training selection at the time
-        performance_list <- lapply(unique(labeled_detection$sound.files), function(z){
+        performance_list <-
+          lapply(unique(labeled_detection$sound.files), function(z) {
+            # get subset for that sound file
+            sub_detec <-
+              labeled_detection[labeled_detection$sound.files == z,]
+            sub_ref <- reference[reference$sound.files == z,]
 
-          # get subset for that sound file
-          sub_detec <- labeled_detection[labeled_detection$sound.files == z, ]
-          sub_ref <- reference[reference$sound.files == z, ]
+            # get row index in reference for detected sound events
+            detected_reference_rows <-
+              unique(na.omit(unlist(
+                lapply(sub_detec$reference.row, function(x)
+                  unlist(strsplit(
+                    as.character(x), "-"
+                  )))
+              )))
 
-          # get row index in reference for detected sound events
-          detected_reference_rows <- unique(na.omit(unlist(lapply(sub_detec$reference.row, function(x) unlist(strsplit(as.character(x), "-"))))))
+            detected_reference_rows <-
+              unique(sapply(grep(labeled_detection$detection.class, pattern = "^true.positive"), function(x) {
+                ref_row <-
+                  strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
+                ref_row <- ref_row[length(ref_row)]
+                ref_row <- as.numeric(gsub("\\)", "", ref_row))
+                return(ref_row)
+              }))
 
-          detected_reference_rows <- unique(sapply(grep(labeled_detection$detection.class, pattern = "^true.positive"), function(x){
-            ref_row <- strsplit(labeled_detection$reference.row[x], split = "\\(")[[1]]
-            ref_row <- ref_row[length(ref_row)]
-            ref_row <- as.numeric(gsub("\\)", "", ref_row))
-            return(ref_row)
-          }))
-
-        performance <- data.frame(
+            performance <- data.frame(
               sound.files = z,
               total.detections = nrow(sub_detec),
-              true.positives = sum(grepl("^true.positive", x = sub_detec$detection.class)),
-              false.positives = sum(grepl("false", sub_detec$detection.class)),
+              true.positives = sum(
+                grepl("^true.positive", x = sub_detec$detection.class)
+              ),
+              false.positives = sum(grepl(
+                "false", sub_detec$detection.class
+              )),
               false.negatives = sum(!sub_ref$..row.id %in% detected_reference_rows),
-              split.positives = length(unique(
-                unlist(lapply(sub_detec$reference.row[grepl("split)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
-              merged.positives = length(unique(
-                unlist(lapply(sub_detec$reference.row[grepl("merged)", sub_detec$detection.class)], function(x) unlist(strsplit(x, "-")))))),
-              mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]) * 1000, 0),
-              mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]) * 1000, 0),
-              mean.duration.false.negatives = round(mean((sub_ref$end - sub_ref$start)[!sub_ref$..row.id %in% detected_reference_rows]) * 1000, 0),
-              overlap.to.true.positives = if(any(!is.na(sub_detec$overlap))) mean(sub_detec$overlap, na.rm = TRUE) else NA,
+              split.positives = length(unique(unlist(
+                lapply(sub_detec$reference.row[grepl("split)", sub_detec$detection.class)], function(x)
+                  unlist(strsplit(x, "-")))
+              ))),
+              merged.positives = length(unique(unlist(
+                lapply(sub_detec$reference.row[grepl("merged)", sub_detec$detection.class)], function(x)
+                  unlist(strsplit(x, "-")))
+              ))),
+              mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]
+              ) * 1000, 0),
+              mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]
+              ) * 1000, 0),
+              mean.duration.false.negatives = round(mean((
+                sub_ref$end - sub_ref$start
+              )[!sub_ref$..row.id %in% detected_reference_rows]) * 1000, 0),
+              overlap.to.true.positives = if (any(!is.na(sub_detec$overlap)))
+                mean(sub_detec$overlap, na.rm = TRUE) else
+                NA,
               proportional.duration.true.positives = mean(sub_detec$reference.duration, na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$..row.id %in% detected_reference_rows], na.rm = TRUE),
               stringsAsFactors = FALSE
             )
 
-        # add duty cycle
-        if (!is.null(path) & time.diagnostics){
+            # add duty cycle
+            if (!is.null(path) & time.diagnostics) {
+              # get file durations
+              performance$duty.cycle <-
+                sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
+            }
 
-          # get file durations
-          performance$duty.cycle <- sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
-        }
+            # add recall, precision and f1
+            performance$recall <-
+              performance$true.positives / nrow(sub_ref)
+            performance$precision <-
+              if (nrow(sub_detec) > 0 &
+                  performance$true.positives > 0)
+                (performance$true.positives / performance$total.detections) else
+              0
 
-        # add recall, precision and f1
-        performance$recall <- performance$true.positives / nrow(sub_ref)
-        performance$precision <-if (nrow(sub_detec) > 0 & performance$true.positives > 0) (performance$true.positives / performance$total.detections) else 0
+            performance$f1.score <-
+              2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall)
+              )
 
-        performance$f1.score <- 2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall))
+            # replace NaNs with NA
+            for (i in 1:ncol(performance))
+              if (is.nan(performance[, i]))
+                performance[, i] <- NA
 
-          # replace NaNs with NA
-          for(i in 1:ncol(performance))
-            if (is.nan(performance[, i])) performance[, i] <- NA
+            # fix values when no false positives or true positives
+            performance$false.positives[performance$false.positives < 0] <-
+              0
+            performance$mean.duration.false.positives[is.na(performance$mean.duration.false.positives) |
+                                                        performance$false.positives == 0] <- NA
+            performance$mean.duration.true.positives[is.na(performance$mean.duration.true.positives) |
+                                                       performance$true.positives == 0] <- NA
 
-          # fix values when no false positives or true positives
-          performance$false.positives[performance$false.positives < 0] <- 0
-          performance$mean.duration.false.positives[is.na(performance$mean.duration.false.positives) | performance$false.positives == 0] <- NA
-          performance$mean.duration.true.positives[is.na(performance$mean.duration.true.positives) | performance$true.positives == 0] <- NA
-
-          return(performance)
+            return(performance)
           })
 
-      # add diagnostics of files in reference but not in detection
-      if (any(!reference$sound.files %in% unique(labeled_detection$sound.files))){
+        # add diagnostics of files in reference but not in detection
+        if (any(!reference$sound.files %in% unique(labeled_detection$sound.files))) {
+          no_detec <- data.frame(
+            sound.files = setdiff(
+              reference$sound.files,
+              unique(labeled_detection$sound.files)
+            ),
+            total.detections = 0,
+            true.positives = 0,
+            false.positives = 0,
+            false.negatives = sapply(setdiff(
+              reference$sound.files,
+              unique(labeled_detection$sound.files)
+            ), function(x)
+              sum(reference$sound.files == x)),
+            split.positives = NA,
+            merged.positives = NA,
+            mean.duration.true.positives = NA,
+            mean.duration.false.positives = NA,
+            mean.duration.false.negatives = sapply(setdiff(
+              reference$sound.files,
+              unique(labeled_detection$sound.files)
+            ), function(x)
+              mean((reference$end - reference$start)[reference$sound.files == x])),
+            overlap.to.true.positives = NA,
+            proportional.duration.true.positives = NA,
+            recall = 0,
+            precision =  0,
+            f1.score = 0,
+            stringsAsFactors = FALSE
+          )
 
-       no_detec <- data.frame(
-          sound.files = setdiff(reference$sound.files, unique(labeled_detection$sound.files)),
+          # add duty cycle
+          if (!is.null(path) & time.diagnostics)
+            no_detec$duty.cycle <- 0
+
+          performance_list[[length(performance_list) + 1]] <- no_detec
+
+        }
+        # put in a single data frame
+        performance_df <- do.call(rbind, performance_list)
+
+      } else {
+        performance_df <- data.frame(
+          sound.files = unique(reference$sound.files),
           total.detections = 0,
           true.positives = 0,
           false.positives = 0,
-          false.negatives = sapply(setdiff(reference$sound.files, unique(labeled_detection$sound.files)), function(x) sum(reference$sound.files == x)),
+          false.negatives = sapply(unique(reference$sound.files), function(x)
+            sum(reference$sound.files == x)),
           split.positives = NA,
           merged.positives = NA,
           mean.duration.true.positives = NA,
           mean.duration.false.positives = NA,
-          mean.duration.false.negatives = sapply(setdiff(reference$sound.files, unique(labeled_detection$sound.files)), function(x) mean((reference$end - reference$start)[reference$sound.files == x])),
+          mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x)
+            mean(reference$end - reference$start)) * 1000,
           overlap.to.true.positives = NA,
           proportional.duration.true.positives = NA,
           recall = 0,
-          precision =  0,
+          precision = 0,
           f1.score = 0,
           stringsAsFactors = FALSE
         )
+        # add duty cycle
+        if (!is.null(path) & time.diagnostics)
+          performance_df$duty.cycle <- 0
 
-       # add duty cycle
-       if (!is.null(path) & time.diagnostics)
-         no_detec$duty.cycle <- 0
+      }
 
-       performance_list[[length(performance_list) + 1]] <- no_detec
+      # sort columns
+      performance_df <-
+        performance_df[, na.omit(match(
+          c(
+            "sound.files",
+            "total.detections",
+            "true.positives",
+            "false.positives",
+            "false.negatives",
+            "split.positives",
+            "merged.positives",
+            "mean.duration.true.positives",
+            "mean.duration.false.positives",
+            "mean.duration.false.negatives",
+            "overlap.to.true.positives",
+            "proportional.duration.true.positives",
+            "duty.cycle",
+            "recall",
+            "precision",
+            "f1.score"
+          ),
+          names(performance_df)
+        ))]
 
-}
-      # put in a single data frame
-      performance_df <- do.call(rbind, performance_list)
+      # summarize across sound files
+      if (!by.sound.file)
+        performance_df <-
+        summarize_diagnostic(diagnostic = performance_df, time.diagnostics = time.diagnostics)
 
-} else  {
-  performance_df <- data.frame(
-  sound.files = unique(reference$sound.files),
-  total.detections = 0,
-  true.positives = 0,
-  false.positives = 0,
-  false.negatives = sapply(unique(reference$sound.files), function(x) sum(reference$sound.files == x)),
-  split.positives = NA,
-  merged.positives = NA,
-  mean.duration.true.positives = NA,
-  mean.duration.false.positives = NA,
-  mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x) mean(reference$end - reference$start)) * 1000,
-  overlap.to.true.positives = NA,
-  proportional.duration.true.positives = NA,
-  recall = 0,
-  precision = 0,
-  f1.score = 0,
-  stringsAsFactors = FALSE
-)
-  # add duty cycle
-  if (!is.null(path) & time.diagnostics)
-    performance_df$duty.cycle <- 0
+      # remove time diagnostics
+      if (!time.diagnostics)
+        performance_df <-
+        performance_df[, grep(".duration.|duty", names(performance_df), invert = TRUE)]
 
-}
-
-  # sort columns
-  performance_df <- performance_df[ , na.omit(match(c("sound.files", "total.detections", "true.positives", "false.positives", "false.negatives", "split.positives", "merged.positives", "mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives", "overlap.to.true.positives", "proportional.duration.true.positives", "duty.cycle", "recall", "precision", "f1.score"), names(performance_df)))]
-
-# summarize across sound files
-if (!by.sound.file)
-  performance_df <-
-    summarize_diagnostic(diagnostic = performance_df, time.diagnostics = time.diagnostics)
-
-# remove time diagnostics
-if (!time.diagnostics)
-  performance_df <- performance_df[ , grep(".duration.|duty", names(performance_df), invert = TRUE)]
-
-# fix row names
-rownames(performance_df) <- 1:nrow(performance_df)
-}
-  return(performance_df)
-}
+      # fix row names
+      rownames(performance_df) <- 1:nrow(performance_df)
+    }
+    return(performance_df)
+  }
