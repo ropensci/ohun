@@ -85,7 +85,7 @@ Optimize energy-based sound event detection under different correlation treshold
 This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.
 }
 \examples{
-{
+\donttest{
 # Save example files into temporary working directory
 data("lbh1", "lbh2", "lbh_reference")
 writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))

@@ -27,7 +27,7 @@ detected sound events.
 \code{template_detector} find sound event occurrences in cross-correlation vectors from \code{\link{template_correlator}}
 }
 \details{
-This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection.
+This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection. \strong{Note that the detected sounds are assumed to have the same duration as the template, so their start and end correspond to the correlation peak position +/- half the template duration}.
 }
 \examples{
 {
