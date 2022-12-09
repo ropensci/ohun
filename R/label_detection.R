@@ -70,6 +70,10 @@ label_detection <-
     if (is_extended_selection_table(detection))
       stop2("This function cannot take extended selection tables ('detection' argument)")
 
+    if (any(!complete.cases(detection[, c("start", "end")]))){
+      detection <- detection[complete.cases(detection[, c("start", "end")]),]
+      warning2("Rows in 'detection' with missing values in start and/or end were removed")}
+
     #if reference is not a data frame
     if (!any(is.data.frame(reference), is_selection_table(reference)))
       stop2("'reference' is not of a class 'data.frame' or 'selection_table'")
