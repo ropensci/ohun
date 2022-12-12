@@ -1,6 +1,6 @@
 Package: ohun
 Type: Package
-Title: Optimizing acoustic signal detection
+Title: Optimizing Acoustic Signal Detection
 Version: 0.1.0
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize the performance of detection routines. Detections from other software can also be explored and optimized.
@@ -14,8 +14,7 @@ Repository: CRAN
 Language: en-US
 Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")))
 Date/Publication: 2016-04-19 08:12:11
-Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson, rlang, sp, igraph
+Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson, rlang, sp, igraph, Sim.DiffProc
 Depends: R (>= 3.2.1), tuneR, warbleR (>= 1.1.28)
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests: rmarkdown, testthat (>= 3.0.0), formatR
 Config/testthat/edition: 3

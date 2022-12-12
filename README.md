@@ -11,15 +11,13 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![Licence](https://img.shields.io/badge/https://img.shields.io/badge/licence-GPL--2-blue.svg.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2022--07--11-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
-automated detection of sound events, providing functions to diagnose
-and optimize detection routines.
+automated detection of sound events, providing functions to diagnose and
+optimize detection routines.
 
 The main features of the package are:
 
@@ -54,5 +52,5 @@ library(ohun)
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R
-package version 0.1.0.
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound
+event detection. R package version 0.1.0.

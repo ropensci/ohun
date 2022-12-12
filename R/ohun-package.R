@@ -32,6 +32,7 @@
 #' @import utils
 #' @import methods
 #' @import stats
+#' @import Sim.DiffProc
 #' @importFrom rlang call_args
 #' @importFrom viridis viridis inferno
 #' @importFrom knitr kable

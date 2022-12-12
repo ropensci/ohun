@@ -2,6 +2,7 @@
 ^\.Rproj\.user$
 ^.*\.pdf$
 testing
+tests
 docs
 pkgdown
 README\.Rmd$
