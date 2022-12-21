@@ -36,7 +36,7 @@
 #' @name energy_detector
 #' @details This function detects the time position of target sound events based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
 #'
-#' @examples {
+#' @examples \donttest{
 #' # Save example files into temporary working directory
 #' data("lbh1", "lbh2", "lbh_reference")
 #' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))

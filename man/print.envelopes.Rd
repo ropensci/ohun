@@ -11,6 +11,9 @@
 
 \item{...}{further arguments passed to or from other methods. Ignored when printing envelopes.}
 }
+\value{
+Prints a summary of an object of class 'envelopes'.
+}
 \description{
 Class for absolute amplitude envelopes
 }

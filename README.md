@@ -15,24 +15,26 @@ version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 
+<img src="vignettes/ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/>
+
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
 optimize detection routines.
 
 The main features of the package are:
 
--   The use of reference annotations for detection diagnostic and
-    optimization
--   The use of signal detection theory indices to evaluate detection
-    performance
+- The use of reference annotations for detection diagnostic and
+  optimization
+- The use of signal detection theory indices to evaluate detection
+  performance
 
 The package offers functions for:
 
--   Curate references and acoustic data sets
--   Diagnose detection performance
--   Optimize detection routines based on reference annotations
--   Energy-based detection
--   Template-based detection
+- Curate references and acoustic data sets
+- Diagnose detection performance
+- Optimize detection routines based on reference annotations
+- Energy-based detection
+- Template-based detection
 
 All functions allow the parallelization of tasks, which distributes the
 tasks among several processors to improve computational efficiency. The

@@ -176,7 +176,7 @@ template_detector <-
 
     #  if no detections
     if (all(is.na(sel_table_df$start)) & verbose)
-      write(file = "", x = "no sound events above threshold were detected") else
+      print(x = "no sound events above threshold were detected") else
       if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
           all(!is.na(sel_table_df$start))) {
         sel_table_df <-

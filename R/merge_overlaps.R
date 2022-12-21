@@ -35,7 +35,7 @@
 merge_overlaps <- function(X, pb = TRUE, cores = 1) {
   # merged overlapping selections
   if (pb)
-    write(file = "", x = "Detecting overlapping selections:")
+    print(x = "Detecting overlapping selections:")
   ov_sls <-
     overlapping_sels(X,
                      pb = pb,
@@ -45,7 +45,7 @@ merge_overlaps <- function(X, pb = TRUE, cores = 1) {
   if (any(!is.na(ov_sls$ovlp.sels)))
   {
     if (pb)
-      write(file = "", x = "Merging overlapping selections:")
+      print("Merging overlapping selections:")
     merges_l <-
       warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x) {
         if (!is.na(x)) {

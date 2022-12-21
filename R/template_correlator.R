@@ -444,6 +444,8 @@ template_correlator <-
 #' @keywords internal
 #'
 #' @export
+#' @returns Prints a summary of an object of class 'template_correlations'.
+
 
 print.template_correlations <- function(x, ...) {
   cat(crayon::black(paste(

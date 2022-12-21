@@ -3,7 +3,10 @@ Type: Package
 Title: Optimizing Acoustic Signal Detection
 Version: 0.1.0
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
-Description: Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize the performance of detection routines. Detections from other software can also be explored and optimized.
+Description: Facilitates the automatic detection of acoustic signals, 
+  providing functions to diagnose and optimize the performance of detection 
+  routines. Detections from other software can also be explored and optimized. 
+  Reference: Hossin & Sulaiman (2015) <doi:10.5121/ijdkp.2015.5201>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://marce10.github.io/ohun/

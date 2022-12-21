@@ -64,10 +64,9 @@ label_spectro <-
     if (!is.null(hop.size))
       wl <- round(wave@samp.rate * hop.size / 1000, 0)
 
-    # set graphic device
-    on.exit(suppressWarnings(par(
-      mfrow = c(1, 1), mar = c(5, 4, 4, 2) + 0.1
-    )))
+    # reset graphic device on exit
+    oldpar <- par(no.readonly = TRUE)
+    on.exit(par(oldpar))
 
     if (envelope | !is.null(template.correlation))
       par(mfrow = c(2, 1), mar = c(0,  4,  1,  1))

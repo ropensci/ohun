@@ -207,6 +207,7 @@ get_envelopes <-
 #' @keywords internal
 #'
 #' @export
+#' @returns Prints a summary of an object of class 'envelopes'.
 
 print.envelopes <- function(x, ...) {
 

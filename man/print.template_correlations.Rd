@@ -11,6 +11,9 @@
 
 \item{...}{further arguments passed to or from other methods. Ignored when printing 'template_correlations' class objects.}
 }
+\value{
+Prints a summary of an object of class 'template_correlations'.
+}
 \description{
 print method for class \code{template_correlations}
 }

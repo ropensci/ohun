@@ -1,9 +1,9 @@
-pandoc: '2.18'
-pkgdown: 1.6.1
+pandoc: 2.19.2
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   ohun: ohun.html
-last_built: 2022-12-12T15:12Z
+last_built: 2022-12-21T02:57Z
 urls:
   reference: https://marce10.github.io/ohun/reference
   article: https://marce10.github.io/ohun/articles
