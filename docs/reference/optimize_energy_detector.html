@@ -60,7 +60,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>reference</dt>
-<dd><p>Selection table (using the warbleR package's format, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with columns
+<dd><p>Selection table (using the warbleR package's format, see <code><a href="https://rdrr.io/pkg/warbleR/man/selection_table.html" class="external-link">selection_table</a></code>) or data frame with columns
 for sound file name (sound.files), selection number (selec), and start and end time of sound event
 (start and end). <strong>It must contain the reference selections that will be used for detection optimization</strong>.</p></dd>
 
@@ -75,7 +75,7 @@ sound events (in %). Default is 5. <strong>Several values can be supplied for op
 
 
 <dt>peak.amplitude</dt>
-<dd><p>Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see <code><a href="https://marce10.github.io/warbleR/reference/sound_pressure_level.html" class="external-link">sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events (i.e. high precision and low recall). Default is 0. <strong>Several values can be supplied for optimization</strong>.</p></dd>
+<dd><p>Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see <code><a href="https://rdrr.io/pkg/warbleR/man/sound_pressure_level.html" class="external-link">sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events (i.e. high precision and low recall). Default is 0. <strong>Several values can be supplied for optimization</strong>.</p></dd>
 
 
 <dt>hop.size</dt>

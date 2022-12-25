@@ -101,7 +101,7 @@ with a sum smooth function. It controls the time 'neighborhood' (in ms) in which
 
 
 <dt>peak.amplitude</dt>
-<dd><p>Numeric vector of length 1 with the minimum peak amplitude value. Detections below that value are excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see <code><a href="https://marce10.github.io/warbleR/reference/sound_pressure_level.html" class="external-link">sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events. Default is 0.</p></dd>
+<dd><p>Numeric vector of length 1 with the minimum peak amplitude value. Detections below that value are excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see <code><a href="https://rdrr.io/pkg/warbleR/man/sound_pressure_level.html" class="external-link">sound_pressure_level</a></code>). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events. Default is 0.</p></dd>
 
 
 <dt>hold.time</dt>
@@ -133,7 +133,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The function returns a 'selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame (if sound files can't be found) containing the start and end of each sound event by
+<p>The function returns a 'selection_table' (warbleR package's formats, see <code><a href="https://rdrr.io/pkg/warbleR/man/selection_table.html" class="external-link">selection_table</a></code>) or data frame (if sound files can't be found) containing the start and end of each sound event by
   sound file. If no sound event was detected for a sound file it is not included in the output data frame.</p>
     </div>
     <div class="section level2">
@@ -198,7 +198,7 @@ modified version of the timer function from seewave.</p>
 <span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span></span>
 <span><span class="co"># USIN OTHER SOUND FILE FORMAT (flac program must be installed)</span></span>
 <span> <span class="co"># fisrt convert files to flac</span></span>
-<span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://marce10.github.io/warbleR/reference/wav_2_flac.html" class="external-link">wav_2_flac</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span> <span class="fu">warbleR</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/warbleR/man/wav_2_flac.html" class="external-link">wav_2_flac</a></span><span class="op">(</span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span> <span class="co"># change sound file extension to flac</span></span>
 <span> <span class="va">flac_reference</span> <span class="op">&lt;-</span> <span class="va">lbh_reference</span></span>

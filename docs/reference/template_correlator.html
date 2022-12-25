@@ -59,7 +59,7 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>templates</dt>
-<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
+<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://rdrr.io/pkg/warbleR/man/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
 selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.</p></dd>
 
 
@@ -119,7 +119,7 @@ The current working directory is used as default.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using <code><a href="template_detector.html">template_detector</a></code> or to graphically explore template correlations across sound files using <code><a href="https://marce10.github.io/warbleR/reference/full_spectrograms.html" class="external-link">full_spectrograms</a></code>.</p>
+<p>The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using <code><a href="template_detector.html">template_detector</a></code> or to graphically explore template correlations across sound files using <code><a href="https://rdrr.io/pkg/warbleR/man/full_spectrograms.html" class="external-link">full_spectrograms</a></code>.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -150,7 +150,7 @@ The current working directory is used as default.</p></dd>
 <span></span>
 <span><span class="co"># create template</span></span>
 <span><span class="va">templ</span> <span class="op">&lt;-</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="fl">4</span>,<span class="op">]</span></span>
-<span><span class="va">templ2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></span><span class="op">(</span><span class="va">templ</span>, extended <span class="op">=</span> <span class="cn">TRUE</span>, confirm.extended <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span><span class="va">templ2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/warbleR/man/selection_table.html" class="external-link">selection_table</a></span><span class="op">(</span><span class="va">templ</span>, extended <span class="op">=</span> <span class="cn">TRUE</span>, confirm.extended <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># fourier spectrogram</span></span>
@@ -177,7 +177,7 @@ The current working directory is used as default.</p></dd>
 <span><span class="va">tc_mfcc</span><span class="op">$</span><span class="va">`lbh2.wav-4/lbh2.wav`</span><span class="op">$</span><span class="va">correlation.scores</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># using an extended selection table</span></span>
-<span><span class="va">templ_est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></span><span class="op">(</span><span class="va">templ</span>, extended <span class="op">=</span> <span class="cn">TRUE</span>, confirm.extended <span class="op">=</span> <span class="cn">FALSE</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">templ_est</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/warbleR/man/selection_table.html" class="external-link">selection_table</a></span><span class="op">(</span><span class="va">templ</span>, extended <span class="op">=</span> <span class="cn">TRUE</span>, confirm.extended <span class="op">=</span> <span class="cn">FALSE</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">tc_fr_est</span> <span class="op">&lt;-</span> <span class="fu">template_correlator</span><span class="op">(</span>templates <span class="op">=</span> <span class="va">templ_est</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"fourier"</span><span class="op">)</span></span>
 <span></span>

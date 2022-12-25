@@ -2,10 +2,10 @@ citHeader("Please cite 'ohun' as follows:")
 
 citEntry(entry = "MISC",
         title = "ohun: automatic detection of acoustic signals",
-        author = personList(as.person("M. Araya-Salas")),
-        year = "2021",
-#        journal = "",
-#        url = "",
-        textVersion = "Araya-Salas, M. (2021), ohun: automatic detection of acoustic signals. R package version 0.1.0"
+        author = personList(as.person("M. Araya-Salas"), as.person("G. Smith-Vidaurre"), as.person("Brenes, J.C."), as.person("F. Chirino"), as.person("J Elizondo-Calvo"), as.person("A. Rico-Guevara")),
+        year = "2022",
+        journal = "BioRxiv",
+        url = "https://doi.org/10.1101/2022.12.13.520253",
+        textVersion = "Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253"
 )
 

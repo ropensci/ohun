@@ -6,7 +6,7 @@ Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
   providing functions to diagnose and optimize the performance of detection 
   routines. Detections from other software can also be explored and optimized. 
-  Reference: Hossin & Sulaiman (2015) <doi:10.5121/ijdkp.2015.5201>.
+  Reference: Araya-Salas et al. (2022) <https://doi.org/10.1101/2022.12.13.520253>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://marce10.github.io/ohun/
@@ -19,5 +19,9 @@ Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "m
 Date/Publication: 2016-04-19 08:12:11
 Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson, rlang, sp, igraph, Sim.DiffProc
 Depends: R (>= 3.2.1), tuneR, warbleR (>= 1.1.28)
-Suggests: rmarkdown, testthat (>= 3.0.0), formatR
+Suggests: 
+    rmarkdown,
+    testthat (>= 3.0.0),
+    formatR,
+    covr
 Config/testthat/edition: 3
