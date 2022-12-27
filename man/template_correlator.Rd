@@ -98,7 +98,7 @@ tc_fr_est$`lbh2.wav_4-1/lbh2.wav`$correlation.scores)
 }
 \references{
 {
-Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
 
 Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.
 

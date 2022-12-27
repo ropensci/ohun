@@ -12,7 +12,7 @@ Encoding: UTF-8
 URL: https://marce10.github.io/ohun/
 BugReports: https://github.com/maRce10/ohun/issues/
 VignetteBuilder: knitr, rmarkdown
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Repository: CRAN
 Language: en-US
 Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")))

@@ -2,24 +2,21 @@ ohun: optimizing sound event detection
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-<!-- badges: start -->
 
-[![Codecov test
-coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Licence](https://img.shields.io/badge/https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![minimal R
-version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)  
+version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--27-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
-<!-- badges: end -->
-
-<img src="vignettes/ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/>
+[![codecov](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg?token=FIB6QE9PH6)](https://codecov.io/gh/maRce10/ohun)
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
@@ -27,18 +24,18 @@ optimize detection routines.
 
 The main features of the package are:
 
-- The use of reference annotations for detection diagnostic and
-  optimization
-- The use of signal detection theory indices to evaluate detection
-  performance
+-   The use of reference annotations for detection diagnostic and
+    optimization
+-   The use of signal detection theory indices to evaluate detection
+    performance
 
 The package offers functions for:
 
-- Curate references and acoustic data sets
-- Diagnose detection performance
-- Optimize detection routines based on reference annotations
-- Energy-based detection
-- Template-based detection
+-   Curate references and acoustic data sets
+-   Diagnose detection performance
+-   Optimize detection routines based on reference annotations
+-   Energy-based detection
+-   Template-based detection
 
 All functions allow the parallelization of tasks, which distributes the
 tasks among several processors to improve computational efficiency. The
@@ -58,12 +55,5 @@ library(ohun)
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-<div class="csl-entry">
-
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
-Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R
-package for diagnosing and optimizing automatic sound event detection.
-<i>BioRxiv</i>, 2022.12.13.520253.
-<https://doi.org/10.1101/2022.12.13.520253>
-
-</div>
+Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound
+event detection. R package version 0.1.0.

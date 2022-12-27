@@ -7,3 +7,5 @@ docs
 pkgdown
 README\.Rmd$
 ^codecov\.yml$
+^pkgcheck\.yaml$
+.github
