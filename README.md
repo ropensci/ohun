@@ -2,6 +2,7 @@ ohun: optimizing sound event detection
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- badges: start -->
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
 [![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)
@@ -12,11 +13,15 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--27-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--28-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 [![codecov](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg?token=FIB6QE9PH6)](https://codecov.io/gh/maRce10/ohun)
+[![Codecov test
+coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
+[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
+<!-- badges: end -->
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and

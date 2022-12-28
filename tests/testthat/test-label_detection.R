@@ -45,3 +45,30 @@ test_that("perfect detection", {
   expect_true(all(ld$detection.class == "true.positive"))
 
 })
+
+
+test_that("bipartite matching", {
+
+
+  ref <- data.frame(sound.files = "1.wav",
+                    start = c(1, 2, 3, 4, 5, 6, 7, 8, 9),
+                    end = c(1.5, 2.5, 3.5, 4.5, 5.5, 6.5, 7.5, 8.5, 9.5)
+  )
+
+  ref$selec <- 1:nrow(ref)
+
+  # detection
+  det <- data.frame(sound.files = "1.wav",
+                    start = c(0.75, 1.4, 3.2, 4.25, 6.2, 7.1, 8.25, 1),
+                    end = c(1.25, 3.1, 4.1, 4.8, 6.5, 7.5, 9.25, 1.5)
+  )
+
+  det$selec <- 1:nrow(det)
+
+  # diagnose
+  ld <- label_detection(reference = ref, detection = det)
+
+  expect_true(sum(ld$detection.class == "true.positive") == 2)
+
+
+})

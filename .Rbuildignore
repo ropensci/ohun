@@ -9,3 +9,7 @@ README\.Rmd$
 ^codecov\.yml$
 ^pkgcheck\.yaml$
 .github
+^codemeta\.json$
+^appveyor\.yml$
+^\.github$
+^CONTRIBUTING\.md$
