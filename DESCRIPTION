@@ -17,7 +17,7 @@ Repository: CRAN
 Language: en-US
 Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")))
 Date/Publication: 2016-04-19 08:12:11
-Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), RCurl, fftw, knitr, rjson, rlang, sp, igraph, Sim.DiffProc
+Imports: pbapply, viridis, crayon, methods, stats, utils, seewave (>= 2.0.1), fftw, knitr, rlang, sp, igraph, Sim.DiffProc
 Depends: R (>= 3.2.1), tuneR, warbleR (>= 1.1.28)
 Suggests: 
     rmarkdown,
