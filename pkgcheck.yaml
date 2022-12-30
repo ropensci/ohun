@@ -43,7 +43,7 @@ jobs:
       - name: Extra deps
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y make
+          sudo apt-get install -y make fftw3
 #
 #       - name: ctags latest
 #         if: runner.os == 'Linux'
@@ -66,4 +66,3 @@ jobs:
       # - uses: r-lib/actions/check-r-package@v2
       #   with:
       #     upload-snapshots: true
-      #
