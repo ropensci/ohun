@@ -43,7 +43,7 @@ jobs:
       - name: Extra deps
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get install -y git global libgit2-dev libglpk-dev
+          sudo apt-get install -y make
 
       - name: ctags latest
         if: runner.os == 'Linux'
