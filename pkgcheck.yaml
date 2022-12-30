@@ -44,6 +44,8 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get install -y make fftw3
+          sudo apt-add-repository -r ppa:armagetronad-dev/ppa
+          sudo apt update -q
 #
 #       - name: ctags latest
 #         if: runner.os == 'Linux'
