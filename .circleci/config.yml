@@ -103,12 +103,12 @@ jobs:
     macos:
       xcode: 13.4.1
 
+    parallelism: 4
     steps:
       # Commands will execute in macOS container
       # with Xcode 12.5.1 installed
-      - run: xcodebuild -version
-    parallelism: 4
       - checkout
+      - run: xcodebuild -version
 
       # create a unique env var for the cache. Unfortunately normal env vars
       # are not picked up by the cache, therefore this workaround is needed.
