@@ -13,14 +13,12 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--30-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--31-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
-[![codecov](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg?token=FIB6QE9PH6)](https://codecov.io/gh/maRce10/ohun)
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
-[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/maRce10/ohun/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/maRce10/ohun/tree/master)
 <!-- badges: end -->
 

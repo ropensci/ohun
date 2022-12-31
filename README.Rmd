@@ -17,9 +17,7 @@ editor_options:
 [![Last-changedate](https://img.shields.io/badge/last%20change-`r gsub('-', '--', Sys.Date())`-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
-[![codecov](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg?token=FIB6QE9PH6)](https://codecov.io/gh/maRce10/ohun)
 [![Codecov test coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
-[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
 [![CircleCI](https://dl.circleci.com/status-badge/img/gh/maRce10/ohun/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/maRce10/ohun/tree/master)
 <!-- badges: end -->
 
