@@ -21,7 +21,7 @@ jobs:
       - run:
           name: "[r-release] Install dependencies"
           command: |
-            sudo apt update && sudo apt install -y pandoc libssl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-de cmake libfftw3-3 libfftw3-dev libsndfile1 libsndfile1-dev flac
+            sudo apt update && sudo apt install -y pandoc libssl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev cmake libfftw3-dev libsndfile1-dev flac
             R -q -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/devel')"
             R -q -e "if (grepl('Ubuntu', Sys.info()[['version']]) && !grepl('Under development', R.version[['status']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}else{options(repos = c(CRAN = 'cloud.r-project.org'))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
 
