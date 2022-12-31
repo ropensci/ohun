@@ -13,3 +13,5 @@ README\.Rmd$
 ^appveyor\.yml$
 ^\.github$
 ^CONTRIBUTING\.md$
+^\.ccache$
+^tic\.R$
