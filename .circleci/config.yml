@@ -2,47 +2,6 @@
 ## revision date: 2022-08-28
 version: 2.1
 jobs:
-  build-mac:
-    macos:
-      xcode: 13.4.1
-
-    steps:
-      # Commands will execute in macOS container
-      # with Xcode 12.5.1 installed
-      - run: xcodebuild -version
-    parallelism: 4
-      - checkout
-
-      # create a unique env var for the cache. Unfortunately normal env vars
-      # are not picked up by the cache, therefore this workaround is needed.
-      # See https://discuss.circleci.com/t/cannot-use-circle-yml-environment-variables-in-cache-keys/10994/7
-      - run: echo "$(date '+%d-%m')-r-release" > /tmp/_tmp_file
-      - restore_cache:
-          key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
-
-      # install deps and check pkg ---------------------------------------------
-      - run:
-          name: "[r-release] Install dependencies"
-          command: |
-            sudo apt update && sudo apt install -y pandoc libssl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev cmake libfftw3-dev libsndfile1-dev flac
-            R -q -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/devel')"
-            R -q -e "if (grepl('Ubuntu', Sys.info()[['version']]) && !grepl('Under development', R.version[['status']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}else{options(repos = c(CRAN = 'cloud.r-project.org'))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
-
-      - run:
-          name: "[r-release] R CMD Check"
-          no_output_timeout: 60m
-          command: |
-            R -q -e 'tic::before_script()'
-            R -q -e 'tic::script()'
-
-      # save R pkg cache -------------------------------------------------------
-      - save_cache:
-          key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
-          paths:
-            - /usr/local/lib/R/site-library
-
-
-
   r-release:
     # r-release-env
     environment:
@@ -139,6 +98,46 @@ jobs:
           key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
           paths:
             - /usr/local/lib/R/site-library
+
+  build-mac:
+    macos:
+      xcode: 13.4.1
+
+    steps:
+      # Commands will execute in macOS container
+      # with Xcode 12.5.1 installed
+      - run: xcodebuild -version
+    parallelism: 4
+      - checkout
+
+      # create a unique env var for the cache. Unfortunately normal env vars
+      # are not picked up by the cache, therefore this workaround is needed.
+      # See https://discuss.circleci.com/t/cannot-use-circle-yml-environment-variables-in-cache-keys/10994/7
+      - run: echo "$(date '+%d-%m')-build-mac" > /tmp/_tmp_file
+      - restore_cache:
+          key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
+
+      # install deps and check pkg ---------------------------------------------
+      - run:
+          name: "[build-mac] Install dependencies"
+          command: |
+            sudo apt update && sudo apt install -y pandoc
+            R -q -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/devel')"
+            R -q -e "if (grepl('Ubuntu', Sys.info()[['version']]) && !grepl('Under development', R.version[['status']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}else{options(repos = c(CRAN = 'cloud.r-project.org'))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
+
+      - run:
+          name: "[build-mac] R CMD Check"
+          no_output_timeout: 60m
+          command: |
+            R -q -e 'tic::before_script()'
+            R -q -e 'tic::script()'
+
+      # save R pkg cache -------------------------------------------------------
+      - save_cache:
+          key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
+          paths:
+            - /usr/local/lib/R/site-library
+
 
 workflows:
   just-build:
