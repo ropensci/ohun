@@ -44,30 +44,30 @@ jobs:
           key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
           paths:
             - /usr/local/lib/R/site-library
-  deploy:
-    # r-deploy-env
-    environment:
-      # if you use bookdown or blogdown, replace "PKGDOWN" by the respective
-      # capitalized term. This also might need to be done in tic.R
-      BUILD_PKGDOWN: true
-    docker:
-      - image: rocker/verse
-    steps:
-      - checkout
-
-      - run: echo "$(date '+%d-%m')-r-release" > /tmp/_tmp_file
-      - restore_cache:
-          key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
-
-      - run:
-          name: Deploy
-          command: |
-            sudo apt update && sudo apt install -y pandoc
-            R -q -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/devel')"
-            R -q -e "if (grepl('Ubuntu', Sys.info()[['version']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()"
-            R -q -e 'tic::before_deploy()'
-            R -q -e 'tic::deploy()'
-            R -q -e 'tic::after_deploy()'
+  # deploy:
+  #   # r-deploy-env
+  #   environment:
+  #     # if you use bookdown or blogdown, replace "PKGDOWN" by the respective
+  #     # capitalized term. This also might need to be done in tic.R
+  #     BUILD_PKGDOWN: true
+  #   docker:
+  #     - image: rocker/verse
+  #   steps:
+  #     - checkout
+  #
+  #     - run: echo "$(date '+%d-%m')-r-release" > /tmp/_tmp_file
+  #     - restore_cache:
+  #         key: R-package-library-{{ checksum "/tmp/_tmp_file" }}
+  #
+  #     - run:
+  #         name: Deploy
+  #         command: |
+  #           sudo apt update && sudo apt install -y pandoc
+  #           R -q -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/devel')"
+  #           R -q -e "if (grepl('Ubuntu', Sys.info()[['version']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()"
+  #           R -q -e 'tic::before_deploy()'
+  #           R -q -e 'tic::deploy()'
+  #           R -q -e 'tic::after_deploy()'
 
   r-devel:
     # r-devel-env
@@ -110,9 +110,9 @@ workflows:
     jobs:
       - r-release
       - r-devel
-      - deploy:
-          requires:
-            - r-release
+      # - deploy:
+      #     requires:
+      #       - r-release
 
   # CRON job daily at 4 am in the morning
   # - runs the "build" job on the master branch and builds package cache
