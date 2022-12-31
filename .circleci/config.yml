@@ -7,7 +7,7 @@ jobs:
     environment:
     docker:
       - image: rocker/verse
-    parallelism: 4
+    # parallelism: 4
     steps:
       - checkout
 
@@ -103,7 +103,7 @@ jobs:
     macos:
       xcode: 13.4.1
 
-    parallelism: 4
+    # parallelism: 4
     steps:
       # Commands will execute in macOS container
       # with Xcode 12.5.1 installed
