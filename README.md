@@ -21,6 +21,9 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
 [![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
+[![CircleCI build
+status](https://circleci.com/gh/maRce10/ohun.svg?style=svg)](https://circleci.com/gh/maRce10/ohun)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/maRce10/ohun/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/maRce10/ohun/tree/master)
 <!-- badges: end -->
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the

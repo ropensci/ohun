@@ -20,6 +20,8 @@ editor_options:
 [![codecov](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg?token=FIB6QE9PH6)](https://codecov.io/gh/maRce10/ohun)
 [![Codecov test coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
 [![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
+[![CircleCI build status](https://circleci.com/gh/maRce10/ohun.svg?style=svg)](https://circleci.com/gh/maRce10/ohun)
+[![CircleCI](https://dl.circleci.com/status-badge/img/gh/maRce10/ohun/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/maRce10/ohun/tree/master)
 <!-- badges: end -->
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines.
