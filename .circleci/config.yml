@@ -99,7 +99,7 @@ jobs:
           paths:
             - /usr/local/lib/R/site-library
 
- build-mac:
+  build-mac:
     macos:
       xcode: 13.4.1
 
@@ -140,7 +140,7 @@ jobs:
 
 
 workflows:
-  build-no-deploy:
+  just-build:
     jobs:
       - r-release
       - r-devel
