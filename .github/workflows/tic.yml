@@ -31,7 +31,7 @@ jobs:
           # use a different tic template type if you do not want to build on all listed platforms
           - { os: windows-latest, r: "release" }
           # - { os: macOS-latest, r: "release", pkgdown: "true", latex: "true" }
-          - { os: ubuntu-latest, r: "devel" }
+          # - { os: ubuntu-latest, r: "devel" }
           # - { os: ubuntu-latest, r: "release" }
 
     env:
@@ -80,6 +80,11 @@ jobs:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
           restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
+
+    - name: "non R windows dependencies"
+        if: runner.os == 'Windows'
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
 
       - name: "[Stage] Install pak"
         run: Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/stable')"
