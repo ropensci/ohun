@@ -58,7 +58,6 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-
       - name: Extra deps
         if: runner.os == 'Linux'
         run: |
