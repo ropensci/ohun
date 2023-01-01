@@ -32,7 +32,7 @@ jobs:
           # - { os: windows-latest, r: "release" }
           - { os: macOS-latest, r: "release", pkgdown: "true", latex: "true" }
           # - { os: ubuntu-latest, r: "devel" }
-          # - { os: ubuntu-latest, r: "release" }
+          - { os: ubuntu-latest, r: "release" }
 
     env:
       # make sure to run `tic::use_ghactions_deploy()` to set up deployment
