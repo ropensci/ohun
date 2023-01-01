@@ -13,13 +13,14 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2022--12--31-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2023--01--01-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
-[![CircleCI](https://dl.circleci.com/status-badge/img/gh/maRce10/ohun/tree/master.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/gh/maRce10/ohun/tree/master)
+[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
+[![R-CMD-check](https://github.com/maRce10/ohun/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/maRce10/ohun/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
@@ -28,18 +29,18 @@ optimize detection routines.
 
 The main features of the package are:
 
-- The use of reference annotations for detection diagnostic and
-  optimization
-- The use of signal detection theory indices to evaluate detection
-  performance
+-   The use of reference annotations for detection diagnostic and
+    optimization
+-   The use of signal detection theory indices to evaluate detection
+    performance
 
 The package offers functions for:
 
-- Curate references and acoustic data sets
-- Diagnose detection performance
-- Optimize detection routines based on reference annotations
-- Energy-based detection
-- Template-based detection
+-   Curate references and acoustic data sets
+-   Diagnose detection performance
+-   Optimize detection routines based on reference annotations
+-   Energy-based detection
+-   Template-based detection
 
 All functions allow the parallelization of tasks, which distributes the
 tasks among several processors to improve computational efficiency. The
