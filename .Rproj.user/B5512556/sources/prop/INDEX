@@ -5,6 +5,8 @@
 ~%2FDropbox%2FR_package_testing%2Fohun%2F.Rbuildignore="6EA080C2"
 ~%2FDropbox%2FR_package_testing%2Fohun%2F.circleci%2Fconfig.yaml="B88E408E"
 ~%2FDropbox%2FR_package_testing%2Fohun%2F.circleci%2Fconfig.yml="9446C1D2"
+~%2FDropbox%2FR_package_testing%2Fohun%2F.github%2Fworkflows%2Ftest-coverage.yaml="6A51E62C"
+~%2FDropbox%2FR_package_testing%2Fohun%2F.github%2Fworkflows%2Ftic.yml="E1E11D9E"
 ~%2FDropbox%2FR_package_testing%2Fohun%2F.gitignore="09E38902"
 ~%2FDropbox%2FR_package_testing%2Fohun%2FCONTRIBUTING.md="96963E11"
 ~%2FDropbox%2FR_package_testing%2Fohun%2FDESCRIPTION="D114A79F"
