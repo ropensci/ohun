@@ -259,7 +259,7 @@
     },
     "SystemRequirements": null
   },
-  "fileSize": "2273.928KB",
+  "fileSize": "2274.269KB",
   "citation": [
     {
       "@type": "CreativeWork",
@@ -313,7 +313,7 @@
   ],
   "relatedLink": ["https://marce10.github.io/ohun/", "https://CRAN.R-project.org/package=ohun"],
   "readme": "https://github.com/maRce10/ohun/blob/master/README.md",
-  "contIntegration": ["https://codecov.io/gh/maRce10/ohun", "https://codecov.io/gh/maRce10/ohun?branch=master"],
+  "contIntegration": ["https://codecov.io/gh/maRce10/ohun?branch=master", "https://github.com/maRce10/ohun/actions"],
   "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html", "https://www.repostatus.org/#active"],
   "keywords": ["spectrogram", "audio-processing", "bioacoustics", "streamline-analysis", "automatic-signal-detection"]
 }
