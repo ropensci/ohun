@@ -20,8 +20,6 @@ Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)
 [![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
-[![Codecov test
-coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
 <!-- badges: end -->
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
