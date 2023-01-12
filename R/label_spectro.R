@@ -90,7 +90,7 @@ label_spectro <-
 
     # plot detection
     if (!is.null(reference))
-      for (i in 1:nrow(reference))
+      for (i in seq_len(nrow(reference)))
         lines(
           x = (reference[i, c("start", "end")]),
           y = rep(line.x.position, 2),
@@ -101,7 +101,7 @@ label_spectro <-
 
     # plot detection
     if (!is.null(detection))
-      for (i in 1:nrow(detection))
+      for (i in seq_len(nrow(detection)))
         lines(
           x = (detection[i, c("start", "end")]),
           y = rep(line.x.position - 0.3, 2),

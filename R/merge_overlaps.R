@@ -20,7 +20,7 @@
 #' # create artificial overlapping selections
 #' lbh_ref2 <- rbind(as.data.frame(lbh_reference[c(3, 10), ]), lbh_reference[c(3, 10), ])
 #'
-#' lbh_ref2$selec <- 1:nrow(lbh_ref2)
+#' lbh_ref2$selec <- seq_len(nrow(lbh_ref2))
 #'
 #' merge_overlaps(lbh_ref2)
 #' }
@@ -72,7 +72,7 @@ merge_overlaps <- function(X, pb = TRUE, cores = 1) {
     ov_sls <- X
 
   # rename rows
-  rownames(ov_sls) <- 1:nrow(ov_sls)
+  rownames(ov_sls) <- seq_len(nrow(ov_sls))
 
   return(ov_sls)
 

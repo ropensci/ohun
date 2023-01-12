@@ -33,12 +33,12 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   info_files$wav.size <-
     file.size(file.path(path, info_files$sound.files)) / 1000000
 
-  cat(crayon::silver(paste0(
-    "Features of the acoustic data set in '", crayon::bold(paste0(normalizePath(path), "':"))
-  )))
+  message2(color = "silver",x = paste0(
+    "Features of the acoustic data set in '", cli::style_bold(paste0(normalizePath(path), "':"))
+  ))
 
   # number of files
-  cat(crayon::silver(paste("\n*", nrow(info_files), "sound files")))
+  message2(color = "silver",x = paste("\n*", nrow(info_files), "sound files"))
 
   # formats
   pos <- regexpr("\\.([[:alnum:]]+)$", info_files$sound.files)
@@ -53,8 +53,8 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   format_message <-
     paste0("\n* ", length(unique(extensions)), " file format(s) ", "(", tab_ext, ")")
   if (length(unique(extensions)) > 1)
-    cat(crayon::red(format_message)) else
-    cat(crayon::silver(format_message))
+    message2(color = "red",x = format_message) else
+    message2(color = "silver",x = format_message)
 
   # sampling rates
   tab_sr <- table(info_files$sample.rate)
@@ -64,8 +64,8 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   sr_message <-
     paste0("\n* ", length(unique(info_files$sample.rate)), " sampling rate(s) ", "(", tab_sr, ")")
   if (length(unique(info_files$sample.rate)) > 1)
-    cat(crayon::red(sr_message)) else
-    cat(crayon::silver(sr_message))
+    message2(color = "red",x = sr_message) else
+    message2(color = "silver",x = sr_message)
 
   # bit depths
   tab_bd <- table(info_files$bits)
@@ -75,8 +75,8 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   bd_message <-
     paste0("\n* ", length(unique(info_files$bits)), " bit depth(s) ", "(", tab_bd, ")")
   if (length(unique(info_files$bits)) > 1)
-    cat(crayon::red(bd_message)) else
-    cat(crayon::silver(bd_message))
+    message2(color = "red",x = bd_message) else
+    message2(color = "silver",x = bd_message)
 
   # number of channels
   tab_ch <- table(info_files$channels)
@@ -86,8 +86,8 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
   ch_message <-
     paste0("\n* ", length(unique(info_files$channels)), " number of channels ", "(", tab_ch, ")")
   if (length(unique(info_files$channels)) > 1)
-    cat(crayon::red(ch_message)) else
-    cat(crayon::silver(ch_message))
+    message2(color = "red",x = ch_message) else
+    message2(color = "silver",x = ch_message)
 
   # duration
   dur_message <-
@@ -101,7 +101,7 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
       " s)"
     )
 
-  cat(crayon::silver(dur_message))
+  message2(color = "silver",x = dur_message)
 
   # file size
   tab_sz <- table(info_files$channels)
@@ -118,11 +118,11 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
       " MB)"
     )
 
-  cat(crayon::silver(dur_message))
+  message2(color = "silver",x = dur_message)
 
-  cat(crayon::italic(
-    crayon::silver(
+  message2(color = "silver", cli::style_italic(
+
       "\n (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')"
     )
-  ))
+  )
 }

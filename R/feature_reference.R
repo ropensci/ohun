@@ -89,8 +89,8 @@ feature_reference <-
             warbleR::duration_sound_files(files = unique(reference$sound.files),
                                           path = path)
 
-          durs$duty.cycle <- sapply(1:nrow(durs), function(x)
-            sum(reference$duration[reference$sound.files == durs$sound.files[x]], na.rm = TRUE) / durs$duration[x])
+          durs$duty.cycle <- vapply(seq_len(nrow(durs)), function(x)
+            sum(reference$duration[reference$sound.files == durs$sound.files[x]], na.rm = TRUE) / durs$duration[x], FUN.VALUE = numeric(1))
 
           output$min.duty.cycle <- min(durs$duty.cycle, na.rm = TRUE)
           output$mean.duty.cycle <- mean(durs$duty.cycle, na.rm = TRUE)
@@ -173,7 +173,7 @@ feature_reference <-
              value = TRUE,
              invert = TRUE)
 
-      rownames(output) <- row_names[1:nrow(output)]
+      rownames(output) <- row_names[seq_len(nrow(output))]
     }
 
     # round digits and change units

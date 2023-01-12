@@ -76,7 +76,7 @@ filter_detection <-
       stop2("'by' column not found")
 
     # add row id column to la
-    detection$..row.id <- 1:nrow(detection)
+    detection$..row.id <- seq_len(nrow(detection))
 
     # split in false and true positives
     false.positives <-
@@ -97,8 +97,8 @@ filter_detection <-
       )), cl = cl, pbar = pb, function(x) {
         # get those detection that overlapped with x
         X <-
-          true.positives[sapply(true.positives$reference.row, function(y)
-            any(unlist(strsplit(y, "-")) == x)),]
+          true.positives[vapply(true.positives$reference.row, function(y)
+            any(unlist(strsplit(y, "-")) == x), FUN.VALUE = logical(1)),]
 
         # order by 'by'
         X <- X[order(X[, by, drop = TRUE], decreasing = TRUE),]

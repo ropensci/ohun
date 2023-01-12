@@ -174,7 +174,7 @@ optimize_template_detector <-
                 # get column names
                 col_names <- names(Q)[if (by.sound.file)
                   - 1 else
-                    1:ncol(Q)]
+                    seq_len(ncol(Q))]
 
                 # add template
                 Q$templates <- r

@@ -211,16 +211,16 @@ get_envelopes <-
 
 print.envelopes <- function(x, ...) {
 
-  cat(crayon::black(paste("Object of class", crayon::bold("'envelopes' \n"))))
+  message2(paste("Object of class", cli::style_bold("'envelopes' \n")))
 
-  cat(crayon::silver(paste("* The output of the following", crayon::italic("get_envelopes()"), "call: \n")))
+  message2(color = "silver",x = paste("* The output of the following", cli::style_italic("get_envelopes()"), "call: \n"))
 
   cll <- paste0(deparse(x$call_info$call))
-  cat(crayon::silver(crayon::italic(gsub("    ", "", cll), "\n")))
+  message2(color = "silver",x = cli::style_italic(gsub("    ", "", cll), "\n"))
 
   file_names <- names(x)[-length(x)]
 
-  cat(crayon::silver(paste("* Contains the amplitude envelopes of"), length(x) - 1, "sound file(s):\n", paste(crayon::italic(utils::head(file_names), collapse = " ")), if( length(file_names) > 6) paste("... and", length(file_names) - 6, "more") else ""))
+  message2(color = "silver",x = paste(paste("* Contains the amplitude envelopes of"), length(x) - 1, "sound file(s):\n", paste(cli::style_italic(utils::head(file_names), collapse = " ")), if( length(file_names) > 6) paste("... and", length(file_names) - 6, "more") else ""))
 
   # add message about amplitude envelope modifications
   if (any(names(x$call_info$parameters) == "smooth")){
@@ -236,18 +236,19 @@ print.envelopes <- function(x, ...) {
     thin_message <- ""
 
 
-  if (smooth_message == "" & thin_message == "") cat(crayon::silver("\n * No smoothing or thinning was applied"))
+  if (smooth_message == "" & thin_message == "")
+    message2(color = "silver",x = "\n * No smoothing or thinning was applied")
 
   if (smooth_message != "" & thin_message == "")
-    cat(crayon::silver(paste("\n *", smooth_message, "was applied")))
+    message2(color = "silver",x = paste("\n *", smooth_message, "was applied"))
 
   if (smooth_message == "" & thin_message != "")
-    cat(crayon::silver(paste("\n *", thin_message, "was applied")))
+    message2(color = "silver",x = paste("\n *", thin_message, "was applied"))
   if (smooth_message != "" & thin_message != "")
-    cat(crayon::silver(paste("\n *", smooth_message, "and", thin_message, "was applied")))
+    message2(color = "silver",x = paste("\n *", smooth_message, "and", thin_message, "was applied"))
 
   # print ohun version
-    cat(crayon::silver(paste0("\n * Created by ", crayon::bold("ohun "), x$call_info$ohun.version)))
+    message2(color = "silver",x = paste0("\n * Created by ", cli::style_bold("ohun "), x$call_info$ohun.version))
 }
 
 ########################### internal function to get an envelope ###################

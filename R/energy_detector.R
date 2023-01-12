@@ -200,7 +200,7 @@ energy_detector <-
 
         # either files or envelopes must be supplied
         if (!is.null(files) & !is.null(envelopes))
-          message("'files' will be ignored as 'envelopes' has been supplied")
+          message2("'files' will be ignored as 'envelopes' has been supplied")
 
         # get file names from envelopes
         if (is.null(files))
@@ -293,7 +293,7 @@ energy_detector <-
 
           # add row names
           if (nrow(detections_df) > 0)
-            detections_df$selec <- 1:nrow(detections_df)
+            detections_df$selec <- seq_len(nrow(detections_df))
 
           } else # return NAs
             detections_df <-
@@ -368,7 +368,7 @@ energy_detector <-
                 detections_df <- detections_df[order(detections_df$start), ]
 
                 # relabel selec column
-                detections_df$selec <- 1:nrow(detections_df)
+                detections_df$selec <- seq_len(nrow(detections_df))
 
                 # recalculate duration (gets messed up when using hold time)
                 detections_df$duration[!is.na(detections_df$start)] <- round(detections_df$end[!is.na(detections_df$start)] - detections_df$start[!is.na(detections_df$start)], 7)
@@ -435,7 +435,7 @@ energy_detector <-
 
      #rename rows
     if (nrow(detections) > 0)
-    rownames(detections) <- 1:nrow(detections)
+    rownames(detections) <- seq_len(nrow(detections))
 
 
       if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)){

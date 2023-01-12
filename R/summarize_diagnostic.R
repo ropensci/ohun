@@ -96,7 +96,7 @@ summarize_diagnostic <-
     # get which extra columns were numeric
     if (length(extra_colms) > 0)
       numeric_colms <-
-      sapply(diagnostic[, extra_colms, drop = FALSE], is.numeric)
+      vapply(diagnostic[, extra_colms, drop = FALSE], is.numeric, FUN.VALUE = logical(1))
 
     # switch to FALSE if no time columns
     if (is.null(diagnostic$mean.duration.true.positives))
@@ -187,7 +187,7 @@ summarize_diagnostic <-
           )
 
         # replace NaNs with NA
-        for (i in 1:ncol(summ_diagnostic))
+        for (i in seq_len(ncol(summ_diagnostic)))
           if (is.nan(summ_diagnostic[, i]))
             summ_diagnostic[, i] <- NA
 

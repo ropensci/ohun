@@ -55,7 +55,7 @@ detection = lbh_reference)
 
 # duplicate 1 detection row (to get 2 splits)
 label_detection(reference = lbh_reference,
-detection = lbh_reference[c(1, 1:nrow(lbh_reference)), ])
+detection = lbh_reference[c(1, seq_len(nrow(lbh_reference))), ])
 
 # merge 2 detections (to get split and merge)
 Y <- lbh_reference

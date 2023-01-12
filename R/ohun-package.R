@@ -20,7 +20,6 @@
 #' All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
 #'
 #' @import warbleR
-#' @import pbapply
 #' @import tuneR
 #' @import seewave
 #' @import fftw
@@ -30,11 +29,8 @@
 #' @import utils
 #' @import methods
 #' @import stats
-#' @import Sim.DiffProc
 #' @importFrom rlang call_args
-#' @importFrom viridis viridis inferno
-#' @importFrom knitr kable
-#' @importFrom crayon silver bold italic
+#' @importFrom cli style_bold style_italic make_ansi_style num_ansi_colors
 #' @importFrom igraph max_bipartite_match E as_data_frame graph_from_incidence_matrix
 #' @importFrom methods is
 #' @importFrom tuneR writeWave

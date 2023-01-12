@@ -164,7 +164,7 @@ template_detector <-
     sel_table_df <- do.call(rbind, sel_table_list)
 
     # relabel rows
-    rownames(sel_table_df) <- 1:nrow(sel_table_df)
+    rownames(sel_table_df) <- seq_len(nrow(sel_table_df))
 
     # get path from corrrelation call
     corr_call_path <-

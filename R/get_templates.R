@@ -59,7 +59,7 @@ get_templates <-
 
       # remove columns with NAs
       spectral_parameters <-
-        spectral_parameters[, !sapply(spectral_parameters, anyNA)]
+        spectral_parameters[, !vapply(spectral_parameters, anyNA, FUN.VALUE = logical(1))]
 
       # get PCA
       pca <-
@@ -69,13 +69,13 @@ get_templates <-
       variance_pca <- summary(pca)$importance
 
       # print info
-      cat(crayon::silver(
+      message2(color = "silver",x =
         paste0(
           "The first 2 principal components explained ",
           round(variance_pca[3, 2], 2),
           " of the variance"
         )
-      ))
+      )
 
       # keep those as acoustic space
       acoustic.space <- pca$x[, 1:2]
@@ -115,7 +115,7 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
   x <- rep(1, n.sub.spaces)
   space <- space[, 1:2]
   space <- data.frame(space)
-  space$...NROW <- 1:nrow(space)
+  space$...NROW <- seq_len(nrow(space))
 
   # mean center
   mean_dim1 <- mean(space[, 1])
@@ -161,7 +161,7 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
   for (i in 0:length(polys)){
 
     if (i > 0)
-      whch_within  <- which(!is.na(sp::over(x = sp::SpatialPoints(space[, 1:2]),  y = sp::SpatialPolygons(polys[[i]]@polygons), returnList = FALSE))) else whch_within <- 1:nrow(space)
+      whch_within  <- which(!is.na(sp::over(x = sp::SpatialPoints(space[, 1:2]),  y = sp::SpatialPolygons(polys[[i]]@polygons), returnList = FALSE))) else whch_within <- seq_len(nrow(space))
 
       if (length(whch_within) > 0){
         if (length(whch_within) > 1) {
@@ -173,7 +173,7 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
 
           # and distance to centroid
           dists_to_centroid <-
-            unlist(lapply(1:nrow(sub_space), function(x)
+            unlist(lapply(seq_len(nrow(sub_space)), function(x)
               stats::dist(
                 rbind(sub_space[x, 1:2], centroid_coors)
               )))
@@ -190,7 +190,7 @@ find_templates <- function(reference = NULL, n.sub.spaces, space = NULL, plot = 
 
   if (length(centroids) > 1)
     if (any(centroids[-1] == centroids[1])){
-      cat(crayon::silver(sum(centroids[-1] == centroids[1]),
+      message2(color = "silver", x = paste(sum(centroids[-1] == centroids[1]),
                          "sub-space centroid(s) coincide with the overall centroid and was (were) removed"
       ))
       centroids <- c(centroids[1], centroids[-1][centroids[-1] != centroids[1]])

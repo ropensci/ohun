@@ -249,7 +249,7 @@ split_acoustic_data <-
       X$new.sound.files <- NA
 
       # ad unique selec ID to new files
-      split.df$selec <- paste0("new", 1:nrow(split.df))
+      split.df$selec <- paste0("new", seq_len(nrow(split.df)))
 
       # select columns to bind
       clms <-
@@ -285,7 +285,7 @@ split_acoustic_data <-
           verbose = FALSE
         )
 
-      ovlp.df$..row <- 1:nrow(ovlp.df)
+      ovlp.df$..row <- seq_len(nrow(ovlp.df))
 
       # split in new files rows and selection rows
       new.sf.df <-
@@ -304,7 +304,7 @@ split_acoustic_data <-
 
 
       # find time positions in new files
-      new.sels_l <- lapply(1:nrow(new.sf.df), function(x) {
+      new.sels_l <- lapply(seq_len(nrow(new.sf.df)), function(x) {
         Y <- new.sf.df[x, , drop = FALSE]
 
         # get those selection found within Y
@@ -345,7 +345,7 @@ split_acoustic_data <-
       new.sels$split.sels[new.sels$sel.id %in% names(cnt.sels[cnt.sels > 1])] <-
         "split"
       new.sels$sel.id <- NULL
-      row.names(new.sels) <- 1:nrow(new.sels)
+      row.names(new.sels) <- seq_len(nrow(new.sels))
 
       return(new.sels)
     } else

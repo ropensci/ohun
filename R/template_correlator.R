@@ -327,14 +327,14 @@ template_correlator <-
         stps <- 1:stps
 
       # calculate correlations at each step
-      cors <- sapply(stps, function(x, cor.method = cm) {
+      cors <- vapply(stps, function(x, cor.method = cm) {
         warbleR::try_na(cor(
           c(lg.spc[, x:(x + shrt.lgth)]),
           c(shrt.spc),
           method = cm,
           use = 'pairwise.complete.obs'
         ))
-      })
+      }, FUN.VALUE = numeric(1))
 
       # make negative values 0
       cors[cors < 0] <- 0
@@ -352,7 +352,7 @@ template_correlator <-
     corr_vector_list <-
       warbleR:::pblapply_wrblr_int(
         pbar = pb,
-        X = 1:nrow(compare.matrix),
+        X = seq_len(nrow(compare.matrix)),
         cl = cl,
         FUN = function(e, cor.meth = cor.method) {
           # set bandpass to template frequency range
@@ -448,53 +448,53 @@ template_correlator <-
 
 
 print.template_correlations <- function(x, ...) {
-  cat(crayon::black(paste(
+  message2(paste(
     "Object of class",
-    crayon::bold("'template_correlations' \n")
-  )))
-
-  cat(crayon::silver(
-    paste(
-      "* The output of the following",
-      crayon::italic("template_correlator()"),
-      "call: \n"
-    )
+    cli::style_bold("'template_correlations' \n")
   ))
 
+  message2(color = "silver",x =
+    paste(
+      "* The output of the following",
+      cli::style_italic("template_correlator()"),
+      "call: \n"
+    )
+  )
+
   cll <- paste0(deparse(x$call_info$call))
-  cat(crayon::silver(crayon::italic(gsub("    ", "", cll), "\n")))
+  message2(color = "silver",x = cli::style_italic(gsub("    ", "", cll), "\n"))
 
   # get file and template names
   files_templates <- sapply(names(x)[-length(x)], strsplit, "/")
   templates <- unique(sapply(files_templates, "[[", 1))
   files <- unique(sapply(files_templates, "[[", 2))
 
-  cat(crayon::silver(
-    paste("* Contains", length(x) - 1, "correlation score vector(s) from"),
+  message2(color = "silver",x =
+    paste(paste("* Contains", length(x) - 1, "correlation score vector(s) from"),
     length(templates),
     "template(s):\n",
-    paste(crayon::italic(utils::head(templates), collapse = " ")),
+    paste(cli::style_italic(utils::head(templates), collapse = " ")),
     if (length(templates) > 6)
       paste("... and", length(templates) - 6, "more") else
       ""
   ))
 
-  cat(crayon::silver(
-    paste("\n... and"),
+  message2(color = "silver",x =
+    paste(paste("\n... and"),
     length(files),
     "sound files(s):\n",
-    paste(crayon::italic(utils::head(files), collapse = " ")),
+    paste(cli::style_italic(utils::head(files), collapse = " ")),
     if (length(files) > 6)
       paste("... and", length(files) - 6, "more") else
       ""
   ))
 
   # print ohun version
-  cat(crayon::silver(
+  message2(color = "silver",x =
     paste0(
       "\n * Created by ",
-      crayon::bold("ohun "),
+      cli::style_bold("ohun "),
       x$call_info$ohun.version
     )
-  ))
+  )
 }

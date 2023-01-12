@@ -237,7 +237,7 @@ optimize_energy_detector <-
 
       eng_det_l <-
         warbleR:::pblapply_wrblr_int(
-          X = 1:nrow(exp_grd),
+          X = seq_len(nrow(exp_grd)),
           pbar = pb,
           cl = 1,
           FUN = function(x) {
@@ -266,7 +266,7 @@ optimize_energy_detector <-
             eng_det$sound.files <- as.character(eng_det$sound.files)
 
             if (nrow(eng_det) > 0)
-              eng_det$..row.id <- 1:nrow(eng_det)
+              eng_det$..row.id <- seq_len(nrow(eng_det))
 
             eng_det <- eng_det[!is.na(eng_det$start),]
 
@@ -293,7 +293,7 @@ optimize_energy_detector <-
       # duplicate expand grid tuning parameters if by sound file
       if (by.sound.file)
         exp_grd <-
-        exp_grd[rep(1:nrow(exp_grd), each = length(files)),]
+        exp_grd[rep(seq_len(nrow(exp_grd)), each = length(files)),]
 
       suppressWarnings(performance <-
                          data.frame(exp_grd, performance))
@@ -305,7 +305,7 @@ optimize_energy_detector <-
       performance <-  warbleR::sort_colms(performance)
 
       # rename rows
-      rownames(performance) <- 1:nrow(performance)
+      rownames(performance) <- seq_len(nrow(performance))
 
       return(performance)
     }

@@ -92,7 +92,7 @@ diagnose_detection <-
 
       split_diagnostic <-
         warbleR:::pblapply_wrblr_int(
-          X = 1:length(split_det),
+          X = seq_len(length(split_det)),
           cl = 1,
           pbar = pb,
           FUN = function(x) {
@@ -156,11 +156,11 @@ diagnose_detection <-
           )
 
         # # add row labels to reference for getting false negatives
-        reference$..row.id <- 1:nrow(reference)
+        reference$..row.id <- seq_len(nrow(reference))
 
         # duration of corresponding selection in reference
         labeled_detection$reference.duration <-
-          sapply(1:nrow(labeled_detection), function(x) {
+          vapply(seq_len(nrow(labeled_detection)), function(x) {
             if (is.na(labeled_detection$reference.row[x]) |
                 !grepl("\\(", labeled_detection$reference.row[x]))
               NA else
@@ -175,7 +175,7 @@ diagnose_detection <-
 
               return(dur)
             }
-          })
+          }, FUN.VALUE = numeric(1))
 
         # look at detections matching 1 training selection at the time
         performance_list <-
@@ -256,7 +256,7 @@ diagnose_detection <-
               )
 
             # replace NaNs with NA
-            for (i in 1:ncol(performance))
+            for (i in seq_len(ncol(performance)))
               if (is.nan(performance[, i]))
                 performance[, i] <- NA
 
@@ -281,20 +281,20 @@ diagnose_detection <-
             total.detections = 0,
             true.positives = 0,
             false.positives = 0,
-            false.negatives = sapply(setdiff(
+            false.negatives = vapply(setdiff(
               reference$sound.files,
               unique(labeled_detection$sound.files)
             ), function(x)
-              sum(reference$sound.files == x)),
+              sum(reference$sound.files == x), FUN.VALUE = numeric(1)),
             split.positives = NA,
             merged.positives = NA,
             mean.duration.true.positives = NA,
             mean.duration.false.positives = NA,
-            mean.duration.false.negatives = sapply(setdiff(
+            mean.duration.false.negatives = vapply(setdiff(
               reference$sound.files,
               unique(labeled_detection$sound.files)
             ), function(x)
-              mean((reference$end - reference$start)[reference$sound.files == x])),
+              mean((reference$end - reference$start)[reference$sound.files == x]), FUN.VALUE = numeric(1)),
             overlap.to.true.positives = NA,
             proportional.duration.true.positives = NA,
             recall = 0,
@@ -319,14 +319,14 @@ diagnose_detection <-
           total.detections = 0,
           true.positives = 0,
           false.positives = 0,
-          false.negatives = sapply(unique(reference$sound.files), function(x)
-            sum(reference$sound.files == x)),
+          false.negatives = vapply(unique(reference$sound.files), function(x)
+            sum(reference$sound.files == x), FUN.VALUE = numeric(1)),
           split.positives = NA,
           merged.positives = NA,
           mean.duration.true.positives = NA,
           mean.duration.false.positives = NA,
-          mean.duration.false.negatives = sapply(unique(reference$sound.files), function(x)
-            mean(reference$end - reference$start)) * 1000,
+          mean.duration.false.negatives = vapply(unique(reference$sound.files), function(x)
+            mean(reference$end - reference$start), FUN.VALUE = numeric(1)) * 1000,
           overlap.to.true.positives = NA,
           proportional.duration.true.positives = NA,
           recall = 0,
@@ -375,7 +375,7 @@ diagnose_detection <-
         performance_df[, grep(".duration.|duty", names(performance_df), invert = TRUE)]
 
       # fix row names
-      rownames(performance_df) <- 1:nrow(performance_df)
+      rownames(performance_df) <- seq_len(nrow(performance_df))
     }
     return(performance_df)
   }
