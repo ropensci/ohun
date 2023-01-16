@@ -19,5 +19,5 @@ Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "m
 Date/Publication: 2016-04-19 08:12:11
 Imports: cli, methods, stats, utils, seewave (>= 2.0.1), fftw, rlang, sp, igraph
 Depends: R (>= 3.2.1), tuneR, warbleR (>= 1.1.28)
-Suggests: knitr, rmarkdown, testthat
+Suggests: knitr, rmarkdown, testthat, viridis
 Config/testthat/edition: 3
