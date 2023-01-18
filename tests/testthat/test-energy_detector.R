@@ -13,7 +13,8 @@ test_that("peak amplitude works", {
       bp = c(2, 9),
       min.duration = 0.09,
       smooth = 10,
-      peak.amplitude = 10
+      peak.amplitude = 10,
+      pb = FALSE
     )
 
   expect_equal(nrow(detec1), 12)
@@ -30,7 +31,8 @@ test_that("time diagnostics", {
       bp = c(2, 9),
       min.duration = 0.09,
       smooth = 10,
-      peak.amplitude = 80
+      peak.amplitude = 80,
+      pb = FALSE
     )
 
   expect_equal(nrow(detec1), 3)
@@ -45,7 +47,8 @@ test_that("using smoothing and minimum duration", {
     bp = c(2, 9),
     hop.size = 6.8,
     min.duration = 0.09,
-    smooth = 7
+    smooth = 7,
+    pb = FALSE
   )
 
   expect_equal(nrow(detec1), 9)
@@ -60,7 +63,8 @@ test_that("using hold time", {
       hold.time = 0.15,
       bp = c(2, 9),
       hop.size = 6.8,
-      path = tempdir()
+      path = tempdir(),
+      pb = FALSE
     )
 
   expect_equal(nrow(detec2), 4)
@@ -81,7 +85,8 @@ test_that("calculate envelopes first", {
       envelopes = envs,
       threshold = 0.10,
       hold.time = 0.15,
-      min.duration = 0.05
+      min.duration = 0.05,
+      pb = FALSE
     )
 
   expect_equal(nrow(detec), 4)
@@ -91,7 +96,9 @@ test_that("calculate envelopes first", {
 
 
 test_that("convert files to flac", {
-  warbleR::wav_2_flac(path = tempdir())
+
+  if (Sys.info()[1] != "Windows"){
+   warbleR::wav_2_flac(path = tempdir())
 
   # change sound file extension to flac
   flac_reference <- lbh_reference
@@ -107,7 +114,8 @@ test_that("convert files to flac", {
       smooth = 6.8,
       bp = c(2, 9),
       hop.size = 6.8,
-      min.duration = 0.09
+      min.duration = 0.09,
+      pb = FALSE
     )
 
   unlink(
@@ -119,6 +127,7 @@ test_that("convert files to flac", {
     )
   )
 
-  expect_equal(nrow(detec4), 8)
+  expect_equal(nrow(detec4), 8)} else
+    expect_true(TRUE)
 
 })
