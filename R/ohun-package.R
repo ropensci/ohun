@@ -33,6 +33,7 @@
 #' @importFrom cli style_bold style_italic make_ansi_style num_ansi_colors
 #' @importFrom igraph max_bipartite_match E as_data_frame graph_from_incidence_matrix
 #' @importFrom methods is
+#' @importFrom sf st_polygon st_intersects st_as_sf
 #' @importFrom tuneR writeWave
 #' @importFrom stats cor weighted.mean
 #' @importClassesFrom tuneR Wave
