@@ -1,7 +1,7 @@
 Package: ohun
 Type: Package
 Title: Optimizing Acoustic Signal Detection
-Version: 0.1.0
+Version: 0.1.1
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
   providing functions to diagnose and optimize the performance of detection 
