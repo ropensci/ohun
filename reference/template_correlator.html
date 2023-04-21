@@ -62,12 +62,12 @@
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>templates</dt>
-<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must containing columns for sound files (sound.files),
+<dd><p>'selection_table', 'extended_selection_table' (warbleR package's formats, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must contain columns for sound files (sound.files),
 selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.</p></dd>
 
 
 <dt>files</dt>
-<dd><p>Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. To refer to specific selections in 'X' the user must use the format "sound.file-selec" (e.g. "file1.wav-1"). If only the sound file name is included then the entire sound file is used as survey.</p></dd>
+<dd><p>Character vector with the selections in 'X' to be used as surveys for cross-correlation detection.</p></dd>
 
 
 <dt>hop.size</dt>
