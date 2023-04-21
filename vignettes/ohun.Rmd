@@ -634,7 +634,27 @@ template <-
 ```
 &nbsp;
 
-The graph above shows the overall acoustic spaces, in which the sound closest to the space centroid is highlighted. The highlighted sound is selected as the template and can be used to detect similar sound events in the example 'lbh1' data (but note that `get_templates()` can return more than 1 template):
+The graph above shows the overall acoustic spaces, in which the sound closest to the space centroid is highlighted. The highlighted sound is selected as the template and can be used to detect similar sound events. The function `get_templates()` can also select several templates. This can be helpful when working with sounds that are just moderately stereotyped. This is done by dividing the acoustic space into sub-spaces defined as equal-size slices of a circle centered at the centroid of the acoustic space:
+
+```{r, eval = FALSE, echo = TRUE}
+
+# get 3 templates
+get_templates(reference = lbh_reference, 
+                          n.sub.spaces = 3, path = tempdir())
+
+```
+
+```{r, fig.width=6, fig.height=5, eval = TRUE, echo = FALSE}
+
+par(mar = c(5, 4, 1, 1))
+
+# get 3 templates
+templates <- get_templates(reference = lbh_reference, 
+                          n.sub.spaces = 3, path = tempdir())
+
+```
+
+We will use the single template object ('template') to run a detection on the example 'lbh1' data:
 ```{r}
 
 # get correlations
