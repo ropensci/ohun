@@ -63,13 +63,13 @@ get_templates <-
 
       # get PCA
       pca <-
-        stats::prcomp(spectral_parameters[, 2:27], scale. = TRUE)
+        stats::prcomp(spectral_parameters[, 2:ncol(spectral_parameters)], scale. = TRUE)
 
       # get variance by PC
       variance_pca <- summary(pca)$importance
 
       # print info
-      message2(color = "silver",x =
+      message2(color = "silver", x =
         paste0(
           "The first 2 principal components explained ",
           round(variance_pca[3, 2], 2),

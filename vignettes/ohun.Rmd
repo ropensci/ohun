@@ -1,13 +1,14 @@
 ---
-title: <center><font size="7"><b><i>ohun</i>&#x3A; optimizing sound event detection</b></font></center>
+title: ohun&#x3A; optimizing sound event detection
 pagetitle: Introduction to ohun
 author: 
-- <center><a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a></center>
-date:  <center>"`r Sys.Date()`"</center>
+- <a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a>
+date:  "`r Sys.Date()`"
 output:
   # rmarkdown::html_vignette:
   #   toc: true
   rmarkdown::html_document:
+    css: extra.css
     self_contained: yes
     toc: true
     toc_depth: 3
@@ -132,7 +133,7 @@ Broadly speaking, signal detection theory deals with the process of recovering s
 
 Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are three useful indices in the context of sound event detection included in [ohun](https://github.com/maRce10/ohun):
 
-- **Recall**: correct detections relative to total detections (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
+- **Recall**: correct detections relative to total references (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
 - **Precision**: correct detections relative to total detections (*TPs / (TPs + FPs)*).
 - **F1 score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
 
@@ -672,7 +673,7 @@ The output can be explored by plotting the spectrogram along with the detection 
 label_spectro(
   wave = lbh1,
   detection = detection,
-  template.correlation = correlations$`lbh1.wav-10/lbh1.wav`,
+  template.correlation = correlations$`lbh1.wav-15/lbh1.wav`,
   flim = c(0, 10),
   threshold = 0.4,
   hop.size = 10, ovlp = 50)
