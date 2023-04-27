@@ -625,7 +625,7 @@ template <-
 
 ```{r, fig.width=6, fig.height=5, eval = TRUE, echo = FALSE}
 
-par(mar = c(5, 4, 1, 1))
+par(mar = c(5, 4, 1, 1), bg = "white")
 
 # get mean structure template
 template <-
@@ -646,7 +646,7 @@ get_templates(reference = lbh_reference,
 
 ```{r, fig.width=6, fig.height=5, eval = TRUE, echo = FALSE}
 
-par(mar = c(5, 4, 1, 1))
+par(mar = c(5, 4, 1, 1), bg = "white")
 
 # get 3 templates
 templates <- get_templates(reference = lbh_reference, 
@@ -693,7 +693,7 @@ The output can be explored by plotting the spectrogram along with the detection 
 label_spectro(
   wave = lbh1,
   detection = detection,
-  template.correlation = correlations$`lbh1.wav-15/lbh1.wav`,
+  template.correlation = correlations[[1]],
   flim = c(0, 10),
   threshold = 0.4,
   hop.size = 10, ovlp = 50)
