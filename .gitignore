@@ -6,3 +6,4 @@ testing
 ohun.Rproj
 docs/
 ..Rcheck/
+.RData
