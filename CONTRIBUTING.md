@@ -22,7 +22,7 @@ And if you like the project, but just don't have time to contribute, that's fine
 ## Code of Conduct
 
 > This project and everyone participating in it is governed by the
-> [CONTRIBUTING.md Code of Conduct](blob/master/CODE_OF_CONDUCT.md).
+> [Code of Conduct](CODE_OF_CONDUCT.md).
 > By participating, you are expected to uphold this code. Please report unacceptable behavior
 > to <https://github.com/maRce10/ohun/issues/>.
 
