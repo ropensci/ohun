@@ -5,8 +5,8 @@ Version: 0.1.1
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
   providing functions to diagnose and optimize the performance of detection 
-  routines. Detections from other software can also be explored and optimized. 
-  Reference: Araya-Salas et al. (2022) <https://doi.org/10.1101/2022.12.13.520253>.
+  routines. Detections from other software can also be explored and optimized.
+  Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://marce10.github.io/ohun/
