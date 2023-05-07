@@ -18,4 +18,3 @@ Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "m
 Imports: tuneR, warbleR (>= 1.1.28), cli, methods, stats, utils, seewave (>= 2.0.1), fftw, rlang, sf, igraph
 Depends: R (>= 3.2.1)
 Suggests: knitr, rmarkdown, testthat, viridis, Sim.DiffProc
-Config/testthat/edition: 3
