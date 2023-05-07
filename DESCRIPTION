@@ -3,9 +3,9 @@ Title: Optimizing Acoustic Signal Detection
 Version: 0.1.1
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
-  providing functions to diagnose and optimize the performance of detection 
-  routines. Detections from other software can also be explored and optimized.
-  Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
+    providing functions to diagnose and optimize the performance of detection 
+    routines. Detections from other software can also be explored and optimized.
+    Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
 License: GPL (>= 2)
 Encoding: UTF-8
 URL: https://marce10.github.io/ohun/, https://github.com/maRce10/ohun
@@ -13,7 +13,25 @@ BugReports: https://github.com/maRce10/ohun/issues/
 VignetteBuilder: knitr, rmarkdown
 RoxygenNote: 7.2.3
 Language: en-US
-Authors@R: c(person("Marcelo", "Araya-Salas", role = c("aut", "cre"), email = "marcelo.araya@ucr.ac.cr", comment = c(ORCID = "0000-0003-3594-619X")))
-Imports: tuneR, warbleR (>= 1.1.28), cli, methods, stats, utils, seewave (>= 2.0.1), fftw, rlang, sf, igraph
+Authors@R: 
+    c(person("Marcelo", "Araya-Salas", 
+      role = c("aut", "cre"), 
+      email = "marcelo.araya@ucr.ac.cr", 
+      comment = c(ORCID = "0000-0003-3594-619X")))
+Imports: tuneR, 
+    warbleR (>= 1.1.28), 
+    cli, 
+    methods, 
+    stats, 
+    utils, 
+    seewave (>= 2.0.1), 
+    fftw, 
+    rlang, 
+    sf, 
+    igraph
 Depends: R (>= 3.2.1)
-Suggests: knitr, rmarkdown, testthat, viridis, Sim.DiffProc
+Suggests: knitr, 
+    rmarkdown, 
+    testthat, 
+    viridis, 
+    Sim.DiffProc
