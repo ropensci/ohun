@@ -1,8 +1,8 @@
 ---
 title: "ohun: optimizing sound event detection"
+output: github_document
 editor_options: 
   chunk_output_type: console
-  
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -30,6 +30,17 @@ The package offers functions for:
    
 All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
 
+Install/load the package from CRAN as follows:
+
+```{r, eval = FALSE}
+
+# From CRAN would be
+install.packages("ohun")
+
+#load package
+library(ohun)
+
+```
 
 To install the latest developmental version from [github](https://github.com/) you will need the R package [remotes](https://cran.r-project.org/package=remotes):
 

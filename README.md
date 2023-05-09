@@ -10,7 +10,7 @@ Status: Active The project has reached a stable, usable state and is
 being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)[![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)[![minimal
 R
-version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)[![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)[![Last-changedate](https://img.shields.io/badge/last%20change-2023--05--01-yellowgreen.svg)](/commits/master)[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)[![Total
+version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)[![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)[![Last-changedate](https://img.shields.io/badge/last%20change-2023--05--09-yellowgreen.svg)](/commits/master)[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)[![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)[![Codecov
 test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://codecov.io/gh/maRce10/ohun?branch=master)[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)[![Status
@@ -43,6 +43,16 @@ All functions allow the parallelization of tasks, which distributes the
 tasks among several processors to improve computational efficiency. The
 package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’
 format.
+
+Install/load the package from CRAN as follows:
+
+``` r
+# From CRAN would be
+install.packages("ohun")
+
+#load package
+library(ohun)
+```
 
 To install the latest developmental version from
 [github](https://github.com/) you will need the R package
