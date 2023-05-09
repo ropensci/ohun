@@ -92,8 +92,15 @@
 <li>Template-based detection</li>
 </ul>
 <p>All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’ format.</p>
-<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes" class="external-link">remotes</a>:</p>
+<p>Install/load the package from CRAN as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># From CRAN would be</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ohun"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">#load package</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></span></code></pre></div>
+<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes" class="external-link">remotes</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#load package</span></span>
@@ -147,7 +154,7 @@
 <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/licence-GPL--2-blue.svg" alt="Licence"></a></li>
 <li><a href="https://cran.r-project.org/" class="external-link"><img src="https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg" alt="minimal R version"></a></li>
 <li><a href="commits/develop"><img src="https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--05--01-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--05--09-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="https://cran.r-project.org/package=ohun" class="external-link"><img src="https://www.r-pkg.org/badges/version/ohun" alt="CRAN_Status_Badge"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/grand-total/ohun" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/ohun" alt="Total Downloads"></a></li>
 <li><a href="https://codecov.io/gh/maRce10/ohun?branch=master" class="external-link"><img src="https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
