@@ -229,8 +229,8 @@ diagnose_detection(reference = lbh1_detection, detection = lbh1_reference)[, c(1
 
 The function offers three additional diagnose metrics: 
 
-- **Split positives**: target sound events overlapped by more than 1 detecion 
-- **Merged positives**: number of cases in which 2 or more target sound events in 'reference' were overlapped by the same detection
+- **Splits**: detections that share overlapping reference sounds with other detections   
+- **Merges**: detections that overlap with two or more reference sounds
 - **Proportional overlap of true positives**: ratio of the time overlap of true positives with its corresponding sound event in the reference table
 
 In a perfect detection routine split and merged positives should be 0 while proportional overlap should be 1. We can shift the start of sound events a bit to reflect a detection in which there is some mismatch to the reference table regarding to the time location of sound events:

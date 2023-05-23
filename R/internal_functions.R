@@ -215,3 +215,57 @@ find_templates <-
 
     return(centroids)
   }
+
+# find which detections overlap with which references
+overlapping_detections <- function(reference, detection) {
+  overlapping_pairs <- lapply(1:nrow(detection), function(i) {
+    start1 <- detection[i, "start"]
+    end1 <- detection[i, "end"]
+
+    indices <- which((end1 > reference$start) & (start1 < reference$end))
+
+    if (length(indices) > 0) {
+      overlapping_df <- data.frame(sound.files = detection$sound.files[i], detection.id = rep(paste(detection$sound.files[i], detection$selec[i], sep = "-"), length(indices)), reference.id = vapply(indices, function(j) paste(reference$sound.files[j], reference$selec[j], sep = "-"), FUN.VALUE = character(1)))
+
+      return(overlapping_df)
+    } else
+      return(NULL)
+
+  })
+
+  overlapping_df <- do.call(rbind, Filter(NROW, overlapping_pairs))
+
+  return(overlapping_df)
+}
+
+# calculate intersection by union overlap for a single pair
+calculate_iou <- function(reference, detection) {
+
+  intersection <- max(0, min(detection$end, reference$end) - max(detection$start, reference$start))
+  union <- max(0, max(detection$end, reference$end) - min(detection$start, reference$start))
+
+  iou <- intersection / union
+
+  return(iou)
+}
+
+# calculate intersection by union overlap for several pairs
+pairs_iou <- function(df, detection, reference) {
+
+  detection$id <- paste(detection$sound.files, detection$selec, sep = "-")
+  reference$id <- paste(reference$sound.files, reference$selec, sep = "-")
+
+  iou_values <- sapply(1:nrow(df), function(i) {
+    detection.id <- df$detection.id[i]
+    reference.id <- df$reference.id[i]
+
+    detection_event <- detection[detection$id == detection.id, ]
+    ground_truth_event <- reference[reference$id == reference.id, ]
+
+    iou <- calculate_iou(detection_event, ground_truth_event)
+    return(iou)
+  })
+
+  df$IoU <- iou_values
+  return(df)
+}

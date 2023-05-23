@@ -4,7 +4,7 @@
 \alias{label_detection}
 \title{Label detections from a sound event detection procedure}
 \usage{
-label_detection(reference, detection, cores = 1, pb = TRUE)
+label_detection(reference, detection, cores = 1, pb = TRUE, min.overlap = 0.5)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
@@ -15,14 +15,11 @@ label_detection(reference, detection, cores = 1, pb = TRUE)
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
+
+\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
 }
 \value{
-A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including the columns in 'detection' plus 3 additional columns:
-\itemize{
- \item \code{detection.class}: indicates the class of each detection. Eight possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)',  'true.positive (split/merged)', 'false.positive (split)', 'false.positive (merged)' and 'galse.positive (split/merged)'.  See \code{\link{diagnose_detection}} for a description.
- \item \code{reference.row}: contains the index of the row in 'reference' of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
- \item \code{overlap}: contains the proportion of the reference sound event that is overlapped in time by the detection (not supplied for false positives).
- }
+A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
 }
 \description{
 \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
@@ -54,8 +51,10 @@ lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
 detection = lbh_reference)
 
 # duplicate 1 detection row (to get 2 splits)
+detec <- lbh_reference[c(1, seq_len(nrow(lbh_reference))), ]
+detec$selec[1] <- 1.2
 label_detection(reference = lbh_reference,
-detection = lbh_reference[c(1, seq_len(nrow(lbh_reference))), ])
+detection = detec)
 
 # merge 2 detections (to get split and merge)
 Y <- lbh_reference

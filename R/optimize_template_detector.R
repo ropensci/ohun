@@ -16,8 +16,8 @@
 #'  \item \code{true.positives}: number of sound events in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
 #'  \item \code{false.positives}: number of detections that don't match any of the sound events in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
-#'  \item \code{split.positives}: number of sound events in 'reference' that were overlapped by more than 1 detection (i.e. detections that were split). In a perfect detection routine it should be 0.
-#'  \item \code{merged.positives}: number of sound events in 'detection' that were overlapped by more than 1 detection (i.e. sound events that were merged). In a perfect detection routine it should be 0.
+#'  \item \code{splits}: number of detections overlapping reference sounds that also overlap with other detections. In a perfect detection routine it should be 0.
+#'  \item \code{merges}: number of sound events in 'detection' that overlap with more than one sound event in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{precision}: Proportion of detections that correspond to sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  }

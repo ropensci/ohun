@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_acoustic_data.R
 \name{split_acoustic_data}
 \alias{split_acoustic_data}
-\title{Splits sound files}
+\title{Splits sound files and associated annotations}
 \usage{
 split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
  cores = 1, pb = TRUE, only.sels = FALSE, X = NULL)

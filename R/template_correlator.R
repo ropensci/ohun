@@ -151,7 +151,7 @@ template_correlator <-
           ignore.case = TRUE
         )
       ))
-        stop2("At least one sound files in 'files' was not found")
+        stop2("At least one sound file in 'files' was not found")
     } else
       files <-
         list.files(path = path,

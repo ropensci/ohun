@@ -1,4 +1,4 @@
-#' Splits sound files
+#' Splits sound files and associated annotations
 #'
 #' \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
 #' @usage split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
