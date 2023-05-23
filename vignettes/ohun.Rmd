@@ -135,7 +135,7 @@ Several additional indices derived from these indices are used to evaluate the p
 
 - **Recall**: correct detections relative to total references (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
 - **Precision**: correct detections relative to total detections (*TPs / (TPs + FPs)*).
-- **F1 score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
+- **F score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
 
 <font size = "2">*(Metrics that make use of 'true negatives' cannot be easily applied in the context of sound event detection as noise cannot always be partitioned in discrete units)*</font>
 

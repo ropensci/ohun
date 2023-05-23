@@ -13,7 +13,7 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
 #' @param by Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.
-#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
+#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
 #' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
@@ -31,7 +31,7 @@
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
 #'  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{precision}: Proportion of detections that correspond to sound events in 'reference'. In a perfect detection routine it should be 1.
-#'  \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
+#'  \item \code{f.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
 #'  }
 #' @export
 #' @name diagnose_detection
@@ -219,7 +219,7 @@ diagnose_detection <-
                 sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
             }
 
-            # add recall, precision and f1
+            # add recall, precision and f score
             performance$recall <-
               performance$true.positives / nrow(sub_ref)
             performance$precision <-
@@ -227,7 +227,7 @@ diagnose_detection <-
                   performance$true.positives > 0)
                 (performance$true.positives / performance$detections) else  0
 
-            performance$f1.score <-
+            performance$f.score <-
               2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall)
               )
 
@@ -275,7 +275,7 @@ diagnose_detection <-
             proportional.duration.true.positives = NA,
             recall = 0,
             precision =  0,
-            f1.score = 0,
+            f.score = 0,
             stringsAsFactors = FALSE
           )
 
@@ -307,7 +307,7 @@ diagnose_detection <-
           proportional.duration.true.positives = NA,
           recall = 0,
           precision = 0,
-          f1.score = 0,
+          f.score = 0,
           stringsAsFactors = FALSE
         )
         # add duty cycle
@@ -335,7 +335,7 @@ diagnose_detection <-
             "duty.cycle",
             "recall",
             "precision",
-            "f1.score"
+            "f.score"
           ),
           names(performance_df)
         ))]

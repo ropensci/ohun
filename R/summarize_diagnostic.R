@@ -4,7 +4,7 @@
 #' @usage summarize_diagnostic(diagnostic, time.diagnostics = FALSE, macro.average = FALSE)
 #' @param diagnostic  A data frame with the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}} or \code{\link{optimize_template_detector}})
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the sound events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
-#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
+#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
 #' @return A data frame, similar to the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}) including the following detection performance diagnostics:
 #' \itemize{
 #'  \item \code{detections}: total number of detections
@@ -21,7 +21,7 @@
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
 #'  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
 #'  \item \code{precision}: Proportion of detections that correspond to sound events in 'reference'. In a perfect detection routine it should be 1.
-#'  \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
+#'  \item \code{f.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
 #'  }
 #' @export
 #' @name summarize_diagnostic
@@ -65,7 +65,7 @@ summarize_diagnostic <-
         "overlap",
         "recall",
         "precision",
-        "f1.score"
+        "f.score"
       )
 
     #check diagnostic
@@ -181,12 +181,12 @@ summarize_diagnostic <-
             mean(Y$duty.cycle, na.rm = TRUE)
         }
 
-        # add recall precision and f1.score at the end
+        # add recall precision and f.score at the end
         summ_diagnostic$recall <- if (macro.average) mean(Y$recall, na.rm = TRUE) else sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
         summ_diagnostic$precision <- if (macro.average) mean(Y$precision, na.rm = TRUE) else  if (any(Y$precision != 0))
           (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$detections, na.rm = TRUE))) else
             0
-        summ_diagnostic$f1.score <-
+        summ_diagnostic$f.score <-
           2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall)
           )
 
