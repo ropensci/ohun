@@ -229,7 +229,7 @@ label_detection <-
                   names(bigraph_results)[is.na(bigraph_results)]
 
                 if (length(bigraph_false_positives) > 0)
-                  sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "negative", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
+                  sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "false.positive", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
                 }
               } else{
                 sub_detec$detection.class <- "false.positive"
