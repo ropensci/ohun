@@ -169,7 +169,7 @@ diagnose_detection <-
         # look at detections matching 1 reference selection at the time
         performance_list <-
           lapply(unique(labeled_detection$sound.files), function(z) {
-           # get subset of detections for that sound file
+            # get subset of detections for that sound file
             sub_detec <-
               labeled_detection[labeled_detection$sound.files == z, ]
             sub_detec$id <- paste(sub_detec$sound.files, sub_detec$selec, sep = "-")
@@ -180,6 +180,7 @@ diagnose_detection <-
             # get subset of overlaps for that sound file
             sub_overlaps <- overlaps[overlaps$sound.files == z, ]
 
+            # put all performance indices in a data frame
             performance <- data.frame(
               sound.files = z,
               total.detections = nrow(sub_detec),
@@ -197,17 +198,17 @@ diagnose_detection <-
               merges =  sum(grepl(
                 "merged", sub_detec$detection.class
               )),
-              mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)]
-              ) * 1000, 0),
-              mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)]
-              ) * 1000, 0),
+              mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)],
+                                                        na.rm = TRUE) * 1000, 0),
+              mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)],
+                                                         na.rm = TRUE) * 1000, 0),
               mean.duration.false.negatives = round(mean((
                 sub_ref$end - sub_ref$start
               )[!sub_ref$id %in% sub_overlaps$reference.id]) * 1000, 0),
               overlap.to.true.positives = if (nrow(sub_overlaps) > 1)
                 mean(sub_overlaps$IoU, na.rm = TRUE) else
-                NA,
-              proportional.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)], na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$id %in% sub_overlaps$reference.id], na.rm = TRUE),
+                  NA,
+              proportional.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)], na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$id %in% sub_overlaps$reference.id], na.rm = TRUE),
               stringsAsFactors = FALSE
             )
 
@@ -342,7 +343,7 @@ diagnose_detection <-
       # summarize across sound files
       if (!by.sound.file)
         if (nrow(performance_df) > 1)
-        performance_df <-
+          performance_df <-
         summarize_diagnostic(diagnostic = performance_df, time.diagnostics = time.diagnostics, macro.average = macro.average) else
           performance_df$sound.files <- NULL
 

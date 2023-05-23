@@ -8,7 +8,7 @@
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
-#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
+#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
 #' @export
 #' @name label_detection
 #' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.
@@ -132,6 +132,7 @@ label_detection <-
         cl = cl,
         X = unique(detection$sound.files),
         FUN = function(z) {
+
           # get subset from detection for that sound file
           sub_detec <-
             as.data.frame(detection[detection$sound.files == z,])
@@ -221,7 +222,7 @@ label_detection <-
                   bigraph_results[1:nrow(ovlp_mat)]
 
                 # keep only true positive overlaps
-                overlap_iou <- overlap_iou[overlap_iou$detection.id %in% names(bigraph_results)[!is.na(bigraph_results)] | !overlap_iou$detection.id %in%  ambiguous_detec$id, ]
+                overlap_iou <- overlap_iou[paste(overlap_iou$detection.id, overlap_iou$reference.id) %in% paste(names(bigraph_results), bigraph_results) | !overlap_iou$detection.id %in% ambiguous_detec$id, ]
 
           # get those that change to false positives
                 bigraph_false_positives <-

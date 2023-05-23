@@ -201,7 +201,7 @@ optimize_template_detector <-
 
       # summarize sound files
       # threshold <-
-        # rep(threshold, each = nrow(diagnostics_list[[1]]))
+      # rep(threshold, each = nrow(diagnostics_list[[1]]))
 
       # add thresholds to output
       # diagnostics <- data.frame(threshold = threshold, diagnostics)

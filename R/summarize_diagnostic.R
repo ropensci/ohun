@@ -141,7 +141,7 @@ summarize_diagnostic <-
                 ),
                 0
               ) else
-            NA
+                NA
 
           summ_diagnostic$mean.duration.false.positives <-
             if (any(!is.na(Y$mean.duration.false.positives)))
@@ -153,7 +153,7 @@ summarize_diagnostic <-
                 ),
                 0
               ) else
-            NA
+                NA
 
           summ_diagnostic$mean.duration.false.negatives <-
             if (any(!is.na(Y$mean.duration.false.negatives)))
@@ -165,7 +165,7 @@ summarize_diagnostic <-
                 ),
                 0
               ) else
-            NA
+                NA
 
           summ_diagnostic$proportional.duration.true.positives <-
             if (any(!is.na(Y$proportional.duration.true.positives)))
@@ -174,7 +174,7 @@ summarize_diagnostic <-
                 w = if (macro.average) rep(1, nrow(Y)) else Y$true.positives,
                 na.rm = TRUE
               ) else
-            NA
+                NA
 
           if (any(names(diagnostic) == "duty.cycle"))
             summ_diagnostic$duty.cycle <-
@@ -184,8 +184,8 @@ summarize_diagnostic <-
         # add recall precision and f1.score at the end
         summ_diagnostic$recall <- if (macro.average) mean(Y$recall, na.rm = TRUE) else sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
         summ_diagnostic$precision <- if (macro.average) mean(Y$precision, na.rm = TRUE) else  if (any(Y$precision != 0))
-            (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$total.detections, na.rm = TRUE))) else
-          0
+          (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$total.detections, na.rm = TRUE))) else
+            0
         summ_diagnostic$f1.score <-
           2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall)
           )

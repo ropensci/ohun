@@ -166,147 +166,147 @@ optimize_energy_detector <-
     #check path to working directory
     if (is.null(path))
       path <- getwd() else
-      if (!dir.exists(path))
-        stop2("'path' provided does not exist") else
-      path <- normalizePath(path)
+        if (!dir.exists(path))
+          stop2("'path' provided does not exist") else
+            path <- normalizePath(path)
 
-    # if files not supplied then used those from reference
-    if (is.null(files))
-      files <- unique(reference$sound.files)
+          # if files not supplied then used those from reference
+          if (is.null(files))
+            files <- unique(reference$sound.files)
 
-    # if 'files' are found in reference
-    if (!any(files %in% reference$sound.files))
-      stop2("Not a single sound file in the working directory is found in 'reference'")
+          # if 'files' are found in reference
+          if (!any(files %in% reference$sound.files))
+            stop2("Not a single sound file in the working directory is found in 'reference'")
 
-    # get all possible combinations of parameters
-    exp_grd <-
-      expand.grid(
-        threshold = threshold,
-        peak.amplitude = peak.amplitude,
-        smooth = smooth,
-        hold.time = hold.time,
-        min.duration = if (is.null(min.duration))
-          - Inf else
-          min.duration,
-        max.duration = if (is.null(max.duration))
-          Inf else
-          max.duration,
-        thinning = thinning
-      )
+          # get all possible combinations of parameters
+          exp_grd <-
+            expand.grid(
+              threshold = threshold,
+              peak.amplitude = peak.amplitude,
+              smooth = smooth,
+              hold.time = hold.time,
+              min.duration = if (is.null(min.duration))
+                - Inf else
+                  min.duration,
+              max.duration = if (is.null(max.duration))
+                Inf else
+                  max.duration,
+              thinning = thinning
+            )
 
-    # if previous output included
-    if (!is.null(previous.output)) {
-      # create composed variable to find overlapping runs
-      previous.output$temp.label <-
-        apply(previous.output[, c(
-          "threshold",
-          "peak.amplitude",
-          "smooth",
-          "hold.time",
-          "min.duration",
-          "max.duration",
-          "thinning"
-        )], 1, paste, collapse = "-")
+          # if previous output included
+          if (!is.null(previous.output)) {
+            # create composed variable to find overlapping runs
+            previous.output$temp.label <-
+              apply(previous.output[, c(
+                "threshold",
+                "peak.amplitude",
+                "smooth",
+                "hold.time",
+                "min.duration",
+                "max.duration",
+                "thinning"
+              )], 1, paste, collapse = "-")
 
-      exp_grd <-
-        exp_grd[!apply(exp_grd[, c(
-          "threshold",
-          "peak.amplitude",
-          "smooth",
-          "hold.time",
-          "min.duration",
-          "max.duration",
-          "thinning"
-        )], 1, paste, collapse = "-") %in% previous.output$temp.label,]
+            exp_grd <-
+              exp_grd[!apply(exp_grd[, c(
+                "threshold",
+                "peak.amplitude",
+                "smooth",
+                "hold.time",
+                "min.duration",
+                "max.duration",
+                "thinning"
+              )], 1, paste, collapse = "-") %in% previous.output$temp.label,]
 
-      # remove composed variable
-      previous.output$temp.label <- NULL
-    }
+            # remove composed variable
+            previous.output$temp.label <- NULL
+          }
 
 
-    if (nrow(exp_grd) == 0) {
-      cat(
-        "all combinations were already evaluated on previous call to this function (based on 'pevious.output')"
-      )
+          if (nrow(exp_grd) == 0) {
+            cat(
+              "all combinations were already evaluated on previous call to this function (based on 'pevious.output')"
+            )
 
-      return(previous.output)
-    } else {
-      # warn about number of combinations
-      cat(paste(nrow(exp_grd), "combinations will be evaluated:"))
-      cat("\n")
+            return(previous.output)
+          } else {
+            # warn about number of combinations
+            cat(paste(nrow(exp_grd), "combinations will be evaluated:"))
+            cat("\n")
 
-      eng_det_l <-
-        warbleR:::pblapply_wrblr_int(
-          X = seq_len(nrow(exp_grd)),
-          pbar = pb,
-          cl = 1,
-          FUN = function(x) {
-            eng_det <-
-              energy_detector(
-                files = if (is.null(envelopes))
-                  files else
-                  NULL,
-                envelopes = envelopes,
-                threshold = exp_grd$threshold[x],
-                peak.amplitude = exp_grd$peak.amplitude[x],
-                smooth = exp_grd$smooth[x],
-                min.duration = exp_grd$min.duration[x],
-                max.duration = exp_grd$max.duration[x],
-                thinning = exp_grd$thinning[x],
-                cores = cores,
-                pb = FALSE,
-                hold.time = exp_grd$hold.time[x],
-                bp = bp,
-                path = path,
-                hop.size = hop.size,
-                wl = wl
+            eng_det_l <-
+              warbleR:::pblapply_wrblr_int(
+                X = seq_len(nrow(exp_grd)),
+                pbar = pb,
+                cl = 1,
+                FUN = function(x) {
+                  eng_det <-
+                    energy_detector(
+                      files = if (is.null(envelopes))
+                        files else
+                          NULL,
+                      envelopes = envelopes,
+                      threshold = exp_grd$threshold[x],
+                      peak.amplitude = exp_grd$peak.amplitude[x],
+                      smooth = exp_grd$smooth[x],
+                      min.duration = exp_grd$min.duration[x],
+                      max.duration = exp_grd$max.duration[x],
+                      thinning = exp_grd$thinning[x],
+                      cores = cores,
+                      pb = FALSE,
+                      hold.time = exp_grd$hold.time[x],
+                      bp = bp,
+                      path = path,
+                      hop.size = hop.size,
+                      wl = wl
+                    )
+
+                  # make factor a character vector
+                  eng_det$sound.files <- as.character(eng_det$sound.files)
+
+                  if (nrow(eng_det) > 0)
+                    eng_det$..row.id <- seq_len(nrow(eng_det))
+
+                  eng_det <- eng_det[!is.na(eng_det$start),]
+
+                  return(eng_det)
+                }
               )
 
-            # make factor a character vector
-            eng_det$sound.files <- as.character(eng_det$sound.files)
+            performance_l <-
+              lapply(eng_det_l, function(Z)
+                suppressWarnings(
+                  diagnose_detection(
+                    reference = reference,
+                    detection = Z,
+                    by.sound.file = by.sound.file,
+                    time.diagnostics = TRUE,
+                    pb = FALSE,
+                    cores = cores,
+                    path = path
+                  )
+                ))
 
-            if (nrow(eng_det) > 0)
-              eng_det$..row.id <- seq_len(nrow(eng_det))
+            performance <- do.call(rbind, performance_l)
 
-            eng_det <- eng_det[!is.na(eng_det$start),]
+            # duplicate expand grid tuning parameters if by sound file
+            if (by.sound.file)
+              exp_grd <-
+              exp_grd[rep(seq_len(nrow(exp_grd)), each = length(files)),]
 
-            return(eng_det)
+            suppressWarnings(performance <-
+                               data.frame(exp_grd, performance))
+
+            if (!is.null(previous.output))
+              performance <- rbind(previous.output, performance)
+
+            # order colums
+            performance <-  warbleR::sort_colms(performance)
+
+            # rename rows
+            rownames(performance) <- seq_len(nrow(performance))
+
+            return(performance)
           }
-        )
-
-      performance_l <-
-        lapply(eng_det_l, function(Z)
-          suppressWarnings(
-            diagnose_detection(
-              reference = reference,
-              detection = Z,
-              by.sound.file = by.sound.file,
-              time.diagnostics = TRUE,
-              pb = FALSE,
-              cores = cores,
-              path = path
-            )
-          ))
-
-      performance <- do.call(rbind, performance_l)
-
-      # duplicate expand grid tuning parameters if by sound file
-      if (by.sound.file)
-        exp_grd <-
-        exp_grd[rep(seq_len(nrow(exp_grd)), each = length(files)),]
-
-      suppressWarnings(performance <-
-                         data.frame(exp_grd, performance))
-
-      if (!is.null(previous.output))
-        performance <- rbind(previous.output, performance)
-
-      # order colums
-      performance <-  warbleR::sort_colms(performance)
-
-      # rename rows
-      rownames(performance) <- seq_len(nrow(performance))
-
-      return(performance)
-    }
   }
