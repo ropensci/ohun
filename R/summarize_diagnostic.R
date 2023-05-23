@@ -4,10 +4,10 @@
 #' @usage summarize_diagnostic(diagnostic, time.diagnostics = FALSE, macro.average = FALSE)
 #' @param diagnostic  A data frame with the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}} or \code{\link{optimize_template_detector}})
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the sound events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
-#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap.to.true.positives, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
+#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
 #' @return A data frame, similar to the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}) including the following detection performance diagnostics:
 #' \itemize{
-#'  \item \code{total.detections}: total number of detections
+#'  \item \code{detections}: total number of detections
 #'  \item \code{true.positives}: number of sound events in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
 #'  \item \code{false.positives}: number of detections that don't match (i.e. don't overlap with) any of the sound events in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
@@ -16,7 +16,7 @@
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in s). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in ms). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in ms). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
+#'  \item \code{overlap}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
 #'  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
@@ -25,7 +25,7 @@
 #'  }
 #' @export
 #' @name summarize_diagnostic
-#' @details The function summarizes a detection diagnostic data frame in which diagnostic parameters are shown split by (typically) a categorical column, usually sound files. This function is used internally by \code{\link{diagnose_detection}}. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = total.detections".
+#' @details The function summarizes a detection diagnostic data frame in which diagnostic parameters are shown split by (typically) a categorical column, usually sound files. This function is used internally by \code{\link{diagnose_detection}}. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = detections".
 #' @examples
 #' {
 #' # load example selection tables
@@ -56,13 +56,13 @@ summarize_diagnostic <-
     # basic columns required in 'diagnostic'
     basic_colms <-
       c(
-        "total.detections",
+        "detections",
         "true.positives",
         "false.positives",
         "false.negatives",
         "splits",
         "merges",
-        "overlap.to.true.positives",
+        "overlap",
         "recall",
         "precision",
         "f1.score"
@@ -112,15 +112,15 @@ summarize_diagnostic <-
 
         # summarize across sound files
         summ_diagnostic <- data.frame(
-          total.detections = sum(Y$total.detections, na.rm = TRUE),
+          detections = sum(Y$detections, na.rm = TRUE),
           true.positives = sum(Y$true.positives, na.rm = TRUE),
           false.positives = sum(Y$false.positives, na.rm = TRUE),
           false.negatives = sum(Y$false.negatives, na.rm = TRUE),
           splits = sum(Y$splits, na.rm = TRUE),
           merges = sum(Y$merges, na.rm = TRUE),
-          overlap.to.true.positives = if (any(!is.na(Y$overlap.to.true.positives)))
+          overlap = if (any(!is.na(Y$overlap)))
             stats::weighted.mean(
-              x = Y$overlap.to.true.positives,
+              x = Y$overlap,
               w = if (macro.average) rep(1, nrow(Y)) else Y$true.positives,
               na.rm = TRUE
             ) else
@@ -184,7 +184,7 @@ summarize_diagnostic <-
         # add recall precision and f1.score at the end
         summ_diagnostic$recall <- if (macro.average) mean(Y$recall, na.rm = TRUE) else sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
         summ_diagnostic$precision <- if (macro.average) mean(Y$precision, na.rm = TRUE) else  if (any(Y$precision != 0))
-          (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$total.detections, na.rm = TRUE))) else
+          (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$detections, na.rm = TRUE))) else
             0
         summ_diagnostic$f1.score <-
           2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall)

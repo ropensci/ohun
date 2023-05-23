@@ -13,11 +13,11 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
 #' @param by Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.
-#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap.to.true.positives, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
+#' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
 #' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
-#'  \item \code{total.detections}: total number of detections
+#'  \item \code{detections}: total number of detections
 #'  \item \code{true.positives}: number of sound events in 'reference' that correspond to any detection. Matching is defined as some degree of overlap in time. In a perfect detection routine it should be equal to the number of rows in 'reference'.
 #'  \item \code{false.positives}: number of detections that don't match (i.e. don't overlap with) any of the sound events in 'reference'. In a perfect detection routine it should be 0.
 #'  \item \code{false.negatives}: number of sound events in 'reference' that were not detected (not found in 'detection'. In a perfect detection routine it should be 0.
@@ -26,7 +26,7 @@
 #'  \item \code{mean.duration.true.positives}: mean duration of true positives (in ms). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.positives}: mean duration of false positives (in ms). Only included when \code{time.diagnostics = TRUE}.
 #'  \item \code{mean.duration.false.negatives}: mean duration of false negatives (in ms). Only included when \code{time.diagnostics = TRUE}.
-#'  \item \code{overlap.to.true.positives}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
+#'  \item \code{overlap}: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.
 #'  \item \code{proportional.duration.true.positives}: ratio of duration of true positives to the duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.
 #'  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
 #'  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
@@ -35,7 +35,7 @@
 #'  }
 #' @export
 #' @name diagnose_detection
-#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through maximum bipartite matching (using the R package igraph). Priority for assigning a detection to a reference is given by the amount of time overlap. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = total.detections".
+#' @details The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through maximum bipartite matching (using the R package igraph). Priority for assigning a detection to a reference is given by the amount of time overlap. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = detections".
 #' @examples {
 #' # load data
 #' data("lbh_reference")
@@ -183,7 +183,7 @@ diagnose_detection <-
             # put all performance indices in a data frame
             performance <- data.frame(
               sound.files = z,
-              total.detections = nrow(sub_detec),
+              detections = nrow(sub_detec),
               true.positives = sum(
                 grepl("^true.positive", x = sub_detec$detection.class)
               ),
@@ -205,7 +205,7 @@ diagnose_detection <-
               mean.duration.false.negatives = round(mean((
                 sub_ref$end - sub_ref$start
               )[!sub_ref$id %in% sub_overlaps$reference.id]) * 1000, 0),
-              overlap.to.true.positives = if (nrow(sub_overlaps) > 1)
+              overlap = if (nrow(sub_overlaps) > 1)
                 mean(sub_overlaps$IoU, na.rm = TRUE) else
                   NA,
               proportional.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)], na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$id %in% sub_overlaps$reference.id], na.rm = TRUE),
@@ -225,7 +225,7 @@ diagnose_detection <-
             performance$precision <-
               if (nrow(sub_detec) > 0 &
                   performance$true.positives > 0)
-                (performance$true.positives / performance$total.detections) else  0
+                (performance$true.positives / performance$detections) else  0
 
             performance$f1.score <-
               2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall)
@@ -254,7 +254,7 @@ diagnose_detection <-
               reference$sound.files,
               unique(labeled_detection$sound.files)
             ),
-            total.detections = 0,
+            detections = 0,
             true.positives = 0,
             false.positives = 0,
             false.negatives = vapply(setdiff(
@@ -271,7 +271,7 @@ diagnose_detection <-
               unique(labeled_detection$sound.files)
             ), function(x)
               mean((reference$end - reference$start)[reference$sound.files == x]), FUN.VALUE = numeric(1)),
-            overlap.to.true.positives = NA,
+            overlap = NA,
             proportional.duration.true.positives = NA,
             recall = 0,
             precision =  0,
@@ -292,7 +292,7 @@ diagnose_detection <-
       } else {
         performance_df <- data.frame(
           sound.files = unique(reference$sound.files),
-          total.detections = 0,
+          detections = 0,
           true.positives = 0,
           false.positives = 0,
           false.negatives = vapply(unique(reference$sound.files), function(x)
@@ -303,7 +303,7 @@ diagnose_detection <-
           mean.duration.false.positives = NA,
           mean.duration.false.negatives = vapply(unique(reference$sound.files), function(x)
             mean(reference$end - reference$start), FUN.VALUE = numeric(1)) * 1000,
-          overlap.to.true.positives = NA,
+          overlap = NA,
           proportional.duration.true.positives = NA,
           recall = 0,
           precision = 0,
@@ -321,7 +321,7 @@ diagnose_detection <-
         performance_df[, na.omit(match(
           c(
             "sound.files",
-            "total.detections",
+            "detections",
             "true.positives",
             "false.positives",
             "false.negatives",
@@ -330,7 +330,7 @@ diagnose_detection <-
             "mean.duration.true.positives",
             "mean.duration.false.positives",
             "mean.duration.false.negatives",
-            "overlap.to.true.positives",
+            "overlap",
             "proportional.duration.true.positives",
             "duty.cycle",
             "recall",
