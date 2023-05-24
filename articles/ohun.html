@@ -73,7 +73,7 @@
                         <h4 data-toc-skip class="author"><a href="https://marceloarayasalas.weebly.com" class="external-link">Marcelo
 Araya-Salas, PhD</a></h4>
             
-            <h4 data-toc-skip class="date">2023-05-09</h4>
+            <h4 data-toc-skip class="date">2023-05-24</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/maRce10/ohun/blob/HEAD/vignettes/ohun.Rmd" class="external-link"><code>vignettes/ohun.Rmd</code></a></small>
       <div class="d-none name"><code>ohun.Rmd</code></div>
@@ -177,7 +177,7 @@ FNs)</em>)</li>
 <strong>Precision</strong>: correct detections relative to total
 detections (<em>TPs / (TPs + FPs)</em>).</li>
 <li>
-<strong>F1 score</strong>: combines recall and precision as the
+<strong>F score</strong>: combines recall and precision as the
 harmonic mean of these two, so it provides a single value for evaluating
 performance (a.k.a. F-measure or Dice similarity coefficient).</li>
 </ul>
@@ -287,10 +287,9 @@ For instance, a perfect detection is given by comparing
 <span></span>
 <span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">lbh1_reference</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives overlap.to.true.positives recall
-1               10             10               0                         1      1
-  precision
-1         1</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives overlap recall precision
+1         10             10               0       1      1         1</code></pre>
 <p> </p>
 <p>We will work mostly with a single sound file for convenience but the
 functions can work on several sound files at the time. The files should
@@ -304,7 +303,7 @@ For instance, we can remove some sound events to see how this is
 reflected in the diagnostics. Getting rid of some rows in ‘detection’,
 simulating a detection with some false negatives, will affect the recall
 but not the precision:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create new table</span></span>
 <span><span class="va">lbh1_detection</span> <span class="op">&lt;-</span> <span class="va">lbh1_reference</span><span class="op">[</span><span class="fl">3</span><span class="op">:</span><span class="fl">9</span>,<span class="op">]</span></span>
 <span></span>
@@ -318,18 +317,17 @@ but not the precision:</p>
 <span>  flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">lbh1_detection</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives overlap.to.true.positives recall
-1                7              7               0                         1    0.7
-  precision
-1         1</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives overlap recall precision
+1          7              7               0       1    0.7         1</code></pre>
 <p> </p>
 <p>Having some additional sound events not in reference will do the
 opposite, reducing precision but not recall. We can do this simply by
 switching the tables:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># print spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span></span>
 <span>  wave <span class="op">=</span> <span class="va">lbh1</span>,</span>
@@ -340,23 +338,22 @@ switching the tables:</p>
 <span>  flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_detection</span>, detection <span class="op">=</span> <span class="va">lbh1_reference</span><span class="op">)</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">9</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives overlap.to.true.positives recall
-1                7              7               3                         1      1
-  precision
-1       0.7</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives overlap recall precision
+1         10              7               3       1      1       0.7</code></pre>
 <p> </p>
 <p>The function offers three additional diagnose metrics:</p>
 <ul>
 <li>
-<strong>Split positives</strong>: target sound events overlapped by
-more than 1 detecion</li>
+<strong>Splits</strong>: detections that share overlapping reference
+sounds with other detections<br>
+</li>
 <li>
-<strong>Merged positives</strong>: number of cases in which 2 or
-more target sound events in ‘reference’ were overlapped by the same
-detection</li>
+<strong>Merges</strong>: detections that overlap with two or more
+reference sounds</li>
 <li>
 <strong>Proportional overlap of true positives</strong>: ratio of
 the time overlap of true positives with its corresponding sound event in
@@ -366,7 +363,7 @@ the reference table</li>
 while proportional overlap should be 1. We can shift the start of sound
 events a bit to reflect a detection in which there is some mismatch to
 the reference table regarding to the time location of sound events:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># create new table</span></span>
 <span><span class="va">lbh1_detection</span> <span class="op">&lt;-</span> <span class="va">lbh1_reference</span></span>
 <span></span>
@@ -385,58 +382,61 @@ the reference table regarding to the time location of sound events:</p>
 <span>  flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-8-1.png" width="100%" style="display: block; margin: auto;"></p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">lbh1_detection</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1               10             10               0               0               0
-  merged.positives overlap.to.true.positives recall precision f1.score
-1                0                     0.528      1         1        1</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
+1         10              5               5               5      0      0 0.7849767
+  recall precision f.score
+1    0.5       0.5     0.5</code></pre>
 <p> </p>
 <p>In addition, the following diagnostics related to the duration of the
 sound events can also be returned by setting
 <code>time.diagnostics = TRUE</code>. Here we tweak the reference and
 detection data just to have some false positives and false
 negatives:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># diagnose with time diagnostics</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span><span class="op">[</span><span class="op">-</span><span class="fl">1</span>, <span class="op">]</span>, detection <span class="op">=</span> <span class="va">lbh1_detection</span><span class="op">[</span><span class="op">-</span><span class="fl">10</span>, <span class="op">]</span>, time.diagnostics <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1                8              8               1               1               0
-  merged.positives overlap.to.true.positives mean.duration.true.positives
-1                0                   0.61125                          139
-  mean.duration.false.positives mean.duration.false.negatives
-1                            55                           158
-  proportional.duration.true.positives    recall precision  f1.score
-1                                    1 0.8888889 0.8888889 0.8888889</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges
+1          9              5               4               4      0      0
+  mean.duration.true.positives mean.duration.false.positives
+1                          187                            58
+  mean.duration.false.negatives   overlap proportional.duration.true.positives    recall
+1                           149 0.7849767                             1.194993 0.5555556
+  precision   f.score
+1 0.5555556 0.5555556</code></pre>
 <p> </p>
 <p>These additional metrics can be used to further filter out undesired
 sound events based on their duration (for instance in a energy-based
 detection as in <code><a href="../reference/energy_detector.html">energy_detector()</a></code>, explained below).</p>
 <p>Diagnostics can also be detailed by sound file:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># diagnose by sound file</span></span>
 <span><span class="va">diagnostic</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>,</span>
 <span>                     detection <span class="op">=</span> <span class="va">lbh1_detection</span>,</span>
-<span>                     by.sound.file <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">diagnostic</span></span></code></pre></div>
-<pre><code>  sound.files total.detections true.positives false.positives false.negatives
-1    lbh1.wav               10             10               0               0
-  split.positives merged.positives overlap.to.true.positives recall precision f1.score
-1               0                0                     0.528      1         1        1</code></pre>
+<span>                     by.sound.file <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">diagnostic</span></span></code></pre></div>
+<pre><code>  sound.files detections true.positives false.positives false.negatives splits merges
+1    lbh1.wav         10              5               5               5      0      0
+    overlap recall precision f.score
+1 0.7849767    0.5       0.5     0.5</code></pre>
 <p> </p>
 <p>These diagnostics can be summarized (as in the default
 <code><a href="../reference/diagnose_detection.html">diagnose_detection()</a></code> output) with the function
 <code><a href="../reference/summarize_diagnostic.html">summarize_diagnostic()</a></code>:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># summarize</span></span>
 <span><span class="fu"><a href="../reference/summarize_diagnostic.html">summarize_diagnostic</a></span><span class="op">(</span><span class="va">diagnostic</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1               10             10               0               0               0
-  merged.positives overlap.to.true.positives recall precision f1.score
-1                0                     0.528      1         1        1</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
+1         10              5               5               5      0      0 0.7849767
+  recall precision f.score
+1    0.5       0.5     0.5</code></pre>
 <p> </p>
 </div>
 <div class="section level2">
@@ -449,7 +449,7 @@ detection as in <code><a href="../reference/energy_detector.html">energy_detecto
 events. Amplitude envelopes are representations of the variation in
 energy through time. The following code plots an amplitude envelope
 along with the spectrogram for the example data <code>lbh1</code>:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot spectrogram and envelope</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span></span>
 <span>  wave <span class="op">=</span> <span class="fu">cutw</span><span class="op">(</span></span>
@@ -479,7 +479,7 @@ simulated sound events. We will do that using the function
 <code><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html" class="external-link">simulate_songs()</a></code> from <a href="https://CRAN.R-project.org/package=warbleR" class="external-link">warbleR</a>. In this
 example we simulate a recording with 10 sounds with two different
 frequency ranges and durations:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install this package first if not installed</span></span>
 <span><span class="co"># install.packages("Sim.DiffProc")</span></span>
 <span></span>
@@ -511,7 +511,7 @@ frequency ranges and durations:</p>
 the R environment. This outputs will be used to run energy-based
 detection and creating plots, respectively. This is how the spectrogram
 and amplitude envelope of the simulated recording look like:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot spectrogram and envelope</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>,</span>
 <span>              env <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -521,7 +521,7 @@ and amplitude envelope of the simulated recording look like:</p>
 <p>Note that the amplitude envelope shows a high signal-to-noise ratio
 of the sound events, which is ideal for energy-based detection. This can
 be conducted using <code>ernergy_detector()</code> as follows:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
@@ -542,7 +542,7 @@ be conducted using <code>ernergy_detector()</code> as follows:</p>
 <p><img src="ohun_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;">
  </p>
 <p>The output is a selection table:</p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detection</span></span></code></pre></div>
 <pre><code> [30mObject of class  [1m'selection_table' 
  [22m [39m [90m* The output of the following call: 
@@ -568,7 +568,7 @@ specific sound events based on their structural features. For instance
 we can use the argument <code>minimum.duration</code> to provide a time
 treshold (in ms) to exclude short sound events and keep only the longest
 sound events:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
@@ -586,7 +586,7 @@ sound events:</p>
  </p>
 <p>We can use the argument <code>max.duration</code> (also in ms) to
 exclude long sound events and keep the short ones:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>,  threshold <span class="op">=</span> <span class="fl">50</span>, smooth <span class="op">=</span> <span class="fl">150</span>, max.duration <span class="op">=</span> <span class="fl">500</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -599,7 +599,7 @@ the argument <code>bp</code> (bandpass). By setting
 <code>bp = c(5, 8)</code> only those sound events found within that
 frequency range (5-8 kHz) will be detected, which excludes sound events
 below 5 kHz:</p>
-<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Detecting </span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">50</span>, smooth <span class="op">=</span> <span class="fl">150</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -611,7 +611,7 @@ below 5 kHz:</p>
 below 5 kHz. We just need to set the upper bound of the band pass filter
 below the range of the higher frequency sound events (for instance
 <code>bp = (0, 6)</code>):</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Detect</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
@@ -631,7 +631,7 @@ below the range of the higher frequency sound events (for instance
 can be problematic for detection based on amplitude envelopes. We can
 also simulate some amplitude modulation using
 <code><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html" class="external-link">warbleR::simulate_songs()</a></code>:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#Creating simulated song</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">12</span><span class="op">)</span></span>
 <span></span>
@@ -667,7 +667,7 @@ also simulate some amplitude modulation using
  </p>
 <p>When sound events have strong amplitude modulation they can be split
 during detection:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># detect sounds</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_2.wav"</span>, threshold <span class="op">=</span> <span class="fl">50</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -683,7 +683,7 @@ belonging to the same sound event but not too high so it merges
 different sound events. For this example a <code>hold.time</code> of 200
 ms can do the trick (we know gaps between sound events are ~0.5 s
 long):</p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># detect sounds</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
@@ -708,7 +708,7 @@ of the split sound events themselves. It smooths envelopes by applying a
 sliding window averaging of amplitude values. It’s given in ms of the
 window size. A <code>smooth</code> of 350 ms can merged back split sound
 events from our example:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># detect sounds</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
@@ -744,7 +744,7 @@ target sound events. The function
 <code><a href="../reference/optimize_energy_detector.html">optimize_energy_detector()</a></code> can be used finding the optimal
 parameter values. We must provide the range of parameter values that
 will be evaluated:</p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optim_detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/optimize_energy_detector.html">optimize_energy_detector</a></span><span class="op">(</span></span>
 <span>    reference <span class="op">=</span> <span class="va">sim2_sel_table</span>,</span>
@@ -754,29 +754,32 @@ will be evaluated:</p>
 <span>    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>    smooth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">100</span>, <span class="fl">250</span>, <span class="fl">350</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<pre><code>3 combinations will be evaluated:</code></pre>
-<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
+<pre><code>3 combinations will be evaluated:
+[1] "simulated_2.wav"
+[1] "simulated_2.wav"
+[1] "simulated_2.wav"</code></pre>
+<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optim_detection</span><span class="op">[</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">:</span><span class="fl">5</span>, <span class="fl">7</span><span class="op">:</span><span class="fl">12</span>, <span class="fl">17</span><span class="op">:</span><span class="fl">18</span><span class="op">)</span><span class="op">]</span></span></code></pre></div>
-<pre><code>  threshold peak.amplitude smooth hold.time min.duration thinning total.detections
-1        50              0    100         0            1        1               20
-2        50              0    250         0            1        1               15
-3        50              0    350         0            1        1               10
-  true.positives false.positives false.negatives split.positives
-1             20               0               0              10
-2             15               0               0               5
-3             10               0               0               0
-  mean.duration.false.negatives proportional.duration.true.positives
-1                            NA                             1.000000
-2                            NA                             1.179487
-3                            NA                             1.000000</code></pre>
+<pre><code>  threshold peak.amplitude smooth hold.time min.duration thinning detections
+1        50              0    100         0            1        1         20
+2        50              0    250         0            1        1         15
+3        50              0    350         0            1        1         10
+  true.positives false.positives false.negatives splits   overlap
+1              0              20              10      0        NA
+2              5              10               5      0 0.5024838
+3             10               0               0      0 0.7219441
+  proportional.duration.true.positives
+1                                   NA
+2                            0.5024838
+3                            0.7840549</code></pre>
 <p> </p>
 <p>The output contains the combination of parameters used at each
 iteration as well as the corresponding diagnose indices. In this case
 all combinations generate a good detection (recall &amp; precision = 1).
 However, only the routine with the highest <code>smooth</code> (last
 row) has no split sound events (‘split.positive’ column). It also shows
-a better overlap to the reference sound events
-(‘overlap.to.true.positives’ closer to 1).</p>
+a better overlap to the reference sound events (‘overlap’ closer to
+1).</p>
 <p>In addition, there are two complementary functions for optimizing
 energy-based detection routines: <code><a href="../reference/feature_reference.html">feature_reference()</a></code> and
 <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/feature_reference.html">feature_reference()</a></code> allow
@@ -784,7 +787,7 @@ user to get a sense of the time and frequency characteristics of a
 reference table. This information can be used to determine the range of
 tuning parameter values during optimization. This is the output of the
 function applied to <code>lbh_reference</code>:</p>
-<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb50"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/feature_reference.html">feature_reference</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code>                  min   mean    max
 sel.duration   117.96 142.60 163.73
@@ -840,7 +843,7 @@ rationale here is that a sound event closest to the average sound event
 structure is more likely to share structural features with most sounds
 across the acoustic space than a sound event in the periphery of the
 space. These ‘mean structure’ templates can be obtained as follows:</p>
-<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get mean structure template</span></span>
 <span><span class="va">template</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -854,14 +857,14 @@ templates. This can be helpful when working with sounds that are just
 moderately stereotyped. This is done by dividing the acoustic space into
 sub-spaces defined as equal-size slices of a circle centered at the
 centroid of the acoustic space:</p>
-<div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb53"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get 3 templates</span></span>
 <span><span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, </span>
 <span>                          n.sub.spaces <span class="op">=</span> <span class="fl">3</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="ohun_files/figure-html/unnamed-chunk-30-1.png" width="100%" style="display: block; margin: auto;"></p>
 <p>We will use the single template object (‘template’) to run a
 detection on the example ‘lbh1’ data:</p>
-<div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get correlations</span></span>
 <span><span class="va">correlations</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/template_correlator.html">template_correlator</a></span><span class="op">(</span>templates <span class="op">=</span> <span class="va">template</span>,</span>
@@ -870,13 +873,13 @@ detection on the example ‘lbh1’ data:</p>
 <p> </p>
 <p>The output is an object of class ‘template_correlations’, with its
 own printing method:</p>
-<div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># print</span></span>
 <span><span class="va">correlations</span></span></code></pre></div>
 <p> </p>
 <p>This object can then be used to detect sound events using
 <code><a href="../reference/template_detector.html">template_detector()</a></code>:</p>
-<div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/template_detector.html">template_detector</a></span><span class="op">(</span>template.correlations <span class="op">=</span> <span class="va">correlations</span>, threshold <span class="op">=</span> <span class="fl">0.4</span><span class="op">)</span></span>
@@ -903,7 +906,7 @@ Contains: [22m
 <p> </p>
 <p>The output can be explored by plotting the spectrogram along with the
 detection and correlation scores:</p>
-<div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span></span>
 <span>  wave <span class="op">=</span> <span class="va">lbh1</span>,</span>
@@ -916,20 +919,21 @@ detection and correlation scores:</p>
  </p>
 <p>The performance can be evaluated using
 <code><a href="../reference/diagnose_detection.html">diagnose_detection()</a></code>:</p>
-<div class="sourceCode" id="cb52"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb59"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1               15             15               1               0               5
-  merged.positives overlap.to.true.positives recall precision  f1.score
-1                0                 0.8613333      1    0.9375 0.9677419</code></pre>
+<pre><code>[1] "lbh1.wav"</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges  overlap recall
+1         16             10               6               0      6      0 0.917444      1
+  precision   f.score
+1     0.625 0.7692308</code></pre>
 <p> </p>
 <div class="section level4">
 <h4 id="optimizing-template-based-detection">Optimizing template-based detection<a class="anchor" aria-label="anchor" href="#optimizing-template-based-detection"></a>
 </h4>
 <p>The function <code><a href="../reference/optimize_template_detector.html">optimize_template_detector()</a></code> allows to
 evaluate the performance under different correlation thresholds:</p>
-<div class="sourceCode" id="cb54"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run optimization</span></span>
 <span><span class="va">optimization</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/optimize_template_detector.html">optimize_template_detector</a></span><span class="op">(</span></span>
@@ -937,28 +941,33 @@ evaluate the performance under different correlation thresholds:</p>
 <span>    reference <span class="op">=</span> <span class="va">lbh1_reference</span>,</span>
 <span>    threshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">0.5</span>, <span class="fl">0.1</span><span class="op">)</span></span>
 <span>  <span class="op">)</span></span></code></pre></div>
-<pre><code>5 thresholds will be evaluated:</code></pre>
-<div class="sourceCode" id="cb56"><pre class="downlit sourceCode r">
+<pre><code>5 thresholds will be evaluated:
+[1] "lbh1.wav"
+[1] "lbh1.wav"
+[1] "lbh1.wav"
+[1] "lbh1.wav"
+[1] "lbh1.wav"</code></pre>
+<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># print output</span></span>
 <span><span class="va">optimization</span></span></code></pre></div>
-<pre><code>  threshold   templates total.detections true.positives false.positives false.negatives
-1       0.1 lbh1.wav-16               54             54              43               0
-2       0.2 lbh1.wav-16               40             40              32               0
-3       0.3 lbh1.wav-16               32             32               3               0
-4       0.4 lbh1.wav-16               15             15               1               0
-5       0.5 lbh1.wav-16               10             10               0               0
-  split.positives merged.positives overlap.to.true.positives recall precision  f1.score
-1              10                0                 0.5105556      1 0.5567010 0.7152318
-2              10                0                 0.5827500      1 0.5555556 0.7142857
-3              10                0                 0.6709375      1 0.9142857 0.9552239
-4               5                0                 0.8613333      1 0.9375000 0.9677419
-5               0                0                 0.9610000      1 1.0000000 1.0000000</code></pre>
+<pre><code>  threshold   templates detections true.positives false.positives false.negatives splits
+1       0.1 lbh1.wav-16         97             10              87               0     13
+2       0.2 lbh1.wav-16         72             10              62               0     13
+3       0.3 lbh1.wav-16         35             10              25               0     12
+4       0.4 lbh1.wav-16         16             10               6               0      6
+5       0.5 lbh1.wav-16         10             10               0               0      0
+  merges  overlap recall precision   f.score
+1      0 0.917444      1 0.1030928 0.1869159
+2      0 0.917444      1 0.1388889 0.2439024
+3      0 0.917444      1 0.2857143 0.4444444
+4      0 0.917444      1 0.6250000 0.7692308
+5      0 0.917444      1 1.0000000 1.0000000</code></pre>
 <p> </p>
 <p>Additional threshold values can be evaluated without having to run it
 all over again. We just need to supplied the output from the previous
 run with the argument <code>previous.output</code> (the same trick can
 be done when optimizing an energy-based detection):</p>
-<div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb66"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run optimization</span></span>
 <span><span class="fu"><a href="../reference/optimize_template_detector.html">optimize_template_detector</a></span><span class="op">(</span></span>
 <span>  template.correlations <span class="op">=</span> <span class="va">correlations</span>,</span>
@@ -966,23 +975,25 @@ be done when optimizing an energy-based detection):</p>
 <span>  threshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.7</span><span class="op">)</span>,</span>
 <span>  previous.output <span class="op">=</span> <span class="va">optimization</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<pre><code>2 thresholds will be evaluated:</code></pre>
-<pre><code>  threshold   templates total.detections true.positives false.positives false.negatives
-1       0.1 lbh1.wav-16               54             54              43               0
-2       0.2 lbh1.wav-16               40             40              32               0
-3       0.3 lbh1.wav-16               32             32               3               0
-4       0.4 lbh1.wav-16               15             15               1               0
-5       0.5 lbh1.wav-16               10             10               0               0
-6       0.6 lbh1.wav-16               10             10               0               0
-7       0.7 lbh1.wav-16                7              7               0               3
-  split.positives merged.positives overlap.to.true.positives recall precision  f1.score
-1              10                0                 0.5105556    1.0 0.5567010 0.7152318
-2              10                0                 0.5827500    1.0 0.5555556 0.7142857
-3              10                0                 0.6709375    1.0 0.9142857 0.9552239
-4               5                0                 0.8613333    1.0 0.9375000 0.9677419
-5               0                0                 0.9610000    1.0 1.0000000 1.0000000
-6               0                0                 0.9610000    1.0 1.0000000 1.0000000
-7               0                0                 0.9542857    0.7 1.0000000 0.8235294</code></pre>
+<pre><code>2 thresholds will be evaluated:
+[1] "lbh1.wav"
+[1] "lbh1.wav"</code></pre>
+<pre><code>  threshold   templates detections true.positives false.positives false.negatives splits
+1       0.1 lbh1.wav-16         97             10              87               0     13
+2       0.2 lbh1.wav-16         72             10              62               0     13
+3       0.3 lbh1.wav-16         35             10              25               0     12
+4       0.4 lbh1.wav-16         16             10               6               0      6
+5       0.5 lbh1.wav-16         10             10               0               0      0
+6       0.6 lbh1.wav-16         10             10               0               0      0
+7       0.7 lbh1.wav-16          7              7               0               3      0
+  merges   overlap recall precision   f.score
+1      0 0.9174440    1.0 0.1030928 0.1869159
+2      0 0.9174440    1.0 0.1388889 0.2439024
+3      0 0.9174440    1.0 0.2857143 0.4444444
+4      0 0.9174440    1.0 0.6250000 0.7692308
+5      0 0.9174440    1.0 1.0000000 1.0000000
+6      0 0.9174440    1.0 1.0000000 1.0000000
+7      0 0.9113717    0.7 1.0000000 0.8235294</code></pre>
 <p> </p>
 <p>In this case several threshold values can achieved an optimal
 detection.</p>
@@ -994,7 +1005,7 @@ detection.</p>
 <p>Several templates can be used within the same call. Here we correlate
 two templates on the two example sound files, taking one template from
 each sound file:</p>
-<div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb69"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get correlations</span></span>
 <span><span class="va">correlations</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/template_correlator.html">template_correlator</a></span><span class="op">(</span></span>
@@ -1017,45 +1028,50 @@ each sound file:</p>
 <p>Note that in these cases we can get the same sound event detected
 several times (duplicates), one by each template. We can check if that
 is the case just by diagnosing the detection:</p>
-<div class="sourceCode" id="cb62"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb70"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1               23             23               0               0               4
-  merged.positives overlap.to.true.positives recall precision f1.score
-1                0                 0.9573913      1         1        1</code></pre>
+<pre><code>[1] "lbh1.wav"
+[1] "lbh2.wav"</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
+1         23             15               8               4      0      0 0.8847399
+     recall precision   f.score
+1 0.7894737 0.6521739 0.7142857</code></pre>
 <p> </p>
 <p>Duplicates are shown as split positives. Fortunately, we can leave a
 single detected sound event by leaving only those with the highest
 correlation. To do this we first need to label each row in the detection
 using <code><a href="../reference/label_detection.html">label_detection()</a></code> and then remove duplicates using
 <code><a href="../reference/filter_detection.html">filter_detection()</a></code>:</p>
-<div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb73"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># labeling detection</span></span>
 <span><span class="va">labeled</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/label_detection.html">label_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
+<pre><code>[1] "lbh1.wav"
+[1] "lbh2.wav"</code></pre>
 <p>This function adds a column (‘detection.class’) with the class label
 for each row:</p>
-<div class="sourceCode" id="cb65"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb75"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/table.html" class="external-link">table</a></span><span class="op">(</span><span class="va">labeled</span><span class="op">$</span><span class="va">detection.class</span><span class="op">)</span></span></code></pre></div>
 <pre><code>
-        true.positive true.positive (split) 
-                   15                     8 </code></pre>
+false.positive  true.positive 
+             8             15 </code></pre>
 <p> </p>
 <p>Now we can filter out duplicates and diagnose the detection again,
 telling the function to select a single row per duplicate using the
 correlation score as a criterium (<code>by = "scores"</code>, this
 column is part of the <code><a href="../reference/template_detector.html">template_detector()</a></code> output):</p>
-<div class="sourceCode" id="cb67"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb77"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter</span></span>
 <span><span class="va">filtered</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/filter_detection.html">filter_detection</a></span><span class="op">(</span>detection <span class="op">=</span> <span class="va">labeled</span>, by <span class="op">=</span> <span class="st">"scores"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, detection <span class="op">=</span> <span class="va">filtered</span><span class="op">)</span></span></code></pre></div>
-<pre><code>  total.detections true.positives false.positives false.negatives split.positives
-1               19             19               0               0               0
-  merged.positives overlap.to.true.positives recall precision f1.score
-1                0                      0.95      1         1        1</code></pre>
+<pre><code>[1] "lbh2.wav"</code></pre>
+<pre><code>  detections true.positives false.positives false.negatives splits merges overlap recall
+1          8              0               8              19      0      0      NA      0
+  precision f.score
+1         0      NA</code></pre>
 <p> </p>
 <p>We successfully get rid of duplicates and detected every single
 target sound event.</p>
@@ -1169,7 +1185,7 @@ attached base packages:
 
 other attached packages:
 [1] ohun_0.1.1         warbleR_1.1.28     NatureSounds_1.0.4 knitr_1.42        
-[5] seewave_2.2.0      tuneR_1.4.3       
+[5] seewave_2.2.0      tuneR_1.4.4       
 
 loaded via a namespace (and not attached):
  [1] gtable_0.3.3       rjson_0.2.21       xfun_0.39          bslib_0.4.2       
@@ -1184,7 +1200,7 @@ loaded via a namespace (and not attached):
 [37] stringi_1.7.12     sf_1.0-12          purrr_1.0.1        rprojroot_2.0.3   
 [41] fastmap_1.1.1      grid_4.3.0         colorspace_2.1-0   cli_3.6.1         
 [45] magrittr_2.0.3     utf8_1.2.3         e1071_1.7-13       scales_1.2.1      
-[49] rmarkdown_2.21     Sim.DiffProc_4.8   signal_0.7-7       igraph_1.4.2      
+[49] rmarkdown_2.21     Sim.DiffProc_4.8   signal_0.7-7       igraph_1.4.3      
 [53] gridExtra_2.3      ragg_1.2.5         memoise_2.0.1      pbapply_1.7-0     
 [57] evaluate_0.21      dtw_1.23-1         fftw_1.0-7         viridisLite_0.4.2 
 [61] rlang_1.1.1        Rcpp_1.0.10        glue_1.6.2         DBI_1.1.3         
