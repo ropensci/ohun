@@ -25,28 +25,32 @@
 #' @details This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
 #'
 #' @examples {
-#' # load example data
-#' data(list = "lbh1", "lbh_reference")
+#'   # load example data
+#'   data(list = "lbh1", "lbh_reference")
 #'
-#'# adding labels
-#' label_spectro(wave = lbh1,
-#' reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-#' wl = 200, ovlp = 50, flim = c(1, 10))
+#'   # adding labels
+#'   label_spectro(
+#'     wave = lbh1,
+#'     reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+#'     wl = 200, ovlp = 50, flim = c(1, 10)
+#'   )
 #'
-#' # adding envelope
-#' label_spectro(wave = lbh1,
-#' detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-#' wl = 200, ovlp = 50, flim = c(1, 10))
+#'   # adding envelope
+#'   label_spectro(
+#'     wave = lbh1,
+#'     detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+#'     wl = 200, ovlp = 50, flim = c(1, 10)
+#'   )
 #'
-#' # see the package vignette for more examples
+#'   # see the package vignette for more examples
 #' }
 #'
 #' @references {
-#'#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#' #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
 #' }
 #' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
-#last modification on oct-31-2021 (MAS)
+# last modification on oct-31-2021 (MAS)
 label_spectro <-
   function(wave,
            reference = NULL,
@@ -61,17 +65,19 @@ label_spectro <-
            hop.size = NULL,
            ...) {
     # adjust wl based on hope.size
-    if (!is.null(hop.size))
+    if (!is.null(hop.size)) {
       wl <- round(wave@samp.rate * hop.size / 1000, 0)
+    }
 
     # reset graphic device on exit
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
 
-    if (envelope | !is.null(template.correlation))
-      par(mfrow = c(2, 1), mar = c(0,  4,  1,  1))
-    else
+    if (envelope | !is.null(template.correlation)) {
+      par(mfrow = c(2, 1), mar = c(0, 4, 1, 1))
+    } else {
       par(mar = c(4, 4, 1, 1))
+    }
 
     # plot spectrogram
     seewave::spectro(
@@ -81,16 +87,17 @@ label_spectro <-
       palette = palette,
       collevels = collevels,
       axisX = if (envelope |
-                  !is.null(template.correlation))
+        !is.null(template.correlation)) {
         FALSE
-      else
-        TRUE,
+      } else {
+        TRUE
+      },
       ...
     )
 
     # plot detection
-    if (!is.null(reference))
-      for (i in seq_len(nrow(reference)))
+    if (!is.null(reference)) {
+      for (i in seq_len(nrow(reference))) {
         lines(
           x = (reference[i, c("start", "end")]),
           y = rep(line.x.position, 2),
@@ -98,10 +105,12 @@ label_spectro <-
           lwd = 7,
           lend = 2
         )
+      }
+    }
 
     # plot detection
-    if (!is.null(detection))
-      for (i in seq_len(nrow(detection)))
+    if (!is.null(detection)) {
+      for (i in seq_len(nrow(detection))) {
         lines(
           x = (detection[i, c("start", "end")]),
           y = rep(line.x.position - 0.3, 2),
@@ -109,11 +118,13 @@ label_spectro <-
           lwd = 7,
           lend = 2
         )
+      }
+    }
 
     usr <- par("usr")
 
     # add legend
-    if (!is.null(detection) & !is.null(reference))
+    if (!is.null(detection) & !is.null(reference)) {
       legend(
         x = usr[2] * 0.98,
         y = usr[4] * 0.98,
@@ -124,8 +135,9 @@ label_spectro <-
         xjust = 1,
         yjust = 1
       )
+    }
 
-    if (is.null(detection) & !is.null(reference))
+    if (is.null(detection) & !is.null(reference)) {
       legend(
         x = usr[2] * 0.98,
         y = usr[4] * 0.98,
@@ -136,8 +148,9 @@ label_spectro <-
         xjust = 1,
         yjust = 1
       )
+    }
 
-    if (is.null(reference) & !is.null(detection))
+    if (is.null(reference) & !is.null(detection)) {
       legend(
         x = usr[2] * 0.98,
         y = usr[4] * 0.98,
@@ -148,46 +161,50 @@ label_spectro <-
         xjust = 1,
         yjust = 1
       )
+    }
 
     if (envelope) {
       # set graphic device for envelope
-      par(mar = c(4,  4,  0.3,  1))
+      par(mar = c(4, 4, 0.3, 1))
 
-      if (!is.null(smooth))
-        smooth <- round(wave@samp.rate * smooth  / 1000, 0)
+      if (!is.null(smooth)) {
+        smooth <- round(wave@samp.rate * smooth / 1000, 0)
+      }
 
       # plot envelope
       seewave::env(wave, colwave = "#07889B", ssmooth = smooth)
 
       # add threshold line
-      if (!is.null(threshold))
-        abline(h = par("usr")[4] * threshold / 100,
-               col = "#CF4446FF",
-               lwd = 3)
-    } else
-      if (!is.null(template.correlation)) {
-        # set graphic device for correlations
-        par(mar = c(4,  4,  0.3,  1))
-
-        plot(
-          x = seq(
-            template.correlation$template.duration / 2,
-            duration(wave) - template.correlation$template.duration / 2,
-            length.out = length(template.correlation$correlation.scores)
-          ),
-          y = template.correlation$correlation.scores,
-          type = "l",
-          xlab = "Time (s)",
-          ylab = "Correlation",
-          col = "#07889B",
-          lwd = 1.6,
-          xaxs = "i",
-          xlim  = c(0, duration(wave))
+      if (!is.null(threshold)) {
+        abline(
+          h = par("usr")[4] * threshold / 100,
+          col = "#CF4446FF",
+          lwd = 3
         )
-
-        # add threshold line
-        if (!is.null(threshold))
-          abline(h = threshold, col = "#CF4446FF", lwd = 3)
-
       }
+    } else if (!is.null(template.correlation)) {
+      # set graphic device for correlations
+      par(mar = c(4, 4, 0.3, 1))
+
+      plot(
+        x = seq(
+          template.correlation$template.duration / 2,
+          duration(wave) - template.correlation$template.duration / 2,
+          length.out = length(template.correlation$correlation.scores)
+        ),
+        y = template.correlation$correlation.scores,
+        type = "l",
+        xlab = "Time (s)",
+        ylab = "Correlation",
+        col = "#07889B",
+        lwd = 1.6,
+        xaxs = "i",
+        xlim = c(0, duration(wave))
+      )
+
+      # add threshold line
+      if (!is.null(threshold)) {
+        abline(h = threshold, col = "#CF4446FF", lwd = 3)
+      }
+    }
   }

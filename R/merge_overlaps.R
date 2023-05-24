@@ -11,18 +11,18 @@
 #' @name merge_overlaps
 #' @details The function finds time-overlapping selection in reference tables and collapses them into a single selection. It can be useful to prepare reference tables to be used in an energy detection routine. In such cases overlapping selections are expected to be detected as a single sound. Therefore, merging them can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.
 #' @examples {
-#' # load data
-#' data("lbh_reference")
+#'   # load data
+#'   data("lbh_reference")
 #'
-#'# nothing to merge
-#' merge_overlaps(lbh_reference)
+#'   # nothing to merge
+#'   merge_overlaps(lbh_reference)
 #'
-#' # create artificial overlapping selections
-#' lbh_ref2 <- rbind(as.data.frame(lbh_reference[c(3, 10), ]), lbh_reference[c(3, 10), ])
+#'   # create artificial overlapping selections
+#'   lbh_ref2 <- rbind(as.data.frame(lbh_reference[c(3, 10), ]), lbh_reference[c(3, 10), ])
 #'
-#' lbh_ref2$selec <- seq_len(nrow(lbh_ref2))
+#'   lbh_ref2$selec <- seq_len(nrow(lbh_ref2))
 #'
-#' merge_overlaps(lbh_ref2)
+#'   merge_overlaps(lbh_ref2)
 #' }
 #' @seealso \code{\link{summarize_diagnostic}}, \code{\link{label_detection}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
@@ -34,46 +34,51 @@
 
 merge_overlaps <- function(X, pb = TRUE, cores = 1) {
   # merged overlapping selections
-  if (pb)
+  if (pb) {
     print(x = "Detecting overlapping selections:")
+  }
   ov_sls <-
     overlapping_sels(X,
-                     pb = pb,
-                     verbose = FALSE,
-                     parallel = cores)
+      pb = pb,
+      verbose = FALSE,
+      parallel = cores
+    )
 
-  if (any(!is.na(ov_sls$ovlp.sels)))
-  {
-    if (pb)
+  if (any(!is.na(ov_sls$ovlp.sels))) {
+    if (pb) {
       print("Merging overlapping selections:")
+    }
     merges_l <-
       warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x) {
         if (!is.na(x)) {
           Y <- ov_sls[ov_sls$ovlp.sels == x & !is.na(ov_sls$ovlp.sels), ]
           Y$end[1] <- max(Y$end)
 
-          if (!is.null(Y$bottom.freq))
+          if (!is.null(Y$bottom.freq)) {
             Y$bottom.freq[1] <- min(Y$bottom.freq)
+          }
 
-          if (!is.null(Y$top.freq))
+          if (!is.null(Y$top.freq)) {
             Y$top.freq[1] <- max(Y$top.freq)
+          }
 
           # return first row
           Y <- Y[1, ]
-        } else
+        } else {
           Y <- ov_sls[is.na(ov_sls$ovlp.sels), ]
+        }
         return(Y)
       })
 
     ov_sls <- do.call(rbind, merges_l)
 
     ov_sls$ovlp.sels <- NULL
-  } else
+  } else {
     ov_sls <- X
+  }
 
   # rename rows
   rownames(ov_sls) <- seq_len(nrow(ov_sls))
 
   return(ov_sls)
-
 }

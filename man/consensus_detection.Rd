@@ -29,36 +29,44 @@ This function removes ambiguous detections (split or merged detections, see \cod
 }
 \examples{
 {
-# load example data
-data("lbh1", "lbh_reference")
+  # load example data
+  data("lbh1", "lbh_reference")
 
-# save sound files
-writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
+  # save sound files
+  writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
 
-# template for the first sound file in 'lbh_reference'
-templ1 <- lbh_reference[1, ]
+  # template for the first sound file in 'lbh_reference'
+  templ1 <- lbh_reference[1, ]
 
-# generate template correlations
-tc <- template_correlator(templates = templ1, path = tempdir(),
-files = "lbh2.wav")
+  # generate template correlations
+  tc <- template_correlator(
+    templates = templ1, path = tempdir(),
+    files = "lbh2.wav"
+  )
 
-# template detection
-td <- template_detector(template.correlations = tc, threshold = 0.12)
+  # template detection
+  td <- template_detector(template.correlations = tc, threshold = 0.12)
 
-# this detection generates 2 split positives
-diagnose_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-detection = td)
+  # this detection generates 2 split positives
+  diagnose_detection(
+    reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+    detection = td
+  )
 
-# label detection
-ltd <- label_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-detection = td)
+  # label detection
+  ltd <- label_detection(
+    reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+    detection = td
+  )
 
-# now they can be filter to keep the detection with the highest score for each split
-ftd <- consensus_detection(ltd, by = "scores")
+  # now they can be filter to keep the detection with the highest score for each split
+  ftd <- consensus_detection(ltd, by = "scores")
 
-# splits must be 0
-diagnose_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-detection = ftd)
+  # splits must be 0
+  diagnose_detection(
+    reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+    detection = ftd
+  )
 }
 
 }

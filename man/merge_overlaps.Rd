@@ -25,18 +25,18 @@ The function finds time-overlapping selection in reference tables and collapses 
 }
 \examples{
 {
-# load data
-data("lbh_reference")
+  # load data
+  data("lbh_reference")
 
-# nothing to merge
-merge_overlaps(lbh_reference)
+  # nothing to merge
+  merge_overlaps(lbh_reference)
 
-# create artificial overlapping selections
-lbh_ref2 <- rbind(as.data.frame(lbh_reference[c(3, 10), ]), lbh_reference[c(3, 10), ])
+  # create artificial overlapping selections
+  lbh_ref2 <- rbind(as.data.frame(lbh_reference[c(3, 10), ]), lbh_reference[c(3, 10), ])
 
-lbh_ref2$selec <- seq_len(nrow(lbh_ref2))
+  lbh_ref2$selec <- seq_len(nrow(lbh_ref2))
 
-merge_overlaps(lbh_ref2)
+  merge_overlaps(lbh_ref2)
 }
 }
 \references{

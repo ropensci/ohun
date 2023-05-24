@@ -26,7 +26,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{by}{Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.}
 
-\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
+\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
 
 \item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
 }
@@ -47,7 +47,7 @@ A data frame including the following detection performance diagnostics:
  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
  \item \code{precision}: Proportion of detections that correspond to sound events in 'reference'. In a perfect detection routine it should be 1.
- \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
+ \item \code{f.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
  }
 }
 \description{
@@ -58,39 +58,47 @@ The function evaluates the performance of a sound event detection procedure by c
 }
 \examples{
 {
-# load data
-data("lbh_reference")
+  # load data
+  data("lbh_reference")
 
-# perfect detection
-diagnose_detection(reference = lbh_reference, detection = lbh_reference)
+  # perfect detection
+  diagnose_detection(reference = lbh_reference, detection = lbh_reference)
 
-# missing one in detection
-diagnose_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
+  # missing one in detection
+  diagnose_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
 
-# an extra one in detection
-diagnose_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
+  # an extra one in detection
+  diagnose_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
 
-# with time diagnostics
-diagnose_detection(reference = lbh_reference[-1, ],
-detection = lbh_reference, time.diagnostics = TRUE)
+  # with time diagnostics
+  diagnose_detection(
+    reference = lbh_reference[-1, ],
+    detection = lbh_reference, time.diagnostics = TRUE
+  )
 
-# and extra sound file in reference
-diagnose_detection(reference = lbh_reference,
-detection =
-lbh_reference[lbh_reference$sound.files != "lbh1", ])
+  # and extra sound file in reference
+  diagnose_detection(
+    reference = lbh_reference,
+    detection =
+      lbh_reference[lbh_reference$sound.files != "lbh1", ]
+  )
 
-# and extra sound file in detection
-diagnose_detection(reference =
-lbh_reference[lbh_reference$sound.files != "lbh1", ],
-detection = lbh_reference)
+  # and extra sound file in detection
+  diagnose_detection(
+    reference =
+      lbh_reference[lbh_reference$sound.files != "lbh1", ],
+    detection = lbh_reference
+  )
 
-# and extra sound file in detection by sound file
-dd <- diagnose_detection(reference =
-lbh_reference[lbh_reference$sound.files != "lbh1", ],
-detection = lbh_reference, time.diagnostics = TRUE, by.sound.file = TRUE)
+  # and extra sound file in detection by sound file
+  dd <- diagnose_detection(
+    reference =
+      lbh_reference[lbh_reference$sound.files != "lbh1", ],
+    detection = lbh_reference, time.diagnostics = TRUE, by.sound.file = TRUE
+  )
 
-# get summary
-summarize_diagnostic(dd)
+  # get summary
+  summarize_diagnostic(dd)
 }
 }
 \references{

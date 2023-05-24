@@ -46,35 +46,37 @@ This function extracts the absolute amplitude envelopes of sound files. Can be u
 }
 \examples{
 {
-# Save to temporary working directory
-data(list = c("lbh1", "lbh2"))
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # Save to temporary working directory
+  data(list = c("lbh1", "lbh2"))
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# get raw absolute amplitude envelopes
-envs <- get_envelopes(path = tempdir())
+  # get raw absolute amplitude envelopes
+  envs <- get_envelopes(path = tempdir())
 
-# extract segment for the first sound event in the first sound file
-x <- envs[[1]]$envelope
+  # extract segment for the first sound event in the first sound file
+  x <- envs[[1]]$envelope
 
-# and plot it
-plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
+  # and plot it
+  plot(x[(length(x) / 9):(length(x) / 4)], type = "l", xlab = "samples", ylab = "amplitude")
 
-# smoothing envelopes
-envs <- get_envelopes(path = tempdir(), smooth = 6.8)
-x <- envs[[1]]$envelope
-plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
+  # smoothing envelopes
+  envs <- get_envelopes(path = tempdir(), smooth = 6.8)
+  x <- envs[[1]]$envelope
+  plot(x[(length(x) / 9):(length(x) / 4)], type = "l", xlab = "samples", ylab = "amplitude")
 
-# smoothing and thinning
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
-x <- envs[[1]]$envelope
-plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude")
+  # smoothing and thinning
+  envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8)
+  x <- envs[[1]]$envelope
+  plot(x[(length(x) / 9):(length(x) / 4)], type = "l", xlab = "samples", ylab = "amplitude")
 
-# no normalization
-envs <- get_envelopes(path = tempdir(), thinning = 1/10, smooth = 6.8)
-x <- envs[[1]]$envelope
-plot(x[(length(x)/9):(length(x)/4)], type = "l", xlab = "samples", ylab = "amplitude",
-normalize = FALSE)
+  # no normalization
+  envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8)
+  x <- envs[[1]]$envelope
+  plot(x[(length(x) / 9):(length(x) / 4)],
+    type = "l", xlab = "samples", ylab = "amplitude",
+    normalize = FALSE
+  )
 }
 
 }

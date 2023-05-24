@@ -46,20 +46,24 @@ This function plots spectrograms annotated with the position of sound events. \s
 }
 \examples{
 {
-# load example data
-data(list = "lbh1", "lbh_reference")
+  # load example data
+  data(list = "lbh1", "lbh_reference")
 
-# adding labels
-label_spectro(wave = lbh1,
-reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-wl = 200, ovlp = 50, flim = c(1, 10))
+  # adding labels
+  label_spectro(
+    wave = lbh1,
+    reference = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+    wl = 200, ovlp = 50, flim = c(1, 10)
+  )
 
-# adding envelope
-label_spectro(wave = lbh1,
-detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-wl = 200, ovlp = 50, flim = c(1, 10))
+  # adding envelope
+  label_spectro(
+    wave = lbh1,
+    detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+    wl = 200, ovlp = 50, flim = c(1, 10)
+  )
 
-# see the package vignette for more examples
+  # see the package vignette for more examples
 }
 
 }

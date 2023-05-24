@@ -11,7 +11,7 @@ summarize_diagnostic(diagnostic, time.diagnostics = FALSE, macro.average = FALSE
 
 \item{time.diagnostics}{Logical argument to control if diagnostics related to the duration of the sound events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.}
 
-\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f1.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
+\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
 }
 \value{
 A data frame, similar to the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}) including the following detection performance diagnostics:
@@ -30,7 +30,7 @@ A data frame, similar to the output of a detection optimization function (\code{
  \item \code{duty.cycle}: proportion of a sound file in which sounds were detected. Only included when \code{time.diagnostics = TRUE} and \code{path} is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.
  \item \code{recall}: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.
  \item \code{precision}: Proportion of detections that correspond to sound events in 'reference'. In a perfect detection routine it should be 1.
- \item \code{f1.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
+ \item \code{f.score}: Combines recall and precision as the harmonic mean of these two. Provides a single value for evaluating performance. In a perfect detection routine it should be 1.
  }
 }
 \description{
@@ -41,20 +41,24 @@ The function summarizes a detection diagnostic data frame in which diagnostic pa
 }
 \examples{
 {
-# load example selection tables
+  # load example selection tables
 
-data("lbh_reference")
+  data("lbh_reference")
 
-# run diagnose_detection() by sound file
-diag <- diagnose_detection(reference = lbh_reference,
-detection = lbh_reference[-1, ], by.sound.file = TRUE)
+  # run diagnose_detection() by sound file
+  diag <- diagnose_detection(
+    reference = lbh_reference,
+    detection = lbh_reference[-1, ], by.sound.file = TRUE
+  )
 
-# summarize
-summarize_diagnostic(diagnostic = diag)
+  # summarize
+  summarize_diagnostic(diagnostic = diag)
 
-# should be the same as this:
-diagnose_detection(reference = lbh_reference,
-detection = lbh_reference[-1, ], by.sound.file = FALSE)
+  # should be the same as this:
+  diagnose_detection(
+    reference = lbh_reference,
+    detection = lbh_reference[-1, ], by.sound.file = FALSE
+  )
 }
 }
 \references{

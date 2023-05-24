@@ -28,20 +28,24 @@
 #' @details The function summarizes a detection diagnostic data frame in which diagnostic parameters are shown split by (typically) a categorical column, usually sound files. This function is used internally by \code{\link{diagnose_detection}}. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = detections".
 #' @examples
 #' {
-#' # load example selection tables
+#'   # load example selection tables
 #'
-#' data("lbh_reference")
+#'   data("lbh_reference")
 #'
-#' # run diagnose_detection() by sound file
-#' diag <- diagnose_detection(reference = lbh_reference,
-#' detection = lbh_reference[-1, ], by.sound.file = TRUE)
+#'   # run diagnose_detection() by sound file
+#'   diag <- diagnose_detection(
+#'     reference = lbh_reference,
+#'     detection = lbh_reference[-1, ], by.sound.file = TRUE
+#'   )
 #'
-#' # summarize
-#' summarize_diagnostic(diagnostic = diag)
+#'   # summarize
+#'   summarize_diagnostic(diagnostic = diag)
 #'
-#' # should be the same as this:
-#' diagnose_detection(reference = lbh_reference,
-#' detection = lbh_reference[-1, ], by.sound.file = FALSE)
+#'   # should be the same as this:
+#'   diagnose_detection(
+#'     reference = lbh_reference,
+#'     detection = lbh_reference[-1, ], by.sound.file = FALSE
+#'   )
 #' }
 #' @seealso \code{\link{diagnose_detection}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
@@ -68,13 +72,16 @@ summarize_diagnostic <-
         "f.score"
       )
 
-    #check diagnostic
-    if (any(!(basic_colms %in% colnames(diagnostic))))
+    # check diagnostic
+    if (any(!(basic_colms %in% colnames(diagnostic)))) {
       stop2(paste(
-        paste(basic_colms[!(basic_colms %in% colnames(diagnostic))], collapse =
-                ", "),
+        paste(basic_colms[!(basic_colms %in% colnames(diagnostic))],
+          collapse =
+            ", "
+        ),
         "column(s) not found in 'diagnostics'"
       ))
+    }
 
     # get extra column names (ideally should include tuning parameters)
     extra_colms <-
@@ -91,24 +98,27 @@ summarize_diagnostic <-
       ))
 
     # create column combining all extra columns so it labels detections from the same run
-    diagnostic$..combined.extra.colms <- if (length(extra_colms) > 0)
-      apply(diagnostic[, extra_colms, drop = FALSE], 1, paste, collapse = "~>~") else
+    diagnostic$..combined.extra.colms <- if (length(extra_colms) > 0) {
+      apply(diagnostic[, extra_colms, drop = FALSE], 1, paste, collapse = "~>~")
+    } else {
       "1"
+    }
 
     # get which extra columns were numeric
-    if (length(extra_colms) > 0)
+    if (length(extra_colms) > 0) {
       numeric_colms <-
-      vapply(diagnostic[, extra_colms, drop = FALSE], is.numeric, FUN.VALUE = logical(1))
+        vapply(diagnostic[, extra_colms, drop = FALSE], is.numeric, FUN.VALUE = logical(1))
+    }
 
     # switch to FALSE if no time columns
-    if (is.null(diagnostic$mean.duration.true.positives))
+    if (is.null(diagnostic$mean.duration.true.positives)) {
       time.diagnostics <- FALSE
+    }
 
     summ_diagnostic_l <-
       lapply(unique(diagnostic$..combined.extra.colms), function(x) {
-
         # subset for each combination
-        Y <- diagnostic[diagnostic$..combined.extra.colms == x,]
+        Y <- diagnostic[diagnostic$..combined.extra.colms == x, ]
 
         # summarize across sound files
         summ_diagnostic <- data.frame(
@@ -118,13 +128,15 @@ summarize_diagnostic <-
           false.negatives = sum(Y$false.negatives, na.rm = TRUE),
           splits = sum(Y$splits, na.rm = TRUE),
           merges = sum(Y$merges, na.rm = TRUE),
-          overlap = if (any(!is.na(Y$overlap)))
+          overlap = if (any(!is.na(Y$overlap))) {
             stats::weighted.mean(
               x = Y$overlap,
               w = if (macro.average) rep(1, nrow(Y)) else Y$true.positives,
               na.rm = TRUE
-            ) else
-            NA,
+            )
+          } else {
+            NA
+          },
           ..combined.extra.colms = x,
           stringsAsFactors = FALSE
         )
@@ -132,7 +144,7 @@ summarize_diagnostic <-
         # add time diagnostics
         if (time.diagnostics) {
           summ_diagnostic$mean.duration.true.positives <-
-            if (any(!is.na(Y$mean.duration.true.positives)))
+            if (any(!is.na(Y$mean.duration.true.positives))) {
               round(
                 stats::weighted.mean(
                   x = Y$mean.duration.true.positives,
@@ -140,11 +152,13 @@ summarize_diagnostic <-
                   na.rm = TRUE
                 ),
                 0
-              ) else
-                NA
+              )
+            } else {
+              NA
+            }
 
           summ_diagnostic$mean.duration.false.positives <-
-            if (any(!is.na(Y$mean.duration.false.positives)))
+            if (any(!is.na(Y$mean.duration.false.positives))) {
               round(
                 stats::weighted.mean(
                   x = Y$mean.duration.false.positives,
@@ -152,11 +166,13 @@ summarize_diagnostic <-
                   na.rm = TRUE
                 ),
                 0
-              ) else
-                NA
+              )
+            } else {
+              NA
+            }
 
           summ_diagnostic$mean.duration.false.negatives <-
-            if (any(!is.na(Y$mean.duration.false.negatives)))
+            if (any(!is.na(Y$mean.duration.false.negatives))) {
               round(
                 stats::weighted.mean(
                   x = Y$mean.duration.false.negatives,
@@ -164,36 +180,47 @@ summarize_diagnostic <-
                   na.rm = TRUE
                 ),
                 0
-              ) else
-                NA
+              )
+            } else {
+              NA
+            }
 
           summ_diagnostic$proportional.duration.true.positives <-
-            if (any(!is.na(Y$proportional.duration.true.positives)))
+            if (any(!is.na(Y$proportional.duration.true.positives))) {
               stats::weighted.mean(
                 x = Y$proportional.duration.true.positives,
                 w = if (macro.average) rep(1, nrow(Y)) else Y$true.positives,
                 na.rm = TRUE
-              ) else
-                NA
+              )
+            } else {
+              NA
+            }
 
-          if (any(names(diagnostic) == "duty.cycle"))
+          if (any(names(diagnostic) == "duty.cycle")) {
             summ_diagnostic$duty.cycle <-
-            mean(Y$duty.cycle, na.rm = TRUE)
+              mean(Y$duty.cycle, na.rm = TRUE)
+          }
         }
 
         # add recall precision and f.score at the end
         summ_diagnostic$recall <- if (macro.average) mean(Y$recall, na.rm = TRUE) else sum(Y$true.positives, na.rm = TRUE) / (sum(Y$true.positives, na.rm = TRUE) + sum(Y$false.negatives, na.rm = TRUE))
-        summ_diagnostic$precision <- if (macro.average) mean(Y$precision, na.rm = TRUE) else  if (any(Y$precision != 0))
-          (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$detections, na.rm = TRUE))) else
-            0
+        summ_diagnostic$precision <- if (macro.average) {
+          mean(Y$precision, na.rm = TRUE)
+        } else if (any(Y$precision != 0)) {
+          (sum(Y$true.positives, na.rm = TRUE) / (sum(Y$detections, na.rm = TRUE)))
+        } else {
+          0
+        }
         summ_diagnostic$f.score <-
           2 * ((summ_diagnostic$precision * summ_diagnostic$recall) / (summ_diagnostic$precision + summ_diagnostic$recall)
           )
 
         # replace NaNs with NA
-        for (i in seq_len(ncol(summ_diagnostic)))
-          if (is.nan(summ_diagnostic[, i]))
+        for (i in seq_len(ncol(summ_diagnostic))) {
+          if (is.nan(summ_diagnostic[, i])) {
             summ_diagnostic[, i] <- NA
+          }
+        }
 
         return(summ_diagnostic)
       })
@@ -205,8 +232,10 @@ summarize_diagnostic <-
     if (length(unique(diagnostic$..combined.extra.colms)) > 1) {
       # extract extra columns as single columns
       extra_colms_df <-
-        do.call(rbind,
-                strsplit(summ_diagnostics_df$..combined.extra.colms, "~>~"))
+        do.call(
+          rbind,
+          strsplit(summ_diagnostics_df$..combined.extra.colms, "~>~")
+        )
 
       # add column names
       colnames(extra_colms_df) <- extra_colms
@@ -218,14 +247,14 @@ summarize_diagnostic <-
 
         # add non-numeric columns
         if (any(!numeric_colms)) {
-          non_num_colms_df <- extra_colms_df[,!numeric_colms, drop = FALSE]
+          non_num_colms_df <- extra_colms_df[, !numeric_colms, drop = FALSE]
           colnames(non_num_colms_df) <-
             names(numeric_colms)[!numeric_colms]
           extra_colms_df <-
             cbind(non_num_colms_df, extra_num_colms_df)
-
-        } else
+        } else {
           extra_colms_df <- extra_num_colms_df
+        }
       }
 
       # put all together

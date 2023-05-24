@@ -14,44 +14,52 @@
 #' @details This function removes ambiguous detections (split or merged detections, see \code{\link{diagnose_detection}}) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}.
 #'
 #' @examples {
-#' # load example data
-#' data("lbh1", "lbh_reference")
+#'   # load example data
+#'   data("lbh1", "lbh_reference")
 #'
-#' # save sound files
-#' writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
+#'   # save sound files
+#'   writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
 #'
-#' # template for the first sound file in 'lbh_reference'
-#' templ1 <- lbh_reference[1, ]
+#'   # template for the first sound file in 'lbh_reference'
+#'   templ1 <- lbh_reference[1, ]
 #'
-#' # generate template correlations
-#' tc <- template_correlator(templates = templ1, path = tempdir(),
-#' files = "lbh2.wav")
+#'   # generate template correlations
+#'   tc <- template_correlator(
+#'     templates = templ1, path = tempdir(),
+#'     files = "lbh2.wav"
+#'   )
 #'
-#' # template detection
-#' td <- template_detector(template.correlations = tc, threshold = 0.12)
+#'   # template detection
+#'   td <- template_detector(template.correlations = tc, threshold = 0.12)
 #'
-#' # this detection generates 2 split positives
-#' diagnose_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-#' detection = td)
+#'   # this detection generates 2 split positives
+#'   diagnose_detection(
+#'     reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+#'     detection = td
+#'   )
 #'
-#' # label detection
-#' ltd <- label_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-#' detection = td)
+#'   # label detection
+#'   ltd <- label_detection(
+#'     reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+#'     detection = td
+#'   )
 #'
-#' # now they can be filter to keep the detection with the highest score for each split
-#' ftd <- consensus_detection(ltd, by = "scores")
+#'   # now they can be filter to keep the detection with the highest score for each split
+#'   ftd <- consensus_detection(ltd, by = "scores")
 #'
-#' # splits must be 0
-#' diagnose_detection(reference = lbh_reference[lbh_reference == "lbh2.wav", ],
-#' detection = ftd)
+#'   # splits must be 0
+#'   diagnose_detection(
+#'     reference = lbh_reference[lbh_reference == "lbh2.wav", ],
+#'     detection = ftd
+#'   )
 #' }
 #'
 #' @references {
-#'#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#' #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
 #' }
 #' @seealso \code{\link{label_detection}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
-#last modification on oct-31-2021 (MAS)
+# last modification on oct-31-2021 (MAS)
 
 # function to filter detection based on overlap
 consensus_detection <-
@@ -63,50 +71,59 @@ consensus_detection <-
     # save start time
     start_time <- proc.time()
 
-    #if reference is not a data frame
-    if (!any(is.data.frame(detection), is_selection_table(detection)))
+    # if reference is not a data frame
+    if (!any(is.data.frame(detection), is_selection_table(detection))) {
       stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
+    }
 
-    if (is.null(detection$detection.class))
+    if (is.null(detection$detection.class)) {
       stop2(
         "'detection.class' column not found in 'detection'. 'detection' must be the output of label_detection()"
       )
+    }
 
-    if (!by %in% names(detection))
+    if (!by %in% names(detection)) {
       stop2("'by' column not found")
+    }
 
     # add row id column to la
     detection$..row.id <- seq_len(nrow(detection))
 
     # split in false and true positives
     false.positives <-
-      as.data.frame(detection[grep("false.positive", detection$detection.class),])
+      as.data.frame(detection[grep("false.positive", detection$detection.class), ])
     true.positives <-
-      as.data.frame(detection[grep("true.positive", detection$detection.class, FALSE),])
+      as.data.frame(detection[grep("true.positive", detection$detection.class, FALSE), ])
 
     # set clusters for windows OS
-    if (Sys.info()[1] == "Windows" & cores > 1)
-      cl <- parallel::makeCluster(cores) else
+    if (Sys.info()[1] == "Windows" & cores > 1) {
+      cl <- parallel::makeCluster(cores)
+    } else {
       cl <- cores
+    }
 
     # run loop over every detected signal in the reference
     filter_tp_list <-
       warbleR:::pblapply_wrblr_int(X = unique(unlist(
-        sapply(true.positives$reference.row, function(x)
-          unlist(strsplit(x, "-")), USE.NAMES = FALSE)
+        sapply(true.positives$reference.row, function(x) {
+          unlist(strsplit(x, "-"))
+        }, USE.NAMES = FALSE)
       )), cl = cl, pbar = pb, function(x) {
         # get those detection that overlapped with x
         X <-
-          true.positives[vapply(true.positives$reference.row, function(y)
-            any(unlist(strsplit(y, "-")) == x), FUN.VALUE = logical(1)),]
+          true.positives[vapply(true.positives$reference.row, function(y) {
+            any(unlist(strsplit(y, "-")) == x)
+          }, FUN.VALUE = logical(1)), ]
 
         # order by 'by'
-        X <- X[order(X[, by, drop = TRUE], decreasing = TRUE),]
+        X <- X[order(X[, by, drop = TRUE], decreasing = TRUE), ]
 
         # filter
-        if (filter == "max")
-          X <- X[1, , drop = FALSE] else
+        if (filter == "max") {
+          X <- X[1, , drop = FALSE]
+        } else {
           X <- X[nrow(X), , drop = FALSE]
+        }
 
         return(X)
       })
@@ -117,16 +134,16 @@ consensus_detection <-
     # add false positives
     filtered_detection <- rbind(false.positives, filter_tp_df)
 
-    #sort back
+    # sort back
     filtered_detection <-
-      filtered_detection[order(filtered_detection$..row.id),]
+      filtered_detection[order(filtered_detection$..row.id), ]
 
     # convert back to selection table
     if (is_selection_table(detection)) {
-      #keep only those rows in filtered_detections
+      # keep only those rows in filtered_detections
       detection <-
-        detection[detection$..row.id %in% filtered_detection$..row.id,]
-      detection <- detection[order(detection$..row.id),]
+        detection[detection$..row.id %in% filtered_detection$..row.id, ]
+      detection <- detection[order(detection$..row.id), ]
 
       # overwrite labeled_detections
       filtered_detection <- detection

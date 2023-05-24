@@ -29,41 +29,47 @@ The function identifies the rows in the output of a detection routine as true or
 }
 \examples{
 {
-# load data
-data("lbh_reference")
+  # load data
+  data("lbh_reference")
 
-# an extra one in detection (1 false positive)
-label_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
+  # an extra one in detection (1 false positive)
+  label_detection(reference = lbh_reference[-1, ], detection = lbh_reference)
 
-# missing one in detection (all true positives)
-label_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
+  # missing one in detection (all true positives)
+  label_detection(reference = lbh_reference, detection = lbh_reference[-1, ])
 
-# perfect detection (all true positives)
-label_detection(reference = lbh_reference, detection = lbh_reference)
+  # perfect detection (all true positives)
+  label_detection(reference = lbh_reference, detection = lbh_reference)
 
-# and extra sound file in reference (all true positives)
-label_detection(reference = lbh_reference, detection =
-lbh_reference[lbh_reference$sound.files != "lbh1.wav", ])
+  # and extra sound file in reference (all true positives)
+  label_detection(
+    reference = lbh_reference, detection =
+      lbh_reference[lbh_reference$sound.files != "lbh1.wav", ]
+  )
 
-# and extra sound file in detection (some false positives)
-label_detection(reference =
-lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
-detection = lbh_reference)
+  # and extra sound file in detection (some false positives)
+  label_detection(
+    reference =
+      lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
+    detection = lbh_reference
+  )
 
-# duplicate 1 detection row (to get 2 splits)
-detec <- lbh_reference[c(1, seq_len(nrow(lbh_reference))), ]
-detec$selec[1] <- 1.2
-label_detection(reference = lbh_reference,
-detection = detec)
+  # duplicate 1 detection row (to get 2 splits)
+  detec <- lbh_reference[c(1, seq_len(nrow(lbh_reference))), ]
+  detec$selec[1] <- 1.2
+  label_detection(
+    reference = lbh_reference,
+    detection = detec
+  )
 
-# merge 2 detections (to get split and merge)
-Y <- lbh_reference
-Y$end[1] <- 1.2
-label_detection(reference = lbh_reference, detection = Y)
+  # merge 2 detections (to get split and merge)
+  Y <- lbh_reference
+  Y$end[1] <- 1.2
+  label_detection(reference = lbh_reference, detection = Y)
 
-# remove split to get only merge
-Y <- Y[-2, ]
-label_detection(reference = lbh_reference, detection = Y)
+  # remove split to get only merge
+  Y <- Y[-2, ]
+  label_detection(reference = lbh_reference, detection = Y)
 }
 }
 \references{
