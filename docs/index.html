@@ -35,7 +35,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ohun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -52,6 +52,9 @@
 </li>
 <li>
   <a href="reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -79,6 +82,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
+<p><img src="articles/ohun_sticker.png" alt="baRulho logo" align="right" width="25%" height="25%"></p>
 <p><a href="https://github.com/maRce10/ohun">ohun</a> is intended to
 facilitate the automated detection of sound events, providing functions
 to diagnose and optimize detection routines.</p>
@@ -101,8 +105,15 @@ performance</li>
 the tasks among several processors to improve computational efficiency.
 The package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’
 format.</p>
-<p>To install the latest developmental version from <a href="https://github.com/">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes">remotes</a>:</p>
+<p>Install/load the package from CRAN as follows:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># From CRAN would be</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"ohun"</span><span class="op">)</span>
+
+<span class="co">#load package</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></code></pre></div>
+<p>To install the latest developmental version from <a href="https://github.com/">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes">remotes</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span>
 
 <span class="co">#load package</span>
@@ -159,12 +170,13 @@ sound event detection. R package version 0.1.0.</p>
 <li><a href="https://www.repostatus.org/#active"><img src="https://www.repostatus.org/badges/latest/active.svg" alt="Project Status: Active The project has reached a stable, usable state and is being actively developed."></a></li>
 <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html"><img src="https://img.shields.io/badge/licence-GPL--2-blue.svg" alt="Licence"></a></li>
 <li><a href="https://cran.r-project.org/"><img src="https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg" alt="minimal R version"></a></li>
-<li><a href="commits/develop"><img src="https://img.shields.io/badge/Package%20version-0.1.0-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--01--01-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="commits/develop"><img src="https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square" alt="packageversion"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--05--09-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="https://cran.r-project.org/package=ohun"><img src="https://www.r-pkg.org/badges/version/ohun" alt="CRAN_Status_Badge"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/grand-total/ohun"><img src="https://cranlogs.r-pkg.org/badges/grand-total/ohun" alt="Total Downloads"></a></li>
 <li><a href="https://codecov.io/gh/maRce10/ohun?branch=master"><img src="https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
 <li><a href="https://github.com/maRce10/ohun/actions"><img src="https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://github.com/ropensci/software-review/issues/568"><img src="https://badges.ropensci.org/568_status.svg" alt="Status at rOpenSci Software Peer Review"></a></li>
 </ul>
 </div>
 </div>

@@ -68,6 +68,7 @@ label_detection <-
            cores = 1,
            pb = TRUE,
            min.overlap = 0.5) {
+
     if (is_extended_selection_table(reference)) {
       stop2("This function cannot take extended selection tables ('reference' argument)")
     }
@@ -106,7 +107,7 @@ label_detection <-
     }
 
     # no duplicated selection labels
-    if (anyDuplicated(paste(detection$sound.files, detection$selec)) > 0) {
+    if (anyDuplicated(paste(detection$sound.files, detection$selec, detection$template)) > 0) {
       stop2("Duplicated 'selec' labels within at least one sound file in 'detection'")
     }
 
@@ -156,6 +157,9 @@ label_detection <-
         cl = cl,
         X = unique(detection$sound.files),
         FUN = function(z) {
+
+          print(z)
+          #z <- "ch1MPI2020-01-23_10-30-35_0000106.wav"
           # get subset from detection for that sound file
           sub_detec <-
             as.data.frame(detection[detection$sound.files == z, ])
@@ -167,108 +171,112 @@ label_detection <-
               as.data.frame(reference[reference$sound.files == z, ])
 
             ovlp_events <- overlapping_detections(reference = sub_ref, detection = sub_detec)
+
             overlap_iou <- pairs_iou(df = ovlp_events, detection = sub_detec, reference = sub_ref)
 
-            # filter detections below minimum overlap
-            overlap_iou <- overlap_iou[overlap_iou$IoU > min.overlap, ]
+            if (nrow(overlap_iou) > 0){
 
-            sub_detec$detection.class <- vapply(paste(sub_detec$sound.files, sub_detec$selec, sep = "-"), function(y) {
-              # if no reference overlap is a false positive
-              if (sum(overlap_iou$detection.id == y) == 0) detection.class <- "false.positive"
+              # filter detections below minimum overlap
+              overlap_iou <- overlap_iou[overlap_iou$IoU > min.overlap, ]
 
-              # if only one overlapping reference is a true positive
-              if (sum(overlap_iou$detection.id == y) == 1) detection.class <- "true.positive"
+              sub_detec$detection.class <- vapply(paste(sub_detec$sound.files, sub_detec$selec, sep = "-"), function(y) {
+                # if no reference overlap is a false positive
+                if (sum(overlap_iou$detection.id == y) == 0) detection.class <- "false.positive"
 
-              # if more than one overlapping reference is a merged true positive
-              if (sum(overlap_iou$detection.id == y) > 1) detection.class <- "true.positive (merged)"
+                # if only one overlapping reference is a true positive
+                if (sum(overlap_iou$detection.id == y) == 1) detection.class <- "true.positive"
 
-              # if 1 reference overlaps and that reference overlaps with other detections
-              if (sum(overlap_iou$detection.id == y) == 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split)"
+                # if more than one overlapping reference is a merged true positive
+                if (sum(overlap_iou$detection.id == y) > 1) detection.class <- "true.positive (merged)"
 
-              if (sum(overlap_iou$detection.id == y) > 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split/merged)"
+                # if 1 reference overlaps and that reference overlaps with other detections
+                if (sum(overlap_iou$detection.id == y) == 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split)"
 
-              return(detection.class)
-            }, FUN.VALUE = character(1))
+                if (sum(overlap_iou$detection.id == y) > 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split/merged)"
 
-            # use maximum bipartite graph matching to solve ambiguous detections
-            if (any(grepl("split|merge", sub_detec$detection.class))) {
-              ambiguous_detec <- sub_detec[grepl("split|merge", sub_detec$detection.class), ]
-              ambiguous_detec$id <- paste(ambiguous_detec$sound.files, ambiguous_detec$selec, sep = "-")
-              sub_ref$id <- paste(sub_ref$sound.files, sub_ref$selec, sep = "-")
+                return(detection.class)
+              }, FUN.VALUE = character(1))
 
-              ambiguous_overlaps <- overlap_iou[overlap_iou$detection.id %in% ambiguous_detec$id, ]
+              # use maximum bipartite graph matching to solve ambiguous detections
+              if (any(grepl("split|merge", sub_detec$detection.class))) {
+                ambiguous_detec <- sub_detec[grepl("split|merge", sub_detec$detection.class), ]
+                ambiguous_detec$id <- paste(ambiguous_detec$sound.files, ambiguous_detec$selec, sep = "-")
+                sub_ref$id <- paste(sub_ref$sound.files, sub_ref$selec, sep = "-")
 
-              ambiguous_ref <- sub_ref[sub_ref$id %in% ambiguous_overlaps$reference.id, ]
+                ambiguous_overlaps <- overlap_iou[overlap_iou$detection.id %in% ambiguous_detec$id, ]
 
-              # get matrix to find maximum bipartite graph
-              ovlp_mat <-
-                matrix(
-                  rep(0, (
-                    nrow(ambiguous_detec) * nrow(ambiguous_ref)
-                  )),
-                  ncol = nrow(ambiguous_ref),
-                  dimnames = list(ambiguous_detec$id, ambiguous_ref$id)
-                )
-              #
-              # fill out with proportion of overlap for those in which overlap was already calculated
-              for (i in seq_len(nrow(ambiguous_overlaps))) {
-                ovlp_mat[rownames(ovlp_mat) == ambiguous_overlaps$detection.id[i], colnames(ovlp_mat) == ambiguous_overlaps$reference.id[i]] <- ambiguous_overlaps$IoU[i]
-              }
+                ambiguous_ref <- sub_ref[sub_ref$id %in% ambiguous_overlaps$reference.id, ]
 
-              # convert overlaps == 1 to 0.9999 (igraph ignores those equal to 1)
-              # org_ovlp_mat <- ovlp_mat
-              ovlp_mat[ovlp_mat >= 1] <- 0.99999
+                # get matrix to find maximum bipartite graph
+                ovlp_mat <-
+                  matrix(
+                    rep(0, (
+                      nrow(ambiguous_detec) * nrow(ambiguous_ref)
+                    )),
+                    ncol = nrow(ambiguous_ref),
+                    dimnames = list(ambiguous_detec$id, ambiguous_ref$id)
+                  )
+                #
+                # fill out with proportion of overlap for those in which overlap was already calculated
+                for (i in seq_len(nrow(ambiguous_overlaps))) {
+                  ovlp_mat[rownames(ovlp_mat) == ambiguous_overlaps$detection.id[i], colnames(ovlp_mat) == ambiguous_overlaps$reference.id[i]] <- ambiguous_overlaps$IoU[i]
+                }
 
-              # convert to graph
-              ovlp_graph <-
-                igraph::graph_from_incidence_matrix(ovlp_mat)
+                # convert overlaps == 1 to 0.9999 (igraph ignores those equal to 1)
+                # org_ovlp_mat <- ovlp_mat
+                ovlp_mat[ovlp_mat >= 1] <- 0.99999
 
-              # convert to data frame
-              df_ovlp_graph <- igraph::as_data_frame(ovlp_graph)
+                # convert to graph
+                ovlp_graph <-
+                  igraph::graph_from_incidence_matrix(ovlp_mat)
 
-              # add amount of overlap as weights
-              igraph::E(ovlp_graph)$weight <-
-                vapply(seq_len(nrow(df_ovlp_graph)), function(x) {
-                  ovlp_mat[df_ovlp_graph$from[x], df_ovlp_graph$to[x]]
-                }, FUN.VALUE = numeric(1))
-              #
-              #   # plot just to troubleshoot
-              #   # plot.igraph(ovlp_graph, layout = layout_as_bipartite,
-              #   #             vertex.color=c("green","cyan")[V(ovlp_graph)$type+1], edge.width=(3*E(g)$weight), vertex.size = 40)
-              #
-              #   # get maximum bipartite graph
-              bigraph_results <-
-                igraph::max_bipartite_match(ovlp_graph)$matching
+                # convert to data frame
+                df_ovlp_graph <- igraph::as_data_frame(ovlp_graph)
 
-              # keep only detection results
-              bigraph_results <-
-                bigraph_results[1:nrow(ovlp_mat)]
+                # add amount of overlap as weights
+                igraph::E(ovlp_graph)$weight <-
+                  vapply(seq_len(nrow(df_ovlp_graph)), function(x) {
+                    ovlp_mat[df_ovlp_graph$from[x], df_ovlp_graph$to[x]]
+                  }, FUN.VALUE = numeric(1))
+                #
+                #   # plot just to troubleshoot
+                #   # plot.igraph(ovlp_graph, layout = layout_as_bipartite,
+                #   #             vertex.color=c("green","cyan")[V(ovlp_graph)$type+1], edge.width=(3*E(g)$weight), vertex.size = 40)
+                #
+                #   # get maximum bipartite graph
+                bigraph_results <-
+                  igraph::max_bipartite_match(ovlp_graph)$matching
 
-              # keep only true positive overlaps
-              overlap_iou <- overlap_iou[paste(overlap_iou$detection.id, overlap_iou$reference.id) %in% paste(names(bigraph_results), bigraph_results) | !overlap_iou$detection.id %in% ambiguous_detec$id, ]
+                # keep only detection results
+                bigraph_results <-
+                  bigraph_results[1:nrow(ovlp_mat)]
 
-              # get those that change to false positives
-              bigraph_false_positives <-
-                names(bigraph_results)[is.na(bigraph_results)]
+                # keep only true positive overlaps
+                overlap_iou <- overlap_iou[paste(overlap_iou$detection.id, overlap_iou$reference.id) %in% paste(names(bigraph_results), bigraph_results) | !overlap_iou$detection.id %in% ambiguous_detec$id, ]
 
-              if (length(bigraph_false_positives) > 0) {
-                sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "false.positive", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
+                # get those that change to false positives
+                bigraph_false_positives <-
+                  names(bigraph_results)[is.na(bigraph_results)]
+
+                if (length(bigraph_false_positives) > 0) {
+                  sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "false.positive", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
+                }
               }
             }
-          } else {
+          } else overlap_iou <- data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())
+
+          if (nrow(overlap_iou) == 0)
             sub_detec$detection.class <- "false.positive"
 
-            overlap_iou <- data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())
-          }
 
           if (any(grepl("true.positive", sub_detec$detection.class))) {
             sub_detec$overlap <- vapply(seq_len(nrow(sub_detec)),
-              function(x) {
-                ovlp <- overlap_iou$IoU[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
-                if (length(ovlp) == 0) ovlp <- NA
-                return(ovlp)
-              },
-              FUN.VALUE = numeric(1)
+                                        function(x) {
+                                          ovlp <- overlap_iou$IoU[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
+                                          if (length(ovlp) == 0) ovlp <- NA
+                                          return(ovlp)
+                                        },
+                                        FUN.VALUE = numeric(1)
             )
           } else {
             sub_detec$overlap <- NA

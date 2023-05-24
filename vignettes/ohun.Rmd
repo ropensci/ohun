@@ -775,7 +775,7 @@ correlations <-
 &nbsp;
 
 Note that in these cases we can get the same sound event detected several times (duplicates), one by each template. We can check if that is the case just by diagnosing the detection:
-```{r}
+```{r, warning=FALSE}
 
 #diagnose
 diagnose_detection(reference = lbh_reference, detection = detection)

@@ -260,20 +260,25 @@ calculate_iou <- function(reference, detection) {
 
 # calculate intersection by union overlap for several pairs
 pairs_iou <- function(df, detection, reference) {
-  detection$id <- paste(detection$sound.files, detection$selec, sep = "-")
-  reference$id <- paste(reference$sound.files, reference$selec, sep = "-")
 
-  iou_values <- sapply(1:nrow(df), function(i) {
-    detection.id <- df$detection.id[i]
-    reference.id <- df$reference.id[i]
+  if (!is.null(df)){
+    detection$id <- paste(detection$sound.files, detection$selec, sep = "-")
+    reference$id <- paste(reference$sound.files, reference$selec, sep = "-")
 
-    detection_event <- detection[detection$id == detection.id, ]
-    ground_truth_event <- reference[reference$id == reference.id, ]
+    iou_values <- sapply(1:nrow(df), function(i) {
+      detection.id <- df$detection.id[i]
+      reference.id <- df$reference.id[i]
 
-    iou <- calculate_iou(detection_event, ground_truth_event)
-    return(iou)
-  })
+      detection_event <- detection[detection$id == detection.id, ]
+      ground_truth_event <- reference[reference$id == reference.id, ]
 
-  df$IoU <- iou_values
+      iou <- calculate_iou(detection_event, ground_truth_event)
+      return(iou)
+    })
+
+    df$IoU <- iou_values
+  } else
+    df <-  data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())
+
   return(df)
 }

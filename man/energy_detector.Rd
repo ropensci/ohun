@@ -60,6 +60,65 @@ The function returns a 'selection_table' (warbleR package's formats, see \code{\
 \details{
 This function detects the time position of target sound events based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
 }
+\examples{
+\donttest{
+# Save example files into temporary working directory
+data("lbh1", "lbh2", "lbh_reference")
+writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
+# using smoothing and minimum duration
+detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
+path = tempdir(), threshold = 60, smooth = 6.8,
+bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+
+# diagnose detection
+diagnose_detection(reference = lbh_reference,
+detection = detec)
+
+# without declaring 'files'
+detec <- energy_detector(path = tempdir(), threshold = 60, smooth = 6.8,
+bp = c(2, 9), hop.size = 6.8, min.duration = 90)
+
+# diagnose detection
+diagnose_detection(reference = lbh_reference,
+detection = detec)
+
+# using hold time
+detec <- energy_detector(threshold = 10, hold.time = 150,
+bp = c(2, 9), hop.size = 6.8, path = tempdir())
+
+# diagnose detection
+diagnose_detection(reference = lbh_reference, detection = detec)
+
+# calculate envelopes first
+envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
+
+# then run detection providing 'envelopes' (but no 'files')
+detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)
+
+# diagnose detection
+diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
+
+\dontrun{
+# USIN OTHER SOUND FILE FORMAT (flac program must be installed)
+ # fisrt convert files to flac
+ warbleR::wav_2_flac(path = tempdir())
+
+ # change sound file extension to flac
+ flac_reference <- lbh_reference
+ flac_reference$sound.files <- gsub(".wav", ".flac", flac_reference$sound.files)
+
+ # run detection
+ detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,
+ smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
+
+ # diagnose detection
+ diagnose_detection(reference = flac_reference, detection = detec)
+ }
+}
+
+}
 \references{
 {
 Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253

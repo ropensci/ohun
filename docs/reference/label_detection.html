@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ohun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -91,6 +91,9 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -122,7 +125,7 @@
     <p><code>label_detection</code> labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table</p>
     </div>
 
-    <pre class="usage"><span class='fu'>label_detection</span><span class='op'>(</span><span class='va'>reference</span>, <span class='va'>detection</span>, cores <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>label_detection</span><span class='op'>(</span><span class='va'>reference</span>, <span class='va'>detection</span>, cores <span class='op'>=</span> <span class='fl'>1</span>, pb <span class='op'>=</span> <span class='cn'>TRUE</span>, min.overlap <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -144,16 +147,15 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
       <th>pb</th>
       <td><p>Logical argument to control progress bar. Default is <code>TRUE</code>.</p></td>
     </tr>
+    <tr>
+      <th>min.overlap</th>
+      <td><p>Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see <code><a href='https://marce10.github.io/warbleR/reference/selection_table.html'>selection_table</a></code>) including the columns in 'detection' plus 3 additional columns:</p><ul>
-<li><p><code>detection.class</code>: indicates the class of each detection. Eight possible labels: 'true.positive', 'false.positive', 'true.positive (split)', 'true.positive (merged)',  'true.positive (split/merged)', 'false.positive (split)', 'false.positive (merged)' and 'galse.positive (split/merged)'.  See <code><a href='diagnose_detection.html'>diagnose_detection</a></code> for a description.</p></li>
-<li><p><code>reference.row</code>: contains the index of the row in 'reference' of the reference sound event that is overlapped in time by the detection (not supplied for false positives).</p></li>
-<li><p><code>overlap</code>: contains the proportion of the reference sound event that is overlapped in time by the detection (not supplied for false positives).</p></li>
-</ul>
-
+    <p>A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see <code><a href='https://marce10.github.io/warbleR/reference/selection_table.html'>selection_table</a></code>) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See <code><a href='diagnose_detection.html'>diagnose_detection</a></code> for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.</p>
@@ -168,42 +170,67 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
     <p>Marcelo Araya-Salas <a href='mailto:marcelo.araya@ucr.ac.cr'>marcelo.araya@ucr.ac.cr</a>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='op'>{</span>
-<span class='co'># load data</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"lbh_reference"</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='op'>{</span>
+  <span class='co'># load data</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"lbh_reference"</span><span class='op'>)</span>
 
-<span class='co'># an extra one in detection (1 false positive)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>)</span>
+  <span class='co'># an extra one in detection (1 false positive)</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>)</span>
 
-<span class='co'># missing one in detection (all true positives)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span>
+  <span class='co'># missing one in detection (all true positives)</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>1</span>, <span class='op'>]</span><span class='op'>)</span>
 
-<span class='co'># perfect detection (all true positives)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>)</span>
+  <span class='co'># perfect detection (all true positives)</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>)</span>
 
-<span class='co'># and extra sound file in reference (all true positives)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span>
-<span class='va'>lbh_reference</span><span class='op'>[</span><span class='va'>lbh_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"lbh1.wav"</span>, <span class='op'>]</span><span class='op'>)</span>
+  <span class='co'># and extra sound file in reference (all true positives)</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>
+    reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span>
+      <span class='va'>lbh_reference</span><span class='op'>[</span><span class='va'>lbh_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"lbh1.wav"</span>, <span class='op'>]</span>
+  <span class='op'>)</span>
 
-<span class='co'># and extra sound file in detection (some false positives)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span>
-<span class='va'>lbh_reference</span><span class='op'>[</span><span class='va'>lbh_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"lbh1.wav"</span>, <span class='op'>]</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>)</span>
+  <span class='co'># and extra sound file in detection (some false positives)</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>
+    reference <span class='op'>=</span>
+      <span class='va'>lbh_reference</span><span class='op'>[</span><span class='va'>lbh_reference</span><span class='op'>$</span><span class='va'>sound.files</span> <span class='op'>!=</span> <span class='st'>"lbh1.wav"</span>, <span class='op'>]</span>,
+    detection <span class='op'>=</span> <span class='va'>lbh_reference</span>
+  <span class='op'>)</span>
 
-<span class='co'># duplicate 1 detection row (to get 2 splits)</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>,
-detection <span class='op'>=</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>lbh_reference</span><span class='op'>)</span><span class='op'>)</span>, <span class='op'>]</span><span class='op'>)</span>
+  <span class='co'># duplicate 1 detection row (to get 2 splits)</span>
+  <span class='va'>detec</span> <span class='op'>&lt;-</span> <span class='va'>lbh_reference</span><span class='op'>[</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq_len</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>lbh_reference</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>, <span class='op'>]</span>
+  <span class='va'>detec</span><span class='op'>$</span><span class='va'>selec</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1.2</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>
+    reference <span class='op'>=</span> <span class='va'>lbh_reference</span>,
+    detection <span class='op'>=</span> <span class='va'>detec</span>
+  <span class='op'>)</span>
 
-<span class='co'># merge 2 detections (to get split and merge)</span>
-<span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>lbh_reference</span>
-<span class='va'>Y</span><span class='op'>$</span><span class='va'>end</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1.2</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
+  <span class='co'># merge 2 detections (to get split and merge)</span>
+  <span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>lbh_reference</span>
+  <span class='va'>Y</span><span class='op'>$</span><span class='va'>end</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1.2</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
 
-<span class='co'># remove split to get only merge</span>
-<span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>Y</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span>, <span class='op'>]</span>
-<span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
+  <span class='co'># remove split to get only merge</span>
+  <span class='va'>Y</span> <span class='op'>&lt;-</span> <span class='va'>Y</span><span class='op'>[</span><span class='op'>-</span><span class='fl'>2</span>, <span class='op'>]</span>
+  <span class='fu'>label_detection</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, detection <span class='op'>=</span> <span class='va'>Y</span><span class='op'>)</span>
 <span class='op'>}</span>
-</pre>
+</div><div class='output co'>#&gt; <span style='color: #000000;'>Object of class </span><span style='color: #000000; font-weight: bold;'>'selection_table' 
+#&gt; </span><span style='color: #555555;'>* The output of the following call: 
+#&gt; </span><span style='color: #555555; font-style: italic;'>label_detection(reference = lbh_reference, detection = Y) 
+#&gt; </span><span style='color: #555555; font-weight: bold;'>
+#&gt; Contains:</span><span style='color: #555555;'> 
+#&gt; *  A selection table data frame with 18 rows and 8 columns: 
+#&gt; |sound.files | selec|  start|    end| bottom.freq| top.freq|
+#&gt; |:-----------|-----:|------:|------:|-----------:|--------:|
+#&gt; |lbh2.wav    |     1| 0.1092| 1.2000|      2.2954|   8.9382|
+#&gt; |lbh2.wav    |     3| 1.2658| 1.3856|      2.2606|   9.0774|
+#&gt; |lbh2.wav    |     4| 1.8697| 2.0053|      2.1911|   8.9035|
+#&gt; |lbh2.wav    |     5| 2.4418| 2.5809|      2.1563|   8.6600|
+#&gt; |lbh2.wav    |     6| 3.0368| 3.1689|      2.2259|   8.9382|
+#&gt; |lbh2.wav    |     7| 3.6286| 3.7466|      2.3302|   8.6252|
+#&gt; ... 2 more column(s) (detection.class, overlap) and 12 more row(s) 
+#&gt; 
+#&gt;  * A data frame (check.results) generated by check_sels() (as attribute) 
+#&gt; created by warbleR &lt; 1.1.21</span></div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
