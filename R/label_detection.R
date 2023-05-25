@@ -158,9 +158,7 @@ label_detection <-
         X = unique(detection$sound.files),
         FUN = function(z) {
 
-          print(z)
-          #z <- "ch1MPI2020-01-23_10-30-35_0000106.wav"
-          # get subset from detection for that sound file
+       # get subset from detection for that sound file
           sub_detec <-
             as.data.frame(detection[detection$sound.files == z, ])
 
