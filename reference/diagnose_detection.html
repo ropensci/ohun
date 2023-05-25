@@ -115,7 +115,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <li><p><code>mean.duration.true.positives</code>: mean duration of true positives (in ms). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>mean.duration.false.positives</code>: mean duration of false positives (in ms). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
 <li><p><code>mean.duration.false.negatives</code>: mean duration of false negatives (in ms). Only included when <code>time.diagnostics = TRUE</code>.</p></li>
-<li><p><code>overlap</code>: ratio of the time overlap of true positives in 'detection' with its corresponding reference sound event to the duration of the reference sound event.</p></li>
+<li><p><code>overlap</code>: mean intersection over union overlap of true positives.</p></li>
 <li><p><code>proportional.duration.true.positives</code>: ratio of duration of true positives to the duration of sound events in 'reference'. In a perfect detection routine it should be 1. Based only on true positives that were not split or merged.</p></li>
 <li><p><code>duty.cycle</code>: proportion of a sound file in which sounds were detected. Only included when <code>time.diagnostics = TRUE</code> and <code>path</code> is supplied. Useful when conducting energy-based detection as a perfect detection can be obtained with a very low amplitude threshold, which will detect everything, but will produce a duty cycle close to 1.</p></li>
 <li><p><code>recall</code>: Proportion of sound events in 'reference' that were detected. In a perfect detection routine it should be 1.</p></li>
