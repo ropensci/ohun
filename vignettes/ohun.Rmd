@@ -71,13 +71,16 @@ remotes::install_github("maRce10/ohun")
 
 #load packages
 library(ohun)
-
+library(tuneR)
+library(warbleR)
 ```
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
 
 #load packages
 library(ohun)
+library(tuneR)
+library(warbleR)
 
 load("../data/lbh2.rda")
 load("../data/lbh1.rda")
