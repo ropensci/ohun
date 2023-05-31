@@ -5,8 +5,6 @@ author:
 - <a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a>
 date:  "`r Sys.Date()`"
 output:
-  # rmarkdown::html_vignette:
-  #   toc: true
   rmarkdown::html_document:
     css: extra.css
     self_contained: yes
