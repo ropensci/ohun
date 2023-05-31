@@ -1,5 +1,5 @@
 ---
-title: ohun&#x3A; optimizing sound event detection
+title: "ohun: optimizing sound event detection"
 pagetitle: Introduction to ohun
 author: 
 - <a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a>
