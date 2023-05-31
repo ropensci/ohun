@@ -63,19 +63,20 @@ All functions allow the parallelization of tasks, which distributes the tasks am
 --- 
 
 To install the latest developmental version from [github](https://github.com/) you will need the R package [remotes](https://cran.r-project.org/package=devtools):
+
 ```{r, eval = FALSE}
 
-# install pacakge
+# install package
 remotes::install_github("maRce10/ohun")
 
-#load package
+#load packages
 library(ohun)
 
 ```
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
 
-#load package
+#load packages
 library(ohun)
 
 load("../data/lbh2.rda")
