@@ -1,8 +1,10 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
+data("lbh_reference")
 
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 test_that("default output", {
   data("lbh_reference")

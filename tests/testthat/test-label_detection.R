@@ -1,11 +1,10 @@
-
+data(lbh1, package = "ohun")
+data(lbh2, package = "ohun")
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 test_that("1 false negative", {
-  data(lbh1, package = "ohun")
-  data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
   # EXAMPLES
   lsr <- selection_table(lbh_reference, path = tempdir())
 
@@ -21,11 +20,6 @@ test_that("1 false negative", {
 
 
 test_that("perfect detection", {
-  data(lbh1, package = "ohun")
-  data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
   # EXAMPLES
   lsr <- selection_table(lbh_reference, path = tempdir())
 

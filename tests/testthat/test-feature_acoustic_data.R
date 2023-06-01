@@ -1,8 +1,8 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
+# save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 test_that("default output", {
   expect_null(fad <- feature_acoustic_data(path = tempdir()))

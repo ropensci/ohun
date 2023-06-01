@@ -1,12 +1,10 @@
 test_that("1 template", {
-
-
   data(lbh1, package = "ohun")
   data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
-  data("lbh_reference", "lbh1")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   # template for the first sound file in 'lbh_reference'
   # generate template correlations
@@ -29,10 +27,10 @@ test_that("1 template", {
 test_that("2 templates", {
   data(lbh1, package = "ohun")
   data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
-  data("lbh_reference", "lbh1")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   # template for the fourth sound file in 'lbh_reference'
   # generate template correlations

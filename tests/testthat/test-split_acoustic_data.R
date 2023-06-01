@@ -1,7 +1,9 @@
-data(lbh1, package = "ohun")
-data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
+test_that("split files", {
+  data(lbh1, package = "ohun")
+  data(lbh2, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 
 test_that("split files", {
@@ -28,14 +30,14 @@ test_that("split files", {
 
 })
 
-data(lbh1, package = "ohun")
-data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
 
 test_that("split files and annotations", {
-  data("lbh_reference")
+  data(lbh1, package = "ohun")
+  data(lbh2, package = "ohun")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   #split files in 1 s files
   sad <-
