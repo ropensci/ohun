@@ -29,7 +29,7 @@ test_that("output size by sound file", {
 })
 
 
-test_that("right recall, precision and f1.score", {
+test_that("right recall, precision and f.score", {
   # perfect detection
   dd <-
     diagnose_detection(
@@ -39,9 +39,9 @@ test_that("right recall, precision and f1.score", {
       by.sound.file = FALSE
     )
 
-  expect_length(dd$recall, 1)
-  expect_length(dd$precision, 1)
-  expect_length(dd$f1.score, 1)
+  expect_equal(dd$recall, 1)
+  expect_equal(dd$precision, 1)
+  expect_equal(dd$f.score, 1)
 
   dd <-
     diagnose_detection(
@@ -50,12 +50,12 @@ test_that("right recall, precision and f1.score", {
       time.diagnostics = TRUE,
       by.sound.file = FALSE
     )
-  expect_lt(abs(dd$f1.score - 0.972973), 0.001)
+  expect_lt(abs(dd$f.score - 0.972973), 0.001)
 
 })
 
 
-test_that("right recall, precision and f1.score by sound files", {
+test_that("right recall, precision and f.score by sound files", {
   # by sound file
   dd <-
     diagnose_detection(
@@ -67,5 +67,5 @@ test_that("right recall, precision and f1.score by sound files", {
 
   expect_equal(dd$recall, c(1, 1))
   expect_equal(dd$precision, c(1, 1))
-  expect_equal(dd$f1.score, c(1, 1))
+  expect_equal(dd$f.score, c(1, 1))
 })
