@@ -1,6 +1,6 @@
 test_that("output size summarized", {
   # EXAMPLES
-  data("lbh_reference")
+  data(lbh_reference, package = "ohun")
 
   # perfect detection
   dd <-
@@ -15,6 +15,8 @@ test_that("output size summarized", {
 })
 
 test_that("output size by sound file", {
+  data(lbh_reference, package = "ohun")
+
   # by sound file
   dd <-
     diagnose_detection(
@@ -30,6 +32,8 @@ test_that("output size by sound file", {
 
 
 test_that("right recall, precision and f.score", {
+  data(lbh_reference, package = "ohun")
+
   # perfect detection
   dd <-
     diagnose_detection(
@@ -56,6 +60,8 @@ test_that("right recall, precision and f.score", {
 
 
 test_that("right recall, precision and f.score by sound files", {
+  data(lbh_reference, package = "ohun")
+
   # by sound file
   dd <-
     diagnose_detection(

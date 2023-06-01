@@ -1,6 +1,6 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-data("lbh_reference")
+data(lbh_reference, package = "ohun")
 
 #save sound files
 tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
