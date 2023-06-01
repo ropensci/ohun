@@ -16,7 +16,7 @@ test_that("default output", {
     )
   )
 
-  expect_true(is.list(envs))
+  expect_type(envs, 'list')
 
   expect_length(envs, 3)
 
