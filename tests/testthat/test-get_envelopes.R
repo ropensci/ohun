@@ -19,7 +19,7 @@ test_that("default output", {
 
   expect_true(is.list(envs))
 
-  expect_true(length(envs) == 3)
+  expect_length(envs, 3)
 
-  expect_true(length(attributes(envs)$names) == 3)
+  expect_length(attributes(envs)$names, 3)
 })

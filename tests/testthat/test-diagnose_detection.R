@@ -42,6 +42,9 @@ test_that("right recall, precision and f1.score", {
   expect_equal(dd$recall, 1)
   expect_equal(dd$precision, 1)
   expect_equal(dd$f1.score, 1)
+  expect_length(dd$recall, 1)
+  expect_length(dd$precision, 1)
+  expect_length(dd$f1.score, 1)
 
   dd <-
     diagnose_detection(

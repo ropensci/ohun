@@ -24,7 +24,7 @@ test_that("split files", {
 
   expect_true(nrow(sad) == 10)
 
-  expect_true(length(fls) == 12)
+  expect_length(fls, 12)
 
 })
 
@@ -60,6 +60,6 @@ test_that("split files and annotations", {
 
   expect_true(nrow(sad) == 20)
 
-  expect_true(length(fls) == 12)
+  expect_length(fls, 12)
 
 })

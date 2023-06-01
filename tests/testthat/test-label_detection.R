@@ -14,7 +14,7 @@ test_that("1 false negative", {
 
   expect_true(is_selection_table(ld))
 
-  expect_true(nrow(ld) == 19)
+  expect_length(nrow(ld), 19)
 
   expect_equal(as.vector(table(ld$detection.class)), c(1, 18))
 })
