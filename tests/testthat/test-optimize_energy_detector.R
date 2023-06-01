@@ -20,7 +20,7 @@ test_that("nothing to merge", {
       by.sound.file = FALSE
     )
 
-  expect_true(is.data.frame(oed))
+  expect_s3_class(oed, 'data.frame')
 
   expect_true(nrow(oed) == 4)
 

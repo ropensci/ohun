@@ -12,7 +12,7 @@ test_that("1 false negative", {
   # an extra one in detection (1 false positive)
   ld <- label_detection(reference = lsr[-1,], detection = lsr)
 
-  expect_true(is_selection_table(ld))
+  expect_s3_class(ld, 'selection_table')
 
   expect_length(nrow(ld), 19)
 
@@ -40,7 +40,7 @@ test_that("perfect detection", {
     )
   )
 
-  expect_true(is_selection_table(ld))
+  expect_s3_class(ld, 'selection_table')
 
   expect_true(all(ld$detection.class == "true.positive"))
 

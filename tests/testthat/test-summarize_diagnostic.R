@@ -26,7 +26,7 @@ test_that("split files", {
     )
   )
 
-  expect_true(is.data.frame(sdai))
+  expect_s3_class(sdai, 'data.frame')
 
   expect_true(nrow(sdai) == 1)
 

@@ -16,11 +16,11 @@ test_that("1 template", {
   # template detection
   td <-
     template_detector(template.correlations = tc, threshold = 0.4)
-  expect_true(is.data.frame(td))
 
-  expect_true(is_selection_table(td))
+  expect_s3_class(td, 'selection_table')
 
   expect_true(nrow(td) == 22)
+  expect_s3_class(td, 'data.frame')
 
 })
 
@@ -50,9 +50,9 @@ test_that("2 templates", {
     )
   )
 
-  expect_true(is.data.frame(td))
 
-  expect_true(is_selection_table(td))
+  expect_s3_class(td, 'selection_table')
 
   expect_true(nrow(td) == 42)
+  expect_s3_class(td, 'data.frame')
 })

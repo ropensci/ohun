@@ -38,7 +38,7 @@ test_that("default output", {
     )
   )
 
-  expect_true(is.data.frame(ftd))
+  expect_s3_class(ftd, 'data.frame')
 
   expect_true(nrow(ftd) == 43)
 

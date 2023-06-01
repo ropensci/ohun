@@ -21,7 +21,7 @@ test_that("1 template", {
       threshold = c(0.2, 0.5, 0.6)
     )
 
-  expect_true(is.data.frame(otp))
+  expect_s3_class(otp, 'data.frame')
 
   expect_true(nrow(otp) == 3)
 
@@ -59,7 +59,7 @@ test_that("2 templates", {
     )
   )
 
-  expect_true(is.data.frame(otp))
+  expect_s3_class(otp, 'data.frame')
 
   expect_true(nrow(otp) == 6)
 
