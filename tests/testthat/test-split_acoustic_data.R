@@ -6,7 +6,6 @@ test_that("split files", {
   tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 
-test_that("split files", {
   #split files in 1 s files
   sad <- split_acoustic_data(sgmt.dur = 1, path = tempdir())
 
@@ -22,7 +21,7 @@ test_that("split files", {
     )
   )
 
-  expect_true(is.data.frame(sad))
+  expect_s3_class(sad, 'data.frame')
 
   expect_equal(nrow(sad), 10)
 
@@ -57,8 +56,7 @@ test_that("split files and annotations", {
     )
   )
 
-  expect_true(is.data.frame(sad))
-
+  expect_s3_class(sad, 'data.frame')
 
   expect_equal(nrow(sad), 20)
 
