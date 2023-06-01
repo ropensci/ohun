@@ -98,11 +98,16 @@ test_that("calculate envelopes first", {
 })
 
 
+skip_if_windows <- function() {
+  if (Sys.info()[1] == "Windows") {
+    skip('Skipping on Windows')
+  }
+}
 
 test_that("convert files to flac", {
+  skip_if_windows()
 
-  if (Sys.info()[1] != "Windows"){
-   warbleR::wav_2_flac(path = tempdir())
+  warbleR::wav_2_flac(path = tempdir())
 
   # change sound file extension to flac
   flac_reference <- lbh_reference
@@ -131,7 +136,6 @@ test_that("convert files to flac", {
     )
   )
 
-  expect_equal(nrow(detec4), 8)} else
-    expect_true(TRUE)
+  expect_equal(nrow(detec4), 8)
 
 })
