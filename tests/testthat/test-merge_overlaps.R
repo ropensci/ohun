@@ -6,7 +6,7 @@ test_that("nothing to merge", {
 
   expect_s3_class(mo, 'selection_table')
 
-  expect_true(nrow(mo) == 19)
+  expect_equal(nrow(mo), 19)
 
 })
 
@@ -26,8 +26,7 @@ test_that("merging", {
   mo <- merge_overlaps(X = lbh_reference2)
 
 
-
-  expect_true(nrow(mo) == 2)
   expect_s3_class(mo, 'data.frame')
+  expect_equal(nrow(mo), 2)
 
 })

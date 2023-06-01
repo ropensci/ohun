@@ -42,7 +42,7 @@ test_that("perfect detection", {
 
   expect_s3_class(ld, 'selection_table')
 
-  expect_true(all(ld$detection.class == "true.positive"))
+  expect_match(ld$detection.class, 'true.positive')
 
 })
 

@@ -12,7 +12,7 @@ test_that("measuring PCA on the fly", {
 
   expect_s3_class(template, 'data.frame')
 
-  expect_true(nrow(template) == 4)
+  expect_equal(nrow(template), 4)
 
 })
 
@@ -49,6 +49,6 @@ test_that("measuring PCA a priori", {
 
   expect_s3_class(template, 'selection_table')
 
-  expect_true(nrow(template) == 5)
+  expect_equal(nrow(template), 5)
 
 })

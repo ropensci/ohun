@@ -22,7 +22,7 @@ test_that("nothing to merge", {
 
   expect_s3_class(oed, 'data.frame')
 
-  expect_true(nrow(oed) == 4)
+  expect_equal(nrow(oed), 4)
 
   expect_true(all(oed$recall == 1))
 
@@ -54,7 +54,7 @@ test_that("including previous output in new call", {
       path = tempdir()
     )
 
-  expect_true(nrow(oed) == 6)
+  expect_equal(nrow(oed), 6)
 
   unlink(
     list.files(

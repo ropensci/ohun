@@ -22,7 +22,7 @@ test_that("split files", {
 
   expect_true(is.data.frame(sad))
 
-  expect_true(nrow(sad) == 10)
+  expect_equal(nrow(sad), 10)
 
   expect_length(fls, 12)
 
@@ -58,7 +58,7 @@ test_that("split files and annotations", {
   expect_true(is.data.frame(sad))
 
 
-  expect_true(nrow(sad) == 20)
+  expect_equal(nrow(sad), 20)
 
   expect_length(fls, 12)
 

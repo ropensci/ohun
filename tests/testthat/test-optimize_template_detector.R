@@ -23,7 +23,7 @@ test_that("1 template", {
 
   expect_s3_class(otp, 'data.frame')
 
-  expect_true(nrow(otp) == 3)
+  expect_equal(nrow(otp), 3)
 
   expect_true(all(otp$f1.score > 0.68))
 })
@@ -61,7 +61,7 @@ test_that("2 templates", {
 
   expect_s3_class(otp, 'data.frame')
 
-  expect_true(nrow(otp) == 6)
+  expect_equal(nrow(otp), 6)
 
   expect_true(all(otp$f1.score > 0.64))
 })

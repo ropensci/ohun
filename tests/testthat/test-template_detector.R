@@ -19,8 +19,9 @@ test_that("1 template", {
 
   expect_s3_class(td, 'selection_table')
 
-  expect_true(nrow(td) == 22)
   expect_s3_class(td, 'data.frame')
+
+  expect_equal(nrow(td), 22)
 
 })
 
@@ -53,6 +54,7 @@ test_that("2 templates", {
 
   expect_s3_class(td, 'selection_table')
 
-  expect_true(nrow(td) == 42)
   expect_s3_class(td, 'data.frame')
+
+  expect_equal(nrow(td), 42)
 })

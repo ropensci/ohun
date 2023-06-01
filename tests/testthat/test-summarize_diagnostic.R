@@ -28,8 +28,8 @@ test_that("split files", {
 
   expect_s3_class(sdai, 'data.frame')
 
-  expect_true(nrow(sdai) == 1)
+  expect_equal(nrow(sdai), 1)
 
-  expect_true(ncol(sdai) == 10)
+  expect_equal(ncol(sdai), 10)
 
 })

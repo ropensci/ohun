@@ -40,7 +40,7 @@ test_that("default output", {
 
   expect_s3_class(ftd, 'data.frame')
 
-  expect_true(nrow(ftd) == 43)
+  expect_equal(nrow(ftd), 43)
 
-  expect_true(ncol(ftd) == 9)
+  expect_equal(ncol(ftd), 9)
 })
