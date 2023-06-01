@@ -93,8 +93,6 @@ stopifnot(require(knitr))
 options(width = 90)
 opts_chunk$set(
   comment = NA,
-  message = FALSE,
-  warning = FALSE,
   # eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
   dev = "jpeg",
   dpi = 100,
@@ -461,8 +459,8 @@ label_spectro(wave = simulated_1,  detection = detection)
 
 
 Amplitude modulation (variation in amplitude across a sound event) can be problematic for detection based on amplitude envelopes. We can also simulate some amplitude modulation using `warbleR::simulate_songs()`:
-```{r, eval = TRUE, warning=FALSE, message=FALSE}
 
+```{r, eval = TRUE}
 #Creating simulated song
 set.seed(12)
 
@@ -664,8 +662,8 @@ detection
 
 
 The output can be explored by plotting the spectrogram along with the detection and correlation scores:
-```{r, warning=FALSE}
 
+```{r}
 # plot spectrogram
 label_spectro(
   wave = lbh1,
