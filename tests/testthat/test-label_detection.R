@@ -62,7 +62,7 @@ test_that("bipartite matching", {
   # diagnose
   ld <- label_detection(reference = ref, detection = det)
 
-  expect_true(sum(ld$detection.class == "true.positive") == 2)
+  expect_equal(sum(ld$detection.class == "true.positive"), 2)
 
 
 })
