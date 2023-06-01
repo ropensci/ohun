@@ -6,9 +6,8 @@ tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
 tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 
-test_that("nothing to merge", {
-  data("lbh_reference", "lbh1")
 
+test_that("nothing to merge", {
   # using smoothing and minimum duration
   oed <-
     optimize_energy_detector(

@@ -6,9 +6,8 @@ data("lbh_reference")
 tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
 tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
-test_that("default output", {
-  data("lbh_reference")
 
+test_that("default output", {
   # generate template correlations
   tc <-
     template_correlator(templates = lbh_reference[1,],

@@ -1,5 +1,3 @@
-
-
 test_that("nothing to merge", {
   mo <- merge_overlaps(lbh_reference)
 

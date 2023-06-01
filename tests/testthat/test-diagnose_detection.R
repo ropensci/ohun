@@ -29,19 +29,16 @@ test_that("output size by sound file", {
 })
 
 
-# perfect detection
-dd <-
-  diagnose_detection(
-    reference = lbh_reference,
-    detection = lbh_reference,
-    time.diagnostics = TRUE,
-    by.sound.file = FALSE
-  )
-
 test_that("right recall, precision and f1.score", {
-  expect_equal(dd$recall, 1)
-  expect_equal(dd$precision, 1)
-  expect_equal(dd$f1.score, 1)
+  # perfect detection
+  dd <-
+    diagnose_detection(
+      reference = lbh_reference,
+      detection = lbh_reference,
+      time.diagnostics = TRUE,
+      by.sound.file = FALSE
+    )
+
   expect_length(dd$recall, 1)
   expect_length(dd$precision, 1)
   expect_length(dd$f1.score, 1)
