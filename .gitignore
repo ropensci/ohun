@@ -4,3 +4,4 @@ testing
 .Rproj
 ohun.Rproj
 docs/
+tests/testthat/Rplots.pdf
