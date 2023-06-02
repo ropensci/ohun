@@ -193,8 +193,10 @@ The current working directory is used as default.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># \donttest{</span></span></span>
 <span class="r-in"><span><span class="co"># Save example files into temporary working directory</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"lbh1"</span>, <span class="st">"lbh2"</span>, <span class="st">"lbh_reference"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/tuneR/man/writeWave.html" class="external-link">writeWave</a></span><span class="op">(</span><span class="va">lbh1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh1.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/tuneR/man/writeWave.html" class="external-link">writeWave</a></span><span class="op">(</span><span class="va">lbh2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh2.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">writeWave</span><span class="op">(</span><span class="va">lbh1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh1.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in writeWave(lbh1, file.path(tempdir(), "lbh1.wav")):</span> could not find function "writeWave"</span>
+<span class="r-in"><span><span class="fu">writeWave</span><span class="op">(</span><span class="va">lbh2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh2.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in writeWave(lbh2, file.path(tempdir(), "lbh2.wav")):</span> could not find function "writeWave"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using smoothing and minimum duration</span></span></span>
 <span class="r-in"><span><span class="fu">optimize_energy_detector</span><span class="op">(</span></span></span>
@@ -203,21 +205,7 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  min.duration <span class="op">=</span> <span class="fl">90</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         6              0    6.8         0           90          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        10              0    6.8         0           90          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     overlap mean.duration.true.positives mean.duration.false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8526227                          164                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9081851                          147                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mean.duration.false.negatives proportional.duration.true.positives duty.cycle</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            NA                             1.153234  0.3113362</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            NA                             1.032732  0.2789096</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   recall precision f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1         1       1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tuneR::readWave(filename = filename, header = header, from = from,     to = to, units = "seconds", toWaveMC = TRUE):</span> File '/tmp/RtmpkIwAIb/lbh2.wav' does not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># with thinning and smoothing</span></span></span>
 <span class="r-in"><span><span class="fu">optimize_energy_detector</span><span class="op">(</span></span></span>
@@ -226,71 +214,7 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span><span class="op">)</span>, hop.size <span class="op">=</span> <span class="fl">6.8</span>, min.duration <span class="op">=</span> <span class="fl">90</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 12 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          6              0      7         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         10              0      7         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         15              0      7         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          6              0     10         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5         10              0     10         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6         15              0     10         0           90          Inf     0.10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          6              0      7         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8         10              0      7         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9         15              0      7         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10         6              0     10         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11        10              0     10         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12        15              0     10         0           90          Inf     0.01</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9          19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      overlap mean.duration.true.positives mean.duration.false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1  0.8494709                          165                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2  0.9065211                          147                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3  0.9227890                          136                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4  0.8300895                          169                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5  0.9018598                          149                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6  0.9192277                          139                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7  0.8265783                          164                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8  0.8872974                          149                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9  0.9075075                          137                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10 0.8103066                          171                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11 0.8863643                          150                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12 0.9044356                          140                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    mean.duration.false.negatives proportional.duration.true.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                             NA                            1.1573464</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                             NA                            1.0337601</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                             NA                            0.9542338</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                             NA                            1.1921639</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                             NA                            1.0501397</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                             NA                            0.9780232</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7                             NA                            1.1575802</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8                             NA                            1.0474697</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9                             NA                            0.9631188</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10                            NA                            1.2023828</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11                            NA                            1.0558039</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12                            NA                            0.9802918</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    duty.cycle recall precision f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1   0.3125000      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2   0.2792090      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3   0.2581187      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4   0.3218886      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5   0.2836085      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6   0.2642870      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 7   0.3124432      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 8   0.2829246      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9   0.2602180      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 10  0.3247048      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 11  0.2851953      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12  0.2647593      1         1       1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tuneR::readWave(filename = filename, header = header, from = from,     to = to, units = "seconds", toWaveMC = TRUE):</span> File '/tmp/RtmpkIwAIb/lbh2.wav' does not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># by sound file</span></span></span>
 <span class="r-in"><span><span class="op">(</span><span class="va">opt_ed</span> <span class="op">&lt;-</span> <span class="fu">optimize_energy_detector</span><span class="op">(</span></span></span>
@@ -299,56 +223,11 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  hop.size <span class="op">=</span> <span class="fl">6.8</span>, min.duration <span class="op">=</span> <span class="fl">90</span>, by.sound.file <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 3 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   sound.files threshold peak.amplitude smooth hold.time min.duration</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1    lbh2.wav         6              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2    lbh1.wav         6              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3    lbh2.wav        10              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4    lbh1.wav        10              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5    lbh2.wav        15              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6    lbh1.wav        15              0    6.8         0           90</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   max.duration thinning detections true.positives false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          Inf        1          9              9               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2          Inf        1         10             10               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          Inf        1          9              9               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4          Inf        1         10             10               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5          Inf        1          9              9               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6          Inf        1         10             10               0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   false.negatives splits merges mean.duration.true.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1               0      0      0                          159</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2               0      0      0                          168</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3               0      0      0                          142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4               0      0      0                          151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5               0      0      0                          128</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6               0      0      0                          142</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mean.duration.false.positives mean.duration.false.negatives   overlap</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            NA                            NA 0.8044589</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            NA                            NA 0.8959702</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            NA                            NA 0.8747964</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                            NA                            NA 0.9382350</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                            NA                            NA 0.9221066</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            NA                            NA 0.9235634</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   proportional.duration.true.positives duty.cycle recall precision f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            1.2125978  0.2869232      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            1.0998059  0.3357491      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            1.0803862  0.2556395      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                            0.9898431  0.3021796      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5                            0.9759279  0.2309227      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 6                            0.9322323  0.2845922      1         1       1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tuneR::readWave(filename = filename, header = header, from = from,     to = to, units = "seconds", toWaveMC = TRUE):</span> File '/tmp/RtmpkIwAIb/lbh2.wav' does not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># summarize</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="summarize_diagnostic.html">summarize_diagnostic</a></span><span class="op">(</span><span class="va">opt_ed</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         6              0    6.8         0           90          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        10              0    6.8         0           90          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        15              0    6.8         0           90          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     overlap recall precision f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8526227      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.9081851      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.9228733      1         1       1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'opt_ed' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># using hold time</span></span></span>
 <span class="r-in"><span><span class="op">(</span><span class="va">op_ed</span> <span class="op">&lt;-</span> <span class="fu">optimize_energy_detector</span><span class="op">(</span></span></span>
@@ -357,21 +236,7 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10              0      5       100         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        10              0      5       150         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     overlap mean.duration.true.positives mean.duration.false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8774537                          152                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8774537                          152                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mean.duration.false.negatives proportional.duration.true.positives duty.cycle</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            NA                              1.06869  0.2890185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            NA                              1.06869  0.2890185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   recall precision f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1         1       1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1         1       1</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tuneR::readWave(filename = filename, header = header, from = from,     to = to, units = "seconds", toWaveMC = TRUE):</span> File '/tmp/RtmpkIwAIb/lbh2.wav' does not exist.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># including previous output in new call</span></span></span>
 <span class="r-in"><span><span class="fu">optimize_energy_detector</span><span class="op">(</span></span></span>
@@ -379,32 +244,7 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  hold.time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">50</span>, <span class="fl">200</span><span class="op">)</span>, previous.output <span class="op">=</span> <span class="va">op_ed</span>, smooth <span class="op">=</span> <span class="fl">6.8</span>,</span></span>
 <span class="r-in"><span>  bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2</span>, <span class="fl">9</span><span class="op">)</span>, hop.size <span class="op">=</span> <span class="fl">7</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10              0    5.0       100         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        10              0    5.0       150         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3        10              0    6.8        50         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4        10              0    6.8       200         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3         20             19               1               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4         19             19               0               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     overlap mean.duration.true.positives mean.duration.false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8774537                          152                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8774537                          152                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3 0.8897689                          150                             2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4 0.8763392                          153                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mean.duration.false.negatives proportional.duration.true.positives duty.cycle</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            NA                             1.068690  0.2890185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            NA                             1.068690  0.2890185</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3                            NA                             1.056741  0.2855536</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4                            NA                             1.074756  0.2905922</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   recall precision  f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1      1.00 1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1      1.00 1.000000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3      1      0.95 0.974359</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      1      1.00 1.000000</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in eval(expr, envir, enclos):</span> object 'op_ed' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># having and extra file in files (simulating a file that should have no detetions)</span></span></span>
 <span class="r-in"><span><span class="va">sub_reference</span> <span class="op">&lt;-</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="va">lbh_reference</span><span class="op">$</span><span class="va">sound.files</span> <span class="op">!=</span> <span class="st">"lbh1.wav"</span>, <span class="op">]</span></span></span>
@@ -415,21 +255,7 @@ The current working directory is used as default.</p></dd>
 <span class="r-in"><span>  hop.size <span class="op">=</span> <span class="fl">7</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 2 combinations will be evaluated:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   threshold peak.amplitude smooth hold.time min.duration max.duration thinning</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1        10              0    6.8         1         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2        10              0    6.8       150         -Inf          Inf        1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   detections true.positives false.positives false.negatives splits merges</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1         28              9              19               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2         19              9              10               0      0      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     overlap mean.duration.true.positives mean.duration.false.positives</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1 0.8677330                          143                             2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2 0.8543355                          146                            NA</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   mean.duration.false.negatives proportional.duration.true.positives duty.cycle</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1                            NA                             1.089011  0.2829051</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2                            NA                             1.106874  0.2905922</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   recall precision   f.score</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1      1 0.3214286 0.4864865</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      1 0.4736842 0.6428571</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in tuneR::readWave(filename = filename, header = header, from = from,     to = to, units = "seconds", toWaveMC = TRUE):</span> File '/tmp/RtmpkIwAIb/lbh2.wav' does not exist.</span>
 <span class="r-in"><span><span class="co"># }</span></span></span>
 <span class="r-in"><span></span></span>
 </code></pre></div>

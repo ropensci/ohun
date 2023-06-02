@@ -112,8 +112,8 @@ detected sound events.</p>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"lbh1"</span>, <span class="st">"lbh2"</span>, <span class="st">"lbh_reference"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># save sound files</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/tuneR/man/writeWave.html" class="external-link">writeWave</a></span><span class="op">(</span><span class="va">lbh1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh1.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/pkg/tuneR/man/writeWave.html" class="external-link">writeWave</a></span><span class="op">(</span><span class="va">lbh2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh2.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">writeWave</span><span class="op">(</span><span class="va">lbh1</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh1.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">writeWave</span><span class="op">(</span><span class="va">lbh2</span>, <span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, <span class="st">"lbh2.wav"</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="co"># template for the first sound file in 'lbh_reference'</span></span></span>
 <span class="r-in"><span>  <span class="va">templ1</span> <span class="op">&lt;-</span> <span class="va">lbh_reference</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span></span></span>
@@ -147,7 +147,7 @@ detected sound events.</p>
 <span class="r-in"><span>  <span class="co"># diagnose detection</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, detection <span class="op">=</span> <span class="va">td</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'templ1' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in writeWave(lbh1, file.path(tempdir(), "lbh1.wav")):</span> could not find function "writeWave"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
