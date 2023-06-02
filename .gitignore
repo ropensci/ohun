@@ -1,6 +1,8 @@
 .Rproj.user
 testing
 .pdf
+..pdf
 .Rproj
 ohun.Rproj
-docs/
+..Rcheck/
+.RData
