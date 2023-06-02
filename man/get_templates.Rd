@@ -38,16 +38,16 @@ If only 1 template is required the function returns the sound event closest to t
 }
 \examples{
 {
-# Save example files into temporary working directory
-data("lbh1", "lbh2", "lbh_reference")
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # Save example files into temporary working directory
+  data("lbh1", "lbh2", "lbh_reference")
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# get a single mean template
-template <- get_templates(reference = lbh_reference, path = tempdir())
+  # get a single mean template
+  template <- get_templates(reference = lbh_reference, path = tempdir())
 
-# get 3 templates
-template <- get_templates(reference = lbh_reference, n.sub.spaces = 3, path = tempdir())
+  # get 3 templates
+  template <- get_templates(reference = lbh_reference, n.sub.spaces = 3, path = tempdir())
 }
 
 }

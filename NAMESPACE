@@ -2,6 +2,7 @@
 
 S3method(print,envelopes)
 S3method(print,template_correlations)
+export(consensus_detection)
 export(diagnose_detection)
 export(energy_detector)
 export(feature_acoustic_data)

@@ -51,49 +51,59 @@ This function calculates the similarity of acoustic templates across sound files
 }
 \examples{
 {
-#load example data
-data("lbh1", "lbh2", "lbh_reference")
+  # load example data
+  data("lbh1", "lbh2", "lbh_reference")
 
-#save sound files
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # save sound files
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# create template
-templ <- lbh_reference[4,]
-templ2 <- selection_table(templ, extended = TRUE, confirm.extended = FALSE,
-path = tempdir())
+  # create template
+  templ <- lbh_reference[4, ]
+  templ2 <- selection_table(templ,
+    extended = TRUE, confirm.extended = FALSE,
+    path = tempdir()
+  )
 
-# fourier spectrogram
-(tc_fr <- template_correlator(templates = templ, path = tempdir(), type = "fourier"))
+  # fourier spectrogram
+  (tc_fr <- template_correlator(templates = templ, path = tempdir(), type = "fourier"))
 
-# mel auditory spectrograms
-(tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))
+  # mel auditory spectrograms
+  (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))
 
-# mfcc spectrograms
-(tc_mfcc <- template_correlator(templates = templ, path = tempdir(), type = "mfcc"))
+  # mfcc spectrograms
+  (tc_mfcc <- template_correlator(templates = templ, path = tempdir(), type = "mfcc"))
 
-# similar results (but no exactly the same) are found with the 3 methods
-# these are the correlation of the correlation vectors
-# fourier vs mel-auditory
-cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
-tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores)
+  # similar results (but no exactly the same) are found with the 3 methods
+  # these are the correlation of the correlation vectors
+  # fourier vs mel-auditory
+  cor(
+    tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+    tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores
+  )
 
-# fourier vs mfcc
-cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
-tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores)
+  # fourier vs mfcc
+  cor(
+    tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+    tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores
+  )
 
-# mel-auditory vs mfcc
-cor(tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores,
-tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores)
+  # mel-auditory vs mfcc
+  cor(
+    tc_ma$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+    tc_mfcc$`lbh2.wav-4/lbh2.wav`$correlation.scores
+  )
 
-# using an extended selection table
-templ_est <- selection_table(templ, extended = TRUE, confirm.extended = FALSE, path = tempdir())
+  # using an extended selection table
+  templ_est <- selection_table(templ, extended = TRUE, confirm.extended = FALSE, path = tempdir())
 
-tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")
+  tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")
 
-# produces the same result as templates in a regular data frame
-cor(tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
-tc_fr_est$`lbh2.wav_4-1/lbh2.wav`$correlation.scores)
+  # produces the same result as templates in a regular data frame
+  cor(
+    tc_fr$`lbh2.wav-4/lbh2.wav`$correlation.scores,
+    tc_fr_est$`lbh2.wav_4-1/lbh2.wav`$correlation.scores
+  )
 }
 }
 \references{

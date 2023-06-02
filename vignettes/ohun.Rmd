@@ -135,7 +135,7 @@ Several additional indices derived from these indices are used to evaluate the p
 
 - **Recall**: correct detections relative to total references (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
 - **Precision**: correct detections relative to total detections (*TPs / (TPs + FPs)*).
-- **F1 score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
+- **F score**: combines recall and precision as the harmonic mean of these two, so it provides a single value for evaluating performance (a.k.a. F-measure or Dice similarity coefficient). 
 
 <font size = "2">*(Metrics that make use of 'true negatives' cannot be easily applied in the context of sound event detection as noise cannot always be partitioned in discrete units)*</font>
 
@@ -231,8 +231,8 @@ diagnose_detection(reference = lbh1_detection, detection = lbh1_reference)[, c(1
 
 The function offers three additional diagnose metrics: 
 
-- **Split positives**: target sound events overlapped by more than 1 detecion 
-- **Merged positives**: number of cases in which 2 or more target sound events in 'reference' were overlapped by the same detection
+- **Splits**: detections that share overlapping reference sounds with other detections   
+- **Merges**: detections that overlap with two or more reference sounds
 - **Proportional overlap of true positives**: ratio of the time overlap of true positives with its corresponding sound event in the reference table
 
 In a perfect detection routine split and merged positives should be 0 while proportional overlap should be 1. We can shift the start of sound events a bit to reflect a detection in which there is some mismatch to the reference table regarding to the time location of sound events:
@@ -576,7 +576,7 @@ optim_detection[, c(1, 2:5, 7:12, 17:18)]
 ```
 
 
-The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (recall & precision = 1). However, only the routine with the highest `smooth` (last row) has no split sound events ('split.positive' column). It also shows a better overlap to the reference sound events ('overlap.to.true.positives' closer to 1).
+The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (recall & precision = 1). However, only the routine with the highest `smooth` (last row) has no split sound events ('split.positive' column). It also shows a better overlap to the reference sound events ('overlap' closer to 1).
 
 In addition, there are two complementary functions for optimizing energy-based detection routines: `feature_reference()` and `merge_overlaps()`. `feature_reference()` allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to `lbh_reference`:
 

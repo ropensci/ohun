@@ -1,0 +1,43 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  ohun: an R package for diagnosing and optimizing automatic
+  sound event detection
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Marcelo
+    family-names: Araya Salas
+    email: marcelo.araya@ucr.ac.cr
+    affiliation: Universidad de Costa Rica
+    orcid: 'https://orcid.org/0000-0003-3594-619X'
+identifiers:
+  - type: url
+    value: 'https://github.com/maRce10/ohun'
+    description: github repository
+repository-code: 'https://github.com/maRce10/ohun'
+url: 'https://marce10.github.io/ohun/'
+abstract: >-
+  An R package intended to facilitate automated sound event
+  detection. ohun provides functions to diagnose and
+  optimize detection routines and compare performance among
+  different detection approaches and evaluate the accuracy
+  in infering the temporal location of events. The package
+  uses reference annotations containing the time position of
+  target sounds in a training data set to evaluate detection
+  routine performance using common signal detection theory
+  indices. This can be done both with routine outputs
+  imported from other software and detections run within the
+  package. The package also provides functions to organize
+  acoustic data sets in a format amenable to detection
+  analyses. ohun also includes energy-based and
+  template-based detection methods, two commonly used
+  automatic approaches in bioacoustic research. 
+keywords:
+  - bioacoustics
+  - sound event detection
+license: GPL-3.0-with-GCC-exception

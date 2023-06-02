@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ohun</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.1</span>
       </span>
     </div>
 
@@ -91,6 +91,9 @@
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -167,19 +170,33 @@ units <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base
     <p>Marcelo Araya-Salas <a href='mailto:marcelo.araya@ucr.ac.cr'>marcelo.araya@ucr.ac.cr</a>)</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><span class='op'>{</span>
-<span class='co'># load data and save example files into temporary working directory</span>
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"lbh1"</span>, <span class='st'>"lbh2"</span>, <span class='st'>"lbh_reference"</span><span class='op'>)</span>
-<span class='fu'>writeWave</span><span class='op'>(</span><span class='va'>lbh1</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"lbh1.wav"</span><span class='op'>)</span><span class='op'>)</span>
-<span class='fu'>writeWave</span><span class='op'>(</span><span class='va'>lbh2</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"lbh2.wav"</span><span class='op'>)</span><span class='op'>)</span>
+    <pre class="examples"><div class='input'><span class='op'>{</span>
+  <span class='co'># load data and save example files into temporary working directory</span>
+  <span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='st'>"lbh1"</span>, <span class='st'>"lbh2"</span>, <span class='st'>"lbh_reference"</span><span class='op'>)</span>
+  <span class='fu'>writeWave</span><span class='op'>(</span><span class='va'>lbh1</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"lbh1.wav"</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='fu'>writeWave</span><span class='op'>(</span><span class='va'>lbh2</span>, <span class='fu'><a href='https://rdrr.io/r/base/file.path.html'>file.path</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span>, <span class='st'>"lbh2.wav"</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># summary across sound files</span>
-<span class='fu'>feature_reference</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='co'># summary across sound files</span>
+  <span class='fu'>feature_reference</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='co'># summary across sound files</span>
-<span class='fu'>feature_reference</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+  <span class='co'># summary across sound files</span>
+  <span class='fu'>feature_reference</span><span class='op'>(</span>reference <span class='op'>=</span> <span class='va'>lbh_reference</span>, by.sound.file <span class='op'>=</span> <span class='cn'>TRUE</span>, path <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempdir</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 <span class='op'>}</span>
-</pre>
+</div><div class='output co'>#&gt;   sound.files min.sel.duration mean.sel.duration max.sel.duration
+#&gt; 1    lbh2.wav           117.96            131.45           139.08
+#&gt; 2    lbh1.wav           140.84            152.64           163.73
+#&gt;   min.gap.duration mean.gap.duration max.gap.duration annotations
+#&gt; 1           653.19            707.32           739.42           9
+#&gt; 2           624.97            657.46           811.61          10
+#&gt;   min.bottom.freq mean.bottom.freq max.bottom.freq min.top.freq mean.top.freq
+#&gt; 1            2.16             2.27            2.37         8.49          8.82
+#&gt; 2            1.81             1.96            2.09         8.49          8.82
+#&gt;   max.top.freq duty.cycle min.peak.amplitude mean.peak.amplitude
+#&gt; 1         9.08       0.24              73.76               76.01
+#&gt; 2         9.53       0.31              85.21               86.60
+#&gt;   max.peak.amplitude
+#&gt; 1              77.65
+#&gt; 2              88.03</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

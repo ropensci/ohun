@@ -1,4 +1,4 @@
-#' Splits sound files
+#' Splits sound files and associated annotations
 #'
 #' \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
 #' @usage split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
@@ -23,23 +23,23 @@
 #' @details This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
 #' @examples
 #' {
-#' #load data and save to temporary working directory
-#' data("lbh1", "lbh2")
-#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+#'   # load data and save to temporary working directory
+#'   data("lbh1", "lbh2")
+#'   writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#'   writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
-#' #split files in 1 s files
-#' split_acoustic_data(sgmt.dur = 1, path = tempdir())
+#'   # split files in 1 s files
+#'   split_acoustic_data(sgmt.dur = 1, path = tempdir())
 #'
-#' # Check this folder
-#' tempdir()
+#'   # Check this folder
+#'   tempdir()
 #' }
 #'
 #' @references {
 #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
 #' }
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr})
-#last modification on aug-23-2021 (MAS)
+# last modification on aug-23-2021 (MAS)
 split_acoustic_data <-
   function(path = ".",
            sgmt.dur = 10,
@@ -49,78 +49,99 @@ split_acoustic_data <-
            pb = TRUE,
            only.sels = FALSE,
            X = NULL) {
-    #check path to working directory
-    if (is.null(path))
-      path <- getwd() else
-      if (!dir.exists(path))
-        stop2("'path' provided does not exist") else
+    # check path to working directory
+    if (is.null(path)) {
+      path <- getwd()
+    } else if (!dir.exists(path)) {
+      stop2("'path' provided does not exist")
+    } else {
       path <- normalizePath(path)
+    }
 
-    #stop if files is not a character vector
+    # stop if files is not a character vector
     if (!is.null(files) &
-        !is.character(files))
+      !is.character(files)) {
       stop2("'files' must be a character vector")
+    }
 
-    if (is.null(files))
+    if (is.null(files)) {
       files <-
-        list.files(path = path,
-                   pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
-                   ignore.case = TRUE) #list .wav files in working director
+        list.files(
+          path = path,
+          pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
+          ignore.case = TRUE
+        )
+    } # list .wav files in working director
 
-    #stop if no wav files are found
-    if (length(files) == 0)
+    # stop if no wav files are found
+    if (length(files) == 0) {
       stop2("no sound files in working directory")
+    }
 
     if (!is.null(X)) {
-      #if X is not a data frame
-      if (!any(is.data.frame(X), warbleR::is_selection_table(X)))
+      # if X is not a data frame
+      if (!any(is.data.frame(X), warbleR::is_selection_table(X))) {
         stop2("X is not of a class 'data.frame' or 'selection_table'")
+      }
 
-      if (warbleR::is_extended_selection_table(X))
+      if (warbleR::is_extended_selection_table(X)) {
         stop2("This function cannot take extended selection tables ('X' argument)")
+      }
 
-      #check if all columns are found
+      # check if all columns are found
       if (any(!(c(
         "sound.files", "selec", "start", "end"
-      ) %in% colnames(X))))
+      ) %in% colnames(X)))) {
         stop2(paste(paste(
-          c("sound.files", "selec", "start", "end")[!(c("sound.files", "selec",
-                                                        "start", "end") %in% colnames(X))], collapse =
+          c("sound.files", "selec", "start", "end")[!(c(
+            "sound.files", "selec",
+            "start", "end"
+          ) %in% colnames(X))],
+          collapse =
             ", "
         ), "column(s) not found in 'X'"))
+      }
 
-      #if there are NAs in start or end stop
-      if (any(is.na(c(X$end, X$start))))
+      # if there are NAs in start or end stop
+      if (any(is.na(c(X$end, X$start)))) {
         stop2("NAs found in start and/or end columns")
+      }
 
-      #if end or start are not numeric stop
-      if (any(!methods::is(X$end, "numeric"),
-              !methods::is(X$start, "numeric")))
+      # if end or start are not numeric stop
+      if (any(
+        !methods::is(X$end, "numeric"),
+        !methods::is(X$start, "numeric")
+      )) {
         stop2("'start' and 'end' must be numeric")
+      }
 
-      #if any start higher than end stop
-      if (any(X$end - X$start <= 0))
+      # if any start higher than end stop
+      if (any(X$end - X$start <= 0)) {
         stop2(paste(
           "Start is higher than or equal to end in",
           length(which(X$end - X$start <= 0)),
           "case(s)"
         ))
+      }
     }
 
 
     # check sgmnt duration
     if (is.null(sgmts)) {
-      if (!is.numeric(sgmt.dur))
+      if (!is.numeric(sgmt.dur)) {
         stop2("'sgmt.dur' must be numeric")
-    } else
-      if (!is.numeric(sgmts))
-        stop2("'sgmts' must be numeric")
+      }
+    } else if (!is.numeric(sgmts)) {
+      stop2("'sgmts' must be numeric")
+    }
 
     # If cores is not numeric
-    if (!is.numeric(cores))
+    if (!is.numeric(cores)) {
       stop2("'cores' must be a numeric vector of length 1")
-    if (any(!(cores %% 1 == 0), cores < 1))
+    }
+    if (any(!(cores %% 1 == 0), cores < 1)) {
       stop2("'cores' should be a positive integer")
+    }
 
     # measure wav duration
     wvdr <- warbleR::duration_wavs(path = path, files = files)
@@ -133,13 +154,16 @@ split_acoustic_data <-
         if (sgmt.dur < wvdr$duration[wvdr$sound.files == x]) {
           # get start and end of segments
           sq <-
-            seq(from = 0,
-                to = wvdr$duration[wvdr$sound.files == x],
-                by = sgmt.dur)
+            seq(
+              from = 0,
+              to = wvdr$duration[wvdr$sound.files == x],
+              by = sgmt.dur
+            )
 
           # add end if last sq != duration
-          if (sq[length(sq)] != wvdr$duration[wvdr$sound.files == x])
+          if (sq[length(sq)] != wvdr$duration[wvdr$sound.files == x]) {
             sq <- c(sq, wvdr$duration[wvdr$sound.files == x])
+          }
 
           out <-
             data.frame(
@@ -159,7 +183,7 @@ split_acoustic_data <-
               end = sq[-1],
               stringsAsFactors = FALSE
             )
-        } else
+        } else {
           # if segment duration is longer or equal
           out <-
             data.frame(
@@ -169,6 +193,7 @@ split_acoustic_data <-
               end = wvdr$duration[wvdr$sound.files == x],
               stringsAsFactors = FALSE
             )
+        }
       } else {
         # get start and end of segments
         sq <-
@@ -203,17 +228,19 @@ split_acoustic_data <-
     # if no sound files are produced
     if (!only.sels) {
       # set clusters for windows OS
-      if (Sys.info()[1] == "Windows" & cores > 1)
+      if (Sys.info()[1] == "Windows" & cores > 1) {
         cl <-
-          parallel::makePSOCKcluster(getOption("cl.cores", cores)) else
+          parallel::makePSOCKcluster(getOption("cl.cores", cores))
+      } else {
         cl <- cores
+      }
 
       # split using a loop only the ones that are shorter than segments
       a_l <-
         warbleR:::pblapply_wrblr_int(
           pbar = pb,
           X = which(split.df$original.sound.files != split.df$sound.files),
-          cl =  cl,
+          cl = cl,
           FUN = function(x) {
             # read clip
             clip <-
@@ -254,7 +281,7 @@ split_acoustic_data <-
       # select columns to bind
       clms <-
         if (!is.null(X$bottom.freq) &
-            !is.null(X$top.freq))
+          !is.null(X$top.freq)) {
           c(
             "sound.files",
             "new.sound.files",
@@ -263,8 +290,10 @@ split_acoustic_data <-
             "end",
             "bottom.freq",
             "top.freq"
-          ) else
-        c("sound.files", "new.sound.files", "selec", "start", "end")
+          )
+        } else {
+          c("sound.files", "new.sound.files", "selec", "start", "end")
+        }
 
       # bind together
       ovlp.df <- rbind(data.frame(X[, clms]), split.df[, clms])
@@ -290,8 +319,8 @@ split_acoustic_data <-
       # split in new files rows and selection rows
       new.sf.df <-
         ovlp.df[!is.na(ovlp.df$new.sound.files) &
-                  !is.na(ovlp.df$indx.row),]
-      org.sls.df <- ovlp.df[is.na(ovlp.df$new.sound.files),]
+          !is.na(ovlp.df$indx.row), ]
+      org.sls.df <- ovlp.df[is.na(ovlp.df$new.sound.files), ]
       org.sls.df$sel.id <-
         paste(org.sls.df$sound.files, org.sls.df$selec, sep = "-")
       # re-add other columns
@@ -309,7 +338,7 @@ split_acoustic_data <-
 
         # get those selection found within Y
         contained.sls <-
-          org.sls.df[org.sls.df$..row %in% strsplit(Y$indx.row, "/")[[1]],]
+          org.sls.df[org.sls.df$..row %in% strsplit(Y$indx.row, "/")[[1]], ]
 
         # if selection were found within Y
         if (nrow(contained.sls) > 0) {
@@ -330,8 +359,9 @@ split_acoustic_data <-
             wav_duration
 
           return(contained.sls)
-        } else
+        } else {
           return(NULL)
+        }
       })
 
       new.sels <- do.call(rbind, new.sels_l)
@@ -348,6 +378,7 @@ split_acoustic_data <-
       row.names(new.sels) <- seq_len(nrow(new.sels))
 
       return(new.sels)
-    } else
+    } else {
       return(split.df)
+    }
   }

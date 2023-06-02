@@ -31,40 +31,44 @@ This function infers sound events occurrences from cross-correlation scores alon
 }
 \examples{
 {
-# load example data
-data("lbh1", "lbh2", "lbh_reference")
+  # load example data
+  data("lbh1", "lbh2", "lbh_reference")
 
-# save sound files
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # save sound files
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# template for the first sound file in 'lbh_reference'
-templ1 <- lbh_reference[1, ]
+  # template for the first sound file in 'lbh_reference'
+  templ1 <- lbh_reference[1, ]
 
-# generate template correlations
-tc <- template_correlator(templates = templ1, path = tempdir(), files = "lbh1.wav")
+  # generate template correlations
+  tc <- template_correlator(templates = templ1, path = tempdir(), files = "lbh1.wav")
 
-# template detection
-td <- template_detector(template.correlations = tc, threshold = 0.4)
+  # template detection
+  td <- template_detector(template.correlations = tc, threshold = 0.4)
 
-# diagnose detection
-diagnose_detection(reference =
-lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-detection = td)
+  # diagnose detection
+  diagnose_detection(
+    reference =
+      lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+    detection = td
+  )
 
-# template for the second and third sound file in 'lbh_reference'
-# which have similar song types
-templ2 <- lbh_reference[4, ]
+  # template for the second and third sound file in 'lbh_reference'
+  # which have similar song types
+  templ2 <- lbh_reference[4, ]
 
-# generate template correlations
-tc <- template_correlator(templates = templ2, path = tempdir(),
-files = c("lbh1.wav", "lbh2.wav"))
+  # generate template correlations
+  tc <- template_correlator(
+    templates = templ2, path = tempdir(),
+    files = c("lbh1.wav", "lbh2.wav")
+  )
 
-# template detection
-td <- template_detector(template.correlations = tc, threshold = 0.3)
+  # template detection
+  td <- template_detector(template.correlations = tc, threshold = 0.3)
 
-# diagnose detection
-diagnose_detection(reference = lbh_reference, detection = td)
+  # diagnose detection
+  diagnose_detection(reference = lbh_reference, detection = td)
 }
 }
 \references{

@@ -16,40 +16,44 @@
 #' @details This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection. \strong{Note that the detected sounds are assumed to have the same duration as the template, so their start and end correspond to the correlation peak position +/- half the template duration}.
 #' @examples
 #' {
-#' # load example data
-#' data("lbh1", "lbh2", "lbh_reference")
+#'   # load example data
+#'   data("lbh1", "lbh2", "lbh_reference")
 #'
-#' # save sound files
-#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+#'   # save sound files
+#'   writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#'   writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
-#' # template for the first sound file in 'lbh_reference'
-#' templ1 <- lbh_reference[1, ]
+#'   # template for the first sound file in 'lbh_reference'
+#'   templ1 <- lbh_reference[1, ]
 #'
-#' # generate template correlations
-#' tc <- template_correlator(templates = templ1, path = tempdir(), files = "lbh1.wav")
+#'   # generate template correlations
+#'   tc <- template_correlator(templates = templ1, path = tempdir(), files = "lbh1.wav")
 #'
-#' # template detection
-#' td <- template_detector(template.correlations = tc, threshold = 0.4)
+#'   # template detection
+#'   td <- template_detector(template.correlations = tc, threshold = 0.4)
 #'
-#' # diagnose detection
-#' diagnose_detection(reference =
-#' lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-#' detection = td)
+#'   # diagnose detection
+#'   diagnose_detection(
+#'     reference =
+#'       lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
+#'     detection = td
+#'   )
 #'
-#' # template for the second and third sound file in 'lbh_reference'
-#' # which have similar song types
-#' templ2 <- lbh_reference[4, ]
+#'   # template for the second and third sound file in 'lbh_reference'
+#'   # which have similar song types
+#'   templ2 <- lbh_reference[4, ]
 #'
-#' # generate template correlations
-#' tc <- template_correlator(templates = templ2, path = tempdir(),
-#' files = c("lbh1.wav", "lbh2.wav"))
+#'   # generate template correlations
+#'   tc <- template_correlator(
+#'     templates = templ2, path = tempdir(),
+#'     files = c("lbh1.wav", "lbh2.wav")
+#'   )
 #'
-#' # template detection
-#' td <- template_detector(template.correlations = tc, threshold = 0.3)
+#'   # template detection
+#'   td <- template_detector(template.correlations = tc, threshold = 0.3)
 #'
-#' # diagnose detection
-#' diagnose_detection(reference = lbh_reference, detection = td)
+#'   # diagnose detection
+#'   diagnose_detection(reference = lbh_reference, detection = td)
 #' }
 #' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{optimize_template_detector}}
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
@@ -63,30 +67,36 @@ template_detector <-
            cores = 1,
            threshold,
            pb = TRUE,
-           verbose = TRUE)
-  {
+           verbose = TRUE) {
     # save start time
     start_time <- proc.time()
 
     # check xc.output being a autodetec.output object
-    if (!(is(template.correlations, "template_correlations")))
+    if (!(is(template.correlations, "template_correlations"))) {
       stop2("'template.correlations' must be and object of class 'template_correlations'")
+    }
 
-    #if threshold is not vector or length!=1 stop
-    if (!is.numeric(threshold))
+    # if threshold is not vector or length!=1 stop
+    if (!is.numeric(threshold)) {
       stop2("'threshold' must be a numeric vector of length 1")
-    if (!is.vector(threshold))
+    }
+    if (!is.vector(threshold)) {
       stop2("'threshold' must be a numeric vector of length 1")
-    if (!length(threshold) == 1)
+    }
+    if (!length(threshold) == 1) {
       stop2("'threshold' must be a numeric vector of length 1")
-    if (threshold >= 1 | threshold <= 0)
+    }
+    if (threshold >= 1 | threshold <= 0) {
       stop2("'threshold' must be a number between 0 and 1")
+    }
 
     # set clusters for windows OS or more decent OSs
-    if (Sys.info()[1] == "Windows" & cores > 1)
+    if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <-
-        parallel::makePSOCKcluster(getOption("cl.cores", cores)) else
+        parallel::makePSOCKcluster(getOption("cl.cores", cores))
+    } else {
       cl <- cores
+    }
 
     # loop over scores of each dyad
     sel_table_list <-
@@ -101,16 +111,17 @@ template_detector <-
           ## get peaks as the ones higher than previous and following scores
           peak_position <-
             which(c(FALSE, diff(temp_cor$correlation.scores) > 0) &
-                    c(rev(diff(
-                      rev(temp_cor$correlation.scores)
-                    ) > 0), FALSE) & temp_cor$correlation.scores > threshold)
+              c(rev(diff(
+                rev(temp_cor$correlation.scores)
+              ) > 0), FALSE) & temp_cor$correlation.scores > threshold)
 
           # get peaks and their scores
           scores <- temp_cor$correlation.scores[peak_position]
           peak_time <-
             seq(0,
-                temp_cor$file.duration,
-                length.out = length(temp_cor$correlation.scores))[peak_position]
+              temp_cor$file.duration,
+              length.out = length(temp_cor$correlation.scores)
+            )[peak_position]
 
           # get peak position fixing by removing half the duration of the sound event at the start and end of the sound file
           peak_time <-
@@ -126,17 +137,21 @@ template_detector <-
 
           # calculate starts as the peak location minus half the template duration
           starts <-
-            if (length(peak_time) > 0)
-              peak_time - (temp_cor$template.duration / 2) else
-            NA
+            if (length(peak_time) > 0) {
+              peak_time - (temp_cor$template.duration / 2)
+            } else {
+              NA
+            }
           # cannot be negative
           starts[starts < 0] <- 0
 
           # calculate starts as the peak location minus half the template duration
           ends <-
-            if (length(peak_time) > 0)
-              peak_time + (temp_cor$template.duration / 2) else
-            NA
+            if (length(peak_time) > 0) {
+              peak_time + (temp_cor$template.duration / 2)
+            } else {
+              NA
+            }
 
           # cannot be higher than file duration
           ends[ends > temp_cor$file.duration] <- temp_cor$file.duration
@@ -145,15 +160,19 @@ template_detector <-
           sel_table <-
             data.frame(
               sound.files = file_template[2],
-              selec = if (length(scores) > 0)
-                seq_len(length(scores)) else
-                1,
+              selec = if (length(scores) > 0) {
+                seq_len(length(scores))
+              } else {
+                1
+              },
               start = starts,
               end = ends,
               template = file_template[1],
-              scores = if (length(scores) > 0)
-                scores else
+              scores = if (length(scores) > 0) {
+                scores
+              } else {
                 NA
+              }
             )
 
           return(sel_table)
@@ -170,30 +189,31 @@ template_detector <-
     corr_call_path <-
       try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
 
-    if (is(corr_call_path, 'try-error') |
-        is.null(corr_call_path))
+    if (is(corr_call_path, "try-error") |
+      is.null(corr_call_path)) {
       corr_call_path <- getwd()
+    }
 
     #  if no detections
-    if (all(is.na(sel_table_df$start)) & verbose)
-      print(x = "no sound events above threshold were detected") else
-      if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
-          all(!is.na(sel_table_df$start))) {
-        sel_table_df <-
-          selection_table(
-            X = sel_table_df[!is.na(sel_table_df$start),],
-            path = corr_call_path,
-            parallel = cores,
-            pb = FALSE,
-            verbose = FALSE,
-            fix.selec = TRUE
-          )
+    if (all(is.na(sel_table_df$start)) & verbose) {
+      print(x = "no sound events above threshold were detected")
+    } else if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
+      all(!is.na(sel_table_df$start))) {
+      sel_table_df <-
+        selection_table(
+          X = sel_table_df[!is.na(sel_table_df$start), ],
+          path = corr_call_path,
+          parallel = cores,
+          pb = FALSE,
+          verbose = FALSE,
+          fix.selec = TRUE
+        )
 
-        attributes(sel_table_df)$call <- base::match.call()
+      attributes(sel_table_df)$call <- base::match.call()
 
-        # add elapsed time
-        attributes(sel_table_df)$elapsed.time.s <-
-          as.vector((proc.time() - start_time)[3])
-      }
+      # add elapsed time
+      attributes(sel_table_df)$elapsed.time.s <-
+        as.vector((proc.time() - start_time)[3])
+    }
     return(sel_table_df)
   }

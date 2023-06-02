@@ -29,16 +29,16 @@ The function extracts quantitative features from reference tables that can infor
 }
 \examples{
 {
-# load data and save example files into temporary working directory
-data("lbh1", "lbh2", "lbh_reference")
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # load data and save example files into temporary working directory
+  data("lbh1", "lbh2", "lbh_reference")
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-# summary across sound files
-feature_reference(reference = lbh_reference, path = tempdir())
+  # summary across sound files
+  feature_reference(reference = lbh_reference, path = tempdir())
 
-# summary across sound files
-feature_reference(reference = lbh_reference, by.sound.file = TRUE, path = tempdir())
+  # summary across sound files
+  feature_reference(reference = lbh_reference, by.sound.file = TRUE, path = tempdir())
 }
 }
 \references{

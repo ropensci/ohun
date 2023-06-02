@@ -2,7 +2,7 @@
 % Please edit documentation in R/split_acoustic_data.R
 \name{split_acoustic_data}
 \alias{split_acoustic_data}
-\title{Splits sound files}
+\title{Splits sound files and associated annotations}
 \usage{
 split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
  cores = 1, pb = TRUE, only.sels = FALSE, X = NULL)
@@ -39,16 +39,16 @@ This function aims to reduce the size of sound files in order to simplify some p
 }
 \examples{
 {
-#load data and save to temporary working directory
-data("lbh1", "lbh2")
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  # load data and save to temporary working directory
+  data("lbh1", "lbh2")
+  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
-#split files in 1 s files
-split_acoustic_data(sgmt.dur = 1, path = tempdir())
+  # split files in 1 s files
+  split_acoustic_data(sgmt.dur = 1, path = tempdir())
 
-# Check this folder
-tempdir()
+  # Check this folder
+  tempdir()
 }
 
 }
