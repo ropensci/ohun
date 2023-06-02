@@ -1,4 +1,4 @@
-# Contributing to CONTRIBUTING.md
+# Contributing
 
 First off, thanks for taking the time to contribute! 
 
@@ -22,7 +22,7 @@ And if you like the project, but just don't have time to contribute, that's fine
 ## Code of Conduct
 
 > This project and everyone participating in it is governed by the
-> [CONTRIBUTING.md Code of Conduct](blob/master/CODE_OF_CONDUCT.md).
+> [Code of Conduct](CODE_OF_CONDUCT.md).
 > By participating, you are expected to uphold this code. Please report unacceptable behavior
 > to <https://github.com/maRce10/ohun/issues/>.
 
@@ -83,14 +83,14 @@ Once it's filed:
 
 - The project team will label the issue accordingly.
 - A team member will try to reproduce the issue with your provided steps. If there are no reproduction steps or no obvious way to reproduce the issue, the team will ask you for those steps and mark the issue as `needs-repro`. Bugs with the `needs-repro` tag will not be addressed until they are reproduced.
-- If the team is able to reproduce the issue, it will be marked `needs-fix`, as well as possibly other tags (such as `critical`), and the issue will be left to be [implemented by someone](#your-first-code-contribution).
+- If the team is able to reproduce the issue, it will be marked `needs-fix`, as well as possibly other tags (such as `critical`), and the issue will be left to be implemented by someone.
 
 
 
 
 ### Suggesting Enhancements
 
-This section guides you through submitting an enhancement suggestion for CONTRIBUTING.md, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
+This section guides you through submitting an enhancement suggestion, **including completely new features and minor improvements to existing functionality**. Following these guidelines will help maintainers and the community to understand your suggestion and find related suggestions.
 
 
 #### Before Submitting an Enhancement
@@ -109,7 +109,7 @@ Enhancement suggestions are tracked as [GitHub issues](https://github.com/maRce1
 - Provide a **step-by-step description of the suggested enhancement** in as many details as possible.
 - **Describe the current behavior** and **explain which behavior you expected to see instead** and why. At this point you can also tell which alternatives do not work for you.
 - You may want to **include screenshots and animated GIFs** which help you demonstrate the steps or point out the part which the suggestion is related to. You can use [this tool](https://www.cockos.com/licecap/) to record GIFs on macOS and Windows, and [this tool](https://github.com/colinkeenan/silentcast) or [this tool](https://github.com/GNOME/byzanz) on Linux. 
-- **Explain why this enhancement would be useful** to most CONTRIBUTING.md users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
+- **Explain why this enhancement would be useful** to most users. You may also want to point out the other projects that solved it better and which could serve as inspiration.
 
 
 ## Attribution
