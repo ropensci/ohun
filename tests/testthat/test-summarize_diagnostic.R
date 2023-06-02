@@ -1,7 +1,9 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
+
 
 
 test_that("split files", {
@@ -26,10 +28,10 @@ test_that("split files", {
     )
   )
 
-  expect_true(is.data.frame(sdai))
+  expect_s3_class(sdai, 'data.frame')
 
-  expect_true(nrow(sdai) == 1)
+  expect_equal(nrow(sdai), 1)
 
-  expect_true(ncol(sdai) == 10)
+  expect_equal(ncol(sdai), 10)
 
 })

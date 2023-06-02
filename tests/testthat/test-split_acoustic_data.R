@@ -1,10 +1,11 @@
-data(lbh1, package = "ohun")
-data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
-
 test_that("split files", {
+  data(lbh1, package = "ohun")
+  data(lbh2, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
+
+
   #split files in 1 s files
   sad <- split_acoustic_data(sgmt.dur = 1, path = tempdir())
 
@@ -20,22 +21,22 @@ test_that("split files", {
     )
   )
 
-  expect_true(is.data.frame(sad))
+  expect_s3_class(sad, 'data.frame')
 
-  expect_true(nrow(sad) == 10)
+  expect_equal(nrow(sad), 10)
 
-  expect_true(length(fls) == 12)
+  expect_length(fls, 12)
 
 })
 
-data(lbh1, package = "ohun")
-data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
 
 test_that("split files and annotations", {
-  data("lbh_reference")
+  data(lbh1, package = "ohun")
+  data(lbh2, package = "ohun")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   #split files in 1 s files
   sad <-
@@ -55,11 +56,10 @@ test_that("split files and annotations", {
     )
   )
 
-  expect_true(is.data.frame(sad))
+  expect_s3_class(sad, 'data.frame')
 
+  expect_equal(nrow(sad), 20)
 
-  expect_true(nrow(sad) == 20)
-
-  expect_true(length(fls) == 12)
+  expect_length(fls, 12)
 
 })

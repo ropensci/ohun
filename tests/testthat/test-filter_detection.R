@@ -1,12 +1,13 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
+data(lbh_reference, package = "ohun")
+
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 
 test_that("default output", {
-  data("lbh_reference")
-
   # generate template correlations
   tc <-
     template_correlator(templates = lbh_reference[1,],
@@ -38,9 +39,9 @@ test_that("default output", {
     )
   )
 
-  expect_true(is.data.frame(ftd))
+  expect_s3_class(ftd, 'data.frame')
 
-  expect_true(nrow(ftd) == 43)
+  expect_equal(nrow(ftd), 43)
 
-  expect_true(ncol(ftd) == 9)
+  expect_equal(ncol(ftd), 9)
 })

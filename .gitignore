@@ -4,5 +4,7 @@ testing
 ..pdf
 .Rproj
 ohun.Rproj
+docs/
+tests/testthat/Rplots.pdf
 ..Rcheck/
 .RData

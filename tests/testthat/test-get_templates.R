@@ -10,9 +10,9 @@ test_that("measuring PCA on the fly", {
                   n.sub.spaces =  3,
                   path = tempdir())
 
-  expect_true(is.data.frame(template))
+  expect_s3_class(template, 'data.frame')
 
-  expect_true(nrow(template) == 4)
+  expect_equal(nrow(template), 4)
 
 })
 
@@ -47,8 +47,8 @@ test_that("measuring PCA a priori", {
     )
   )
 
-  expect_true(is_selection_table(template))
+  expect_s3_class(template, 'selection_table')
 
-  expect_true(nrow(template) == 5)
+  expect_equal(nrow(template), 5)
 
 })

@@ -1,12 +1,10 @@
 test_that("1 template", {
-
-
   data(lbh1, package = "ohun")
   data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
-  data("lbh_reference", "lbh1")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   # template for the first sound file in 'lbh_reference'
   # generate template correlations
@@ -16,11 +14,12 @@ test_that("1 template", {
   # template detection
   td <-
     template_detector(template.correlations = tc, threshold = 0.4)
-  expect_true(is.data.frame(td))
 
-  expect_true(is_selection_table(td))
+  expect_s3_class(td, 'selection_table')
 
-  expect_true(nrow(td) == 22)
+  expect_s3_class(td, 'data.frame')
+
+  expect_equal(nrow(td), 22)
 
 })
 
@@ -28,10 +27,10 @@ test_that("1 template", {
 test_that("2 templates", {
   data(lbh1, package = "ohun")
   data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
-  data("lbh_reference", "lbh1")
+  data(lbh_reference, package = "ohun")
+  #save sound files
+  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
   # template for the fourth sound file in 'lbh_reference'
   # generate template correlations
@@ -50,9 +49,10 @@ test_that("2 templates", {
     )
   )
 
-  expect_true(is.data.frame(td))
 
-  expect_true(is_selection_table(td))
+  expect_s3_class(td, 'selection_table')
 
-  expect_true(nrow(td) == 42)
+  expect_s3_class(td, 'data.frame')
+
+  expect_equal(nrow(td), 42)
 })

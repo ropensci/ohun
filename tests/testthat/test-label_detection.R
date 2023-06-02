@@ -1,31 +1,25 @@
-
+data(lbh1, package = "ohun")
+data(lbh2, package = "ohun")
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 test_that("1 false negative", {
-  data(lbh1, package = "ohun")
-  data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
   # EXAMPLES
   lsr <- selection_table(lbh_reference, path = tempdir())
 
   # an extra one in detection (1 false positive)
   ld <- label_detection(reference = lsr[-1,], detection = lsr)
 
-  expect_true(is_selection_table(ld))
+  expect_s3_class(ld, 'selection_table')
 
-  expect_true(nrow(ld) == 19)
+  expect_length(nrow(ld), 19)
 
   expect_equal(as.vector(table(ld$detection.class)), c(1, 18))
 })
 
 
 test_that("perfect detection", {
-  data(lbh1, package = "ohun")
-  data(lbh2, package = "ohun")
-  tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-  tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
-
   # EXAMPLES
   lsr <- selection_table(lbh_reference, path = tempdir())
 
@@ -40,9 +34,9 @@ test_that("perfect detection", {
     )
   )
 
-  expect_true(is_selection_table(ld))
+  expect_s3_class(ld, 'selection_table')
 
-  expect_true(all(ld$detection.class == "true.positive"))
+  expect_match(ld$detection.class, 'true.positive')
 
 })
 
@@ -68,7 +62,7 @@ test_that("bipartite matching", {
   # diagnose
   ld <- label_detection(reference = ref, detection = det)
 
-  expect_true(sum(ld$detection.class == "true.positive") == 2)
+  expect_equal(sum(ld$detection.class == "true.positive"), 2)
 
 
 })

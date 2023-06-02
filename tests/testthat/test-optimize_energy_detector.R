@@ -1,12 +1,13 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
-tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE) #save sound files
-tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #save sound files
+data(lbh_reference, package = "ohun")
+#save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
+tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
+
 
 
 test_that("nothing to merge", {
-  data("lbh_reference", "lbh1")
-
   # using smoothing and minimum duration
   oed <-
     optimize_energy_detector(
@@ -20,9 +21,9 @@ test_that("nothing to merge", {
       by.sound.file = FALSE
     )
 
-  expect_true(is.data.frame(oed))
+  expect_s3_class(oed, 'data.frame')
 
-  expect_true(nrow(oed) == 4)
+  expect_equal(nrow(oed), 4)
 
   expect_true(all(oed$recall == 1))
 
@@ -54,7 +55,7 @@ test_that("including previous output in new call", {
       path = tempdir()
     )
 
-  expect_true(nrow(oed) == 6)
+  expect_equal(nrow(oed), 6)
 
   unlink(
     list.files(
