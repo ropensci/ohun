@@ -5,6 +5,7 @@
 #' time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL,
 #'  macro.average = FALSE, min.overlap = 0.5)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
+#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param by.sound.file Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE}, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
 #' @param time.diagnostics Logical argument to control if diagnostics related to the duration of the sound events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives" and "proportional.duration.true.positives") are returned (if \code{TRUE}). Default is \code{FALSE}.
@@ -136,12 +137,12 @@ diagnose_detection <-
       performance_df <- do.call(rbind, split_diagnostic)
     } else {
       # make it a data frame if selection table
-      if (warbleR::is_selection_table(detection)) {
+      if ( warbleR::is_selection_table(detection)) {
         detection <- as.data.frame(detection)
       }
 
       # make it a data frame if selection table
-      if (warbleR::is_selection_table(reference)) {
+      if ( warbleR::is_selection_table(reference)) {
         reference <- as.data.frame(reference)
       }
 

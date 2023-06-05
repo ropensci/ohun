@@ -39,8 +39,8 @@
 #' @examples \donttest{
 #' # Save example files into temporary working directory
 #' data("lbh1", "lbh2", "lbh_reference")
-#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+#' tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#' tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
 #' # using smoothing and minimum duration
 #' detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
@@ -459,7 +459,7 @@ energy_detector <-
 
 
     if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)) {
-      detections <- selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
+      detections <- warbleR::selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
 
       attributes(detections)$call <- base::match.call()
 

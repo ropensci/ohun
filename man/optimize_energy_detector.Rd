@@ -93,8 +93,8 @@ This function takes a selections data frame or 'selection_table' ('reference') e
 \donttest{
 # Save example files into temporary working directory
 data("lbh1", "lbh2", "lbh_reference")
-writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
 # using smoothing and minimum duration
 optimize_energy_detector(

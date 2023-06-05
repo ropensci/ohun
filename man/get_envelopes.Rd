@@ -48,8 +48,8 @@ This function extracts the absolute amplitude envelopes of sound files. Can be u
 {
   # Save to temporary working directory
   data(list = c("lbh1", "lbh2"))
-  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
   # get raw absolute amplitude envelopes
   envs <- get_envelopes(path = tempdir())

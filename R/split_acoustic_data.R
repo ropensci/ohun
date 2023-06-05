@@ -25,8 +25,8 @@
 #' {
 #'   # load data and save to temporary working directory
 #'   data("lbh1", "lbh2")
-#'   writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-#'   writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+#'   tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#'   tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
 #'   # split files in 1 s files
 #'   split_acoustic_data(sgmt.dur = 1, path = tempdir())
@@ -80,7 +80,7 @@ split_acoustic_data <-
 
     if (!is.null(X)) {
       # if X is not a data frame
-      if (!any(is.data.frame(X), warbleR::is_selection_table(X))) {
+      if (!any(is.data.frame(X),  warbleR::is_selection_table(X))) {
         stop2("X is not of a class 'data.frame' or 'selection_table'")
       }
 

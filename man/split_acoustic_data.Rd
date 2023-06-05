@@ -41,8 +41,8 @@ This function aims to reduce the size of sound files in order to simplify some p
 {
   # load data and save to temporary working directory
   data("lbh1", "lbh2")
-  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
   # split files in 1 s files
   split_acoustic_data(sgmt.dur = 1, path = tempdir())

@@ -35,8 +35,8 @@ This function infers sound events occurrences from cross-correlation scores alon
   data("lbh1", "lbh2", "lbh_reference")
 
   # save sound files
-  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
   # template for the first sound file in 'lbh_reference'
   templ1 <- lbh_reference[1, ]

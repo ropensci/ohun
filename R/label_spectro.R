@@ -172,8 +172,9 @@ label_spectro <-
       }
 
       # plot envelope
-      seewave::env(wave, colwave = "#07889B", ssmooth = smooth)
-
+      env_obj <- seewave::env(wave, colwave = "#07889B", ssmooth = smooth, plot = FALSE, norm = TRUE)
+      plot(y = env_obj[ ,1], x = seq(0, seewave::duration(wave), length.out = nrow(env_obj)), type = "l", col = "#07889B", xlab = "Time", ylab = "Amplitude", yaxt = "n", xaxs = "i", yaxs = "i", ylim = c(0, 1.1))
+      
       # add threshold line
       if (!is.null(threshold)) {
         abline(

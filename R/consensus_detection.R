@@ -18,7 +18,7 @@
 #'   data("lbh1", "lbh_reference")
 #'
 #'   # save sound files
-#'   writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
+#'   tuneR::writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
 #'
 #'   # template for the first sound file in 'lbh_reference'
 #'   templ1 <- lbh_reference[1, ]
@@ -72,7 +72,7 @@ consensus_detection <-
     start_time <- proc.time()
 
     # if reference is not a data frame
-    if (!any(is.data.frame(detection), is_selection_table(detection))) {
+    if (!any(is.data.frame(detection), warbleR::is_selection_table(detection))) {
       stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
     }
 
@@ -139,7 +139,7 @@ consensus_detection <-
       filtered_detection[order(filtered_detection$..row.id), ]
 
     # convert back to selection table
-    if (is_selection_table(detection)) {
+    if (warbleR::is_selection_table(detection)) {
       # keep only those rows in filtered_detections
       detection <-
         detection[detection$..row.id %in% filtered_detection$..row.id, ]

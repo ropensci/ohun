@@ -5,6 +5,7 @@ testing
 tests
 docs
 pkgdown
+CITATION\.cff$
 README\.Rmd$
 ^codecov\.yml$
 ^pkgcheck\.yaml$

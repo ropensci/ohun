@@ -24,8 +24,8 @@ The function summarizes information about file format in an acoustic data set. I
 {
   # load data and save example files into temporary working directory
   data("lbh1", "lbh2", "lbh_reference")
-  writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-  writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+  tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
   # summary across sound files
   feature_acoustic_data(path = tempdir())

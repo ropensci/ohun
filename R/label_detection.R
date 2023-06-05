@@ -83,12 +83,12 @@ label_detection <-
     }
 
     # if reference is not a data frame
-    if (!any(is.data.frame(reference), is_selection_table(reference))) {
+    if (!any(is.data.frame(reference), warbleR::is_selection_table(reference))) {
       stop2("'reference' is not of a class 'data.frame' or 'selection_table'")
     }
 
     # if reference is not a data frame
-    if (!any(is.data.frame(detection), is_selection_table(detection))) {
+    if (!any(is.data.frame(detection), warbleR::is_selection_table(detection))) {
       stop2("'detection' is not of a class 'data.frame' or 'selection_table'")
     }
 
@@ -292,7 +292,7 @@ label_detection <-
 
 
     # convert to selection table
-    if (is_selection_table(detection)) {
+    if (warbleR::is_selection_table(detection)) {
       detection$detection.class <- labeled_detections$detection.class
       detection$reference.row <- labeled_detections$reference.row
       detection$overlap <- labeled_detections$overlap

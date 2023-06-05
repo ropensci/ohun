@@ -31,8 +31,8 @@
 #' @examples{
 #' # Save sound files to temporary working directory
 #' data("lbh1", "lbh2", "lbh_reference")
-#' writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-#' writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+#' tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+#' tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
 #' # template for the second sound file in 'lbh_reference'
 #' templ <- lbh_reference[11, ]
@@ -94,7 +94,7 @@ optimize_template_detector <-
     }
 
     # if reference is not a data frame
-    if (!any(is.data.frame(reference), is_selection_table(reference))) {
+    if (!any(is.data.frame(reference), warbleR::is_selection_table(reference))) {
       stop2("reference is not of a class 'data.frame' or 'selection_table'")
     }
 

@@ -33,7 +33,7 @@ This function removes ambiguous detections (split or merged detections, see \cod
   data("lbh1", "lbh_reference")
 
   # save sound files
-  writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh2.wav"))
 
   # template for the first sound file in 'lbh_reference'
   templ1 <- lbh_reference[1, ]
