@@ -96,8 +96,6 @@ opts_chunk$set(
   # eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
   dev = "jpeg",
   dpi = 100,
-  fig.asp = 0.4,
-  fig.width = 6.5,
   out.width = "100%",
   fig.align = "center"
 )
@@ -161,7 +159,7 @@ as.data.frame(lbh_reference)
 
 All [ohun](https://github.com/maRce10/ohun) functions that work with this kind of data can take both selection tables and data frames. Spectrograms with highlighted sound events from a selection table can be plotted with the function `label_spectro()` (this function only plots one wave object at the time):
 
-```{r, eval = TRUE}
+```{r, eval = TRUE, fig.asp=0.7}
 # save sound file
 writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
 
@@ -606,7 +604,7 @@ template <-
   get_templates(reference = lbh1_reference, path = tempdir())
 ```
 
-```{r, fig.width=6, fig.height=5, eval = TRUE, echo = FALSE}
+```{r, out.height="200%", eval = TRUE, echo = FALSE}
 par(mar = c(5, 4, 1, 1), bg = "white")
 
 # get mean structure template
@@ -623,7 +621,7 @@ get_templates(reference = lbh_reference,
                           n.sub.spaces = 3, path = tempdir())
 ```
 
-```{r, fig.width=6, fig.height=5, eval = TRUE, echo = FALSE}
+```{r, out.height="200%", eval = TRUE, echo = FALSE}
 par(mar = c(5, 4, 1, 1), bg = "white")
 
 # get 3 templates
