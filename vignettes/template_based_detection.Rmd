@@ -24,16 +24,14 @@ params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
-This vignette details the use of template-based detection in [ohun](https://github.com/maRce10/ohun). The method is better suited for stereotyped sounds:
+This vignette details the use of template-based detection in [ohun](https://github.com/maRce10/ohun).Template-based detection method is better suited for highly stereotyped sound events. As it doesn't depend on the signal-to-noise ratio it's more robust to higher levels of background noise:
 
 <figure>
-<center><img src="analysis_workflow_energy.png" alt="automated signal detection diagram" width="500" height="450"></center>
+<center><img src="analysis_workflow_template.png" alt="automated signal detection diagram" width="500" height="450"></center>
 <figcaption><i>Diagram depicting how target sound event features can be used to tell the most adequate sound event detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
 </figure> 
 
-
-
-Template-based detection method is better suited for highly stereotyped sound events. As it doesn't depend on the signal-to-noise ratio it's more robust to higher levels of background noise. The procedure is divided in three steps:
+The procedure for template-based detection is divided in three steps:
 
 - Choosing the right template (`get_templates()`)
 - Estimating the cross-correlation scores of templates along sound files (`template_correlator()`)  
