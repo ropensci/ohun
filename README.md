@@ -5,20 +5,26 @@ ohun: optimizing sound event detection
 <!-- badges: start -->
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)[![Project
-Status: Active The project has reached a stable, usable state and is
-being actively
-developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)[![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)[![minimal
-R
-version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)[![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)[![Last-changedate](https://img.shields.io/badge/last%20change-2023--05--09-yellowgreen.svg)](/commits/master)[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)[![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)[![Codecov
-test
-coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)[![Status
-at rOpenSci Software Peer
+[![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)
+[![Project Status: Active The project has reached a stable, usable state
+and is being actively
+developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
+[![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![minimal R
+version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
+[![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2023--06--08-yellowgreen.svg)](/commits/master)
+[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
+[![Total
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
+[![Codecov test
+coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
+[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
+[![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci/software-review/issues/568)
 <!-- badges: end -->
 
-<img src="vignettes/ohun_sticker.png" alt="baRulho logo" align="right" width = "25%" height="25%"/>
+<img src="man/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
