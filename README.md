@@ -24,7 +24,7 @@ coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](htt
 Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci/software-review/issues/568)
 <!-- badges: end -->
 
-<img src="man/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
+<img src="vignettes/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
