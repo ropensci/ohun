@@ -93,8 +93,6 @@ load("../data/lbh2.rda")
 load("../data/lbh1.rda")
 load("../data/lbh_reference.rda")
 
-source("~/Dropbox/R_package_testing/ohun/R/label_spectro.R")
-
 # for spectrograms
 par(mar = c(5, 4, 2, 2) + 0.1)
 
