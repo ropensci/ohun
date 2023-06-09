@@ -24,8 +24,6 @@ params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
-# Automatic sound event detection
-
 This vignette details the use of energy-based detection in [ohun](https://github.com/maRce10/ohun). The energy detector approach uses amplitude envelopes to infer the position of sound events. Amplitude envelopes are representations of the variation in energy through time. This type of detector doesn't require highly stereotyped sound events, although they work better on high quality recordings in which the amplitude of target sound events is higher than the background noise (i.e. high signal-to-noise ratio):
 
 <figure>
