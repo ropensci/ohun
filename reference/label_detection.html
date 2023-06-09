@@ -59,7 +59,8 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">label_detection</span><span class="op">(</span><span class="va">reference</span>, <span class="va">detection</span>, cores <span class="op">=</span> <span class="fl">1</span>, pb <span class="op">=</span> <span class="cn">TRUE</span>, min.overlap <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">label_detection</span><span class="op">(</span><span class="va">reference</span>, <span class="va">detection</span>, cores <span class="op">=</span> <span class="fl">1</span>, pb <span class="op">=</span> <span class="cn">TRUE</span>, min.overlap <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span> by <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -84,12 +85,16 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <dt>min.overlap</dt>
 <dd><p>Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.</p></dd>
 
+
+<dt>by</dt>
+<dd><p>Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is <code>NULL</code>.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See <code><a href="diagnose_detection.html">diagnose_detection</a></code> for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.</p>
+<p>A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See <code><a href="diagnose_detection.html">diagnose_detection</a></code> for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -158,7 +163,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-style: italic;">label_detection(reference = lbh_reference, detection = Y) </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555; font-weight: bold;">Contains:</span><span style="color: #555555;"> </span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">*  A selection table data frame with 18 rows and 8 columns: </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">*  A selection table data frame with 18 rows and 9 columns: </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|sound.files | selec|  start|    end| bottom.freq| top.freq|</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|:-----------|-----:|------:|------:|-----------:|--------:|</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|lbh2.wav    |     1| 0.1092| 1.2000|      2.2954|   8.9382|</span></span>
@@ -167,7 +172,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|lbh2.wav    |     5| 2.4418| 2.5809|      2.1563|   8.6600|</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|lbh2.wav    |     6| 3.0368| 3.1689|      2.2259|   8.9382|</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">|lbh2.wav    |     7| 3.6286| 3.7466|      2.3302|   8.6252|</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">... 2 more column(s) (detection.class, overlap) and 12 more row(s) </span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">... 3 more column(s) (detection.class, reference, overlap) and 12 more row(s) </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;"> * A data frame (check.results) generated by check_sels() (as attribute) </span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #555555;">created by warbleR &lt; 1.1.21</span></span>
