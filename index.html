@@ -43,10 +43,15 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item">
-  <a class="nav-link" href="articles/ohun.html">Get started</a>
-</li>
-<li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
+</li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/energy_based_detection.html">Energy-based detection</a>
+    <a class="dropdown-item" href="articles/intro_to_ohun.html">ohun: optimizing sound event detection</a>
+    <a class="dropdown-item" href="articles/template_based_detection.html">Template-based detection</a>
+  </div>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="news/index.html">Changelog</a>
@@ -76,7 +81,7 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 <!-- badges: start -->
 
-<p><img src="articles/ohun_sticker.png" alt="baRulho logo" align="right" width="25%" height="25%"></p>
+<p><img src="articles/ohun_sticker.png" alt="ohun logo" align="right" width="25%" height="25%"></p>
 <p><a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines.</p>
 <p>The main features of the package are:</p>
 <ul>
@@ -154,7 +159,7 @@
 <li><a href="https://www.gnu.org/licenses/gpl-3.0.en.html" class="external-link"><img src="https://img.shields.io/badge/licence-GPL--2-blue.svg" alt="Licence"></a></li>
 <li><a href="https://cran.r-project.org/" class="external-link"><img src="https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg" alt="minimal R version"></a></li>
 <li><a href="commits/develop"><img src="https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square" alt="packageversion"></a></li>
-<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--05--09-yellowgreen.svg" alt="Last-changedate"></a></li>
+<li><a href="/commits/master"><img src="https://img.shields.io/badge/last%20change-2023--06--08-yellowgreen.svg" alt="Last-changedate"></a></li>
 <li><a href="https://cran.r-project.org/package=ohun" class="external-link"><img src="https://www.r-pkg.org/badges/version/ohun" alt="CRAN_Status_Badge"></a></li>
 <li><a href="https://cranlogs.r-pkg.org/badges/grand-total/ohun" class="external-link"><img src="https://cranlogs.r-pkg.org/badges/grand-total/ohun" alt="Total Downloads"></a></li>
 <li><a href="https://app.codecov.io/gh/maRce10/ohun?branch=master" class="external-link"><img src="https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
