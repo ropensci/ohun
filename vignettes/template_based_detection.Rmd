@@ -140,7 +140,7 @@ The graph above shows the overall acoustic spaces, in which the sound closest to
 
 ```{r, eval = FALSE, echo = TRUE}
 # get 3 templates
-get_templates(reference = lbh_reference, 
+get_templates(reference = lbh1_reference, 
                           n.sub.spaces = 3, path = tempdir())
 ```
 
@@ -148,7 +148,7 @@ get_templates(reference = lbh_reference,
 par(mar = c(5, 4, 1, 1), bg = "white")
 
 # get 3 templates
-templates <- get_templates(reference = lbh_reference, 
+templates <- get_templates(reference = lbh1_reference, 
                           n.sub.spaces = 3, path = tempdir())
 ```
 
@@ -176,7 +176,7 @@ This object can then be used to detect sound events using `template_detector()`:
 ```{r}
 # run detection
 detection <-
-  template_detector(template.correlations = correlations, threshold = 0.4)
+  template_detector(template.correlations = correlations, threshold = 0.7)
 
 detection
 ```
@@ -237,7 +237,7 @@ optimize_template_detector(
 ```
 
 
-In this case several threshold values can achieved an optimal detection.
+In this case 2 threshold values (0.5 and 0.6) can achieve an optimal detection.
 
 
 
@@ -246,24 +246,19 @@ In this case several threshold values can achieved an optimal detection.
 Several templates can be used within the same call. Here we correlate two templates on the two example sound files, taking one template from each sound file:
 
 ```{r}
+
 # get correlations
 correlations <-
   template_correlator(
-    templates = lbh_reference[c(1, 10),],
-    files = c("lbh1.wav", "lbh2.wav"),
+    templates = lbh1_reference[c(1, 10),],
+    files = "lbh1.wav",
     path = tempdir()
   )
 
 # run detection
 detection <-
-  template_detector(template.correlations = correlations, threshold = 0.5)
+  template_detector(template.correlations = correlations, threshold = 0.6)
 
-correlations <-
-  template_correlator(
-    templates = lbh_reference[c(1, 10),],
-    files = c("lbh1.wav", "lbh2.wav"),
-    path = tempdir()
-  )
 
 ```
 
@@ -271,39 +266,40 @@ correlations <-
 Note that in these cases we can get the same sound event detected several times (duplicates), one by each template. We can check if that is the case just by diagnosing the detection:
 
 ```{r}
+
 #diagnose
-diagnose_detection(reference = lbh_reference, detection = detection)
+diagnose_detection(reference = lbh1_reference, detection = detection)
 
 ```
 
+In this we got perfect recall, but low precision. That is due to the fact that the same reference events were picked up by both templates. We can actually diagnose the detection by template to see this more clearly:
 
-Duplicates are shown as split positives. Fortunately, we can leave a single detected sound event by leaving only those with the highest correlation. To do this we first need to label each row in the detection using `label_detection()` and then remove duplicates using `filter_detection()`:
+```{r}
+
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection, by = "template")
+
+```
+
+We see that independently each template achieved a good detection. We can create a consensus detection by leaving only those with detections with the highest correlation across templates. To do this we first need to label each row in the detection using `label_detection()` and then remove duplicates using `consensus_detection()`:
 
 ```{r}
 # labeling detection
 labeled <-
-  label_detection(reference = lbh_reference, detection = detection)
+  label_detection(reference = lbh_reference, detection = detection, by = "template")
 
 ```
-
-This function adds a column ('detection.class') with the class label for each row:
-
-```{r}
-
-table(labeled$detection.class)
-
-```
-
 
 Now we can filter out duplicates and diagnose the detection again, telling the function to select a single row per duplicate using the correlation score as a criterium (`by = "scores"`, this column is part of the `template_detector()` output):
 
 ```{r}
 
 # filter
-filtered <- filter_detection(detection = labeled, by = "scores")
+consensus <- consensus_detection(detection = labeled, by = "scores")
 
 # diagnose
-diagnose_detection(reference = lbh_reference, detection = filtered)
+diagnose_detection(reference = lbh1_reference, detection = consensus)
+
 ```
 
 

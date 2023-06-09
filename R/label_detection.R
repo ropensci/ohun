@@ -1,14 +1,16 @@
 #' @title Label detections from a sound event detection procedure
 #'
 #' @description \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
-#' @usage label_detection(reference, detection, cores = 1, pb = TRUE, min.overlap = 0.5)
+#' @usage label_detection(reference, detection, cores = 1, pb = TRUE, min.overlap = 0.5,
+#'  by = NULL)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
-#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including two additional columns, 'detection.class', which indicates the class of each detection and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
+#' @param by Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is \code{NULL}.
+#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
 #' @export
 #' @name label_detection
 #' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.
@@ -67,8 +69,41 @@ label_detection <-
            detection,
            cores = 1,
            pb = TRUE,
-           min.overlap = 0.5) {
+           min.overlap = 0.5,
+           by = NULL) {
 
+        # do it by
+    # run the function for each subset split by "by"
+    if (!is.null(by)) {
+      split_det <- split(x = detection, f = detection[, by])
+
+      split_labeled <-
+        warbleR:::pblapply_wrblr_int(
+          X = seq_len(length(split_det)),
+          cl = 1,
+          pbar = pb,
+          FUN = function(x) {
+            by_lab <-
+              label_detection(
+                reference = reference,
+                detection = split_det[[x]],
+                pb = FALSE,
+                cores = cores,
+                min.overlap = min.overlap
+              )
+
+            return(by_lab)
+          }
+        )
+
+      labeled_detections <- do.call(rbind, split_labeled)
+      
+      # fix call
+      if (warbleR::is_selection_table(detection))
+        attributes(labeled_detections)$call <- base::match.call()
+      
+    } else {
+    
     if (is_extended_selection_table(reference)) {
       stop2("This function cannot take extended selection tables ('reference' argument)")
     }
@@ -276,8 +311,18 @@ label_detection <-
                                         },
                                         FUN.VALUE = numeric(1)
             )
+            sub_detec$reference <- vapply(seq_len(nrow(sub_detec)),
+                                        function(x) {
+                                          ref <- overlap_iou$reference.id[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
+                                          if (length(ref) == 0) ref <- NA
+                                          return(as.character(ref))
+                                        },
+                                        FUN.VALUE = character(1)
+            )
+            
           } else {
             sub_detec$overlap <- NA
+            sub_detec$reference <- NA
           }
 
           # include overlaps as attributes
@@ -295,8 +340,9 @@ label_detection <-
     if (warbleR::is_selection_table(detection)) {
       detection$detection.class <- labeled_detections$detection.class
       detection$reference.row <- labeled_detections$reference.row
+      detection$reference <- labeled_detections$reference
       detection$overlap <- labeled_detections$overlap
-
+      
       # overwrite labeled_detections
       labeled_detections <- detection
 
@@ -308,6 +354,6 @@ label_detection <-
 
     attributes(labeled_detections)$overlaps <- do.call(rbind, lapply(labeled_detections_list, function(x) attributes(x)$overlaps))
 
-
+    }
     return(labeled_detections)
-  }
+}

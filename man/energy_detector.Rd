@@ -69,8 +69,8 @@ tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
 # using smoothing and minimum duration
 detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
-path = tempdir(), threshold = 60, smooth = 6.8,
-bp = c(2, 9), hop.size = 6.8, min.duration = 0.09)
+path = tempdir(), threshold = 6, smooth = 6.8,
+bp = c(2, 9), hop.size = 3, min.duration = 0.05)
 
 # diagnose detection
 diagnose_detection(reference = lbh_reference,

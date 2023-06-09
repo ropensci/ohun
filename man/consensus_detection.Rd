@@ -22,10 +22,10 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) as in 'X' but removing ambiguous detections (split and merged positives).
 }
 \description{
-\code{consensus_detection} removes ambiguous detections (split and merged detections)
+\code{consensus_detection} removes ambiguous detections
 }
 \details{
-This function removes ambiguous detections (split or merged detections, see \code{\link{diagnose_detection}}) keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}.
+This function removes ambiguous detections keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}. Useful when several detections match the same reference as in the case of template detection with multiple templates (see \code{\link{template_detector}}).
 }
 \examples{
 {
@@ -76,7 +76,7 @@ This function removes ambiguous detections (split or merged detections, see \cod
 }
 }
 \seealso{
-\code{\link{label_detection}}
+\code{\link{label_detection}}, \code{\link{template_detector}}
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr}).

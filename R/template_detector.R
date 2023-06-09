@@ -68,6 +68,7 @@ template_detector <-
            threshold,
            pb = TRUE,
            verbose = TRUE) {
+    
     # save start time
     start_time <- proc.time()
 
