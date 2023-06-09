@@ -1,5 +1,5 @@
 ---
-title: "ohun: optimizing sound event detection"
+title: "Optimizing sound event detection"
 pagetitle: Introduction to ohun
 author: 
 - <a href="https://marceloarayasalas.weebly.com">Marcelo Araya-Salas, PhD</a>
@@ -27,9 +27,9 @@ params:
 
  
 
-<img src="ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/>
+<img src="ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/><br>
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized. This vignette provides a general overview of sound event optimization in [ohun](https://github.com/maRce10/ohun) as well as basic concepts from signal detection theory.
 
 
 <div class="alert alert-info">
