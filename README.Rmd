@@ -65,6 +65,13 @@ library(ohun)
 
 ```
 
+Take a look at the vignettes for an overview of the main features of the packages:
+
+- [Optimizing sound event detection](https://marce10.github.io/ohun/articles/intro_to_ohun.html)
+- [Energy-based detection](https://marce10.github.io/ohun/articles/energy_based_detection.html)
+- [Template-based detection](https://marce10.github.io/ohun/articles/template_based_detection.html)
+
+---
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 

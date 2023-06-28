@@ -13,7 +13,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
 [![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2023--06--08-yellowgreen.svg)](/commits/master)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2023--06--28-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
@@ -70,6 +70,18 @@ remotes::install_github("maRce10/ohun")
 #load package
 library(ohun)
 ```
+
+Take a look at the vignettes for an overview of the main features of the
+packages:
+
+- [Optimizing sound event
+  detection](https://marce10.github.io/ohun/articles/intro_to_ohun.html)
+- [Energy-based
+  detection](https://marce10.github.io/ohun/articles/energy_based_detection.html)
+- [Template-based
+  detection](https://marce10.github.io/ohun/articles/template_based_detection.html)
+
+------------------------------------------------------------------------
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 

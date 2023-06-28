@@ -1,0 +1,512 @@
+X
+# get those detection that overlapped with x
+X <-
+true.positives[true.positives$reference == x, ]
+X
+# get those detection that overlapped with x
+X <- true.positives[true.positives$reference == x, ]
+X
+# order by 'by'
+X <- X[order(X[, by, drop = TRUE], decreasing = TRUE), ]
+X
+# filter
+if (filter == "max") {
+X <- X[1, , drop = FALSE]
+} else {
+X <- X[nrow(X), , drop = FALSE]
+}
+source("~/Dropbox/R_package_testing/ohun/R/consensus_detection.R")
+# run loop over every detected signal in the reference
+filter_tp_list <-
+warbleR:::pblapply_wrblr_int(X = unique(true.positives$reference), cl = cl, pbar = pb, function(x) {
+# get those detection that overlapped with x
+X <- true.positives[true.positives$reference == x, ]
+# order by 'by'
+X <- X[order(X[, by, drop = TRUE], decreasing = TRUE), ]
+# filter
+if (filter == "max") {
+X <- X[1, , drop = FALSE]
+} else {
+X <- X[nrow(X), , drop = FALSE]
+}
+return(X)
+})
+# put together in a data frame
+filter_tp_df <- do.call(rbind, filter_tp_list)
+filter_tp_df
+# add false positives
+filtered_detection <- rbind(false.positives, filter_tp_df)
+filtered_detection
+# sort back
+filtered_detection <-
+filtered_detection[order(filtered_detection$..row.id), ]
+filtered_detection
+# run loop over every detected signal in the reference
+filter_tp_list <-
+warbleR:::pblapply_wrblr_int(X = unique(true.positives$reference), cl = cl, pbar = pb, function(x) {
+# get those detection that overlapped with x
+X <- true.positives[true.positives$reference == x, ]
+# order by 'by'
+X <- X[order(X[, by, drop = TRUE], decreasing = TRUE), ]
+# filter
+if (filter == "max") {
+X <- X[1, , drop = FALSE]
+} else {
+X <- X[nrow(X), , drop = FALSE]
+}
+return(X)
+})
+# put together in a data frame
+filter_tp_df <- do.call(rbind, filter_tp_list)
+# add false positives
+filtered_detection <- rbind(false.positives, filter_tp_df)
+filtered_detection
+# sort back
+filtered_detection <-
+filtered_detection[order(filtered_detection$..row.id), ]
+filtered_detection
+source("~/Dropbox/R_package_testing/ohun/R/consensus_detection.R")
+# filter
+filtered <- consensus_detection(detection = labeled, by = "scores")
+filtered
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = filtered)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus)
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positives", consensus$detection.class),])
+consensus$detection.class
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positive", consensus$detection.class),])
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.4)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# get correlations
+correlations <-
+template_correlator(
+templates = lbh_reference[c(1, 10),],
+files = c("lbh1.wav", "lbh2.wav"),
+path = tempdir()
+)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.5)
+# run optimization
+optimize_template_detector(
+template.correlations = correlations,
+reference = lbh1_reference,
+threshold = c(0.6, 0.7),
+previous.output = optimization
+)
+# Chunk 3: global options
+#load packages
+library(ohun)
+library(tuneR)
+library(warbleR)
+load("./data/lbh2.rda")
+load("./data/lbh1.rda")
+load("./data/lbh_reference.rda")
+# for spectrograms
+par(mar = c(5, 4, 2, 2) + 0.1)
+stopifnot(require(knitr))
+options(width = 90)
+opts_chunk$set(
+comment = NA,
+# eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
+dev = "jpeg",
+dpi = 100,
+fig.width=10,
+out.width = "100%",
+fig.align = "center"
+)
+# Chunk 4
+# load example data
+data("lbh1", "lbh2", "lbh_reference")
+# save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+# select a subset of the data
+lbh1_reference <-
+lbh_reference[lbh_reference$sound.files == "lbh1.wav",]
+# print data
+lbh1_reference
+# Chunk 5
+# print spectrogram
+label_spectro(wave = lbh1, reference = lbh1_reference, hop.size = 10, ovlp = 50, flim = c(1, 10))
+# Chunk 7
+par(mar = c(5, 4, 1, 1), bg = "white")
+# get mean structure template
+template <-
+get_templates(reference = lbh1_reference, path = tempdir())
+# Chunk 9
+par(mar = c(5, 4, 1, 1), bg = "white")
+# get 3 templates
+templates <- get_templates(reference = lbh_reference,
+n.sub.spaces = 3, path = tempdir())
+# Chunk 10
+# get correlations
+correlations <-
+template_correlator(templates = template,
+files = "lbh1.wav",
+path = tempdir())
+# Chunk 11
+# print
+correlations
+# Chunk 12
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.4)
+detection
+# Chunk 13
+# plot spectrogram
+label_spectro(
+wave = lbh1,
+detection = detection,
+template.correlation = correlations[[1]],
+flim = c(0, 10),
+threshold = 0.4,
+hop.size = 10, ovlp = 50)
+# Chunk 14
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+# Chunk 15
+# run optimization
+optimization <-
+optimize_template_detector(
+template.correlations = correlations,
+reference = lbh1_reference,
+threshold = seq(0.1, 0.5, 0.1)
+)
+# print output
+optimization
+# run optimization
+optimize_template_detector(
+template.correlations = correlations,
+reference = lbh1_reference,
+threshold = c(0.6, 0.7),
+previous.output = optimization
+)
+# get correlations
+correlations <-
+template_correlator(
+templates = lbh_reference[c(1, 10),],
+files = c("lbh1.wav", "lbh2.wav"),
+path = tempdir()
+)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.5)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+lbh1_reference
+lbh1_reference
+templates
+par(mar = c(5, 4, 1, 1), bg = "white")
+# get 3 templates
+templates <- get_templates(reference = lbh_reference,
+n.sub.spaces = 3, path = tempdir())
+par(mar = c(5, 4, 1, 1), bg = "white")
+# get 3 templates
+templates <- get_templates(reference = lbh1_reference,
+n.sub.spaces = 3, path = tempdir())
+lbh1_reference
+# get 3 templates
+templates <- get_templates(reference = lbh1_reference,
+n.sub.spaces = 3, path = tempdir())
+# get 3 templates
+templates <- get_templates(reference = lbh1_reference,
+n.sub.spaces = 3, path = tempdir())
+# get correlations
+correlations <-
+template_correlator(templates = template,
+files = "lbh1.wav",
+path = tempdir())
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.4)
+detection
+# plot spectrogram
+label_spectro(
+wave = lbh1,
+detection = detection,
+template.correlation = correlations[[1]],
+flim = c(0, 10),
+threshold = 0.4,
+hop.size = 10, ovlp = 50)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+detection
+label_detection(reference = lbh1_reference, detection = detection)
+la <- label_detection(reference = lbh1_reference, detection = detection)
+View(la)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.5)
+detection
+# plot spectrogram
+label_spectro(
+wave = lbh1,
+detection = detection,
+template.correlation = correlations[[1]],
+flim = c(0, 10),
+threshold = 0.4,
+hop.size = 10, ovlp = 50)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+detection
+# plot spectrogram
+label_spectro(
+wave = lbh1,
+detection = detection,
+template.correlation = correlations[[1]],
+flim = c(0, 10),
+threshold = 0.4,
+hop.size = 10, ovlp = 50)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.7)
+detection
+# plot spectrogram
+label_spectro(
+wave = lbh1,
+detection = detection,
+template.correlation = correlations[[1]],
+flim = c(0, 10),
+threshold = 0.4,
+hop.size = 10, ovlp = 50)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+# run optimization
+optimization <-
+optimize_template_detector(
+template.correlations = correlations,
+reference = lbh1_reference,
+threshold = seq(0.1, 0.5, 0.1)
+)
+# print output
+optimization
+# run optimization
+optimize_template_detector(
+template.correlations = correlations,
+reference = lbh1_reference,
+threshold = c(0.6, 0.7),
+previous.output = optimization
+)
+lbh1_reference
+# get correlations
+correlations <-
+template_correlator(
+templates = lbh1_reference[c(1, 10),],
+files = "lbh1.wav",
+path = tempdir()
+)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+labeled
+table(labeled$detection.class)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positive", consensus$detection.class),])
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.7)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+table(labeled$detection.class)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+consensus
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positive", consensus$detection.class),])
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus)
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positive", consensus$detection.class),])
+labeled
+View(labeled)
+# get correlations
+correlations <-
+template_correlator(
+templates = lbh1_reference[c(1, 10),],
+files = "lbh1.wav",
+path = tempdir()
+)
+# run detection
+detection <-
+template_detector(template.correlations = correlations, threshold = 0.6)
+detection
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+nrow(consensus)
+nrow(detection)
+labeled
+View(labeled)
+View(labeled)
+detection
+attributes(consensus)
+attributes(labeled)
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+detection
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+labeled
+labeled
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+labeled
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+labeled
+View(labeled)
+# labeling detection
+labeled1 <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+View(labeled1)
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection)
+View(labeled)
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection, by = "template")
+#diagnose
+diagnose_detection(reference = lbh_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection, by = "template")
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection, by = "template")
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection, by = "template")
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+table(labeled$detection.class)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus[grep("true.positive", consensus$detection.class),])
+consensus
+labeled
+View(labeled)
+View(labeled)
+source("~/Dropbox/R_package_testing/ohun/R/label_detection.R")
+# labeling detection
+labeled <-
+label_detection(reference = lbh_reference, detection = detection, by = "template")
+View(labeled)
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+View(consensus)
+# diagnose
+diagnose_detection(reference = lbh_reference, detection = consensus)
+# diagnose
+diagnose_detection(reference = lbh1_reference, detection = consensus)
+# system("autoconf  ")
+# usethis::use_rcpp()
+# setwd("./warbleR/")
+#delete NAMESPACE file
+# Rcpp::compileAttributes()
+#run document twice
+# devtools::document(".")
+# devtools::load_all()
+# usethis::use_coverage()
+# pkgcheck::use_github_action_pkgcheck()
+#check with devtools
+devtools::check(".", document = TRUE, run_dont_test = TRUE, vignettes = FALSE, manual = TRUE)
+# devtools::run_examples( start = "rm_sil")
+# devtools::build_manual()
+# devtools::install()
+# check in R version 3.X.X
+## run in terminal:
+# /opt/R/3.6.3/bin/R
+# devtools::check("~/Dropbox/R_package_testing/warbleR/warbleR", document = TRUE, run_dont_test = TRUE, vignettes = FALSE, manual = TRUE)
+# system("autoconf  ")
+# usethis::use_rcpp()
+# setwd("./warbleR/")
+#delete NAMESPACE file
+# Rcpp::compileAttributes()
+#run document twice
+# devtools::document(".")
+# devtools::load_all()
+# usethis::use_coverage()
+# pkgcheck::use_github_action_pkgcheck()
+#check with devtools
+devtools::check(".", document = TRUE, run_dont_test = TRUE, vignettes = FALSE, manual = TRUE)
+# devtools::run_examples( start = "rm_sil")
+# devtools::build_manual()
+# devtools::install()
+# check in R version 3.X.X
+## run in terminal:
+# /opt/R/3.6.3/bin/R
+# devtools::check("~/Dropbox/R_package_testing/warbleR/warbleR", document = TRUE, run_dont_test = TRUE, vignettes = FALSE, manual = TRUE)
+remove.packages("ohun")
+devtools::install()
+# build tar.gz package file
+system("R CMD build ./ --resave-data=best")
