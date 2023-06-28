@@ -26,6 +26,8 @@ Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci
 
 <img src="vignettes/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
 
+Check the [package website](https://marce10.github.io/ohun/index.html) for a full overview of the available documentation.
+
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
 optimize detection routines.
