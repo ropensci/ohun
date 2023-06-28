@@ -1,8 +1,8 @@
 citHeader("Please cite 'ohun' as follows:")
 
-citEntry(entry = "MISC",
+bibentry(entry = "MISC",
         title = "ohun: automatic detection of acoustic signals",
-        author = personList(as.person("M. Araya-Salas"), as.person("G. Smith-Vidaurre"), as.person("Brenes, J.C."), as.person("F. Chirino"), as.person("J Elizondo-Calvo"), as.person("A. Rico-Guevara")),
+        author = c(as.person("M. Araya-Salas"), as.person("G. Smith-Vidaurre"), as.person("Brenes, J.C."), as.person("F. Chirino"), as.person("J Elizondo-Calvo"), as.person("A. Rico-Guevara")),
         year = "2022",
         journal = "BioRxiv",
         url = "https://doi.org/10.1101/2022.12.13.520253",
