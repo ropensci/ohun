@@ -282,3 +282,11 @@ pairs_iou <- function(df, detection, reference) {
 
   return(df)
 }
+
+.onAttach <- 
+  function(libname, pkgname) {
+    packageStartupMessage("\nPlease cite as: \n")
+    packageStartupMessage(" Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound event detection.")
+    packageStartupMessage(" R package version 0.1.1 https://CRAN.R-project.org/package=ohun \n")
+  }
+

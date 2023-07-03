@@ -122,7 +122,7 @@ Finding the position of sound events in a sound file is a challenging task. [ohu
 <figcaption><i>Diagram depicting how target sound event features can be used to tell the most adequate sound event detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
 </figure> 
 
- 
+Also note that the presence of other sounds overlapping the target sound events in time and frequency can strongly affect detection performance for the two methods in [ohun](https://github.com/maRce10/ohun).
 
 Still, a detection run using other software can be optimized with the tools provided in [ohun](https://github.com/maRce10/ohun). 
 

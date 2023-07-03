@@ -75,4 +75,4 @@ Take a look at the vignettes for an overview of the main features of the package
 
 Please cite [ohun](https://github.com/maRce10/ohun) as follows:
 
-Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
+Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.1.
