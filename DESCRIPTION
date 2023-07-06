@@ -29,7 +29,8 @@ Imports: tuneR,
     rlang, 
     sf, 
     igraph,
-    checkmate
+    checkmate,
+    ggplot2
 Depends: R (>= 3.2.1)
 Suggests: knitr, 
     rmarkdown, 

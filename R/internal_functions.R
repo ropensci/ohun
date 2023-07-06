@@ -486,8 +486,8 @@ check_arguments <- function(fun, args){
   if (any(names(args) == "verbose"))
     checkmate::assert_logical(x = args$verbose, len = 1, add = check_collection, .var.name = "verbose")
   
-  if (any(names(args) == "midpoint"))
-    checkmate::assert_logical(x = args$midpoint, len = 1, add = check_collection, .var.name = "midpoint")
+  if (any(names(args) == "mid.point"))
+    checkmate::assert_logical(x = args$mid.point, len = 1, add = check_collection, .var.name = "mid.point")
   
   if (any(names(args) == "positions"))
     checkmate::assert_numeric(x = args$positions, any.missing = FALSE, all.missing = FALSE, unique = TRUE, len = 2, add = check_collection, .var.name = "positions")
@@ -495,7 +495,7 @@ check_arguments <- function(fun, args){
   if (any(names(args) == "size"))
     checkmate::assert_numeric(x = args$size, any.missing = FALSE, len = 1, add = check_collection, .var.name = "size")
   
-    return(check_collection) 
+  return(check_collection) 
 }
 
 # set options when loading package
