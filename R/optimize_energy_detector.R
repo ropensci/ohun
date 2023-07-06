@@ -9,7 +9,7 @@
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of sound event
 #' (start and end). \strong{It must contain the reference selections that will be used for detection optimization}.
-#' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include sound files with no target sound events.
+#' @param files Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include sound files with no target sound events. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
 #' @param threshold A numeric vector specifying the amplitude threshold for detecting
 #'   sound events (in \%). Default is 5. \strong{Several values can be supplied for optimization}.
 #' @param peak.amplitude Numeric vector of length 1 with the minimum peak amplitude value. A detection below that value would be excluded. Peak amplitude is the maximum sound pressure level (in decibels) across the sound event (see \code{\link[warbleR]{sound_pressure_level}}). This can be useful when expecting higher peak amplitude in the target sound events compared to non-target sound events or when keeping only the best examples of the target sound events (i.e. high precision and low recall). Default is 0. \strong{Several values can be supplied for optimization}.

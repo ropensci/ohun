@@ -5,7 +5,7 @@
 #' cores = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
 #' @param path Character string containing the directory path where the sound files are located.
 #' The current working directory is used as default.
-#' @param files character vector or indicating the sound files that will be analyzed.
+#' @param files character vector or indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
