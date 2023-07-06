@@ -65,6 +65,11 @@ label_spectro <-
            hop.size = NULL,
            ...) {
     
+    # error message if wavethresh is not installed
+    if (!requireNamespace("viridis", quietly = TRUE)) {
+      stop2("must install 'viridis' to use this function")
+    }
+    
     # check arguments
     arguments <- as.list(base::match.call(expand.dots = FALSE))
     
