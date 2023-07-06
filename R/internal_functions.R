@@ -919,3 +919,101 @@ env_ohun_int <-
     return(output)
   }
 
+
+###
+# function to get spectrogram matrices in template correlator
+spc_FUN <-
+  function(j,
+           pth,
+           W,
+           hop,
+           wlg,
+           ovl,
+           w,
+           bndpss,
+           nbnds,
+           entire = FALSE,
+           fbt,
+           ...) {
+    # read entire sound file
+    if (entire) {
+      clp <- warbleR::read_sound_file(X = j, path = pth)
+    } else {
+      clp <- warbleR::read_sound_file(
+        X = W,
+        index = j,
+        path = pth
+      )
+    }
+    
+    # adjust wl based on hope.size
+    if (is.null(wlg)) {
+      wlg <- round(clp@samp.rate * hop / 1000, 0)
+    }
+    
+    # make wl even if odd
+    if (!(wlg %% 2) == 0) {
+      wlg <- wlg + 1
+    }
+    
+    # steps for time bins
+    steps <- seq(1, length(clp@left) - wlg, wlg - (ovlp * wlg / 100))
+    
+    if (type == "fourier") {
+      spc <-
+        warbleR:::stft_wrblr_int(
+          wave = matrix(clp@left),
+          f = clp@samp.rate,
+          wl = wlg,
+          zp = 0,
+          step = steps,
+          wn = w,
+          fftw = FALSE,
+          scale = TRUE,
+          complex = FALSE
+        )
+      
+      # calculate freq values for spc rows
+      freq <-
+        seq(0,
+            (clp@samp.rate / 2) - (clp@samp.rate / wlg),
+            length.out = nrow(spc)
+        ) / 1000
+      
+      # apply bandpass
+      spc <- spc[freq >= bndpss[1] & freq <= bndpss[2], ]
+      
+      # log amplitude values
+      spc <- 20 * log10(spc)
+    } else {
+      # calculate MFCCs
+      melfcc_output <-
+        melfcc(
+          clp,
+          hoptime = (steps[2] - steps[1]) / clp@samp.rate,
+          wintime = wlg / clp@samp.rate,
+          fbtype = fbt,
+          spec_out = TRUE,
+          frames_in_rows = FALSE,
+          minfreq = bndpss[1] * 1000,
+          maxfreq = bndpss[2] * 1000,
+          ...
+        )
+      
+      if (type == "mfcc") {
+        spc <- melfcc_output$cepstra
+      }
+      
+      if (type == "mel-auditory") {
+        spc <- melfcc_output$aspectrum
+      }
+      
+      # log amplitude values
+      spc <- 20 * log10(spc + abs(min(spc)) + 10)
+    }
+    
+    # replace inf by NA
+    spc[is.infinite(spc)] <- NA
+    
+    return(spc)
+  }
