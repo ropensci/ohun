@@ -68,6 +68,7 @@ split_acoustic_data <-
       getwd() else 
         normalizePath(path)
     
+    # check files are found in path
     if (is.null(files)) {
       files <-
         list.files(
@@ -104,6 +105,7 @@ split_acoustic_data <-
             sq <- c(sq, wvdr$duration[wvdr$sound.files == x])
           }
 
+          # create data frame with input file information
           out <-
             data.frame(
               original.sound.files = x,
@@ -174,7 +176,7 @@ split_acoustic_data <-
         cl <- cores
       }
 
-      # split using a loop only the ones that are shorter than segments
+      # split using a loop but only those that are shorter than segments
       a_l <-
         warbleR:::pblapply_wrblr_int(
           pbar = pb,
@@ -190,7 +192,7 @@ split_acoustic_data <-
                 path = path
               )
 
-            # save
+            # save clip
             tuneR::writeWave(
               extensible = FALSE,
               object = clip,
@@ -302,7 +304,8 @@ split_acoustic_data <-
           return(NULL)
         }
       })
-
+    
+      # put together clip information in a single data frame
       new.sels <- do.call(rbind, new.sels_l)
       new.sels$..row <-
         new.sels$indx.row <-
