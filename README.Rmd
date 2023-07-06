@@ -26,7 +26,7 @@ editor_options:
 
 <img src="vignettes/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines.
+[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. It provides utilities for comparing detection and annotations of audio events described by frequency and time boxes.
 
 The main features of the package are:
  
@@ -54,6 +54,7 @@ install.packages("ohun")
 library(ohun)
 
 ```
+
 
 To install the latest developmental version from [github](https://github.com/) you will need the R package [remotes](https://cran.r-project.org/package=remotes):
 
