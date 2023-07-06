@@ -286,8 +286,7 @@ pairs_iou <- function(df, detection, reference) {
 .onAttach <- 
   function(libname, pkgname) {
     packageStartupMessage("\nPlease cite as: \n")
-    packageStartupMessage(" Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound event detection.")
-    packageStartupMessage(" R package version 0.1.1 https://CRAN.R-project.org/package=ohun \n")
+    packageStartupMessage(" Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2023. ohun: an R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution. https://doi.org/10.1111/2041-210X.14170")
   }
 
 
@@ -514,7 +513,7 @@ check_arguments <- function(fun, args){
 
 #### internal function to compute spectrogram cross-correlation
 # create function to calculate correlation between 2 spectrograms
-XC_FUN <- function(spc1, spc2, cm = cor.method) {
+XC_FUN <- function(spc1, spc2, cm) {
   # define short and long envelope for sliding one (short) over the other (long)
   if (ncol(spc1) > ncol(spc2)) {
     lg.spc <- spc1
@@ -642,7 +641,11 @@ detect_FUN <-
            bp,
            thinning,
            smooth,
-           envlp) {
+           envlp,
+           hop.size,
+           cores,
+           pb,
+           hold.t) {
     # get envelope if not supplied
     if (is.null(envlp)) {
       envlp <- env_ohun_int(
@@ -658,7 +661,7 @@ detect_FUN <-
         normalize = TRUE
       )
     } else {
-      envlp <- envelopes[[file]]
+      envlp <- envlp[[file]]
     }
     
     # normalize to range
@@ -735,14 +738,14 @@ detect_FUN <-
     if (nrow(detections_df) > 0) {
       ## HOLD TIME MERGING
       # merge selections based on hold time
-      if (hold.time > 0 & nrow(detections_df) > 1) {
+      if (hold.t > 0 & nrow(detections_df) > 1) {
         # empty column to tag rows to be merged
         detections_df$ovlp.sels <- NA
         
         # calculate overlapping selection after adding hope time
         for (e in 1:(nrow(detections_df) - 1)) {
           # if overlap
-          if (detections_df$end[e] + hold.time / 1000 >= detections_df$start[e + 1]) {
+          if (detections_df$end[e] + hold.t / 1000 >= detections_df$start[e + 1]) {
             # return 1 if is the first merging
             if (all(is.na(detections_df$ovlp.sels))) detections_df$ovlp.sels[c(e, e + 1)] <- 1
             
@@ -934,6 +937,7 @@ spc_FUN <-
            nbnds,
            entire = FALSE,
            fbt,
+           typ,
            ...) {
     # read entire sound file
     if (entire) {
@@ -957,9 +961,9 @@ spc_FUN <-
     }
     
     # steps for time bins
-    steps <- seq(1, length(clp@left) - wlg, wlg - (ovlp * wlg / 100))
+    steps <- seq(1, length(clp@left) - wlg, wlg - (ovl * wlg / 100))
     
-    if (type == "fourier") {
+    if (typ == "fourier") {
       spc <-
         warbleR:::stft_wrblr_int(
           wave = matrix(clp@left),
@@ -1000,11 +1004,11 @@ spc_FUN <-
           ...
         )
       
-      if (type == "mfcc") {
+      if (typ == "mfcc") {
         spc <- melfcc_output$cepstra
       }
       
-      if (type == "mel-auditory") {
+      if (typ == "mel-auditory") {
         spc <- melfcc_output$aspectrum
       }
       

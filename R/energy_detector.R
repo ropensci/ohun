@@ -187,7 +187,9 @@ energy_detector <-
                           bp,
                           thinning,
                           smooth,
-                          envlp = envelopes
+                          envlp = envelopes,
+                          hop.size,
+                          hold.t = hold.time
         )
         return(out)
       }

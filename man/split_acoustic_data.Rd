@@ -15,7 +15,7 @@ The current working directory is used as default.}
 
 \item{sgmts}{Numeric. Number of segments in which to split each sound file. If supplied 'sgmt.dur' is ignored.}
 
-\item{files}{Character vector indicating the subset of files that will be split.}
+\item{files}{Character vector indicating the subset of files that will be split. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.}
 
 \item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}

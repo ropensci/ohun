@@ -245,6 +245,7 @@ template_correlator <-
               w = wn,
               bndpss = bp,
               fbt = fbtype,
+              typ = type,
               ...
             )
 
@@ -259,6 +260,7 @@ template_correlator <-
               entire = TRUE,
               bndpss = bp,
               fbt = fbtype,
+              typ = type,
               ...
             )
 

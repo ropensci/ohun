@@ -20,7 +20,7 @@ The package offers functions for:
   \item Energy-based detection
   \item Template-based detection
   \item Diagnose detection precision
-  \item Optimize detection routines based on reference annotations
+  \item Improve detection by adjusting parameters to optimize accuracy
   }
 
 All functions allow the parallelization of tasks, which distributes the tasks among several processors to improve computational efficiency. The package works on sound files in '.wav', '.mp3', '.flac' and '.wac' format.
