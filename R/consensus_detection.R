@@ -11,7 +11,7 @@
 #' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) as in 'X' but removing ambiguous detections (split and merged positives).
 #' @export
 #' @name consensus_detection
-#' @details This function removes ambiguous detections keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}. 
+#' @details This function removes ambiguous detections keeping only the one that maximizes a criterium given by 'filter'. By default it keeps the detection with the highest overlap to the reference signal. It works on the output of \code{\link{label_detection}}. Useful when several detections match the same reference as in the case of template detection with multiple templates (see \code{\link{template_detector}}).
 #'
 #' @examples {
 #'   # load example data
