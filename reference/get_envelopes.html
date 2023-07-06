@@ -71,12 +71,12 @@ The current working directory is used as default.</p></dd>
 
 
 <dt>files</dt>
-<dd><p>character vector or indicating the sound files that will be analyzed.</p></dd>
+<dd><p>character vector or indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.</p></dd>
 
 
 <dt>bp</dt>
 <dd><p>Numeric vector of length 2 giving the lower and upper limits of a
-frequency bandpass filter (in kHz). Default is <code>NULL</code>.</p></dd>
+frequency bandpass filter (in kHz). Default is <code>NULL</code>. Bandpass is done using the function code<a href="https://rdrr.io/pkg/seewave/man/ffilter.html" class="external-link">ffilter</a>, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation.</p></dd>
 
 
 <dt>hop.size</dt>
@@ -105,7 +105,7 @@ output (usually very large R objects / files). Default is <code>1</code> (no thi
 
 <dt>smooth</dt>
 <dd><p>A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument).</p></dd>
+with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  <code><a href="https://marce10.github.io/warbleR/reference/envelope.html" class="external-link">envelope</a></code> is used internally which is analogous to sum smoothing in code<a href="https://rdrr.io/pkg/seewave/man/env.html" class="external-link">env</a>. This argument is used internally by <code>get_envelopes</code>.</p></dd>
 
 
 <dt>normalize</dt>

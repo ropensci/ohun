@@ -75,7 +75,7 @@ for sound file name (sound.files), selection number (selec), and start and end t
 
 
 <dt>files</dt>
-<dd><p>Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include sound files with no target sound events.</p></dd>
+<dd><p>Character vector indicating the sound files that will be analyzed. Optional. If  not supplied the function will work on the sound files in 'reference'. It can be used to include sound files with no target sound events. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.</p></dd>
 
 
 <dt>threshold</dt>
@@ -96,8 +96,8 @@ sound events (in %). Default is 5. <strong>Several values can be supplied for op
 
 
 <dt>smooth</dt>
-<dd><p>A numeric vector to smooth the amplitude envelope
-with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). <strong>Several values can be supplied for optimization</strong>.</p></dd>
+<dd><p>A numeric vector of length 1 to smooth the amplitude envelope
+with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  <code><a href="https://marce10.github.io/warbleR/reference/envelope.html" class="external-link">envelope</a></code> is used internally which is analogous to sum smoothing in code<a href="https://rdrr.io/pkg/seewave/man/env.html" class="external-link">env</a>. This argument is used internally by <code><a href="get_envelopes.html">get_envelopes</a></code>. <strong>Several values can be supplied for optimization</strong>.</p></dd>
 
 
 <dt>hold.time</dt>
@@ -138,7 +138,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 <dt>bp</dt>
 <dd><p>Numeric vector of length 2 giving the lower and upper limits of a
-frequency bandpass filter (in kHz). Default is <code>NULL</code>.  This argument is used internally by <code><a href="get_envelopes.html">get_envelopes</a></code>. Not used if 'envelopes' are supplied.</p></dd>
+frequency bandpass filter (in kHz). Default is <code>NULL</code>.  This argument is used internally by <code><a href="get_envelopes.html">get_envelopes</a></code>. Not used if 'envelopes' are supplied. Bandpass is done using the function code<a href="https://rdrr.io/pkg/seewave/man/ffilter.html" class="external-link">ffilter</a>, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation.</p></dd>
 
 
 <dt>path</dt>

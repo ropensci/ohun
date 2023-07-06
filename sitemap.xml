@@ -94,7 +94,13 @@
     <loc>https://marce10.github.io/ohun/reference/split_acoustic_data.html</loc>
   </url>
   <url>
+    <loc>https://marce10.github.io/ohun/reference/summarize_acoustic_data.html</loc>
+  </url>
+  <url>
     <loc>https://marce10.github.io/ohun/reference/summarize_diagnostic.html</loc>
+  </url>
+  <url>
+    <loc>https://marce10.github.io/ohun/reference/summarize_reference.html</loc>
   </url>
   <url>
     <loc>https://marce10.github.io/ohun/reference/template_correlator.html</loc>
