@@ -313,46 +313,6 @@ template_correlator <-
         return(spc)
       }
 
-    # create function to calculate correlation between 2 spectrograms
-    XC_FUN <- function(spc1, spc2, cm = cor.method) {
-      # define short and long envelope for sliding one (short) over the other (long)
-      if (ncol(spc1) > ncol(spc2)) {
-        lg.spc <- spc1
-        shrt.spc <- spc2
-      } else {
-        lg.spc <- spc2
-        shrt.spc <- spc1
-      }
-
-      # get length of shortest minus 1 (1 if same length so it runs a single correlation)
-      shrt.lgth <- ncol(shrt.spc) - 1
-
-      # steps for sliding one signal over the other
-      stps <- ncol(lg.spc) - ncol(shrt.spc)
-
-      # set sequence of steps, if <= 1 then just 1 step
-      if (stps <= 1) {
-        stps <- 1
-      } else {
-        stps <- 1:stps
-      }
-
-      # calculate correlations at each step
-      cors <- vapply(stps, function(x, cor.method = cm) {
-        warbleR::try_na(cor(
-          c(lg.spc[, x:(x + shrt.lgth)]),
-          c(shrt.spc),
-          method = cm,
-          use = "pairwise.complete.obs"
-        ))
-      }, FUN.VALUE = numeric(1))
-
-      # make negative values 0
-      cors[cors < 0] <- 0
-
-      return(cors)
-    }
-
     # set cores cores
     if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <-
@@ -449,6 +409,47 @@ template_correlator <-
 
     return(corr_vector_list)
   }
+
+#### internal function to compute spectrogram cross-correlation
+# create function to calculate correlation between 2 spectrograms
+XC_FUN <- function(spc1, spc2, cm = cor.method) {
+  # define short and long envelope for sliding one (short) over the other (long)
+  if (ncol(spc1) > ncol(spc2)) {
+    lg.spc <- spc1
+    shrt.spc <- spc2
+  } else {
+    lg.spc <- spc2
+    shrt.spc <- spc1
+  }
+  
+  # get length of shortest minus 1 (1 if same length so it runs a single correlation)
+  shrt.lgth <- ncol(shrt.spc) - 1
+  
+  # steps for sliding one signal over the other
+  stps <- ncol(lg.spc) - ncol(shrt.spc)
+  
+  # set sequence of steps, if <= 1 then just 1 step
+  if (stps <= 1) {
+    stps <- 1
+  } else {
+    stps <- 1:stps
+  }
+  
+  # calculate correlations at each step
+  cors <- vapply(stps, function(x, cor.method = cm) {
+    warbleR::try_na(cor(
+      c(lg.spc[, x:(x + shrt.lgth)]),
+      c(shrt.spc),
+      method = cm,
+      use = "pairwise.complete.obs"
+    ))
+  }, FUN.VALUE = numeric(1))
+  
+  # make negative values 0
+  cors[cors < 0] <- 0
+  
+  return(cors)
+}
 
 
 ##############################################################################################################
