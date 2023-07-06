@@ -1,6 +1,6 @@
-#' @title Extract quantitative features of references
+#' @title Summarize temporal and frequency dimensions of annotations and gaps
 #'
-#' @description \code{feature_reference} extracts quantitative characteristics of a reference table
+#' @description \code{feature_reference} summarizes temporal and frequency dimensions of annotations and gaps
 #' @usage feature_reference(reference, path = NULL, by.sound.file = FALSE,
 #' units = c("ms", "kHz"), digits = 2)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.
@@ -236,3 +236,14 @@ feature_reference <-
     }
     return(output)
   }
+
+
+
+##############################################################################################################
+#' alternative name for \code{\link{feature_reference}}
+#'
+#' @keywords internal
+#' @details see \code{\link{summarize_reference}} for documentation. \code{\link{feature_reference}} will be deprecated in future versions.
+#' @export
+
+summarize_reference <- feature_reference
