@@ -24,7 +24,7 @@ params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
-This vignette details the use of template-based detection in [ohun](https://github.com/maRce10/ohun).Template-based detection method is better suited for highly stereotyped sound events. As it doesn't depend on the signal-to-noise ratio it's more robust to higher levels of background noise:
+This vignette details the use of template-based detection in [ohun](https://github.com/maRce10/ohun).Template-based detection method is better suited for highly stereotyped sound events. As it is less affected by signal-to-noise ratio it's more robust to higher levels of background noise:
 
 <figure>
 <center><img src="analysis_workflow_template.png" alt="automated signal detection diagram" width="500" height="450"></center>
