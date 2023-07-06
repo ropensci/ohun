@@ -141,76 +141,39 @@ optimize_energy_detector <-
            envelopes = NULL,
            macro.average = FALSE,
            min.overlap = 0.5) {
-    # hopsize
-    if (!is.numeric(hop.size) |
-      hop.size < 0) {
-      stop2("'hop.size' must be a positive number")
-    }
-
-    if (is_extended_selection_table(reference)) {
-      stop2("This function cannot take extended selection tables ('reference' argument)")
-    }
-
-    # if reference is not a data frame
-    if (!any(is.data.frame(reference), warbleR::is_selection_table(reference))) {
-      stop2("reference is not of a class 'data.frame' or 'selection_table'")
-    }
-
-    # check if all columns are found
-    if (any(!(
-      c("sound.files", "selec", "start", "end") %in% colnames(reference)
-    ))) {
-      stop2(paste(paste(
-        c("sound.files", "selec", "start", "end")[!(c(
-          "sound.files", "selec",
-          "start", "end"
-        ) %in% colnames(reference))],
-        collapse =
-          ", "
-      ), "column(s) not found in 'reference'"))
-    }
-
-    # if there are NAs in start or end stop
-    if (any(is.na(c(reference$end, reference$start)))) {
-      stop2("NAs found in start and/or end columns")
-    }
-
-    # if end or start are not numeric stop
-    if (any(
-      !is(reference$end, "numeric"),
-      !is(reference$start, "numeric")
-    )) {
-      stop2("'start' and 'end' must be numeric")
-    }
-
-    # if any start higher than end stop
-    if (any(reference$end - reference$start <= 0)) {
-      stop2(paste(
-        "Start is higher than or equal to end in",
-        length(which(reference$end - reference$start <= 0)),
-        "case(s)"
-      ))
-    }
-
-    # check path to working directory
-    if (is.null(path)) {
-      path <- getwd()
-    } else if (!dir.exists(path)) {
-      stop2("'path' provided does not exist")
-    } else {
-      path <- normalizePath(path)
-    }
-
+  
+    # check arguments
+    arguments <- as.list(base::match.call())
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+    # check path if not provided set to working directory
+    path <- if (is.null(path)) 
+      getwd() else 
+        normalizePath(path)
+    
+    # do not check arguments on internal ohun function here (energy_detector())
+    options(ohun_check_args = FALSE)
+    on.exit(options(ohun_check_args = TRUE))    
+    
     # if files not supplied then used those from reference
     if (is.null(files)) {
       files <- unique(reference$sound.files)
     }
-
+    
     # if 'files' are found in reference
     if (!any(files %in% reference$sound.files)) {
       stop2("Not a single sound file in the working directory is found in 'reference'")
     }
-
+    
     # get all possible combinations of parameters
     exp_grd <-
       expand.grid(
@@ -230,7 +193,7 @@ optimize_energy_detector <-
         },
         thinning = thinning
       )
-
+    
     # if previous output included
     if (!is.null(previous.output)) {
       # create composed variable to find overlapping runs
@@ -244,7 +207,7 @@ optimize_energy_detector <-
           "max.duration",
           "thinning"
         )], 1, paste, collapse = "-")
-
+      
       exp_grd <-
         exp_grd[!apply(exp_grd[, c(
           "threshold",
@@ -255,23 +218,23 @@ optimize_energy_detector <-
           "max.duration",
           "thinning"
         )], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
-
+      
       # remove composed variable
       previous.output$temp.label <- NULL
     }
-
-
+    
+    
     if (nrow(exp_grd) == 0) {
       cat(
         "all combinations were already evaluated on previous call to this function (based on 'pevious.output')"
       )
-
+      
       return(previous.output)
     } else {
       # warn about number of combinations
       cat(paste(nrow(exp_grd), "combinations will be evaluated:"))
       cat("\n")
-
+      
       eng_det_l <-
         warbleR:::pblapply_wrblr_int(
           X = seq_len(nrow(exp_grd)),
@@ -300,20 +263,24 @@ optimize_energy_detector <-
                 hop.size = hop.size,
                 wl = wl
               )
-
+            
             # make factor a character vector
             eng_det$sound.files <- as.character(eng_det$sound.files)
-
+            
             if (nrow(eng_det) > 0) {
               eng_det$..row.id <- seq_len(nrow(eng_det))
             }
-
+            
             eng_det <- eng_det[!is.na(eng_det$start), ]
-
+            
             return(eng_det)
           }
         )
-
+      
+      # do not check arguments on internal ohun function here (diagnose_detection() and energy_detector())
+      options(ohun_check_args = FALSE)
+      # on.exit(options(ohun_check_args = TRUE))    
+      
       performance_l <-
         lapply(eng_det_l, function(Z) {
           suppressWarnings(
@@ -330,28 +297,28 @@ optimize_energy_detector <-
             )
           )
         })
-
+      
       performance <- do.call(rbind, performance_l)
-
+      
       # duplicate expand grid tuning parameters if by sound file
       if (by.sound.file) {
         exp_grd <-
           exp_grd[rep(seq_len(nrow(exp_grd)), each = length(files)), ]
       }
-
+      
       suppressWarnings(performance <-
-        data.frame(exp_grd, performance))
-
+                         data.frame(exp_grd, performance))
+      
       if (!is.null(previous.output)) {
         performance <- rbind(previous.output, performance)
       }
-
+      
       # order colums
       performance <- warbleR::sort_colms(performance)
-
+      
       # rename rows
       rownames(performance) <- seq_len(nrow(performance))
-
+      
       return(performance)
     }
   }

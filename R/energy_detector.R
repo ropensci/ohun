@@ -118,112 +118,51 @@ energy_detector <-
            max.duration = Inf,
            cores = 1,
            pb = TRUE) {
+    
     # save start time
     start_time <- proc.time()
-
+    
+    # check arguments
+    if (options("ohun_check_args")$ohun_check_args){
+      
+      # check arguments
+      arguments <- as.list(base::match.call())
+      
+      # add objects to argument names
+      for(i in names(arguments)[-1])
+        arguments[[i]] <- get(i)
+      
+      # check each arguments
+      check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+      
+      # report errors
+      checkmate::reportAssertions(check_results)
+    }
+    
     # check path if not provided set to working directory
-    if (is.null(path)) {
-      path <- getwd()
-    } else if (!dir.exists(path)) {
-      stop2("'path' supplied does not exist")
-    } else {
-      path <- normalizePath(path)
-    }
-
-    # hopsize
-    if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
-
-    # if bp is not vector or length!=2 stop
-    if (!is.null(bp)) {
-      if (!is.vector(bp)) {
-        stop2("'bp' must be a numeric vector of length 2")
-      } else {
-        if (!length(bp) == 2) {
-          stop2("'bp' must be a numeric vector of length 2")
-        }
-      }
-    }
-
-    # if smooth is not vector or length!=1 stop
-    if (!is.vector(smooth)) {
-      stop2("'smooth' must be a numeric vector of length 1")
-    } else {
-      if (!length(smooth) == 1) {
-        stop2("'smooth' must be a numeric vector of length 1")
-      }
-    }
-
-    # if thinning is not vector or length!=1 between 1 and 0
-    if (!is.vector(thinning) | !is.numeric(thinning)) {
-      stop2("'thinning' must be a numeric vector of length 1")
-    }
-    if (thinning[1] > 1 | thinning[1] <= 0) {
-      stop2("'thinning' must be greater than 0 and lower than or equal to 1")
-    }
-
-    # if wl is not vector or length!=1 stop
-    if (!is.null(wl)) {
-      if (!is.vector(wl)) {
-        stop2("'wl' must be a numeric vector of length 1")
-      } else {
-        if (!length(wl) == 1) {
-          stop2("'wl' must be a numeric vector of length 1")
-        }
-      }
-    }
-
-    # if threshold is not vector or length!=1 stop
-    if (!is.numeric(threshold)) {
-      stop2("'threshold' must be a numeric vector of length 1")
-    }
-    if (!is.vector(threshold)) {
-      stop2("'threshold' must be a numeric vector of length 1")
-    }
-    if (!length(threshold) == 1) {
-      stop2("'threshold' must be a numeric vector of length 1")
-    }
-    if (threshold >= 100 | threshold <= 0) {
-      stop2("'threshold' must be a number > 0 and < 100")
-    }
-
-    # if files is not character vector
-    if (!is.null(files) &
-      any(!is.character(files), !is.vector(files))) {
-      stop2("'files' must be a character vector")
-    }
-
-    # if cores is not numeric
-    if (!is.numeric(cores)) {
-      stop2("'cores' must be a numeric vector of length 1")
-    }
-    if (any(!(cores %% 1 == 0), cores < 1)) {
-      stop2("'cores' should be a positive integer")
-    }
-
-    # check hold time
-    if (!is.numeric(hold.time)) {
-      stop2("'hold.time' must be a numeric vector of length 1")
-    }
-
+    path <- if (is.null(path)) 
+      getwd() else 
+        normalizePath(path)
+    
     # if files and envelopes are not supplied
     if (is.null(files) & is.null(envelopes)) {
       files <- list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE)
-
+      
       if (length(files) == 0) {
         stop2("No files found in the working directory or 'path' supplied")
       }
     }
-
+    
     # either files or envelopes must be supplied
     if (!is.null(files) & !is.null(envelopes)) {
       message2("'files' will be ignored as 'envelopes' has been supplied")
     }
-
+    
     # get file names from envelopes
     if (is.null(files)) {
       files <- names(envelopes)[-length(envelopes)]
     }
-
+    
     # function for detecting sound events (i is the file name)
     detect_FUN <-
       function(file,
@@ -254,16 +193,16 @@ energy_detector <-
         } else {
           envlp <- envelopes[[file]]
         }
-
+        
         # normalize to range
         if (max(envlp$envelope) > 1) {
           envlp$envelope <- envlp$envelope - min(envlp$envelope)
           envlp$envelope <- envlp$envelope / max(envlp$envelope)
         }
-
+        
         # time interval between consecutive samples
         hop.samples <- envlp$duration / (length(envlp$envelope) - 1)
-
+        
         # get times at which threshold is crossed
         cross_thresh <- unlist(lapply(2:length(envlp$envelope), function(x) {
           # positive means going up
@@ -272,31 +211,31 @@ energy_detector <-
           if (envlp$envelope[x] <= thres & envlp$envelope[x - 1] > thres) out <- hop.samples * (x - 1) * -1
           # anything else should be null to save memory
           if (envlp$envelope[x] <= thres & envlp$envelope[x - 1] <= thres | envlp$envelope[x] > thres & envlp$envelope[x - 1] > thres) out <- NULL
-
+          
           return(out)
         }))
-
+        
         ## FIX IF START OR END OF sound eventS IS NOT INCLUDED IN SOUND FILE
         # get start and end of detections
         # starts are the positive ones
         starts <- cross_thresh[cross_thresh > 0]
         # and ends the negative ones (should be converted to positive)
         ends <- abs(cross_thresh[cross_thresh < 0])
-
+        
         # if there is no end
         if (length(starts) > 0 & length(ends) == 0) ends <- envlp$duration
-
+        
         # if there is no start
         if (length(ends) > 0 & length(starts) == 0) starts <- 0
-
+        
         # if there are both starts and ends detected
         if (length(starts) > 0 & length(ends) > 0) {
           # if start is not lower in the first detection
           if (starts[1] > ends[1]) starts <- c(0, starts)
-
+          
           # if end is not higher in the last
           if (starts[length(starts)] > ends[length(ends)]) ends <- c(ends, envlp$duration)
-
+          
           # put time of detection in data frame
           detections_df <-
             data.frame(
@@ -307,7 +246,7 @@ energy_detector <-
               end = ends,
               stringsAsFactors = FALSE
             )
-
+          
           # add row names
           if (nrow(detections_df) > 0) {
             detections_df$selec <- seq_len(nrow(detections_df))
@@ -323,7 +262,7 @@ energy_detector <-
               stringsAsFactors = FALSE
             )
         }
-
+        
         # TIME FILTERS
         # if something was detected applied time filters
         if (nrow(detections_df) > 0) {
@@ -332,66 +271,66 @@ energy_detector <-
           if (hold.time > 0 & nrow(detections_df) > 1) {
             # empty column to tag rows to be merged
             detections_df$ovlp.sels <- NA
-
+            
             # calculate overlapping selection after adding hope time
             for (e in 1:(nrow(detections_df) - 1)) {
               # if overlap
               if (detections_df$end[e] + hold.time / 1000 >= detections_df$start[e + 1]) {
                 # return 1 if is the first merging
                 if (all(is.na(detections_df$ovlp.sels))) detections_df$ovlp.sels[c(e, e + 1)] <- 1
-
+                
                 # if current (e) overlapping with previous one
                 if (is.na(detections_df$ovlp.sels[e])) {
                   detections_df$ovlp.sels[c(e, e + 1)] <- max(detections_df$ovlp.sels, na.rm = TRUE) + 1
                 }
-
+                
                 # if overlapping with previous one use same tag
                 detections_df$ovlp.sels[e + 1] <- detections_df$ovlp.sels[e]
               }
             }
-
+            
             # subset non-overlapping and overlapping
             no_ovlp <- detections_df[is.na(detections_df$ovlp.sels), ]
             ovlp <- detections_df[!is.na(detections_df$ovlp.sels), ]
-
+            
             # if some overlaps detected
             if (nrow(ovlp) > 0) {
               # loop to merge selections
               out <- lapply(X = unique(ovlp$ovlp.sels), FUN = function(x) {
                 # subset for one level
                 Y <- ovlp[ovlp$ovlp.sels == x, ]
-
+                
                 # keep only one per overlapping group label
                 Z <- Y[1, , drop = FALSE]
-
+                
                 # start is the minimum of all starts
                 Z$start <- min(Y$start)
-
+                
                 # end is the maximum of all ends
                 Z$end <- max(Y$end)
-
+                
                 return(Z)
               })
-
+              
               # put list together in a data frame
               ovlp <- do.call(rbind, out)
-
+              
               # add non-overlapping selections
               detections_df <- rbind(ovlp, no_ovlp)
-
+              
               # order selections by sound file and time
               detections_df <- detections_df[order(detections_df$start), ]
-
+              
               # relabel selec column
               detections_df$selec <- seq_len(nrow(detections_df))
-
+              
               # recalculate duration (gets messed up when using hold time)
               detections_df$duration[!is.na(detections_df$start)] <- round(detections_df$end[!is.na(detections_df$start)] - detections_df$start[!is.na(detections_df$start)], 7)
             } else {
               detections_df <- no_ovlp
             } # if not return non-overlapping
           }
-
+          
           # remove sound events based on duration
           if (min.duration > 0) {
             detections_df <- detections_df[detections_df$duration > min.duration / 1000, ]
@@ -400,22 +339,22 @@ energy_detector <-
             detections_df <- detections_df[detections_df$duration < max.duration / 1000, ]
           }
         }
-
+        
         # remove extra column
         detections_df$ovlp.sels <- NULL
-
+        
         # measure peak.amplitude
         if (peak.amplitude > 0) {
           detections_df <- warbleR::sound_pressure_level(detections_df, parallel = 1, path = path, pb = FALSE, type = "peak")
-
+          
           detections_df <- detections_df[detections_df$SPL > peak.amplitude, ]
-
+          
           # remove extra column
           detections_df$SPL <- NULL
         }
         return(detections_df)
       }
-
+    
     # Apply over each sound file
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & cores > 1) {
@@ -423,7 +362,7 @@ energy_detector <-
     } else {
       cl <- cores
     }
-
+    
     # run function over sound files or selections in loop
     detections_l <- warbleR:::pblapply_wrblr_int(
       pbar = pb,
@@ -431,40 +370,39 @@ energy_detector <-
       cl = cl,
       FUN = function(file) {
         out <- detect_FUN(file,
-          wl,
-          thres = threshold / 100,
-          peak.amplitude,
-          min.duration,
-          max.duration,
-          path,
-          bp,
-          thinning,
-          smooth,
-          envlp = envelopes
+                          wl,
+                          thres = threshold / 100,
+                          peak.amplitude,
+                          min.duration,
+                          max.duration,
+                          path,
+                          bp,
+                          thinning,
+                          smooth,
+                          envlp = envelopes
         )
         return(out)
       }
     )
-
+    
     # put together in a single data frame
     detections <- do.call(rbind, detections_l)
-
+    
     # remove NAs in detections
     detections <- detections[!is.na(detections$sound.files), ]
-
+    
     # rename rows
     if (nrow(detections) > 0) {
       rownames(detections) <- seq_len(nrow(detections))
     }
-
-
+    
     if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)) {
       detections <- warbleR::selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
-
+      
       attributes(detections)$call <- base::match.call()
-
+      
       attributes(detections)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
     }
-
+    
     return(detections)
   }

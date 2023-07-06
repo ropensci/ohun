@@ -1,6 +1,6 @@
 #' @title Merge overlapping selections
 #'
-#' @description \code{merge_overlaps} merges several overlapping selections a single selection
+#' @description \code{merge_overlaps} merges several overlapping selections into a single selection
 #' @usage merge_overlaps(X, pb = TRUE, cores = 1)
 #' @param X Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
@@ -33,6 +33,25 @@
 # last modification on jan-2022 (MAS)
 
 merge_overlaps <- function(X, pb = TRUE, cores = 1) {
+  
+  # check arguments
+  arguments <- as.list(base::match.call(expand.dots = FALSE))
+  
+  # do not check ... arguments
+  arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
+  
+  # add objects to argument names
+  for(i in names(arguments)[-1])
+    arguments[[i]] <- get(i)
+  
+  # check each arguments
+  check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+  
+  # report errors
+  checkmate::reportAssertions(check_results)
+  
+  
+  
   # merged overlapping selections
   if (pb) {
     print(x = "Detecting overlapping selections:")

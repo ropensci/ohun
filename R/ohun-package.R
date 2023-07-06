@@ -29,6 +29,7 @@
 #' @import utils
 #' @import methods
 #' @import stats
+#' @importFrom checkmate assert_logical assert_character assert_integerish assert_numeric assert_multi_class assert_list assert_function assert_class assert_directory assert_data_frame assert_names makeAssertCollection makeAssertionFunction reportAssertions
 #' @importFrom rlang call_args
 #' @importFrom cli style_bold style_italic make_ansi_style num_ansi_colors
 #' @importFrom igraph max_bipartite_match E as_data_frame graph_from_incidence_matrix

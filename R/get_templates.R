@@ -49,7 +49,21 @@ get_templates <-
            plot = TRUE,
            color = "#21908C4D",
            ...) {
-    if (!is.null(acoustic.space)) {
+   
+    # check arguments
+    arguments <- as.list(base::match.call())
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+     if (!is.null(acoustic.space)) {
       if (nrow(reference) != nrow(acoustic.space)) {
         stop2("'reference' and 'acoustic.space' must have the same number of columns")
       }

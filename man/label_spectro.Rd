@@ -18,7 +18,7 @@ label_spectro(wave, reference = NULL, detection = NULL,
 
 \item{envelope}{Logical to control whether the amplitude envelope is plotted. Default is \code{FALSE}.}
 
-\item{threshold}{A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}.}
+\item{threshold}{A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-1, while for correlations the range is 0-100.}
 
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.}

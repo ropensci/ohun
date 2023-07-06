@@ -57,7 +57,21 @@
 # last modification on aug-19-2021 (MAS)
 summarize_diagnostic <-
   function(diagnostic, time.diagnostics = FALSE, macro.average = FALSE) {
-    # basic columns required in 'diagnostic'
+   
+    # check arguments
+    arguments <- as.list(base::match.call())
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+     # basic columns required in 'diagnostic'
     basic_colms <-
       c(
         "detections",

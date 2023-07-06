@@ -10,7 +10,7 @@
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param detection Data frame or 'selection.table' with the detection (start and end of the sound events) Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param envelope Logical to control whether the amplitude envelope is plotted. Default is \code{FALSE}.
-#' @param threshold A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}.
+#' @param threshold A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-1, while for correlations the range is 0-100.
 #' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.
 #' @param collevels Numeric sequence of negative numbers to control color partitioning and amplitude values that are shown (as in \code{\link[seewave]{spectro}}).
@@ -64,21 +64,38 @@ label_spectro <-
            line.x.position = 2,
            hop.size = NULL,
            ...) {
+    
+    # check arguments
+    arguments <- as.list(base::match.call(expand.dots = FALSE))
+    
+    # do not check ... arguments
+    arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
     # adjust wl based on hope.size
     if (!is.null(hop.size)) {
       wl <- round(wave@samp.rate * hop.size / 1000, 0)
     }
-
+    
     # reset graphic device on exit
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
-
+    
     if (envelope | !is.null(template.correlation)) {
       par(mfrow = c(2, 1), mar = c(0, 4, 1, 1))
     } else {
       par(mar = c(4, 4, 1, 1))
     }
-
+    
     # plot spectrogram
     seewave::spectro(
       wave = wave,
@@ -87,14 +104,14 @@ label_spectro <-
       palette = palette,
       collevels = collevels,
       axisX = if (envelope |
-        !is.null(template.correlation)) {
+                  !is.null(template.correlation)) {
         FALSE
       } else {
         TRUE
       },
       ...
     )
-
+    
     # plot detection
     if (!is.null(reference)) {
       for (i in seq_len(nrow(reference))) {
@@ -107,7 +124,7 @@ label_spectro <-
         )
       }
     }
-
+    
     # plot detection
     if (!is.null(detection)) {
       for (i in seq_len(nrow(detection))) {
@@ -120,9 +137,9 @@ label_spectro <-
         )
       }
     }
-
+    
     usr <- par("usr")
-
+    
     # add legend
     if (!is.null(detection) & !is.null(reference)) {
       legend(
@@ -136,7 +153,7 @@ label_spectro <-
         yjust = 1
       )
     }
-
+    
     if (is.null(detection) & !is.null(reference)) {
       legend(
         x = usr[2] * 0.98,
@@ -149,7 +166,7 @@ label_spectro <-
         yjust = 1
       )
     }
-
+    
     if (is.null(reference) & !is.null(detection)) {
       legend(
         x = usr[2] * 0.98,
@@ -162,15 +179,15 @@ label_spectro <-
         yjust = 1
       )
     }
-
+    
     if (envelope) {
       # set graphic device for envelope
       par(mar = c(4, 4, 0.3, 1))
-
+      
       if (!is.null(smooth)) {
         smooth <- round(wave@samp.rate * smooth / 1000, 0)
       }
-
+      
       # plot envelope
       env_obj <- seewave::env(wave, colwave = "#07889B", ssmooth = smooth, plot = FALSE, norm = TRUE)
       plot(y = env_obj[ ,1], x = seq(0, seewave::duration(wave), length.out = nrow(env_obj)), type = "l", col = "#07889B", xlab = "Time", ylab = "Amplitude", yaxt = "n", xaxs = "i", yaxs = "i", ylim = c(0, 1.1))
@@ -186,7 +203,7 @@ label_spectro <-
     } else if (!is.null(template.correlation)) {
       # set graphic device for correlations
       par(mar = c(4, 4, 0.3, 1))
-
+      
       plot(
         x = seq(
           template.correlation$template.duration / 2,
@@ -202,7 +219,7 @@ label_spectro <-
         xaxs = "i",
         xlim = c(0, duration(wave))
       )
-
+      
       # add threshold line
       if (!is.null(threshold)) {
         abline(h = threshold, col = "#CF4446FF", lwd = 3)

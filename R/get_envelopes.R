@@ -77,71 +77,24 @@ get_envelopes <-
            pb = TRUE,
            smooth = 5,
            normalize = TRUE) {
-    # check path if not provided set to working directory
-    if (is.null(path)) {
-      path <- getwd()
-    } else if (!dir.exists(path)) {
-      stop2("'path' provided does not exist")
-    } else {
-      path <- normalizePath(path)
-    }
-
-    # hopsize
-    if (!is.numeric(hop.size) | hop.size < 0) stop2("'hop.size' must be a positive number")
-
-    # if bp is not vector or length!=2 stop
-    if (!is.null(bp)) {
-      if (!is.vector(bp)) {
-        stop2("'bp' must be a numeric vector of length 2")
-      } else {
-        if (!length(bp) == 2) {
-          stop2("'bp' must be a numeric vector of length 2")
-        }
-      }
-    }
-
-    # if smooth is not vector or length!=1 stop
-    if (!is.vector(smooth)) {
-      stop2("'smooth' must be a numeric vector of length 1")
-    } else {
-      if (!length(smooth) == 1) {
-        stop2("'smooth' must be a numeric vector of length 1")
-      }
-    }
-
-    # if thinning is not vector or length!=1 between 1 and 0
-    if (!is.vector(thinning) | !is.numeric(thinning)) {
-      stop2("'thinning' must be a numeric vector of length 1")
-    }
-    if (thinning[1] > 1 | thinning[1] <= 0) {
-      stop2("'thinning' must be greater than 0 and lower than or equal to 1")
-    }
-
-    # if wl is not vector or length!=1 stop
-    if (!is.null(wl)) {
-      if (!is.vector(wl)) {
-        stop2("'wl' must be a numeric vector of length 1")
-      } else {
-        if (!length(wl) == 1) {
-          stop2("'wl' must be a numeric vector of length 1")
-        }
-      }
-    }
-
-    # if files is not character vector
-    if (!is.null(files) &
-      any(!is.character(files), !is.vector(files))) {
-      stop2("'files' must be a character vector")
-    }
-
-    # if cores is not numeric
-    if (!is.numeric(cores)) {
-      stop2("'cores' must be a numeric vector of length 1")
-    }
-    if (any(!(cores %% 1 == 0), cores < 1)) {
-      stop2("'cores' should be a positive integer")
-    }
-
+    
+    # check arguments
+    if (options("ohun_check_args")$ohun_check_args){
+      
+      # check arguments
+      arguments <- as.list(base::match.call())
+      
+      # add objects to argument names
+      for(i in names(arguments)[-1])
+        arguments[[i]] <- get(i)
+      
+      # check each arguments
+      check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+      
+      # report errors
+      checkmate::reportAssertions(check_results)
+    }    
+    
     # return error if not all sound files were found
     if (is.null(files)) {
       files <- list.files(
@@ -156,11 +109,11 @@ get_envelopes <-
     ))) {
       stop2("Some (or all) sound files were not found")
     }
-
+    
     if (length(files) == 0) {
       stop2("no sound files found in working directory or 'path' supplied")
     }
-
+    
     # Apply over each sound file
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & cores > 1) {
@@ -168,7 +121,7 @@ get_envelopes <-
     } else {
       cl <- cores
     }
-
+    
     # run function over sound files or selections in loop
     env_list <- warbleR:::pblapply_wrblr_int(
       pbar = pb,
@@ -189,21 +142,21 @@ get_envelopes <-
         )
       }
     )
-
+    
     names(env_list) <- files
-
+    
     # append call info
     env_list[[length(env_list) + 1]] <- list(
       parameters = lapply(as.list(base::match.call())[-1], eval),
       call = base::match.call(),
       ohun.version = packageVersion("ohun")
     )
-
+    
     names(env_list)[length(env_list)] <- "call_info"
-
+    
     # add class envelopes
     class(env_list) <- c("list", "envelopes")
-
+    
     return(env_list)
   }
 
@@ -232,16 +185,16 @@ get_envelopes <-
 
 print.envelopes <- function(x, ...) {
   message2(paste("Object of class", cli::style_bold("'envelopes' \n")))
-
+  
   message2(color = "silver", x = paste("* The output of the following", cli::style_italic("get_envelopes()"), "call: \n"))
-
+  
   cll <- paste0(deparse(x$call_info$call))
   message2(color = "silver", x = cli::style_italic(gsub("    ", "", cll), "\n"))
-
+  
   file_names <- names(x)[-length(x)]
-
+  
   message2(color = "silver", x = paste(paste("* Contains the amplitude envelopes of"), length(x) - 1, "sound file(s):\n", paste(cli::style_italic(utils::head(file_names), collapse = " ")), if (length(file_names) > 6) paste("... and", length(file_names) - 6, "more") else ""))
-
+  
   # add message about amplitude envelope modifications
   if (any(names(x$call_info$parameters) == "smooth")) {
     if (x$call_info$parameters$smooth > 0) {
@@ -252,7 +205,7 @@ print.envelopes <- function(x, ...) {
   } else {
     smooth_message <- ""
   }
-
+  
   if (any(names(x$call_info$parameters) == "thinning")) {
     if (x$call_info$parameters$thinning < 1) {
       thin_message <- paste0(x$call_info$parameters$thinning, "t hinning")
@@ -262,23 +215,23 @@ print.envelopes <- function(x, ...) {
   } else {
     thin_message <- ""
   }
-
-
+  
+  
   if (smooth_message == "" & thin_message == "") {
     message2(color = "silver", x = "\n * No smoothing or thinning was applied")
   }
-
+  
   if (smooth_message != "" & thin_message == "") {
     message2(color = "silver", x = paste("\n *", smooth_message, "was applied"))
   }
-
+  
   if (smooth_message == "" & thin_message != "") {
     message2(color = "silver", x = paste("\n *", thin_message, "was applied"))
   }
   if (smooth_message != "" & thin_message != "") {
     message2(color = "silver", x = paste("\n *", smooth_message, "and", thin_message, "was applied"))
   }
-
+  
   # print ohun version
   message2(color = "silver", x = paste0("\n * Created by ", cli::style_bold("ohun "), x$call_info$ohun.version))
 }
@@ -298,18 +251,18 @@ env_ohun_int <-
            normalize) {
     # read wave object
     wave_obj <- warbleR::read_sound_file(X = i, path = path)
-
+    
     # adjust wl based on hope.size (convert to samples)
     if (is.null(wl)) {
       wl <- round(wave_obj@samp.rate * hop.size / 1000, 0)
     }
-
+    
     # make wl even if odd
     if (!(wl %% 2) == 0) wl <- wl + 1
-
+    
     # convert smooth to samples
     smooth <- round(wave_obj@samp.rate * smooth / 1000, 0)
-
+    
     # filter frequencies
     if (!is.null(bp)) {
       wave_obj <-
@@ -323,42 +276,42 @@ env_ohun_int <-
           output = "Wave"
         )
     }
-
+    
     # detect sound events based on amplitude (modified from seewave::timer function)
     amp_vector <- wave_obj@left
-
+    
     # original number of samples
     n.samples <- length(amp_vector)
-
+    
     # original duration
     wave_dur <- seewave::duration(wave_obj)
-
+    
     # extract envelope
     envp <-
       warbleR::envelope(
         x = amp_vector,
         ssmooth = smooth
       )
-
+    
     # flat edges (first and last 100 ms) if lower than lowest amp value
     if (n.samples > wave_obj@samp.rate / 5) {
       min.envp <- min(envp[(wave_obj@samp.rate / 10):(length(envp) - wave_obj@samp.rate / 5)])
-
+      
       if (envp[1] < min.envp) envp[1:min(which(envp >= min.envp))] <- min.envp
-
+      
       if (envp[length(envp)] < min.envp) envp[max(which(envp >= min.envp)):length(envp)] <- min.envp
     }
-
+    
     # force to be in the range 0-1
     if (normalize) {
       envp <- envp - min(envp)
       envp <- envp / max(envp)
     }
-
+    
     # thin
     if (thinning < 1) {
       if (n.samples * thinning < 10) stop2("thinning is too high, no enough samples left for at least 1 sound file")
-
+      
       # reduce size of envelope
       envp <-
         stats::approx(
@@ -368,13 +321,13 @@ env_ohun_int <-
           method = "linear"
         )$y
     }
-
+    
     output <- list(
       envelope = envp,
       duration = wave_dur,
       org.n.samples = n.samples,
       sampling.freq = wave_obj@samp.rate
     )
-
+    
     return(output)
   }

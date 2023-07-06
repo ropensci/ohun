@@ -49,21 +49,25 @@ split_acoustic_data <-
            pb = TRUE,
            only.sels = FALSE,
            X = NULL) {
-    # check path to working directory
-    if (is.null(path)) {
-      path <- getwd()
-    } else if (!dir.exists(path)) {
-      stop2("'path' provided does not exist")
-    } else {
-      path <- normalizePath(path)
-    }
-
-    # stop if files is not a character vector
-    if (!is.null(files) &
-      !is.character(files)) {
-      stop2("'files' must be a character vector")
-    }
-
+  
+    # check arguments
+    arguments <- as.list(base::match.call())
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+    # check path if not provided set to working directory
+    path <- if (is.null(path)) 
+      getwd() else 
+        normalizePath(path)
+    
     if (is.null(files)) {
       files <-
         list.files(
@@ -76,71 +80,6 @@ split_acoustic_data <-
     # stop if no wav files are found
     if (length(files) == 0) {
       stop2("no sound files in working directory")
-    }
-
-    if (!is.null(X)) {
-      # if X is not a data frame
-      if (!any(is.data.frame(X),  warbleR::is_selection_table(X))) {
-        stop2("X is not of a class 'data.frame' or 'selection_table'")
-      }
-
-      if (warbleR::is_extended_selection_table(X)) {
-        stop2("This function cannot take extended selection tables ('X' argument)")
-      }
-
-      # check if all columns are found
-      if (any(!(c(
-        "sound.files", "selec", "start", "end"
-      ) %in% colnames(X)))) {
-        stop2(paste(paste(
-          c("sound.files", "selec", "start", "end")[!(c(
-            "sound.files", "selec",
-            "start", "end"
-          ) %in% colnames(X))],
-          collapse =
-            ", "
-        ), "column(s) not found in 'X'"))
-      }
-
-      # if there are NAs in start or end stop
-      if (any(is.na(c(X$end, X$start)))) {
-        stop2("NAs found in start and/or end columns")
-      }
-
-      # if end or start are not numeric stop
-      if (any(
-        !methods::is(X$end, "numeric"),
-        !methods::is(X$start, "numeric")
-      )) {
-        stop2("'start' and 'end' must be numeric")
-      }
-
-      # if any start higher than end stop
-      if (any(X$end - X$start <= 0)) {
-        stop2(paste(
-          "Start is higher than or equal to end in",
-          length(which(X$end - X$start <= 0)),
-          "case(s)"
-        ))
-      }
-    }
-
-
-    # check sgmnt duration
-    if (is.null(sgmts)) {
-      if (!is.numeric(sgmt.dur)) {
-        stop2("'sgmt.dur' must be numeric")
-      }
-    } else if (!is.numeric(sgmts)) {
-      stop2("'sgmts' must be numeric")
-    }
-
-    # If cores is not numeric
-    if (!is.numeric(cores)) {
-      stop2("'cores' must be a numeric vector of length 1")
-    }
-    if (any(!(cores %% 1 == 0), cores < 1)) {
-      stop2("'cores' should be a positive integer")
     }
 
     # measure wav duration

@@ -28,7 +28,8 @@ Imports: tuneR,
     fftw, 
     rlang, 
     sf, 
-    igraph
+    igraph,
+    checkmate
 Depends: R (>= 3.2.1)
 Suggests: knitr, 
     rmarkdown, 

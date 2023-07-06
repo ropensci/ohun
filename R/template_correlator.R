@@ -19,7 +19,7 @@
 #' The current working directory is used as default.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param files Character vector with the selections in 'X' to be used as surveys for cross-correlation detection.
-#' @param type A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using \code{\link[seewave]{spectro}}; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using \code{\link[tuneR]{melfcc}}) or "auditory-spectrum" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using \code{\link[tuneR]{melfcc}}). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.
+#' @param type A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using \code{\link[seewave]{spectro}}; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using \code{\link[tuneR]{melfcc}}) or "mel-auditory" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using \code{\link[tuneR]{melfcc}}). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.
 #' @param fbtype Character vector indicating the auditory frequency scale to use: "mel", "bark", "htkmel", "fcmel".
 #' @param ... Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.
 #' @return The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
@@ -110,54 +110,28 @@ template_correlator <-
            type = "fourier",
            fbtype = "mel",
            ...) {
-    # check path to working directory
-    if (is.null(path)) {
-      path <- getwd()
-    } else if (!dir.exists(path)) {
-      stop2("'path' provided does not exist")
-    } else {
-      path <- normalizePath(path)
-    }
-
-    # hopsize
-    if (!is.numeric(hop.size) |
-      hop.size < 0) {
-      stop2("'hop.size' must be a positive number")
-    }
-
-    # if there are NAs in start or end stop
-    if (any(is.na(c(templates$end, templates$start)))) {
-      stop2("NAs found in start and/or end")
-    }
-
-    # if wl is not vector or length!=1 stop
-    if (!is.null(wl)) {
-      if (!is.numeric(wl)) {
-        stop2("'wl' must be a numeric vector of length 1")
-      } else {
-        if (!is.vector(wl)) {
-          stop2("'wl' must be a numeric vector of length 1")
-        } else {
-          if (!length(wl) == 1) {
-            stop2("'wl' must be a numeric vector of length 1")
-          }
-        }
-      }
-    }
-
-    # if ovlp is not vector or length!=1 stop
-    if (!is.numeric(ovlp)) {
-      stop2("'ovlp' must be a numeric vector of length 1")
-    } else {
-      if (!is.vector(ovlp)) {
-        stop2("'ovlp' must be a numeric vector of length 1")
-      } else {
-        if (!length(ovlp) == 1) {
-          stop2("'ovlp' must be a numeric vector of length 1")
-        }
-      }
-    }
-
+    
+    # check arguments
+    arguments <- as.list(base::match.call(expand.dots = FALSE))
+    
+    # do not check ... arguments
+    arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+    # check path if not provided set to working directory
+    path <- if (is.null(path)) 
+      getwd() else 
+        normalizePath(path)
+    
     # check files or list files in working directory
     if (!is.null(files)) {
       if (any(!is.character(files), !is.vector(files))) {
@@ -198,13 +172,6 @@ template_correlator <-
       }
     }
 
-    # If cores is not numeric
-    if (!is.numeric(cores)) {
-      stop2("'cores' must be a numeric vector of length 1")
-    }
-    if (any(!(cores %% 1 == 0), cores < 1)) {
-      stop2("'cores' should be a positive integer")
-    }
 
     # get sampling rate of files
     info_sf <- warbleR::info_sound_files(path = path, pb = FALSE)

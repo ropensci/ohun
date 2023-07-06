@@ -38,12 +38,24 @@ feature_reference <-
            by.sound.file = FALSE,
            units = c("ms", "kHz"),
            digits = 2) {
-    if (is(reference, "extended_selection_table")) {
-      stop2(
-        "The function is not defined for class 'extended_selection_table'. Use 'selection_table' or 'data.frame' instea."
-      )
-    }
-
+    
+    # check arguments
+    arguments <- as.list(base::match.call())
+    
+    # add objects to argument names
+    for(i in names(arguments)[-1])
+      arguments[[i]] <- get(i)
+    
+    # check each arguments
+    check_results <- check_arguments(fun = arguments[[1]], args = arguments)
+    
+    # report errors
+    checkmate::reportAssertions(check_results)
+    
+    # convert units to lower case
+    units <- tolower(units)
+    
+    # get fatures
     internal_feature_reference <-
       function(reference,
                path = NULL,
@@ -51,19 +63,19 @@ feature_reference <-
         reference$duration <- reference$end - reference$start
         reference <- warbleR::gaps(X = reference, pb = FALSE)
         count_annotations <- table(reference$sound.files)
-
+        
         output <-
           data.frame(min.sel.duration = min(reference$duration, na.rm = TRUE))
         output$mean.sel.duration <-
           mean(reference$duration, na.rm = TRUE)
         output$max.sel.duration <- max(reference$duration, na.rm = TRUE)
         suppressWarnings(output$min.gap.duration <-
-          min(reference$gaps, na.rm = TRUE))
+                           min(reference$gaps, na.rm = TRUE))
         suppressWarnings(output$mean.gap.duration <-
-          mean(reference$gaps, na.rm = TRUE))
+                           mean(reference$gaps, na.rm = TRUE))
         suppressWarnings(output$max.gap.duration <-
-          max(reference$gaps, na.rm = TRUE))
-
+                           max(reference$gaps, na.rm = TRUE))
+        
         if (total.annotations) {
           output$annotations <- nrow(reference)
         } else {
@@ -71,10 +83,10 @@ feature_reference <-
           output$mean.annotations <- mean(count_annotations)
           output$max.annotations <- max(count_annotations)
         }
-
+        
         # frequency range descriptors
         if (!is.null(reference$bottom.freq) &
-          !is.null(reference$top.freq)) {
+            !is.null(reference$top.freq)) {
           output$min.bottom.freq <- min(reference$bottom.freq, na.rm = TRUE)
           output$mean.bottom.freq <-
             mean(reference$bottom.freq, na.rm = TRUE)
@@ -84,43 +96,43 @@ feature_reference <-
           output$mean.top.freq <- mean(reference$top.freq, na.rm = TRUE)
           output$max.top.freq <- max(reference$top.freq, na.rm = TRUE)
         }
-
+        
         if (!is.null(path)) {
           durs <-
             warbleR::duration_sound_files(
               files = unique(reference$sound.files),
               path = path
             )
-
+          
           durs$duty.cycle <- vapply(seq_len(nrow(durs)), function(x) {
             sum(reference$duration[reference$sound.files == durs$sound.files[x]], na.rm = TRUE) / durs$duration[x]
           }, FUN.VALUE = numeric(1))
-
+          
           output$min.duty.cycle <- min(durs$duty.cycle, na.rm = TRUE)
           output$mean.duty.cycle <- mean(durs$duty.cycle, na.rm = TRUE)
           output$max.duty.cycle <- max(durs$duty.cycle, na.rm = TRUE)
-
+          
           # measure peak amplitude
           peak_amp <-
             warbleR::sound_pressure_level(reference,
-              type = "peak",
-              path = path,
-              pb = FALSE
+                                          type = "peak",
+                                          path = path,
+                                          pb = FALSE
             )
-
+          
           output$min.peak.amplitude <- min(peak_amp$SPL, na.rm = TRUE)
           output$mean.peak.amplitude <- mean(peak_amp$SPL, na.rm = TRUE)
           output$max.peak.amplitude <- max(peak_amp$SPL, na.rm = TRUE)
         }
-
+        
         return(output)
       }
-
+    
     # force by.sound.files if only 1 sound file in reference
     if (length(unique(reference$sound.files)) == 1) {
       by.sound.file <- TRUE
     }
-
+    
     if (!by.sound.file) {
       output <-
         internal_feature_reference(reference, path, total.annotations = FALSE)
@@ -135,18 +147,18 @@ feature_reference <-
         sub_output$sound.files <- x
         return(sub_output)
       })
-
+      
       output <- do.call(rbind, output_list)
-
+      
       output$mean.gap.duration[is.infinite(output$mean.gap.duration) |
-        is.nan(output$mean.gap.duration)] <- NA
+                                 is.nan(output$mean.gap.duration)] <- NA
       output$min.gap.duration[is.infinite(output$min.gap.duration) |
-        is.nan(output$min.gap.duration)] <- NA
-
+                                is.nan(output$min.gap.duration)] <- NA
+      
       # order columns
       output <- output[, c(ncol(output), 1:(ncol(output) - 1))]
     }
-
+    
     # remove duty cycle range when by.sound.file = TRUE
     if (by.sound.file) {
       output$min.duty.cycle <- output$max.duty.cycle <- NULL
@@ -155,7 +167,7 @@ feature_reference <-
       # reformat as a matrix with mean min and max as columns
       other_feats <-
         c(output[, grep("\\.freq$", names(output), invert = TRUE)])
-
+      
       # order columns
       if (!is.null(output$min.bottom.freq)) {
         freq_feats <- c(output[, grep("\\.freq$", names(output))])
@@ -163,7 +175,7 @@ feature_reference <-
       }
       output <- matrix(unlist(other_feats), ncol = 3, byrow = TRUE)
       colnames(output) <- c("min", "mean", "max")
-
+      
       row_names <-
         c(
           "sel.duration",
@@ -174,19 +186,19 @@ feature_reference <-
           "bottom.freq",
           "top.freq"
         )
-
+      
       if (is.null(path)) {
         row_names <-
           grep("duty.cycle|peak.amplitude",
-            row_names,
-            value = TRUE,
-            invert = TRUE
+               row_names,
+               value = TRUE,
+               invert = TRUE
           )
       }
-
+      
       rownames(output) <- row_names[seq_len(nrow(output))]
     }
-
+    
     # round digits and change units
     if (is.matrix(output)) {
       # fix units
@@ -195,13 +207,13 @@ feature_reference <-
           output[i, ] <- output[i, ] * 1000
         }
       }
-
-      if (units[2] == "Hz") {
+      
+      if (units[2] == "hz") {
         for (i in grep("freq$", rownames(output))) {
           output[i, ] <- output[i, ] * 1000
         }
       }
-
+      
       # round
       output <- round(x = output, digits = digits)
     } else {
@@ -211,13 +223,13 @@ feature_reference <-
           output[, i] <- output[, i] * 1000
         }
       }
-
-      if (units[2] == "Hz") {
+      
+      if (units[2] == "hz") {
         for (i in grep("freq$", colnames(output))) {
           output[, i] <- output[, i] * 1000
         }
       }
-
+      
       for (i in 2:ncol(output)) {
         output[, i] <- round(x = output[, i], digits = digits)
       }

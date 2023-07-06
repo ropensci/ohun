@@ -18,7 +18,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 If any time-overlapping selection is found it returns a data frame in which overlapping selections are collapse into a single selection.
 }
 \description{
-\code{merge_overlaps} merges several overlapping selections a single selection
+\code{merge_overlaps} merges several overlapping selections into a single selection
 }
 \details{
 The function finds time-overlapping selection in reference tables and collapses them into a single selection. It can be useful to prepare reference tables to be used in an energy detection routine. In such cases overlapping selections are expected to be detected as a single sound. Therefore, merging them can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.
