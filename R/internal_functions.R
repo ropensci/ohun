@@ -821,3 +821,101 @@ detect_FUN <-
     }
     return(detections_df)
   }
+
+
+########################### internal function to get an envelope used by get_envelopes ###################
+
+env_ohun_int <-
+  function(i,
+           path,
+           bp,
+           hop.size,
+           wl,
+           cores,
+           thinning,
+           pb,
+           smooth,
+           normalize) {
+    # read wave object
+    wave_obj <- warbleR::read_sound_file(X = i, path = path)
+    
+    # adjust wl based on hope.size (convert to samples)
+    if (is.null(wl)) {
+      wl <- round(wave_obj@samp.rate * hop.size / 1000, 0)
+    }
+    
+    # make wl even if odd
+    if (!(wl %% 2) == 0) wl <- wl + 1
+    
+    # convert smooth to samples
+    smooth <- round(wave_obj@samp.rate * smooth / 1000, 0)
+    
+    # filter frequencies
+    if (!is.null(bp)) {
+      wave_obj <-
+        seewave::ffilter(
+          wave_obj,
+          f = wave_obj@samp.rate,
+          from = bp[1] * 1000,
+          to = bp[2] * 1000,
+          bandpass = TRUE,
+          wl = wl,
+          output = "Wave"
+        )
+    }
+    
+    # detect sound events based on amplitude (modified from seewave::timer function)
+    amp_vector <- wave_obj@left
+    
+    # original number of samples
+    n.samples <- length(amp_vector)
+    
+    # original duration
+    wave_dur <- seewave::duration(wave_obj)
+    
+    # extract envelope
+    envp <-
+      warbleR::envelope(
+        x = amp_vector,
+        ssmooth = smooth
+      )
+    
+    # flat edges (first and last 100 ms) if lower than lowest amp value
+    if (n.samples > wave_obj@samp.rate / 5) {
+      min.envp <- min(envp[(wave_obj@samp.rate / 10):(length(envp) - wave_obj@samp.rate / 5)])
+      
+      if (envp[1] < min.envp) envp[1:min(which(envp >= min.envp))] <- min.envp
+      
+      if (envp[length(envp)] < min.envp) envp[max(which(envp >= min.envp)):length(envp)] <- min.envp
+    }
+    
+    # force to be in the range 0-1
+    if (normalize) {
+      envp <- envp - min(envp)
+      envp <- envp / max(envp)
+    }
+    
+    # thin
+    if (thinning < 1) {
+      if (n.samples * thinning < 10) stop2("thinning is too high, no enough samples left for at least 1 sound file")
+      
+      # reduce size of envelope
+      envp <-
+        stats::approx(
+          x = seq(0, wave_dur, length.out = length(envp)),
+          y = envp,
+          n = round(n.samples * thinning),
+          method = "linear"
+        )$y
+    }
+    
+    output <- list(
+      envelope = envp,
+      duration = wave_dur,
+      org.n.samples = n.samples,
+      sampling.freq = wave_obj@samp.rate
+    )
+    
+    return(output)
+  }
+
