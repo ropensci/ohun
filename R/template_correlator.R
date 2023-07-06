@@ -18,7 +18,7 @@
 #' @param path Character string containing the directory path where the sound files are located.
 #' The current working directory is used as default.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @param files Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
+#' @param files Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.
 #' @param type A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using \code{\link[seewave]{spectro}}; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using \code{\link[tuneR]{melfcc}}) or "mel-auditory" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using \code{\link[tuneR]{melfcc}}). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.
 #' @param fbtype Character vector indicating the auditory frequency scale to use: "mel", "bark", "htkmel", "fcmel".
 #' @param ... Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.
