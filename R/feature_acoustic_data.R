@@ -146,3 +146,14 @@ feature_acoustic_data <- function(path = ".", digits = 2) {
     "\n (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')"
   ))
 }
+
+
+
+##############################################################################################################
+#' alternative name for \code{\link{feature_acoustic_data}}
+#'
+#' @keywords internal
+#' @details see \code{\link{summarize_acoustic_data}} for documentation. \code{\link{feature_acoustic_data}} will be deprecated in future versions.
+#' @export
+
+summarize_acoustic_data <- feature_acoustic_data
