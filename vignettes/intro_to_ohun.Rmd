@@ -84,14 +84,23 @@ library(warbleR)
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
 
+# library(checkmate)
+# library(ggplot2)
+# source("~/Dropbox/R_package_testing/ohun/R/plot_detection.R")
+# source("~/Dropbox/R_package_testing/ohun/R/internal_functions.R")
+# 
+# 
+# load("../data/lbh2.rda")
+# load("../data/lbh1.rda")
+# load("../data/lbh_reference.rda")
+
 #load packages
 library(ohun)
 library(tuneR)
 library(warbleR)
+library(ggplot2)
 
-load("../data/lbh2.rda")
-load("../data/lbh1.rda")
-load("../data/lbh_reference.rda")
+data("lbh1", "lbh2", "lbh_reference")
 
 # for spectrograms
 par(mar = c(5, 4, 2, 2) + 0.1)
@@ -300,6 +309,23 @@ summarize_diagnostic(diagnostic)
 
 ```
 
+The match between reference and detection annotations can also be visually inspected using the function `plot_detection()`:
+
+```{r}
+
+# ggplot detection and reference
+plot_detection(reference = lbh1_reference, detection = lbh1_detection)
+
+```
+
+This function is more flexible than `label_spectro()` as it can easily plot annotations from several sound files (include those from long sound files):
+
+```{r}
+
+# ggplot detection and reference
+plot_detection(reference = lbh_reference, detection = lbh_reference)
+
+```
 
 ---
 

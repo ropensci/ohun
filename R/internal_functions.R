@@ -298,7 +298,7 @@ check_unique_sels <- function(x, fun)
     if (anyDuplicated(paste(x$sound.files, x$selec, x$template)) > 0) "Duplicated 'selec' labels within at least one combination of sound file/template" else TRUE} else {
       if (anyDuplicated(paste(x$sound.files, x$selec)) > 0) "Duplicated 'selec' labels within at least one sound file" else TRUE}
 
-assert_unique_sels <- makeAssertionFunction(check_unique_sels)
+assert_unique_sels <- checkmate::makeAssertionFunction(check_unique_sels)
 
 ## function to check arguments
 check_arguments <- function(fun, args){
