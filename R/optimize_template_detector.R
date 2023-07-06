@@ -26,7 +26,7 @@
 #'  }
 ##' @export
 #' @name optimize_template_detector
-#' @details This function takes a a reference data frame or 'selection_table' ('X') and the output of \code{\link{template_correlator}} and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{optimize_template_detector}}. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
+#' @details This function takes a a reference data frame or 'selection_table' ('X') and the output of \code{\link{template_correlator}} and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
 #'
 #' @examples{
 #' # Save sound files to temporary working directory
