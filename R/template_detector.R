@@ -192,7 +192,7 @@ template_detector <-
       corr_call_path <- getwd()
     }
     
-    #  if no detections
+    #  let user know if no detections are found
     if (all(is.na(sel_table_df$start)) & verbose) {
       print(x = "no sound events above threshold were detected")
     } else if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &

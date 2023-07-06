@@ -199,7 +199,7 @@ template_correlator <-
     if (is_extended_selection_table(templates)) {
       if (unique(attr(templates, "check.results")$sample.rate) != unique(info_sf$sample.rate)) {
 
-        # set bottom and top freq if not supplied
+        # set bottom and top freq (if not supplied) to 0 and nyquist frequency hence the full frequency range 
         if (is.null(templates$bottom.freq)) {
           templates$top.freq <- unique(info_sf$sample.rate) / 2
           templates$bottom.freq <- 0
