@@ -190,13 +190,6 @@ optimize_template_detector <-
       # put all in a single data frame
       diagnostics <- do.call(rbind, diagnostics_list)
 
-      # summarize sound files
-      # threshold <-
-      # rep(threshold, each = nrow(diagnostics_list[[1]]))
-
-      # add thresholds to output
-      # diagnostics <- data.frame(threshold = threshold, diagnostics)
-
       # add previous output
       if (!is.null(previous.output)) {
         diagnostics <- rbind(previous.output, diagnostics)

@@ -202,9 +202,6 @@ split_acoustic_data <-
             return(NULL)
           }
         )
-
-      # # make it a vector
-      # a <- unlist(a_l)
     }
 
     # calculate position of selection in newly created clips
