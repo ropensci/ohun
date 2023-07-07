@@ -129,5 +129,4 @@ Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., E
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr}). Implements a
-modified version of the timer function from seewave.
 }

@@ -398,6 +398,10 @@ check_arguments <- function(fun, args){
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 0.999, add = check_collection, .var.name = "threshold")
   }
   
+  
+  if (any(names(args) == "peak.amplitude"))
+    checkmate::assert_numeric(x = args$peak.amplitude, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0, add = check_collection, .var.name = "peak.amplitude")
+  
   if (any(names(args) == "thinning"))
     checkmate::assert_numeric(x = args$thinning, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 1, add = check_collection, .var.name = "thinning")
   
@@ -802,11 +806,11 @@ detect_FUN <-
       }
       
       # remove sound events based on duration
-      if (min.duration > 0) {
-        detections_df <- detections_df[detections_df$duration > min.duration / 1000, ]
+      if (min.dur > 0) {
+        detections_df <- detections_df[detections_df$duration > min.dur / 1000, ]
       }
-      if (max.duration < Inf) {
-        detections_df <- detections_df[detections_df$duration < max.duration / 1000, ]
+      if (max.dur < Inf) {
+        detections_df <- detections_df[detections_df$duration < max.dur / 1000, ]
       }
     }
     
@@ -814,10 +818,10 @@ detect_FUN <-
     detections_df$ovlp.sels <- NULL
     
     # measure peak.amplitude
-    if (peak.amplitude > 0) {
+    if (pa > 0) {
       detections_df <- warbleR::sound_pressure_level(detections_df, parallel = 1, path = pth, pb = FALSE, type = "peak")
       
-      detections_df <- detections_df[detections_df$SPL > peak.amplitude, ]
+      detections_df <- detections_df[detections_df$SPL > pa, ]
       
       # remove extra column
       detections_df$SPL <- NULL

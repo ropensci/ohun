@@ -22,7 +22,7 @@ test_that("peak amplitude works", {
     )
   expect_class(detec1, "data.frame")
   expect_class(detec1, "selection_table")
-  expect_equal(nrow(detec1), 17)
+  expect_equal(nrow(detec1), 12)
 })
 
 test_that("time diagnostics", {
@@ -42,7 +42,7 @@ test_that("time diagnostics", {
 
   expect_class(detec1, "data.frame")
   expect_class(detec1, "selection_table")
-  expect_equal(nrow(detec1), 17)
+  expect_equal(nrow(detec1), 3)
 
 })
 
@@ -59,7 +59,7 @@ test_that("using smoothing and minimum duration", {
   )
   expect_class(detec1, "data.frame")
   expect_class(detec1, "selection_table")
-  expect_equal(nrow(detec1), 14)
+  expect_equal(nrow(detec1), 9)
 
 })
 
@@ -79,8 +79,6 @@ test_that("using hold time", {
   expect_equal(nrow(detec2), 4)
 
 })
-
-
 
 test_that("calculate envelopes first", {
   envs <- get_envelopes(
