@@ -5,6 +5,8 @@ ohun 0.1.1 (developmental)
 
 ### NEW FEATURES
 
+- Ne function `plot_detection()` to visually inspect detections 
+
 ### MINOR IMPROVEMENTS
 
   * `sp` package replaced by `sf`
