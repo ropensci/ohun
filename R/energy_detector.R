@@ -99,8 +99,6 @@
 #' }
 #' @seealso \code{\link{optimize_energy_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
-#' modified version of the timer function from seewave.
-# last modification on feb-2022 (MAS)
 
 energy_detector <-
   function(files = NULL,

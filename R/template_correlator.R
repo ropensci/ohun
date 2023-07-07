@@ -94,7 +94,6 @@
 #'
 #' Lyon, R. H., & Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.
 #' }
-# last modification on aug-25-2021 (MAS)
 
 template_correlator <-
   function(templates,

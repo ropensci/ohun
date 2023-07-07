@@ -39,7 +39,6 @@
 #' @seealso \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
 #' modified version of the timer function from seewave.
-# last modification on feb-2022 (MAS)
 
 get_templates <-
   function(reference,

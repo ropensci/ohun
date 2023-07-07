@@ -50,7 +50,7 @@
 #' }
 #' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
-# last modification on oct-31-2021 (MAS)
+
 label_spectro <-
   function(wave,
            reference = NULL,

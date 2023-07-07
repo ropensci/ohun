@@ -54,7 +54,7 @@
 #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253.
 #' Mesaros, A., Heittola, T., & Virtanen, T. (2016). Metrics for polyphonic sound event detection. Applied Sciences, 6(6), 162.
 #' }
-# last modification on aug-19-2021 (MAS)
+
 summarize_diagnostic <-
   function(diagnostic, time.diagnostics = FALSE, macro.average = FALSE) {
    

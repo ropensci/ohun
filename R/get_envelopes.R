@@ -64,7 +64,6 @@
 #' }
 #' @seealso \code{\link{energy_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
-# last modification on aug-31-2021 (MAS)
 
 get_envelopes <-
   function(path = ".",

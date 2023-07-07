@@ -59,7 +59,6 @@
 #' }
 #' @seealso \code{\link{label_detection}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
-# last modification on oct-31-2021 (MAS)
 
 # function to filter detection based on overlap
 consensus_detection <-
