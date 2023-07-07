@@ -29,6 +29,7 @@
 #' @import utils
 #' @import methods
 #' @import stats
+#' @importFrom vdiffr expect_doppelganger
 #' @importFrom ggplot2 ggplot aes geom_point scale_color_manual facet_grid labs theme_bw geom_polygon scale_fill_manual scale_y_continuous theme_classic
 #' @importFrom checkmate assert_logical assert_character assert_integerish assert_numeric assert_multi_class assert_list assert_function assert_class assert_directory assert_data_frame assert_names makeAssertCollection makeAssertionFunction reportAssertions
 #' @importFrom rlang call_args

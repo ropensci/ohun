@@ -30,7 +30,8 @@ Imports: tuneR,
     sf, 
     igraph,
     checkmate,
-    ggplot2
+    ggplot2,
+    vdiffr
 Depends: R (>= 3.2.1)
 Suggests: knitr, 
     rmarkdown, 

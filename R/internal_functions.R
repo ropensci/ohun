@@ -634,30 +634,30 @@ detect_FUN <-
   function(file,
            wl,
            thres,
-           peak.amplitude,
-           min.duration,
-           max.duration,
-           path,
-           bp,
-           thinning,
-           smooth,
+           pa,
+           min.dur,
+           max.dur,
+           pth,
+           bpass,
+           thin,
+           smth,
            envlp,
-           hop.size,
-           cores,
-           pb,
+           hop.siz,
+           cors,
+           pbar,
            hold.t) {
     # get envelope if not supplied
     if (is.null(envlp)) {
       envlp <- env_ohun_int(
         i = file,
-        path,
-        bp,
-        hop.size,
+        pth,
+        bpass,
+        hop.siz,
         wl,
-        cores,
-        thinning,
-        pb,
-        smooth,
+        cors,
+        thin,
+        pbar,
+        smth,
         normalize = TRUE
       )
     } else {
@@ -815,7 +815,7 @@ detect_FUN <-
     
     # measure peak.amplitude
     if (peak.amplitude > 0) {
-      detections_df <- warbleR::sound_pressure_level(detections_df, parallel = 1, path = path, pb = FALSE, type = "peak")
+      detections_df <- warbleR::sound_pressure_level(detections_df, parallel = 1, path = pth, pb = FALSE, type = "peak")
       
       detections_df <- detections_df[detections_df$SPL > peak.amplitude, ]
       

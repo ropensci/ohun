@@ -10,6 +10,12 @@ test_that("measuring PCA on the fly", {
                   n.sub.spaces =  3,
                   path = tempdir())
 
+  disp_get_template <- function() get_templates(reference = lbh_reference,
+                                                n.sub.spaces =  3,
+                                                path = tempdir())
+  
+  vdiffr::expect_doppelganger("get_templates", disp_get_template)
+  
   expect_s3_class(template, 'data.frame')
 
   expect_equal(nrow(template), 4)

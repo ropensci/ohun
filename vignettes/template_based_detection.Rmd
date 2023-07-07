@@ -340,7 +340,6 @@ count number of detections per unit of time
 1. Macmillan, N. A., & Creelman, C.D. (2004). Detection theory: A user's guide. Psychology press.
 
 
- 
 
 ---
 

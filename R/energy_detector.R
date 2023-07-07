@@ -177,19 +177,35 @@ energy_detector <-
       X = files,
       cl = cl,
       FUN = function(file) {
-        out <- detect_FUN(file,
-                          wl,
-                          thres = threshold / 100,
-                          peak.amplitude,
-                          min.duration,
-                          max.duration,
-                          path,
-                          bp,
-                          thinning,
-                          smooth,
-                          envlp = envelopes,
-                          hop.size,
-                          hold.t = hold.time
+        # out <- detect_FUN(file,
+        #                   wl,
+        #                   thres = threshold / 100,
+        #                   peak.amplitude,
+        #                   min.duration,
+        #                   max.duration,
+        #                   path,
+        #                   bp,
+        #                   thinning,
+        #                   smooth,
+        #                   envlp = envelopes,
+        #                   hop.size,
+        #                   hold.t = hold.time
+        # )
+      out <- detect_FUN(file,
+          wl,
+          thres = threshold / 100,
+          pa = peak.amplitude,
+          min.dur = min.duration,
+          max.dur = max.duration,
+          pth = path,
+          bpass = bp,
+          thin = thinning,
+          smth = smooth,
+          envlp = envelopes,
+          hop.siz = hop.size,
+          cors = cores,
+          pbar = pb,
+          hold.t = hold.time
         )
         return(out)
       }

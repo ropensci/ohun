@@ -68,6 +68,8 @@ library(ohun)
 
 ```
 
+Further system requirements due to the dependency [seewave](https://rug.mnhn.fr/seewave/) may be needed. Take a look a [this link]( https://rug.mnhn.fr/seewave/inst.html) for instruction on how to install/troubleshoot these external dependencies. 
+
 Take a look at the vignettes for an overview of the main features of the packages:
 
 - [Optimizing sound event detection](https://marce10.github.io/ohun/articles/intro_to_ohun.html)

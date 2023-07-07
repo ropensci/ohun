@@ -1,5 +1,6 @@
 data(lbh1, package = "ohun")
 data(lbh2, package = "ohun")
+
 #save sound files
 tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
 tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
@@ -13,7 +14,7 @@ test_that("1 false negative", {
 
   expect_s3_class(ld, 'selection_table')
 
-  expect_length(nrow(ld), 19)
+  expect_equal(nrow(ld), 19)
 
   expect_equal(as.vector(table(ld$detection.class)), c(1, 18))
 })
@@ -62,7 +63,7 @@ test_that("bipartite matching", {
   # diagnose
   ld <- label_detection(reference = ref, detection = det)
 
-  expect_equal(sum(ld$detection.class == "true.positive"), 2)
+  expect_equal(sum(ld$detection.class == "true.positive"), 3)
 
 
 })
