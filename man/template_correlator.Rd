@@ -12,7 +12,7 @@ pb = TRUE, type = "fourier", fbtype = "mel", ...)
 \item{templates}{'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must contain columns for sound files (sound.files),
 selection number (selec), and start and end time of sound event (start and end). If frequency range columns are included ('bottom.freq' and 'top.freq', in kHz) the correlation will be run on those frequency ranges. All templates must have the same sampling rate and both templates and 'files' (in which to find templates) must also have the same sampling rate.}
 
-\item{files}{Character vector with the selections in 'X' to be used as surveys for cross-correlation detection. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.}
+\item{files}{Character vector with name of the files in which to run the cross-correlation with the supplied template(s). Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported formats) in 'path'.}
 
 \item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.}
 

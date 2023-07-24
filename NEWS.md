@@ -1,6 +1,6 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
-ohun 0.1.1 (developmental)
+ohun 1.0.0 (developmental)
 =========================
 
 ### NEW FEATURES
