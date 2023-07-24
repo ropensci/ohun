@@ -10,7 +10,7 @@
     
     <a class="navbar-brand me-2" href="../index.html">ohun</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -172,7 +172,36 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 <span class="r-in"><span> <span class="va">lbh_reference</span>,</span></span>
 <span class="r-in"><span> threshold <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">0.7</span>, by <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>, by.sound.file <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> object 'templ' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2 thresholds will be evaluated:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9 thresholds will be evaluated:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 thresholds will be evaluated:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3 thresholds will be evaluated:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    threshold sound.files   templates detections true.positives false.positives</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1        0.5    lbh2.wav  lbh2.wav-1          9              9               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2        0.5    lbh1.wav  lbh2.wav-1          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3        0.5    lbh1.wav lbh1.wav-11         10             10               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4        0.5    lbh2.wav lbh1.wav-11          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5        0.6    lbh2.wav  lbh2.wav-1          9              9               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6        0.6    lbh1.wav  lbh2.wav-1          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7        0.6    lbh1.wav lbh1.wav-11         10             10               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8        0.6    lbh2.wav lbh1.wav-11          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9        0.7    lbh2.wav  lbh2.wav-1          7              7               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10       0.7    lbh1.wav  lbh2.wav-1          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11       0.7    lbh1.wav lbh1.wav-11          4              4               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12       0.7    lbh2.wav lbh1.wav-11          0              0               0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    false.negatives splits merges   overlap    recall precision   f.score</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1                0      0      0 0.8562007 1.0000000         1 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2               10     NA     NA        NA 0.0000000         0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3                0      0      0 0.8917651 1.0000000         1 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4                9     NA     NA        NA 0.0000000         0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5                0      0      0 0.8562007 1.0000000         1 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6               10     NA     NA        NA 0.0000000         0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7                0      0      0 0.8917651 1.0000000         1 1.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 8                9     NA     NA        NA 0.0000000         0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 9                2      0      0 0.8436591 0.7777778         1 0.8750000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10              10     NA     NA        NA 0.0000000         0 0.0000000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11               6      0      0 0.9326121 0.4000000         1 0.5714286</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12               9     NA     NA        NA 0.0000000         0 0.0000000</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
