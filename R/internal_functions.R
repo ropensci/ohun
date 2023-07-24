@@ -394,7 +394,8 @@ check_arguments <- function(fun, args){
   if (any(names(args) == "threshold")){
     if (as.character(fun)[[1]] %in% c("energy_detector", "optimize_energy_detector"))
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 99.9, add = check_collection, .var.name = "threshold")
-    if (as.character(fun) %in% c("template_detector", "optimize_template_detector"))
+    
+    if (as.character(fun)[[1]] %in% c("template_detector", "optimize_template_detector"))
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 0.999, add = check_collection, .var.name = "threshold")
   }
   
