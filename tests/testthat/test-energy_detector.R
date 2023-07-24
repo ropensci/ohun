@@ -74,8 +74,8 @@ test_that("using hold time", {
       path = tempdir(),
       pb = FALSE
     )
-  expect_class(detec1, "data.frame")
-  expect_class(detec1, "selection_table")
+  expect_class(detec2, "data.frame")
+  expect_class(detec2, "selection_table")
   expect_equal(nrow(detec2), 4)
 
 })

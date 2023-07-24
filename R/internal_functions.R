@@ -68,7 +68,7 @@ ohun_style <-
 
 
 
-# internal function to find (and plot) templates in the acoustic space
+# internal function to find (and plot) templates in the acoustic space used by get_templates()
 find_templates <-
   function(reference = NULL,
            n.sub.spaces,
@@ -285,7 +285,7 @@ pairs_iou <- function(df, detection, reference) {
 
 .onAttach <- 
   function(libname, pkgname) {
-    packageStartupMessage("\nPlease cite as: \n")
+    packageStartupMessage("\nPlease cite 'ohun' as: \n")
     packageStartupMessage(" Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2023. ohun: an R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution. https://doi.org/10.1111/2041-210X.14170")
   }
 
@@ -301,7 +301,7 @@ assert_unique_sels <- checkmate::makeAssertionFunction(check_unique_sels)
 
 ## function to check arguments
 check_arguments <- function(fun, args){
-  
+
   # create object to store check results
   check_collection <- checkmate::makeAssertCollection()
   
@@ -392,12 +392,11 @@ check_arguments <- function(fun, args){
     checkmate::assert_numeric(x = args$smooth, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, add = check_collection, .var.name = "smooth")
   
   if (any(names(args) == "threshold")){
-    if (as.character(fun) %in% c("energy_detector", "optimize_energy_detector"))
+    if (as.character(fun)[[1]] %in% c("energy_detector", "optimize_energy_detector"))
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 99.9, add = check_collection, .var.name = "threshold")
     if (as.character(fun) %in% c("template_detector", "optimize_template_detector"))
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 0.999, add = check_collection, .var.name = "threshold")
   }
-  
   
   if (any(names(args) == "peak.amplitude"))
     checkmate::assert_numeric(x = args$peak.amplitude, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0, add = check_collection, .var.name = "peak.amplitude")
