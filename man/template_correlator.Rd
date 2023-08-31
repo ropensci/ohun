@@ -95,8 +95,10 @@ This function calculates the similarity of acoustic templates across sound files
   )
 
   # using an extended selection table
-  templ_est <- warbleR::selection_table(templ, extended = TRUE, confirm.extended = FALSE, 
-  path = tempdir())
+  templ_est <- warbleR::selection_table(templ,
+    extended = TRUE, confirm.extended = FALSE,
+    path = tempdir()
+  )
 
   tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")
 

@@ -68,26 +68,26 @@ template_detector <-
            threshold,
            pb = TRUE,
            verbose = TRUE) {
-    
     # save start time
     start_time <- proc.time()
-    
+
     # check arguments
     arguments <- as.list(base::match.call(expand.dots = FALSE))
-    
+
     # do not check ... arguments
     arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # set clusters for windows OS or more decent OSs
     if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <-
@@ -95,7 +95,7 @@ template_detector <-
     } else {
       cl <- cores
     }
-    
+
     # loop over scores of each dyad
     sel_table_list <-
       warbleR:::pblapply_wrblr_int(
@@ -105,22 +105,22 @@ template_detector <-
         FUN = function(i) {
           # extract data for a dyad
           temp_cor <- template.correlations[[i]]
-          
+
           ## get peaks as the ones higher than previous and following scores
           peak_position <-
             which(c(FALSE, diff(temp_cor$correlation.scores) > 0) &
-                    c(rev(diff(
-                      rev(temp_cor$correlation.scores)
-                    ) > 0), FALSE) & temp_cor$correlation.scores > threshold)
-          
+              c(rev(diff(
+                rev(temp_cor$correlation.scores)
+              ) > 0), FALSE) & temp_cor$correlation.scores > threshold)
+
           # get peaks and their scores
           scores <- temp_cor$correlation.scores[peak_position]
           peak_time <-
             seq(0,
-                temp_cor$file.duration,
-                length.out = length(temp_cor$correlation.scores)
+              temp_cor$file.duration,
+              length.out = length(temp_cor$correlation.scores)
             )[peak_position]
-          
+
           # get peak position fixing by removing half the duration of the sound event at the start and end of the sound file
           peak_time <-
             seq(
@@ -128,11 +128,11 @@ template_detector <-
               temp_cor$file.duration - temp_cor$template.duration / 2,
               length.out = length(temp_cor$correlation.scores)
             )[peak_position]
-          
+
           # get file and template names
           file_template <-
             strsplit(names(template.correlations)[i], "/")[[1]]
-          
+
           # calculate starts as the peak location minus half the template duration
           starts <-
             if (length(peak_time) > 0) {
@@ -142,7 +142,7 @@ template_detector <-
             }
           # cannot be negative
           starts[starts < 0] <- 0
-          
+
           # calculate starts as the peak location minus half the template duration
           ends <-
             if (length(peak_time) > 0) {
@@ -150,10 +150,10 @@ template_detector <-
             } else {
               NA
             }
-          
+
           # cannot be higher than file duration
           ends[ends > temp_cor$file.duration] <- temp_cor$file.duration
-          
+
           # put results in an extended selection table
           sel_table <-
             data.frame(
@@ -172,31 +172,31 @@ template_detector <-
                 NA
               }
             )
-          
+
           return(sel_table)
         }
       )
-    
+
     # put results in a data frame
     sel_table_df <- do.call(rbind, sel_table_list)
-    
+
     # relabel rows
     rownames(sel_table_df) <- seq_len(nrow(sel_table_df))
-    
+
     # get path from corrrelation call
     corr_call_path <-
       try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
-    
+
     if (is(corr_call_path, "try-error") |
-        is.null(corr_call_path)) {
+      is.null(corr_call_path)) {
       corr_call_path <- getwd()
     }
-    
+
     #  let user know if no detections are found
     if (all(is.na(sel_table_df$start)) & verbose) {
       print(x = "no sound events above threshold were detected")
     } else if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
-               all(!is.na(sel_table_df$start))) {
+      all(!is.na(sel_table_df$start))) {
       sel_table_df <-
         warbleR::selection_table(
           X = sel_table_df[!is.na(sel_table_df$start), ],
@@ -206,9 +206,9 @@ template_detector <-
           verbose = FALSE,
           fix.selec = TRUE
         )
-      
+
       attributes(sel_table_df)$call <- base::match.call()
-      
+
       # add elapsed time
       attributes(sel_table_df)$elapsed.time.s <-
         as.vector((proc.time() - start_time)[3])

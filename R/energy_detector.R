@@ -15,7 +15,7 @@
 #' than those needed to accurately represent amplitude variation in time, which affects the size of the
 #' output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
-#'   frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation. 
+#'   frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation.
 #' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  \code{\link[warbleR]{envelope}} is used internally which is analogous to sum smoothing in code{\link[seewave]{env}}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.
 #' @param threshold Numeric vector of length 1 with a value between 0 and 100 specifying the amplitude threshold for detecting sound event occurrences. Amplitude is represented as a percentage so 0 and 100 represent the lowest amplitude and highest amplitude respectively. Default is 5.
@@ -93,6 +93,7 @@
 #'  diagnose_detection(reference = flac_reference, detection = detec)
 #'  }
 #' }
+
 #'
 #' @references {
 #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
@@ -116,51 +117,52 @@ energy_detector <-
            max.duration = Inf,
            cores = 1,
            pb = TRUE) {
-    
     # save start time
     start_time <- proc.time()
-    
+
     # check arguments
-    if (options("ohun_check_args")$ohun_check_args){
-      
+    if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
       arguments <- as.list(base::match.call())
-      
+
       # add objects to argument names
-      for(i in names(arguments)[-1])
+      for (i in names(arguments)[-1]) {
         arguments[[i]] <- get(i)
-      
+      }
+
       # check each arguments
       check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-      
+
       # report errors
       checkmate::reportAssertions(check_results)
     }
-    
+
     # check path if not provided set to working directory
-    path <- if (is.null(path)) 
-      getwd() else 
-        normalizePath(path)
-    
+    path <- if (is.null(path)) {
+      getwd()
+    } else {
+      normalizePath(path)
+    }
+
     # if files and envelopes are not supplied
     if (is.null(files) & is.null(envelopes)) {
       files <- list.files(path = path, pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$", ignore.case = TRUE)
-      
+
       if (length(files) == 0) {
         stop2("No files found in the working directory or 'path' supplied")
       }
     }
-    
+
     # either files or envelopes must be supplied
     if (!is.null(files) & !is.null(envelopes)) {
       message2("'files' will be ignored as 'envelopes' has been supplied")
     }
-    
+
     # get file names from envelopes
     if (is.null(files)) {
       files <- names(envelopes)[-length(envelopes)]
     }
-    
+
     # Apply over each sound file
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & cores > 1) {
@@ -168,28 +170,14 @@ energy_detector <-
     } else {
       cl <- cores
     }
-    
+
     # run function over sound files or selections in loop
     detections_l <- warbleR:::pblapply_wrblr_int(
       pbar = pb,
       X = files,
       cl = cl,
       FUN = function(file) {
-        # out <- detect_FUN(file,
-        #                   wl,
-        #                   thres = threshold / 100,
-        #                   peak.amplitude,
-        #                   min.duration,
-        #                   max.duration,
-        #                   path,
-        #                   bp,
-        #                   thinning,
-        #                   smooth,
-        #                   envlp = envelopes,
-        #                   hop.size,
-        #                   hold.t = hold.time
-        # )
-      out <- detect_FUN(file,
+        out <- detect_FUN(file,
           wl,
           thres = threshold / 100,
           pa = peak.amplitude,
@@ -208,25 +196,25 @@ energy_detector <-
         return(out)
       }
     )
-    
+
     # put together in a single data frame
     detections <- do.call(rbind, detections_l)
-    
+
     # remove NAs in detections
     detections <- detections[!is.na(detections$sound.files), ]
-    
+
     # rename rows
     if (nrow(detections) > 0) {
       rownames(detections) <- seq_len(nrow(detections))
     }
-    
+
     if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)) {
       detections <- warbleR::selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
-      
+
       attributes(detections)$call <- base::match.call()
-      
+
       attributes(detections)$elapsed.time.s <- as.vector((proc.time() - start_time)[3])
     }
-    
+
     return(detections)
   }

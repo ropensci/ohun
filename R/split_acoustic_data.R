@@ -49,25 +49,27 @@ split_acoustic_data <-
            pb = TRUE,
            only.sels = FALSE,
            X = NULL) {
-  
     # check arguments
     arguments <- as.list(base::match.call())
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # check path if not provided set to working directory
-    path <- if (is.null(path)) 
-      getwd() else 
-        normalizePath(path)
-    
+    path <- if (is.null(path)) {
+      getwd()
+    } else {
+      normalizePath(path)
+    }
+
     # check files are found in path
     if (is.null(files)) {
       files <-
@@ -301,7 +303,7 @@ split_acoustic_data <-
           return(NULL)
         }
       })
-    
+
       # put together clip information in a single data frame
       new.sels <- do.call(rbind, new.sels_l)
       new.sels$..row <-

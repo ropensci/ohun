@@ -48,21 +48,21 @@ get_templates <-
            plot = TRUE,
            color = "#21908C4D",
            ...) {
-   
     # check arguments
     arguments <- as.list(base::match.call())
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
-     if (!is.null(acoustic.space)) {
+
+    if (!is.null(acoustic.space)) {
       if (nrow(reference) != nrow(acoustic.space)) {
         stop2("'reference' and 'acoustic.space' must have the same number of columns")
       }
@@ -74,11 +74,11 @@ get_templates <-
       # remove columns with NAs
       spectral_parameters <-
         spectral_parameters[, !vapply(spectral_parameters, anyNA, FUN.VALUE = logical(1))]
-      
+
       # remove columns with 0 variance
       spectral_parameters <-
-        spectral_parameters[, vapply(spectral_parameters, function(x) if(is(x, "numeric")) var(x) else 1, FUN.VALUE = numeric(1)) > 0]
-      
+        spectral_parameters[, vapply(spectral_parameters, function(x) if (is(x, "numeric")) var(x) else 1, FUN.VALUE = numeric(1)) > 0]
+
       # get PCA
       pca <-
         stats::prcomp(spectral_parameters[, 2:ncol(spectral_parameters)], scale. = TRUE)

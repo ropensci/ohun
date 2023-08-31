@@ -83,24 +83,24 @@ optimize_template_detector <-
            previous.output = NULL,
            macro.average = FALSE,
            min.overlap = 0.5) {
-    
     # check arguments
     arguments <- as.list(base::match.call())
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # do not check arguments on internal ohun function here (energy_detector())
     options(ohun_check_args = FALSE)
-    on.exit(options(ohun_check_args = TRUE))    
-    
+    on.exit(options(ohun_check_args = TRUE))
+
     # check that all sound files in reference have and correlation vector
     if (!all(reference$sound.files %in% sapply(strsplit(names(
       template.correlations

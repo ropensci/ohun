@@ -31,27 +31,37 @@ The function helps to visualize the match between reference and detection annota
   # load data
   data("lbh_reference")
 
-# mid point and regular size
-plot_detection(reference = lbh_reference[-14, ], 
-detection = lbh_reference[-1, ], mid.point = TRUE)
+  # mid point and regular size
+  plot_detection(
+    reference = lbh_reference[-14, ],
+    detection = lbh_reference[-1, ], mid.point = TRUE
+  )
 
-# mid point and larger size
-plot_detection(reference = lbh_reference[-14, ], 
-detection = lbh_reference[-1, ], mid.point = TRUE, size = 25)
+  # mid point and larger size
+  plot_detection(
+    reference = lbh_reference[-14, ],
+    detection = lbh_reference[-1, ], mid.point = TRUE, size = 25
+  )
 
-# true time rectangles
-plot_detection(reference = lbh_reference[-14, ], 
-detection = lbh_reference[-1, ])
+  # true time rectangles
+  plot_detection(
+    reference = lbh_reference[-14, ],
+    detection = lbh_reference[-1, ]
+  )
 
-# use position to make reference and anotations overlap vertically
-plot_detection(reference = lbh_reference[-14, ], 
-detection = lbh_reference[-1, ], positions = c(1, 1.4))
+  # use position to make reference and anotations overlap vertically
+  plot_detection(
+    reference = lbh_reference[-14, ],
+    detection = lbh_reference[-1, ], positions = c(1, 1.4)
+  )
 
-# modified using ggplot
-gg_pd <- plot_detection(reference = lbh_reference[-14, ], 
-detection = lbh_reference[-1, ], positions = c(1, 1.4))
+  # modified using ggplot
+  gg_pd <- plot_detection(
+    reference = lbh_reference[-14, ],
+    detection = lbh_reference[-1, ], positions = c(1, 1.4)
+  )
 
-gg_pd + ggplot2::theme_classic(base_size = 25)
+  gg_pd + ggplot2::theme_classic(base_size = 25)
 }
 }
 \references{

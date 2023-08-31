@@ -28,7 +28,7 @@ test_that("nothing to merge", {
   expect_true(all(oed$recall > 0.9))
 
   expect_true(all(oed$precision < 0.22))
-  expect_class(oed, "data.frame")
+  expect_equal(class(oed), "data.frame")
 })
 
 
@@ -57,7 +57,7 @@ test_that("including previous output in new call", {
     )
 
   expect_equal(nrow(oed), 6)
-  expect_class(oed, "data.frame")
+  expect_equal(class(oed), "data.frame")
   unlink(
     list.files(
       path = tempdir(),

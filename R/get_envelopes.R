@@ -76,24 +76,23 @@ get_envelopes <-
            pb = TRUE,
            smooth = 5,
            normalize = TRUE) {
-    
     # check arguments
-    if (options("ohun_check_args")$ohun_check_args){
-      
+    if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
       arguments <- as.list(base::match.call())
-      
+
       # add objects to argument names
-      for(i in names(arguments)[-1])
+      for (i in names(arguments)[-1]) {
         arguments[[i]] <- get(i)
-      
+      }
+
       # check each arguments
       check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-      
+
       # report errors
       checkmate::reportAssertions(check_results)
-    }    
-    
+    }
+
     # return error if not all sound files were found
     if (is.null(files)) {
       files <- list.files(
@@ -108,11 +107,11 @@ get_envelopes <-
     ))) {
       stop2("Some (or all) sound files were not found")
     }
-    
+
     if (length(files) == 0) {
       stop2("no sound files found in working directory or 'path' supplied")
     }
-    
+
     # Apply over each sound file
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & cores > 1) {
@@ -120,7 +119,7 @@ get_envelopes <-
     } else {
       cl <- cores
     }
-    
+
     # run function over sound files or selections in loop
     env_list <- warbleR:::pblapply_wrblr_int(
       pbar = pb,
@@ -141,21 +140,21 @@ get_envelopes <-
         )
       }
     )
-    
+
     names(env_list) <- files
-    
+
     # append call info
     env_list[[length(env_list) + 1]] <- list(
       parameters = lapply(as.list(base::match.call())[-1], eval),
       call = base::match.call(),
       ohun.version = packageVersion("ohun")
     )
-    
+
     names(env_list)[length(env_list)] <- "call_info"
-    
+
     # add class envelopes
     class(env_list) <- c("list", "envelopes")
-    
+
     return(env_list)
   }
 
@@ -184,16 +183,16 @@ get_envelopes <-
 
 print.envelopes <- function(x, ...) {
   message2(paste("Object of class", cli::style_bold("'envelopes' \n")))
-  
+
   message2(color = "silver", x = paste("* The output of the following", cli::style_italic("get_envelopes()"), "call: \n"))
-  
+
   cll <- paste0(deparse(x$call_info$call))
   message2(color = "silver", x = cli::style_italic(gsub("    ", "", cll), "\n"))
-  
+
   file_names <- names(x)[-length(x)]
-  
+
   message2(color = "silver", x = paste(paste("* Contains the amplitude envelopes of"), length(x) - 1, "sound file(s):\n", paste(cli::style_italic(utils::head(file_names), collapse = " ")), if (length(file_names) > 6) paste("... and", length(file_names) - 6, "more") else ""))
-  
+
   # add message about amplitude envelope modifications
   if (any(names(x$call_info$parameters) == "smooth")) {
     if (x$call_info$parameters$smooth > 0) {
@@ -204,7 +203,7 @@ print.envelopes <- function(x, ...) {
   } else {
     smooth_message <- ""
   }
-  
+
   if (any(names(x$call_info$parameters) == "thinning")) {
     if (x$call_info$parameters$thinning < 1) {
       thin_message <- paste0(x$call_info$parameters$thinning, "t hinning")
@@ -214,23 +213,23 @@ print.envelopes <- function(x, ...) {
   } else {
     thin_message <- ""
   }
-  
-  
+
+
   if (smooth_message == "" & thin_message == "") {
     message2(color = "silver", x = "\n * No smoothing or thinning was applied")
   }
-  
+
   if (smooth_message != "" & thin_message == "") {
     message2(color = "silver", x = paste("\n *", smooth_message, "was applied"))
   }
-  
+
   if (smooth_message == "" & thin_message != "") {
     message2(color = "silver", x = paste("\n *", thin_message, "was applied"))
   }
   if (smooth_message != "" & thin_message != "") {
     message2(color = "silver", x = paste("\n *", smooth_message, "and", thin_message, "was applied"))
   }
-  
+
   # print ohun version
   message2(color = "silver", x = paste0("\n * Created by ", cli::style_bold("ohun "), x$call_info$ohun.version))
 }

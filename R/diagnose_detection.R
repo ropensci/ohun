@@ -97,33 +97,32 @@ diagnose_detection <-
            by = NULL,
            macro.average = FALSE,
            min.overlap = 0.5) {
-    
     # check arguments
-    if (options("ohun_check_args")$ohun_check_args){
-      
+    if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
       arguments <- as.list(base::match.call())
-      
+
       # add objects to argument names
-      for(i in names(arguments)[-1])
+      for (i in names(arguments)[-1]) {
         arguments[[i]] <- get(i)
-      
+      }
+
       # check each arguments
       check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-      
+
       # report errors
       checkmate::reportAssertions(check_results)
     }
-    
+
     # do not check arguments on internal ohun function here (label_detection())
     options(ohun_check_args = FALSE)
-    on.exit(options(ohun_check_args = TRUE))    
-    
+    on.exit(options(ohun_check_args = TRUE))
+
     # do it by
     # run the function for each subset split by "by"
     if (!is.null(by)) {
       split_det <- split(x = detection, f = detection[, by])
-      
+
       split_diagnostic <-
         warbleR:::pblapply_wrblr_int(
           X = seq_len(length(split_det)),
@@ -141,45 +140,45 @@ diagnose_detection <-
                 by.sound.file = by.sound.file,
                 macro.average = macro.average
               )
-            
+
             # add by label
             by_diag$by <- names(split_det)[x]
-            
+
             # order columns
             by_diag <- by_diag[, c(ncol(by_diag), 1:(ncol(by_diag) - 1))]
-            
+
             # rename by column
             names(by_diag)[1] <- by
-            
+
             return(by_diag)
           }
         )
-      
+
       performance_df <- do.call(rbind, split_diagnostic)
     } else {
       # make it a data frame if selection table
-      if ( warbleR::is_selection_table(detection)) {
+      if (warbleR::is_selection_table(detection)) {
         detection <- as.data.frame(detection)
       }
-      
+
       # make it a data frame if selection table
-      if ( warbleR::is_selection_table(reference)) {
+      if (warbleR::is_selection_table(reference)) {
         reference <- as.data.frame(reference)
       }
-      
+
       # remove rows with no info
       detection <- detection[!is.na(detection$start), ]
-      
+
       # message if more sound files in detection than in reference
       extra_detec_sf <-
         setdiff(detection$sound.files, reference$sound.files)
-      
+
       if (length(extra_detec_sf)) {
         on.exit(warning(
           "There is at least one additional sound file in 'detection' not found in 'reference'"
         ))
       }
-      
+
       if (nrow(detection) > 0) {
         # double checking happens inside label_detection()
         labeled_detection <-
@@ -190,11 +189,11 @@ diagnose_detection <-
             pb = pb,
             min.overlap = min.overlap
           )
-        
-        
+
+
         # add overlaps as attributes
         overlaps <- attributes(labeled_detection)$overlaps
-        
+
         # look at detections matching 1 reference selection at the time
         performance_list <-
           lapply(unique(labeled_detection$sound.files), function(z) {
@@ -205,10 +204,10 @@ diagnose_detection <-
             # get subset of detections for that sound file
             sub_ref <- reference[reference$sound.files == z, ]
             sub_ref$id <- paste(sub_ref$sound.files, sub_ref$selec, sep = "-")
-            
+
             # get subset of overlaps for that sound file
             sub_overlaps <- overlaps[overlaps$sound.files == z, ]
-            
+
             # put all performance indices in a data frame
             performance <- data.frame(
               sound.files = z,
@@ -227,10 +226,10 @@ diagnose_detection <-
                 "merged", sub_detec$detection.class
               )),
               mean.duration.true.positives = round(mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)],
-                                                        na.rm = TRUE
+                na.rm = TRUE
               ) * 1000, 0),
               mean.duration.false.positives = round(mean((sub_detec$end - sub_detec$start)[grep("false", sub_detec$detection.class)],
-                                                         na.rm = TRUE
+                na.rm = TRUE
               ) * 1000, 0),
               mean.duration.false.negatives = round(mean((
                 sub_ref$end - sub_ref$start
@@ -243,47 +242,47 @@ diagnose_detection <-
               proportional.duration.true.positives = mean((sub_detec$end - sub_detec$start)[grep("true", sub_detec$detection.class)], na.rm = TRUE) / mean((sub_ref$end - sub_ref$start)[sub_ref$id %in% sub_overlaps$reference.id], na.rm = TRUE),
               stringsAsFactors = FALSE
             )
-            
+
             # add duty cycle
             if (!is.null(path) & time.diagnostics) {
               # get file durations
               performance$duty.cycle <-
                 sum((sub_detec$end - sub_detec$start), na.rm = TRUE) / warbleR::duration_sound_files(files = z, path = path)$duration
             }
-            
+
             # add recall, precision and f score
             performance$recall <-
               performance$true.positives / nrow(sub_ref)
             performance$precision <-
               if (nrow(sub_detec) > 0 &
-                  performance$true.positives > 0) {
+                performance$true.positives > 0) {
                 (performance$true.positives / performance$detections)
               } else {
                 0
               }
-            
+
             performance$f.score <-
               2 * ((performance$precision * performance$recall) / (performance$precision + performance$recall)
               )
-            
+
             # replace NaNs with NA
             for (i in seq_len(ncol(performance))) {
               if (is.nan(performance[, i])) {
                 performance[, i] <- NA
               }
             }
-            
+
             # fix values when no false positives or true positives
             performance$false.positives[performance$false.positives < 0] <-
               0
             performance$mean.duration.false.positives[is.na(performance$mean.duration.false.positives) |
-                                                        performance$false.positives == 0] <- NA
+              performance$false.positives == 0] <- NA
             performance$mean.duration.true.positives[is.na(performance$mean.duration.true.positives) |
-                                                       performance$true.positives == 0] <- NA
-            
+              performance$true.positives == 0] <- NA
+
             return(performance)
           })
-        
+
         # add diagnostics of files in reference but not in detection
         if (any(!reference$sound.files %in% unique(labeled_detection$sound.files))) {
           no_detec <- data.frame(
@@ -317,12 +316,12 @@ diagnose_detection <-
             f.score = 0,
             stringsAsFactors = FALSE
           )
-          
+
           # add duty cycle
           if (!is.null(path) & time.diagnostics) {
             no_detec$duty.cycle <- 0
           }
-          
+
           performance_list[[length(performance_list) + 1]] <- no_detec
         }
         # put in a single data frame
@@ -355,7 +354,7 @@ diagnose_detection <-
           performance_df$duty.cycle <- 0
         }
       }
-      
+
       # sort columns
       performance_df <-
         performance_df[, na.omit(match(
@@ -379,7 +378,7 @@ diagnose_detection <-
           ),
           names(performance_df)
         ))]
-      
+
       # summarize across sound files
       if (!by.sound.file) {
         if (nrow(performance_df) > 1) {
@@ -389,13 +388,13 @@ diagnose_detection <-
           performance_df$sound.files <- NULL
         }
       }
-      
+
       # remove time diagnostics
       if (!time.diagnostics) {
         performance_df <-
           performance_df[, grep(".duration.|duty", names(performance_df), invert = TRUE)]
       }
-      
+
       # fix row names
       rownames(performance_df) <- seq_len(nrow(performance_df))
     }

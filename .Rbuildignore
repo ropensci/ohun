@@ -2,7 +2,6 @@
 ^\.Rproj\.user$
 ^.*\.pdf$
 testing
-tests
 docs
 pkgdown
 CITATION\.cff$

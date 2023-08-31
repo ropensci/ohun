@@ -24,9 +24,6 @@ params:
   EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
 ---
 
-
- 
-
 <img src="ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/><br>
 
 [ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized. This vignette provides a general overview of sound event optimization in [ohun](https://github.com/maRce10/ohun) as well as basic concepts from signal detection theory.

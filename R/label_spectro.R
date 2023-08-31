@@ -64,43 +64,43 @@ label_spectro <-
            line.x.position = 2,
            hop.size = NULL,
            ...) {
-    
     # error message if wavethresh is not installed
     if (!requireNamespace("viridis", quietly = TRUE)) {
       stop2("must install 'viridis' to use this function")
     }
-    
+
     # check arguments
     arguments <- as.list(base::match.call(expand.dots = FALSE))
-    
+
     # do not check ... arguments
     arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # adjust wl based on hope.size
     if (!is.null(hop.size)) {
       wl <- round(wave@samp.rate * hop.size / 1000, 0)
     }
-    
+
     # reset graphic device on exit
     oldpar <- par(no.readonly = TRUE)
     on.exit(par(oldpar))
-    
+
     if (envelope | !is.null(template.correlation)) {
       par(mfrow = c(2, 1), mar = c(0, 4, 1, 1))
     } else {
       par(mar = c(4, 4, 1, 1))
     }
-    
+
     # plot spectrogram
     seewave::spectro(
       wave = wave,
@@ -109,14 +109,14 @@ label_spectro <-
       palette = palette,
       collevels = collevels,
       axisX = if (envelope |
-                  !is.null(template.correlation)) {
+        !is.null(template.correlation)) {
         FALSE
       } else {
         TRUE
       },
       ...
     )
-    
+
     # plot detection
     if (!is.null(reference)) {
       for (i in seq_len(nrow(reference))) {
@@ -129,7 +129,7 @@ label_spectro <-
         )
       }
     }
-    
+
     # plot detection
     if (!is.null(detection)) {
       for (i in seq_len(nrow(detection))) {
@@ -142,9 +142,9 @@ label_spectro <-
         )
       }
     }
-    
+
     usr <- par("usr")
-    
+
     # add legend
     if (!is.null(detection) & !is.null(reference)) {
       legend(
@@ -158,7 +158,7 @@ label_spectro <-
         yjust = 1
       )
     }
-    
+
     if (is.null(detection) & !is.null(reference)) {
       legend(
         x = usr[2] * 0.98,
@@ -171,7 +171,7 @@ label_spectro <-
         yjust = 1
       )
     }
-    
+
     if (is.null(reference) & !is.null(detection)) {
       legend(
         x = usr[2] * 0.98,
@@ -184,19 +184,19 @@ label_spectro <-
         yjust = 1
       )
     }
-    
+
     if (envelope) {
       # set graphic device for envelope
       par(mar = c(4, 4, 0.3, 1))
-      
+
       if (!is.null(smooth)) {
         smooth <- round(wave@samp.rate * smooth / 1000, 0)
       }
-      
+
       # plot envelope
       env_obj <- seewave::env(wave, colwave = "#07889B", ssmooth = smooth, plot = FALSE, norm = TRUE)
-      plot(y = env_obj[ ,1], x = seq(0, seewave::duration(wave), length.out = nrow(env_obj)), type = "l", col = "#07889B", xlab = "Time", ylab = "Amplitude", yaxt = "n", xaxs = "i", yaxs = "i", ylim = c(0, 1.1))
-      
+      plot(y = env_obj[, 1], x = seq(0, seewave::duration(wave), length.out = nrow(env_obj)), type = "l", col = "#07889B", xlab = "Time", ylab = "Amplitude", yaxt = "n", xaxs = "i", yaxs = "i", ylim = c(0, 1.1))
+
       # add threshold line
       if (!is.null(threshold)) {
         abline(
@@ -208,7 +208,7 @@ label_spectro <-
     } else if (!is.null(template.correlation)) {
       # set graphic device for correlations
       par(mar = c(4, 4, 0.3, 1))
-      
+
       plot(
         x = seq(
           template.correlation$template.duration / 2,
@@ -224,7 +224,7 @@ label_spectro <-
         xaxs = "i",
         xlim = c(0, duration(wave))
       )
-      
+
       # add threshold line
       if (!is.null(threshold)) {
         abline(h = threshold, col = "#CF4446FF", lwd = 3)

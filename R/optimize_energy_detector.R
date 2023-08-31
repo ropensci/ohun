@@ -140,39 +140,41 @@ optimize_energy_detector <-
            envelopes = NULL,
            macro.average = FALSE,
            min.overlap = 0.5) {
-  
     # check arguments
     arguments <- as.list(base::match.call())
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # check path if not provided set to working directory
-    path <- if (is.null(path)) 
-      getwd() else 
-        normalizePath(path)
-    
+    path <- if (is.null(path)) {
+      getwd()
+    } else {
+      normalizePath(path)
+    }
+
     # do not check arguments on internal ohun function here (energy_detector())
     options(ohun_check_args = FALSE)
-    on.exit(options(ohun_check_args = TRUE))    
-    
+    on.exit(options(ohun_check_args = TRUE))
+
     # if files not supplied then used those from reference
     if (is.null(files)) {
       files <- unique(reference$sound.files)
     }
-    
+
     # if 'files' are found in reference
     if (!any(files %in% reference$sound.files)) {
       stop2("Not a single sound file in the working directory is found in 'reference'")
     }
-    
+
     # get all possible combinations of parameters
     exp_grd <-
       expand.grid(
@@ -192,7 +194,7 @@ optimize_energy_detector <-
         },
         thinning = thinning
       )
-    
+
     # if previous output included
     if (!is.null(previous.output)) {
       # create composed variable to find overlapping runs
@@ -206,7 +208,7 @@ optimize_energy_detector <-
           "max.duration",
           "thinning"
         )], 1, paste, collapse = "-")
-      
+
       exp_grd <-
         exp_grd[!apply(exp_grd[, c(
           "threshold",
@@ -217,23 +219,23 @@ optimize_energy_detector <-
           "max.duration",
           "thinning"
         )], 1, paste, collapse = "-") %in% previous.output$temp.label, ]
-      
+
       # remove composed variable
       previous.output$temp.label <- NULL
     }
-    
-    
+
+
     if (nrow(exp_grd) == 0) {
       cat(
         "all combinations were already evaluated on previous call to this function (based on 'pevious.output')"
       )
-      
+
       return(previous.output)
     } else {
       # warn about number of combinations
       cat(paste(nrow(exp_grd), "combinations will be evaluated:"))
       cat("\n")
-      
+
       eng_det_l <-
         warbleR:::pblapply_wrblr_int(
           X = seq_len(nrow(exp_grd)),
@@ -262,24 +264,24 @@ optimize_energy_detector <-
                 hop.size = hop.size,
                 wl = wl
               )
-            
+
             # make factor a character vector
             eng_det$sound.files <- as.character(eng_det$sound.files)
-            
+
             if (nrow(eng_det) > 0) {
               eng_det$..row.id <- seq_len(nrow(eng_det))
             }
-            
+
             eng_det <- eng_det[!is.na(eng_det$start), ]
-            
+
             return(eng_det)
           }
         )
-      
+
       # do not check arguments on internal ohun function here (diagnose_detection() and energy_detector())
       options(ohun_check_args = FALSE)
-      # on.exit(options(ohun_check_args = TRUE))    
-      
+      # on.exit(options(ohun_check_args = TRUE))
+
       performance_l <-
         lapply(eng_det_l, function(Z) {
           suppressWarnings(
@@ -296,28 +298,28 @@ optimize_energy_detector <-
             )
           )
         })
-      
+
       performance <- do.call(rbind, performance_l)
-      
+
       # duplicate expand grid tuning parameters if by sound file
       if (by.sound.file) {
         exp_grd <-
           exp_grd[rep(seq_len(nrow(exp_grd)), each = length(files)), ]
       }
-      
+
       suppressWarnings(performance <-
-                         data.frame(exp_grd, performance))
-      
+        data.frame(exp_grd, performance))
+
       if (!is.null(previous.output)) {
         performance <- rbind(previous.output, performance)
       }
-      
+
       # order colums
       performance <- warbleR::sort_colms(performance)
-      
+
       # rename rows
       rownames(performance) <- seq_len(nrow(performance))
-      
+
       return(performance)
     }
   }

@@ -20,8 +20,8 @@ test_that("peak amplitude works", {
       peak.amplitude = 10,
       pb = FALSE
     )
-  expect_class(detec1, "data.frame")
-  expect_class(detec1, "selection_table")
+  expect_equal(class(detec1)[2], "data.frame")
+  expect_equal(class(detec1)[1], "selection_table")
   expect_equal(nrow(detec1), 12)
 })
 
@@ -40,8 +40,8 @@ test_that("time diagnostics", {
       pb = FALSE
     )
 
-  expect_class(detec1, "data.frame")
-  expect_class(detec1, "selection_table")
+  expect_equal(class(detec1)[2], "data.frame")
+  expect_equal(class(detec1)[1], "selection_table")
   expect_equal(nrow(detec1), 3)
 
 })
@@ -57,8 +57,8 @@ test_that("using smoothing and minimum duration", {
     smooth = 7,
     pb = FALSE
   )
-  expect_class(detec1, "data.frame")
-  expect_class(detec1, "selection_table")
+  expect_equal(class(detec1)[2], "data.frame")
+  expect_equal(class(detec1)[1], "selection_table")
   expect_equal(nrow(detec1), 9)
 
 })
@@ -74,8 +74,8 @@ test_that("using hold time", {
       path = tempdir(),
       pb = FALSE
     )
-  expect_class(detec2, "data.frame")
-  expect_class(detec2, "selection_table")
+  expect_equal(class(detec2)[2], "data.frame")
+  expect_equal(class(detec2)[1], "selection_table")
   expect_equal(nrow(detec2), 4)
 
 })

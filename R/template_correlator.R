@@ -73,8 +73,10 @@
 #'   )
 #'
 #'   # using an extended selection table
-#'   templ_est <- warbleR::selection_table(templ, extended = TRUE, confirm.extended = FALSE, 
-#'   path = tempdir())
+#'   templ_est <- warbleR::selection_table(templ,
+#'     extended = TRUE, confirm.extended = FALSE,
+#'     path = tempdir()
+#'   )
 #'
 #'   tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")
 #'
@@ -109,28 +111,30 @@ template_correlator <-
            type = "fourier",
            fbtype = "mel",
            ...) {
-    
     # check arguments
     arguments <- as.list(base::match.call(expand.dots = FALSE))
-    
+
     # do not check ... arguments
     arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
-    
+
     # add objects to argument names
-    for(i in names(arguments)[-1])
+    for (i in names(arguments)[-1]) {
       arguments[[i]] <- get(i)
-    
+    }
+
     # check each arguments
     check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-    
+
     # report errors
     checkmate::reportAssertions(check_results)
-    
+
     # check path if not provided set to working directory
-    path <- if (is.null(path)) 
-      getwd() else 
-        normalizePath(path)
-    
+    path <- if (is.null(path)) {
+      getwd()
+    } else {
+      normalizePath(path)
+    }
+
     # check files or list files in working directory
     if (!is.null(files)) {
       if (any(!is.character(files), !is.vector(files))) {
@@ -197,8 +201,7 @@ template_correlator <-
     # check sampling rate is the same for templates and sound files if not a selection table
     if (is_extended_selection_table(templates)) {
       if (unique(attr(templates, "check.results")$sample.rate) != unique(info_sf$sample.rate)) {
-
-        # set bottom and top freq (if not supplied) to 0 and nyquist frequency hence the full frequency range 
+        # set bottom and top freq (if not supplied) to 0 and nyquist frequency hence the full frequency range
         if (is.null(templates$bottom.freq)) {
           templates$top.freq <- unique(info_sf$sample.rate) / 2
           templates$bottom.freq <- 0
@@ -312,4 +315,3 @@ template_correlator <-
 
     return(corr_vector_list)
   }
-

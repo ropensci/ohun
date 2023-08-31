@@ -32,25 +32,25 @@
 #' }
 
 merge_overlaps <- function(X, pb = TRUE, cores = 1) {
-  
   # check arguments
   arguments <- as.list(base::match.call(expand.dots = FALSE))
-  
+
   # do not check ... arguments
   arguments <- arguments[grep("...", names(arguments), fixed = TRUE, invert = TRUE)]
-  
+
   # add objects to argument names
-  for(i in names(arguments)[-1])
+  for (i in names(arguments)[-1]) {
     arguments[[i]] <- get(i)
-  
+  }
+
   # check each arguments
   check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-  
+
   # report errors
   checkmate::reportAssertions(check_results)
-  
-  
-  
+
+
+
   # merged overlapping selections
   if (pb) {
     print(x = "Detecting overlapping selections:")

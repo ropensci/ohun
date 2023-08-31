@@ -3,6 +3,7 @@
 \docType{package}
 \name{ohun}
 \alias{ohun}
+\alias{ohun-package}
 \title{ohun: Optimizing sound event detection}
 \description{
 ohun is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
@@ -27,8 +28,18 @@ All functions allow the parallelization of tasks, which distributes the tasks am
 
 License: GPL (>= 2)
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://marce10.github.io/ohun/}
+  \item \url{https://github.com/maRce10/ohun}
+  \item Report bugs at \url{https://github.com/maRce10/ohun/issues/}
+}
+
+}
 \author{
 Marcelo Araya-Salas
 
   Maintainer: Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr})
 }
+\keyword{internal}

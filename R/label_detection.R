@@ -71,29 +71,28 @@ label_detection <-
            pb = TRUE,
            min.overlap = 0.5,
            by = NULL) {
-    
     # check arguments
-    if (options("ohun_check_args")$ohun_check_args){
-      
+    if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
       arguments <- as.list(base::match.call())
-      
+
       # add objects to argument names
-      for(i in names(arguments)[-1])
+      for (i in names(arguments)[-1]) {
         arguments[[i]] <- get(i)
-      
+      }
+
       # check each arguments
       check_results <- check_arguments(fun = arguments[[1]], args = arguments)
-      
+
       # report errors
       checkmate::reportAssertions(check_results)
     }
-    
+
     # do it by
     # run the function for each subset split by "by"
     if (!is.null(by)) {
       split_det <- split(x = detection, f = detection[, by])
-      
+
       split_labeled <-
         warbleR:::pblapply_wrblr_int(
           X = seq_len(length(split_det)),
@@ -108,31 +107,30 @@ label_detection <-
                 cores = cores,
                 min.overlap = min.overlap
               )
-            
+
             return(by_lab)
           }
         )
-      
+
       labeled_detections <- do.call(rbind, split_labeled)
-      
+
       # fix call
-      if (warbleR::is_selection_table(detection))
+      if (warbleR::is_selection_table(detection)) {
         attributes(labeled_detections)$call <- base::match.call()
-      
+      }
     } else {
-      
       if (any(!complete.cases(detection[, c("start", "end")]))) {
         detection <- detection[complete.cases(detection[, c("start", "end")]), ]
         warning2("Rows in 'detection' with missing values in start and/or end were removed")
       }
-      
+
       # set clusters for windows OS
       if (Sys.info()[1] == "Windows" & cores > 1) {
         cl <- parallel::makeCluster(cores)
       } else {
         cl <- cores
       }
-      
+
       # look at detections matching 1 training selection at the time
       labeled_detections_list <-
         warbleR:::pblapply_wrblr_int(
@@ -140,54 +138,52 @@ label_detection <-
           cl = cl,
           X = unique(detection$sound.files),
           FUN = function(z) {
-            
             # get subset from detection for that sound file
             sub_detec <-
               as.data.frame(detection[detection$sound.files == z, ])
-            
+
             # if sound file is found in references
             if (any(reference$sound.files == z)) {
               # get subset from template for that sound file
               sub_ref <-
                 as.data.frame(reference[reference$sound.files == z, ])
-              
+
               ovlp_events <- overlapping_detections(reference = sub_ref, detection = sub_detec)
-              
+
               overlap_iou <- pairs_iou(df = ovlp_events, detection = sub_detec, reference = sub_ref)
-              
-              if (nrow(overlap_iou) > 0){
-                
+
+              if (nrow(overlap_iou) > 0) {
                 # filter detections below minimum overlap
                 overlap_iou <- overlap_iou[overlap_iou$IoU > min.overlap, ]
-                
+
                 sub_detec$detection.class <- vapply(paste(sub_detec$sound.files, sub_detec$selec, sep = "-"), function(y) {
                   # if no reference overlap is a false positive
                   if (sum(overlap_iou$detection.id == y) == 0) detection.class <- "false.positive"
-                  
+
                   # if only one overlapping reference is a true positive
                   if (sum(overlap_iou$detection.id == y) == 1) detection.class <- "true.positive"
-                  
+
                   # if more than one overlapping reference is a merged true positive
                   if (sum(overlap_iou$detection.id == y) > 1) detection.class <- "true.positive (merged)"
-                  
+
                   # if 1 reference overlaps and that reference overlaps with other detections
                   if (sum(overlap_iou$detection.id == y) == 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split)"
-                  
+
                   if (sum(overlap_iou$detection.id == y) > 1 & any(overlap_iou$reference.id[overlap_iou$detection.id != y] %in% overlap_iou$reference.id[overlap_iou$detection.id == y])) detection.class <- "true.positive (split/merged)"
-                  
+
                   return(detection.class)
                 }, FUN.VALUE = character(1))
-                
+
                 # use maximum bipartite graph matching to solve ambiguous detections
                 if (any(grepl("split|merge", sub_detec$detection.class))) {
                   ambiguous_detec <- sub_detec[grepl("split|merge", sub_detec$detection.class), ]
                   ambiguous_detec$id <- paste(ambiguous_detec$sound.files, ambiguous_detec$selec, sep = "-")
                   sub_ref$id <- paste(sub_ref$sound.files, sub_ref$selec, sep = "-")
-                  
+
                   ambiguous_overlaps <- overlap_iou[overlap_iou$detection.id %in% ambiguous_detec$id, ]
-                  
+
                   ambiguous_ref <- sub_ref[sub_ref$id %in% ambiguous_overlaps$reference.id, ]
-                  
+
                   # get matrix to find maximum bipartite graph
                   ovlp_mat <-
                     matrix(
@@ -202,18 +198,18 @@ label_detection <-
                   for (i in seq_len(nrow(ambiguous_overlaps))) {
                     ovlp_mat[rownames(ovlp_mat) == ambiguous_overlaps$detection.id[i], colnames(ovlp_mat) == ambiguous_overlaps$reference.id[i]] <- ambiguous_overlaps$IoU[i]
                   }
-                  
+
                   # convert overlaps == 1 to 0.9999 (igraph ignores those equal to 1)
                   # org_ovlp_mat <- ovlp_mat
                   ovlp_mat[ovlp_mat >= 1] <- 0.99999
-                  
+
                   # convert to graph
                   ovlp_graph <-
                     igraph::graph_from_incidence_matrix(ovlp_mat)
-                  
+
                   # convert to data frame
                   df_ovlp_graph <- igraph::as_data_frame(ovlp_graph)
-                  
+
                   # add amount of overlap as weights
                   igraph::E(ovlp_graph)$weight <-
                     vapply(seq_len(nrow(df_ovlp_graph)), function(x) {
@@ -227,81 +223,82 @@ label_detection <-
                   #   # get maximum bipartite graph
                   bigraph_results <-
                     igraph::max_bipartite_match(ovlp_graph)$matching
-                  
+
                   # keep only detection results
                   bigraph_results <-
                     bigraph_results[1:nrow(ovlp_mat)]
-                  
+
                   # keep only true positive overlaps
                   overlap_iou <- overlap_iou[paste(overlap_iou$detection.id, overlap_iou$reference.id) %in% paste(names(bigraph_results), bigraph_results) | !overlap_iou$detection.id %in% ambiguous_detec$id, ]
-                  
+
                   # get those that change to false positives
                   bigraph_false_positives <-
                     names(bigraph_results)[is.na(bigraph_results)]
-                  
+
                   if (length(bigraph_false_positives) > 0) {
                     sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "false.positive", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
                   }
                 }
               }
-            } else overlap_iou <- data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())
-            
-            if (nrow(overlap_iou) == 0)
+            } else {
+              overlap_iou <- data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())
+            }
+
+            if (nrow(overlap_iou) == 0) {
               sub_detec$detection.class <- "false.positive"
-            
-            
+            }
+
+
             if (any(grepl("true.positive", sub_detec$detection.class))) {
               sub_detec$overlap <- vapply(seq_len(nrow(sub_detec)),
-                                          function(x) {
-                                            ovlp <- overlap_iou$IoU[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
-                                            if (length(ovlp) == 0) ovlp <- NA
-                                            return(ovlp)
-                                          },
-                                          FUN.VALUE = numeric(1)
+                function(x) {
+                  ovlp <- overlap_iou$IoU[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
+                  if (length(ovlp) == 0) ovlp <- NA
+                  return(ovlp)
+                },
+                FUN.VALUE = numeric(1)
               )
               sub_detec$reference <- vapply(seq_len(nrow(sub_detec)),
-                                            function(x) {
-                                              ref <- overlap_iou$reference.id[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
-                                              if (length(ref) == 0) ref <- NA
-                                              return(as.character(ref))
-                                            },
-                                            FUN.VALUE = character(1)
+                function(x) {
+                  ref <- overlap_iou$reference.id[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
+                  if (length(ref) == 0) ref <- NA
+                  return(as.character(ref))
+                },
+                FUN.VALUE = character(1)
               )
-              
             } else {
               sub_detec$overlap <- NA
               sub_detec$reference <- NA
             }
-            
+
             # include overlaps as attributes
             attributes(sub_detec)$overlaps <- overlap_iou
-            
+
             return(sub_detec)
           }
         )
-      
+
       # put results in a single data frame
       labeled_detections <- do.call(rbind, labeled_detections_list)
-      
-      
+
+
       # convert to selection table
       if (warbleR::is_selection_table(detection)) {
         detection$detection.class <- labeled_detections$detection.class
         detection$reference.row <- labeled_detections$reference.row
         detection$reference <- labeled_detections$reference
         detection$overlap <- labeled_detections$overlap
-        
+
         # overwrite labeled_detections
         labeled_detections <- detection
-        
+
         # fix call
         attributes(labeled_detections)$call <- base::match.call()
       }
-      
+
       rownames(labeled_detections) <- 1:nrow(labeled_detections)
-      
+
       attributes(labeled_detections)$overlaps <- do.call(rbind, lapply(labeled_detections_list, function(x) attributes(x)$overlaps))
-      
     }
     return(labeled_detections)
   }
