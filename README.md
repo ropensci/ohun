@@ -12,14 +12,13 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 [![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 [![minimal R
 version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-0.1.1-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2023--07--06-yellowgreen.svg)](/commits/master)
+[![packageversion](https://img.shields.io/badge/Package%20version-1.0.0-orange.svg?style=flat-square)](commits/develop)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2023--08--30-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
-[![R-CMD-check](https://github.com/maRce10/ohun/workflows/R-CMD-check/badge.svg)](https://github.com/maRce10/ohun/actions)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci/software-review/issues/568)
 <!-- badges: end -->
@@ -47,10 +46,22 @@ The package offers functions for:
 - Energy-based detection
 - Template-based detection
 
-All functions allow the parallelization of tasks, which distributes the
-tasks among several processors to improve computational efficiency. The
-package works on sound files in ‘.wav’, ‘.mp3’, ‘.flac’ and ‘.wac’
-format.
+The implementation of detection diagnostics that can be applied to both
+built in detection methods and to those obtained from other software
+packages makes the package [ohun](https://github.com/maRce10/ohun) an
+useful tool for conducting direct comparisons of the performance of
+different routines. In addition, the compatibility of
+[ohun](https://github.com/maRce10/ohun) with data formats already used
+by other sound analysis R packages (e.g. seewave, warbleR) enables the
+integration of [ohun](https://github.com/maRce10/ohun) into more complex
+acoustic analysis workflows in a popular programming enviroment within
+the research community.
+
+All functions allow the parallelization of tasks (using the packages
+parallel and [pbapply](https://CRAN.R-project.org/package=pbapply)),
+which distributes the tasks among several processors to improve
+computational efficiency. The package works on sound files in ‘.wav’,
+‘.mp3’, ‘.flac’ and ‘.wac’ format.
 
 Install/load the package from CRAN as follows:
 
@@ -72,6 +83,11 @@ remotes::install_github("maRce10/ohun")
 #load package
 library(ohun)
 ```
+
+Further system requirements due to the dependency
+[seewave](https://rug.mnhn.fr/seewave/) may be needed. Take a look a
+[this link](https://rug.mnhn.fr/seewave/inst.html) for instruction on
+how to install/troubleshoot these external dependencies.
 
 Take a look at the vignettes for an overview of the main features of the
 packages:
