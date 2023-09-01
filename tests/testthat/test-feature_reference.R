@@ -5,7 +5,7 @@ tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE) #s
 
 
 test_that("default output", {
-  fr <- feature_reference(reference = lbh_reference)
+  fr <- summarize_reference(reference = lbh_reference)
 
   expect_true(is.matrix(fr))
 
@@ -15,7 +15,7 @@ test_that("default output", {
 })
 
 test_that("when providing recordings", {
-  fr <- feature_reference(reference = lbh_reference, path = tempdir())
+  fr <- summarize_reference(reference = lbh_reference, path = tempdir())
 
   expect_true(is.matrix(fr))
 
@@ -26,7 +26,7 @@ test_that("when providing recordings", {
 
 test_that("by sound file", {
   fr <-
-    feature_reference(reference = lbh_reference,
+    summarize_reference(reference = lbh_reference,
                       path = tempdir(),
                       by.sound.file = TRUE)
 

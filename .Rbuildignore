@@ -15,3 +15,5 @@ README\.Rmd$
 ^CONTRIBUTING\.md$
 ^\.ccache$
 ^tic\.R$
+^doc$
+^Meta$

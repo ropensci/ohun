@@ -5,7 +5,7 @@ tuneR::writeWave(lbh1, file.path(tempdir(),  "lbh1.wav"), extensible = FALSE)
 tuneR::writeWave(lbh2, file.path(tempdir(),  "lbh2.wav"), extensible = FALSE)
 
 test_that("default output", {
-  expect_null(fad <- feature_acoustic_data(path = tempdir()))
+  expect_null(fad <- summarize_acoustic_data(path = tempdir()))
 
   unlink(
     list.files(
@@ -16,6 +16,6 @@ test_that("default output", {
     )
   )
 
-  expect_error(feature_acoustic_data(path = tempdir()))
+  expect_error(summarize_acoustic_data(path = tempdir()))
 
 })
