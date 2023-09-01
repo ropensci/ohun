@@ -2,10 +2,9 @@ pandoc: 2.19.2
 pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
-  energy_based_detection: energy_based_detection.html
   intro_to_ohun: intro_to_ohun.html
   template_based_detection: template_based_detection.html
-last_built: 2023-09-01T14:48Z
+last_built: 2023-09-01T15:17Z
 urls:
   reference: https://marce10.github.io/ohun/reference
   article: https://marce10.github.io/ohun/articles
