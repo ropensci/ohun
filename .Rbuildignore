@@ -15,4 +15,3 @@ README\.Rmd$
 ^CONTRIBUTING\.md$
 ^\.ccache$
 ^tic\.R$
-inst/doc
