@@ -9,4 +9,4 @@ tests/testthat/Rplots.pdf
 ..Rcheck/
 .RData
 ohun_0.1.1.tar.gz
-inst/doc
+tic.R
