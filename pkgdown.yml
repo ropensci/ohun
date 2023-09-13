@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   intro_to_ohun: intro_to_ohun.html
   template_based_detection: template_based_detection.html
-last_built: 2023-09-01T15:32Z
+last_built: 2023-09-13T17:22Z
 urls:
   reference: https://marce10.github.io/ohun/reference
   article: https://marce10.github.io/ohun/articles
