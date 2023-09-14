@@ -56,7 +56,7 @@
 
       <ul class="navbar-nav">
 <li class="nav-item">
-  <a class="external-link nav-link" href="https://github.com/maRce10/ohun/" aria-label="github">
+  <a class="external-link nav-link" href="https://github.com/ropensci/ohun/" aria-label="github">
     <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
@@ -79,18 +79,18 @@ Araya-Salas, PhD</a></h4>
             
             <h4 data-toc-skip class="date">2023-09-14</h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/maRce10/ohun/blob/HEAD/vignettes/intro_to_ohun.Rmd" class="external-link"><code>vignettes/intro_to_ohun.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/ropensci/ohun/blob/HEAD/vignettes/intro_to_ohun.Rmd" class="external-link"><code>vignettes/intro_to_ohun.Rmd</code></a></small>
       <div class="d-none name"><code>intro_to_ohun.Rmd</code></div>
     </div>
 
     
     
 <p><img src="ohun_sticker.png" alt="ohun sticker" align="right" width="25%" height="25%"><br></p>
-<p><a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> is intended to
+<p><a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> is intended to
 facilitate the automated detection of sound events, providing functions
 to diagnose and optimize detection routines. Detections from other
 software can also be explored and optimized. This vignette provides a
-general overview of sound event optimization in <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> as well as basic
+general overview of sound event optimization in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> as well as basic
 concepts from signal detection theory.</p>
 <div class="alert alert-info">
 <p><font size="4">The main features of the package are: </font></p>
@@ -120,14 +120,14 @@ format.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"ohun"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#load package</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></span></code></pre></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/ohun" class="external-link">ohun</a></span><span class="op">)</span></span></code></pre></div>
 <p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">remotes</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install package</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">#load packages</span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/ohun/">ohun</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/ohun" class="external-link">ohun</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">tuneR</span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://marce10.github.io/warbleR/" class="external-link">warbleR</a></span><span class="op">)</span></span></code></pre></div>
 <hr>
@@ -135,7 +135,7 @@ format.</p>
 <h2 id="automatic-sound-event-detection">Automatic sound event detection<a class="anchor" aria-label="anchor" href="#automatic-sound-event-detection"></a>
 </h2>
 <p>Finding the position of sound events in a sound file is a challenging
-task. <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> offers two
+task. <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> offers two
 methods for automated sound event detection: template-based and
 energy-based detection. These methods are better suited for highly
 stereotyped or good signal-to-noise ratio (SNR) sounds, respectively. If
@@ -149,9 +149,9 @@ the most adequate sound event detection approach. Steps in which ‘ohun’
 can be helpful are shown in color. (SNR = signal-to-noise ratio) </i>
 </figcaption></figure><p>Also note that the presence of other sounds overlapping the target
 sound events in time and frequency can strongly affect detection
-performance for the two methods in <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a>.</p>
+performance for the two methods in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>.</p>
 <p>Still, a detection run using other software can be optimized with the
-tools provided in <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a>.</p>
+tools provided in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>.</p>
 </div>
 <div class="section level2">
 <h2 id="signal-detection-theory-applied-to-bioacoustics">Signal detection theory applied to bioacoustics<a class="anchor" aria-label="anchor" href="#signal-detection-theory-applied-to-bioacoustics"></a>
@@ -178,7 +178,7 @@ identified as ‘background noise’</li>
 </ul>
 <p>Several additional indices derived from these indices are used to
 evaluate the performance of a detection routine. These are three useful
-indices in the context of sound event detection included in <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a>:</p>
+indices in the context of sound event detection included in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>:</p>
 <ul>
 <li>
 <strong>Recall</strong>: correct detections relative to total
@@ -205,7 +205,7 @@ these two extremes will be given by the relative costs of missing
 signals and mistaking noise for signals. Hence, these indices provide an
 useful framework for diagnosing and optimizing the performance of a
 detection routine.</p>
-<p>The package <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a>
+<p>The package <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>
 provides a set of tools to evaluate the performance of an sound event
 detection based on the indices described above. To accomplish this, the
 result of a detection routine is compared against a reference table
@@ -266,8 +266,8 @@ to data frames:</p>
 17    lbh1.wav    17 3.663719 3.8133662      1.8781   8.6948
 18    lbh1.wav    18 4.140816 4.3045477      1.8433   9.2165
 19    lbh1.wav    19 4.626712 4.7851620      1.8085   8.9035</code></pre>
-<p>All <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> functions that
-work with this kind of data can take both selection tables and data
+<p>All <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> functions
+that work with this kind of data can take both selection tables and data
 frames. Spectrograms with highlighted sound events from a selection
 table can be plotted with the function <code><a href="../reference/label_spectro.html">label_spectro()</a></code>
 (this function only plots one wave object at the time, not really useful
@@ -504,7 +504,7 @@ when running an energy-based detector</li>
 </ul>
 <hr>
 <div class="alert alert-info">
-<p>Please cite <a href="https://github.com/maRce10/ohun" class="external-link">ohun</a> like
+<p>Please cite <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> like
 this:</p>
 <p>Araya-Salas, M. (2021), <em>ohun: diagnosing and optimizing automated
 sound event detection</em>. R package version 0.1.0.</p>
