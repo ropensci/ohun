@@ -25,7 +25,7 @@ Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci
 
 <img src="vignettes/ohun_sticker.png" alt="ohun logo" align="right" width = "25%" height="25%"/>
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the
+[ohun](https://github.com/ropensci/ohun) is intended to facilitate the
 automated detection of sound events, providing functions to diagnose and
 optimize detection routines. It provides utilities for comparing
 detection and annotations of audio events described by frequency and
@@ -48,12 +48,12 @@ The package offers functions for:
 
 The implementation of detection diagnostics that can be applied to both
 built in detection methods and to those obtained from other software
-packages makes the package [ohun](https://github.com/maRce10/ohun) an
+packages makes the package [ohun](https://github.com/ropensci/ohun) an
 useful tool for conducting direct comparisons of the performance of
 different routines. In addition, the compatibility of
-[ohun](https://github.com/maRce10/ohun) with data formats already used
+[ohun](https://github.com/ropensci/ohun) with data formats already used
 by other sound analysis R packages (e.g. seewave, warbleR) enables the
-integration of [ohun](https://github.com/maRce10/ohun) into more complex
+integration of [ohun](https://github.com/ropensci/ohun) into more complex
 acoustic analysis workflows in a popular programming enviroment within
 the research community.
 
@@ -101,7 +101,7 @@ packages:
 
 ------------------------------------------------------------------------
 
-Please cite [ohun](https://github.com/maRce10/ohun) as follows:
+Please cite [ohun](https://github.com/ropensci/ohun) as follows:
 
 Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound
 event detection. R package version 0.1.1.

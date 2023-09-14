@@ -26,7 +26,7 @@ params:
 
 <img src="ohun_sticker.png" alt="ohun sticker" align="right" width = "25%" height="25%"/><br>
 
-[ohun](https://github.com/maRce10/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized. This vignette provides a general overview of sound event optimization in [ohun](https://github.com/maRce10/ohun) as well as basic concepts from signal detection theory.
+[ohun](https://github.com/ropensci/ohun) is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized. This vignette provides a general overview of sound event optimization in [ohun](https://github.com/ropensci/ohun) as well as basic concepts from signal detection theory.
 
 
 <div class="alert alert-info">
@@ -121,16 +121,16 @@ opts_chunk$set(
 
 # Automatic sound event detection
 
-Finding the position of sound events in a sound file is a challenging task. [ohun](https://github.com/maRce10/ohun) offers two methods for automated sound event detection: template-based and energy-based detection. These methods are better suited for highly stereotyped or good signal-to-noise ratio (SNR) sounds, respectively. If the target sound events don't fit these requirements, more elaborated methods (i.e. machine learning approaches) are warranted: 
+Finding the position of sound events in a sound file is a challenging task. [ohun](https://github.com/ropensci/ohun) offers two methods for automated sound event detection: template-based and energy-based detection. These methods are better suited for highly stereotyped or good signal-to-noise ratio (SNR) sounds, respectively. If the target sound events don't fit these requirements, more elaborated methods (i.e. machine learning approaches) are warranted: 
 
 <figure>
 <center><img src="analysis_workflow.png" alt="automated signal detection diagram" width="500" height="450"></center>
 <figcaption><i>Diagram depicting how target sound event features can be used to tell the most adequate sound event detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
 </figure> 
 
-Also note that the presence of other sounds overlapping the target sound events in time and frequency can strongly affect detection performance for the two methods in [ohun](https://github.com/maRce10/ohun).
+Also note that the presence of other sounds overlapping the target sound events in time and frequency can strongly affect detection performance for the two methods in [ohun](https://github.com/ropensci/ohun).
 
-Still, a detection run using other software can be optimized with the tools provided in [ohun](https://github.com/maRce10/ohun). 
+Still, a detection run using other software can be optimized with the tools provided in [ohun](https://github.com/ropensci/ohun). 
 
  
 
@@ -143,7 +143,7 @@ Broadly speaking, signal detection theory deals with the process of recovering s
 - **False negatives (FNs)**: signals incorrectly identified as 'background noise'
 - **True negatives (TNs)**: background noise correctly identified as 'background noise'
 
-Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are three useful indices in the context of sound event detection included in [ohun](https://github.com/maRce10/ohun):
+Several additional indices derived from these indices are used to evaluate the performance of a detection routine. These are three useful indices in the context of sound event detection included in [ohun](https://github.com/ropensci/ohun):
 
 - **Recall**: correct detections relative to total references (a.k.a. true positive rate or sensitivity; *TPs / (TPs + FNs)*)
 - **Precision**: correct detections relative to total detections (*TPs / (TPs + FPs)*).
@@ -153,7 +153,7 @@ Several additional indices derived from these indices are used to evaluate the p
 
 A perfect detection will have no false positives or false negatives, which will result in both recall and precision equal to 1. However, perfect detection cannot always be reached and some compromise between detecting all target signals plus some noise (recall = 1 & precision < 1) and detecting only target signals but not all of them (recall < 1 & precision = 1) is warranted. The right balance between these two extremes will be given by the relative costs of missing signals and mistaking noise for signals. Hence, these indices provide an useful framework for diagnosing and optimizing the performance of a detection routine. 
 
-The package [ohun](https://github.com/maRce10/ohun) provides a set of tools to evaluate the performance of an sound event detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target sound events in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which can be used to illustrate detection performance evaluation. The example data can be explored as follows:  
+The package [ohun](https://github.com/ropensci/ohun) provides a set of tools to evaluate the performance of an sound event detection based on the indices described above. To accomplish this, the result of a detection routine is compared against a reference table containing the time position of all target sound events in the sound files. The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which can be used to illustrate detection performance evaluation. The example data can be explored as follows:  
 
 ```{r, eval = TRUE}
 # load example data
@@ -171,7 +171,7 @@ as.data.frame(lbh_reference)
 ```
 
 
-All [ohun](https://github.com/maRce10/ohun) functions that work with this kind of data can take both selection tables and data frames. Spectrograms with highlighted sound events from a selection table can be plotted with the function `label_spectro()` (this function only plots one wave object at the time, not really useful for long files):
+All [ohun](https://github.com/ropensci/ohun) functions that work with this kind of data can take both selection tables and data frames. Spectrograms with highlighted sound events from a selection table can be plotted with the function `label_spectro()` (this function only plots one wave object at the time, not really useful for long files):
 
 ```{r, eval = TRUE, fig.asp=0.4}
 # save sound file
@@ -353,7 +353,7 @@ Detection routines can take a long time when working with large amounts of acous
 
 <div class="alert alert-info">
 
-Please cite [ohun](https://github.com/maRce10/ohun) like this:
+Please cite [ohun](https://github.com/ropensci/ohun) like this:
 
 Araya-Salas, M. (2021), *ohun: diagnosing and optimizing automated sound event detection*. R package version 0.1.0.
 

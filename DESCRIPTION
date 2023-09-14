@@ -8,8 +8,8 @@ Description: Facilitates the automatic detection of acoustic signals,
     Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
 License: GPL (>= 2)
 Encoding: UTF-8
-URL: https://marce10.github.io/ohun/, https://github.com/maRce10/ohun
-BugReports: https://github.com/maRce10/ohun/issues/
+URL: https://docs.ropensci.org/ohun, https://github.com/ropensci/ohun
+BugReports: https://github.com/ropensci/ohun/issues/
 VignetteBuilder: knitr
 RoxygenNote: 7.2.3
 Language: en-US
