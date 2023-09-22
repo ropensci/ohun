@@ -1,6 +1,6 @@
 #' @title Plot a labeled spectrogram
 #'
-#' @description \code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-corelation scores
+#' @description \code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-correlation scores
 #' @usage label_spectro(wave, reference = NULL, detection = NULL,
 #'  envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5),
 #'  palette = viridis::viridis, template.correlation = NULL,
@@ -19,7 +19,7 @@
 #' @param line.x.position Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting sound events. Default is 2.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.
 #' @param ... Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.
-#' @return A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.
+#' @return A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectrogram.
 #' @export
 #' @name label_spectro
 #' @details This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.

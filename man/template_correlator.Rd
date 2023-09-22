@@ -41,13 +41,13 @@ The current working directory is used as default.}
 \item{...}{Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.}
 }
 \value{
-The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event ocurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
+The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event occurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
 }
 \description{
 \code{template_correlator} estimates templates cross-correlation across multiple sound files.
 }
 \details{
-This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including ceptral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
+This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including cepstral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
 }
 \examples{
 {

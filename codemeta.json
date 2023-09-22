@@ -4,8 +4,8 @@
   "identifier": "ohun",
   "description": "Facilitates the automatic detection of acoustic signals, providing functions to diagnose and optimize the performance of detection routines. Detections from other software can also be explored and optimized. Reference: Araya-Salas et al. (2022) <https://doi.org/10.1101/2022.12.13.520253>.",
   "name": "ohun: Optimizing Acoustic Signal Detection",
-  "codeRepository": "https://github.com/maRce10/ohun",
-  "issueTracker": "https://github.com/maRce10/ohun/issues/",
+  "codeRepository": "https://github.com/ropensci/ohun/",
+  "issueTracker": "https://github.com/ropensci/ohun/issues/",
   "license": "https://spdx.org/licenses/GPL-2.0",
   "version": "0.1.0",
   "programmingLanguage": {
@@ -311,8 +311,8 @@
       }
     }
   ],
-  "relatedLink": ["https://marce10.github.io/ohun/", "https://CRAN.R-project.org/package=ohun"],
-  "readme": "https://github.com/maRce10/ohun/blob/master/README.md",
+  "relatedLink": ["https://docs.ropensci.org/ohun/", "https://CRAN.R-project.org/package=ohun"],
+  "readme": "https://github.com/ropensci/ohun/blob/master/README.md",
   "contIntegration": ["https://codecov.io/gh/maRce10/ohun?branch=master", "https://github.com/maRce10/ohun/actions"],
   "developmentStatus": ["https://lifecycle.r-lib.org/articles/stages.html", "https://www.repostatus.org/#active"],
   "keywords": ["spectrogram", "audio-processing", "bioacoustics", "streamline-analysis", "automatic-signal-detection"]

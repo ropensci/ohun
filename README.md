@@ -52,7 +52,7 @@ packages makes the package [ohun](https://github.com/ropensci/ohun) an
 useful tool for conducting direct comparisons of the performance of
 different routines. In addition, the compatibility of
 [ohun](https://github.com/ropensci/ohun) with data formats already used
-by other sound analysis R packages (e.g. seewave, warbleR) enables the
+by other sound analysis R packages (e.g. seewave, warbleR) enables the
 integration of [ohun](https://github.com/ropensci/ohun) into more complex
 acoustic analysis workflows in a popular programming enviroment within
 the research community.
@@ -93,11 +93,11 @@ Take a look at the vignettes for an overview of the main features of the
 packages:
 
 - [Optimizing sound event
-  detection](https://marce10.github.io/ohun/articles/intro_to_ohun.html)
+  detection](https://docs.ropensci.org/ohun/articles/intro_to_ohun.html)
 - [Energy-based
-  detection](https://marce10.github.io/ohun/articles/energy_based_detection.html)
+  detection](https://docs.ropensci.org/ohun/articles/energy_based_detection.html)
 - [Template-based
-  detection](https://marce10.github.io/ohun/articles/template_based_detection.html)
+  detection](https://docs.ropensci.org/ohun/articles/template_based_detection.html)
 
 ------------------------------------------------------------------------
 

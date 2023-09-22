@@ -1,6 +1,6 @@
 #' @title Optimize energy-based sound event detection
 #'
-#' @description Optimize energy-based sound event detection under different correlation treshold values
+#' @description Optimize energy-based sound event detection under different correlation threshold values
 #' @usage optimize_energy_detector(reference, files = NULL, threshold = 5,
 #' peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0,
 #' min.duration = NULL, max.duration = NULL, thinning = 1, cores = 1, pb = TRUE,

@@ -7,7 +7,7 @@
 merge_overlaps(X, pb = TRUE, cores = 1)
 }
 \arguments{
-\item{X}{Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the soudn events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{X}{Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
@@ -21,7 +21,7 @@ If any time-overlapping selection is found it returns a data frame in which over
 \code{merge_overlaps} merges several overlapping selections into a single selection
 }
 \details{
-The function finds time-overlapping selection in reference tables and collapses them into a single selection. It can be useful to prepare reference tables to be used in an energy detection routine. In such cases overlapping selections are expected to be detected as a single sound. Therefore, merging them can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.
+The function finds time-overlapping selection in reference tables and collapses them into a single selection. It can be useful to prepare reference tables to be used in an energy detection routine. In such cases overlapping selections are expected to be detected as a single sound. Therefore, merging them can be useful to prepare references in a format representing a more realistic expectation of how a perfect energy detection routine would look like.
 }
 \examples{
 {

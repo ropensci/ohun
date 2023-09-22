@@ -17,10 +17,10 @@ authors:
     orcid: 'https://orcid.org/0000-0003-3594-619X'
 identifiers:
   - type: url
-    value: 'https://github.com/maRce10/ohun'
+    value: 'https://docs.ropensci.org/ohun/'
     description: github repository
-repository-code: 'https://github.com/maRce10/ohun'
-url: 'https://marce10.github.io/ohun/'
+repository-code: 'https://github.com/ropensci/ohun/'
+url: 'https://docs.ropensci.org/ohun/'
 abstract: >-
   An R package intended to facilitate automated sound event
   detection. ohun provides functions to diagnose and

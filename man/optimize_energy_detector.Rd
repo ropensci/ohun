@@ -84,7 +84,7 @@ A data frame in which each row shows the result of a detection job with a partic
  }
 }
 \description{
-Optimize energy-based sound event detection under different correlation treshold values
+Optimize energy-based sound event detection under different correlation threshold values
 }
 \details{
 This function takes a selections data frame or 'selection_table' ('reference') estimates the detection performance of a energy detector under different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections in 'reference'. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{energy_detector}}.

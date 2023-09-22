@@ -14,6 +14,6 @@ Marcelo Araya-Salas
 data(lbh1)
 }
 \description{
-\code{lbh1} a wave object with long-billed hermit (\emph{Phaethornis longitrostris}) songs extracted from xeno-canto's '154138' recording.
+\code{lbh1} a wave object with long-billed hermit (\emph{Phaethornis longirostris}) songs extracted from xeno-canto's '154138' recording.
 }
 \keyword{datasets}

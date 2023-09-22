@@ -36,10 +36,10 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
 \item{...}{Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.}
 }
 \value{
-A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectroram.
+A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectrogram.
 }
 \description{
-\code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-corelation scores
+\code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-correlation scores
 }
 \details{
 This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
