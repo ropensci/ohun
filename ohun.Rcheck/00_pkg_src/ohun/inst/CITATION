@@ -1,0 +1,12 @@
+citHeader("Please cite 'ohun' as follows:")
+
+bibentry(entry = "MISC",
+        bibtype = "Article",
+        title = "ohun: automatic detection of acoustic signals",
+        author = c(as.person("M. Araya-Salas"), as.person("G. Smith-Vidaurre"), as.person("Brenes, J.C."), as.person("F. Chirino"), as.person("J Elizondo-Calvo"), as.person("A. Rico-Guevara")),
+        year = "2023",
+        journal = "Methods in Ecology and Evolution",
+        url = "https://doi.org/10.1111/2041-210X.14170",
+        textVersion = "Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2023. ohun: an R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution. https://doi.org/10.1111/2041-210X.14170"
+)
+

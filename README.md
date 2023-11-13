@@ -10,10 +10,6 @@ ohun: optimizing sound event detection
 and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
-[![minimal R
-version](https://img.shields.io/badge/R%3E%3D-%3E=%203.2.1-6666ff.svg)](https://cran.r-project.org/)
-[![packageversion](https://img.shields.io/badge/Package%20version-1.0.0-orange.svg?style=flat-square)](commits/develop)
-[![Last-changedate](https://img.shields.io/badge/last%20change-2023--08--30-yellowgreen.svg)](/commits/master)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
@@ -52,10 +48,10 @@ packages makes the package [ohun](https://github.com/ropensci/ohun) an
 useful tool for conducting direct comparisons of the performance of
 different routines. In addition, the compatibility of
 [ohun](https://github.com/ropensci/ohun) with data formats already used
-by other sound analysis R packages (e.g. seewave, warbleR) enables the
-integration of [ohun](https://github.com/ropensci/ohun) into more complex
-acoustic analysis workflows in a popular programming enviroment within
-the research community.
+by other sound analysis R packages (e.g. seewave, warbleR) enables the
+integration of [ohun](https://github.com/ropensci/ohun) into more
+complex acoustic analysis workflows in a popular programming environment
+within the research community.
 
 All functions allow the parallelization of tasks (using the packages
 parallel and [pbapply](https://CRAN.R-project.org/package=pbapply)),
@@ -78,7 +74,7 @@ To install the latest developmental version from
 [remotes](https://cran.r-project.org/package=remotes):
 
 ``` r
-remotes::install_github("maRce10/ohun")
+remotes::install_github("ropensci/ohun")
 
 #load package
 library(ohun)

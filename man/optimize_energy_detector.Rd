@@ -52,7 +52,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{by.sound.file}{Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE} and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.}
 
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
-frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation.}
+frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.}
 
 \item{path}{Character string containing the directory path where the sound files are located.
 The current working directory is used as default.}

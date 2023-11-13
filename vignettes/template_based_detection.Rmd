@@ -9,9 +9,6 @@ output:
     self_contained: yes
     toc: true
     toc_depth: 3
-    toc_float:
-      collapsed: false
-      smooth_scroll: true      
 vignette: >
    %\VignetteIndexEntry{2. Template-based detection}
    %\usepackage[utf8]{inputenc}
@@ -68,10 +65,6 @@ library(warbleR)
 library(ohun)
 library(tuneR)
 library(warbleR)
-
-load("../data/lbh2.rda")
-load("../data/lbh1.rda")
-load("../data/lbh_reference.rda")
 
 # for spectrograms
 par(mar = c(5, 4, 2, 2) + 0.1)
@@ -190,7 +183,7 @@ label_spectro(
   detection = detection,
   template.correlation = correlations[[1]],
   flim = c(0, 10),
-  threshold = 0.4,
+  threshold = 0.7,
   hop.size = 10, ovlp = 50)
 
 ```
@@ -313,21 +306,6 @@ Please cite [ohun](https://github.com/ropensci/ohun) like this:
 Araya-Salas, M. (2021), *ohun: diagnosing and optimizing automated sound event detection*. R package version 0.1.0.
 
 </div>
-
-```{r, eval = FALSE, echo=FALSE}
-Observaciones:
-
-avoid having overlapping selections in reference (check with overlapping_sels())
-
-downsample to a freq range just enough for the sound events of interest
-
-use hop.size instead of wl
-
-after split_acoustic_data() another function that returns the position in the original unsplit sound file
-
-count number of detections per unit of time
-```
-
 
 
 # References

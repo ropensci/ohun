@@ -9,9 +9,6 @@ output:
     self_contained: yes
     toc: true
     toc_depth: 3
-    toc_float:
-      collapsed: false
-      smooth_scroll: true      
 vignette: >
    %\VignetteIndexEntry{1. Introduction to ohun}
    %\usepackage[utf8]{inputenc}
@@ -79,16 +76,6 @@ library(warbleR)
 ```
 
 ```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
-
-# library(checkmate)
-# library(ggplot2)
-# source("~/Dropbox/R_package_testing/ohun/R/plot_detection.R")
-# source("~/Dropbox/R_package_testing/ohun/R/internal_functions.R")
-# 
-# 
-# load("../data/lbh2.rda")
-# load("../data/lbh1.rda")
-# load("../data/lbh_reference.rda")
 
 #load packages
 library(ohun)

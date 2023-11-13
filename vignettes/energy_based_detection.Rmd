@@ -9,9 +9,6 @@ output:
     self_contained: yes
     toc: true
     toc_depth: 3
-    toc_float:
-      collapsed: false
-      smooth_scroll: true      
 vignette: >
    %\VignetteIndexEntry{3. Energy-based detection}
    %\usepackage[utf8]{inputenc}
@@ -76,7 +73,7 @@ opts_chunk$set(
   comment = NA,
   # eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
   dev = "jpeg",
-  dpi = 100,
+  dpi = 70,
   fig.width=10,
   out.width = "100%",
   fig.align = "center"

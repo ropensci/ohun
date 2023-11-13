@@ -1,0 +1,328 @@
+---
+title: "Template-based detection"
+pagetitle: Template-based detection
+author: 
+- <a href="https://marce10.github.io/">Marcelo Araya-Salas, PhD</a>
+date:  "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    self_contained: yes
+    toc: true
+    toc_depth: 3
+vignette: >
+   %\VignetteIndexEntry{2. Template-based detection}
+   %\usepackage[utf8]{inputenc}
+   %\VignetteEncoding{UTF-8}
+   %\VignetteEngine{knitr::rmarkdown}
+editor_options: 
+  chunk_output_type: console
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+---
+
+This vignette details the use of template-based detection in [ohun](https://github.com/ropensci/ohun).Template-based detection method is better suited for highly stereotyped sound events. As it is less affected by signal-to-noise ratio it's more robust to higher levels of background noise:
+
+<figure>
+<center><img src="analysis_workflow_template.png" alt="automated signal detection diagram" width="500" height="450"></center>
+<figcaption><i>Diagram depicting how target sound event features can be used to tell the most adequate sound event detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
+</figure> 
+
+The procedure for template-based detection is divided in three steps:
+
+- Choosing the right template (`get_templates()`)
+- Estimating the cross-correlation scores of templates along sound files (`template_correlator()`)  
+- Detecting sound events by applying a correlation threshold (`template_detector()`)  
+
+
+First, we need to install the package. It can be installed from CRAN as follows:
+
+```{r, eval = FALSE}
+
+# From CRAN would be
+install.packages("ohun")
+
+#load package
+library(ohun)
+
+```
+
+To install the latest developmental version from [github](https://github.com/) you will need the R package [remotes](https://cran.r-project.org/package=devtools):
+
+```{r, eval = FALSE}
+
+# install package
+remotes::install_github("maRce10/ohun")
+
+#load packages
+library(ohun)
+library(tuneR)
+library(warbleR)
+```
+
+```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
+
+#load packages
+library(ohun)
+library(tuneR)
+library(warbleR)
+
+# for spectrograms
+par(mar = c(5, 4, 2, 2) + 0.1)
+
+stopifnot(require(knitr))
+options(width = 90)
+opts_chunk$set(
+  comment = NA,
+  # eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
+  dev = "jpeg",
+  dpi = 100,
+  fig.width=10,
+  out.width = "100%",
+  fig.align = "center"
+)
+
+```
+
+The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which will be used in this vignette. The example data can be load and explored as follows:  
+
+```{r, eval = TRUE}
+# load example data
+data("lbh1", "lbh2", "lbh_reference")
+
+# save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
+# select a subset of the data
+lbh1_reference <-
+  lbh_reference[lbh_reference$sound.files == "lbh1.wav",]
+
+# print data
+lbh1_reference
+```
+
+We can also plot the annotations on top of the spectrograms to further explore the data (this function only plots one wave object at the time, not really useful for long files):
+
+```{r, eval = TRUE, fig.asp=0.4}
+
+# print spectrogram
+label_spectro(wave = lbh1, reference = lbh1_reference, hop.size = 10, ovlp = 50, flim = c(1, 10))
+```
+
+--- 
+
+The function `get_templates()` can help you find a template closer to the average acoustic structure of the sound events in a reference table. This is done by finding the sound events closer to the centroid of the acoustic space. When the acoustic space is not supplied ('acoustic.space' argument) the function estimates it by measuring several acoustic parameters using the function [`spectro_analysis()`](https://marce10.github.io/warbleR/reference/spectro_analysis.html) from [`warbleR`](https://CRAN.R-project.org/package=warbleR)) and summarizing it with Principal Component Analysis (after z-transforming parameters). If only 1 template is required the function returns the sound event closest to the acoustic space centroid. The rationale here is that a sound event closest to the average sound event structure is more likely to share structural features with most sounds across the acoustic space than a sound event in the periphery of the space. These 'mean structure' templates can be obtained as follows:   
+
+```{r, eval = FALSE, echo = TRUE}
+# get mean structure template
+template <-
+  get_templates(reference = lbh1_reference, path = tempdir())
+```
+
+```{r, fig.asp=0.7, out.width="80%", eval = TRUE, echo = FALSE}
+par(mar = c(5, 4, 1, 1), bg = "white")
+
+# get mean structure template
+template <-
+  get_templates(reference = lbh1_reference, path = tempdir())
+```
+
+
+The graph above shows the overall acoustic spaces, in which the sound closest to the space centroid is highlighted. The highlighted sound is selected as the template and can be used to detect similar sound events. The function `get_templates()` can also select several templates. This can be helpful when working with sounds that are just moderately stereotyped. This is done by dividing the acoustic space into sub-spaces defined as equal-size slices of a circle centered at the centroid of the acoustic space:
+
+```{r, eval = FALSE, echo = TRUE}
+# get 3 templates
+get_templates(reference = lbh1_reference, 
+                          n.sub.spaces = 3, path = tempdir())
+```
+
+```{r, fig.asp=0.7, out.width="80%", eval = TRUE, echo = FALSE}
+par(mar = c(5, 4, 1, 1), bg = "white")
+
+# get 3 templates
+templates <- get_templates(reference = lbh1_reference, 
+                          n.sub.spaces = 3, path = tempdir())
+```
+
+We will use the single template object ('template') to run a detection on the example 'lbh1' data:
+
+```{r}
+# get correlations
+correlations <-
+  template_correlator(templates = template,
+                      files = "lbh1.wav",
+                      path = tempdir())
+```
+
+
+The output is an object of class 'template_correlations', with its own printing method:
+
+```{r}
+# print
+correlations
+```
+
+
+This object can then be used to detect sound events using `template_detector()`:
+
+```{r}
+# run detection
+detection <-
+  template_detector(template.correlations = correlations, threshold = 0.7)
+
+detection
+```
+
+
+The output can be explored by plotting the spectrogram along with the detection and correlation scores:
+
+```{r, fig.asp=0.5}
+# plot spectrogram
+label_spectro(
+  wave = lbh1,
+  detection = detection,
+  template.correlation = correlations[[1]],
+  flim = c(0, 10),
+  threshold = 0.7,
+  hop.size = 10, ovlp = 50)
+
+```
+
+
+The performance can be evaluated using `diagnose_detection()`:
+
+```{r}
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+
+```
+
+
+# Optimizing template-based detection
+
+The function `optimize_template_detector()` allows to evaluate the performance under different correlation thresholds:
+
+```{r}
+# run optimization
+optimization <-
+  optimize_template_detector(
+    template.correlations = correlations,
+    reference = lbh1_reference,
+    threshold = seq(0.1, 0.5, 0.1)
+  )
+
+# print output
+optimization
+```
+
+
+Additional threshold values can be evaluated without having to run it all over again. We just need to supplied the output from the previous run with the argument `previous.output` (the same trick can be done when optimizing an energy-based detection):
+
+```{r}
+# run optimization
+optimize_template_detector(
+  template.correlations = correlations,
+  reference = lbh1_reference,
+  threshold = c(0.6, 0.7),
+  previous.output = optimization
+)
+```
+
+
+In this case 2 threshold values (0.5 and 0.6) can achieve an optimal detection.
+
+
+
+# Detecting several templates
+
+Several templates can be used within the same call. Here we correlate two templates on the two example sound files, taking one template from each sound file:
+
+```{r}
+
+# get correlations
+correlations <-
+  template_correlator(
+    templates = lbh1_reference[c(1, 10),],
+    files = "lbh1.wav",
+    path = tempdir()
+  )
+
+# run detection
+detection <-
+  template_detector(template.correlations = correlations, threshold = 0.6)
+
+
+```
+
+
+Note that in these cases we can get the same sound event detected several times (duplicates), one by each template. We can check if that is the case just by diagnosing the detection:
+
+```{r}
+
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection)
+
+```
+
+In this we got perfect recall, but low precision. That is due to the fact that the same reference events were picked up by both templates. We can actually diagnose the detection by template to see this more clearly:
+
+```{r}
+
+#diagnose
+diagnose_detection(reference = lbh1_reference, detection = detection, by = "template")
+
+```
+
+We see that independently each template achieved a good detection. We can create a consensus detection by leaving only those with detections with the highest correlation across templates. To do this we first need to label each row in the detection using `label_detection()` and then remove duplicates using `consensus_detection()`:
+
+```{r}
+# labeling detection
+labeled <-
+  label_detection(reference = lbh_reference, detection = detection, by = "template")
+
+```
+
+Now we can filter out duplicates and diagnose the detection again, telling the function to select a single row per duplicate using the correlation score as a criterium (`by = "scores"`, this column is part of the `template_detector()` output):
+
+```{r}
+
+# filter
+consensus <- consensus_detection(detection = labeled, by = "scores")
+
+# diagnose
+diagnose_detection(reference = lbh1_reference, detection = consensus)
+
+```
+
+
+We successfully get rid of duplicates and detected every single target sound event.
+
+---
+
+<div class="alert alert-info">
+
+Please cite [ohun](https://github.com/ropensci/ohun) like this:
+
+Araya-Salas, M. (2021), *ohun: diagnosing and optimizing automated sound event detection*. R package version 0.1.0.
+
+</div>
+
+
+# References
+
+1. Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
+1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal sound events. Methods Ecol Evol 8:184-191.
+1. Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
+1. Knight, E.C., Hannah, K.C., Foley, G.J., Scott, C.D., Brigham, R.M. & Bayne, E. (2017). Recommendations for acoustic recognizer performance assessment with application to five common automated signal recognition programs. Avian Conservation and Ecology,
+1. Macmillan, N. A., & Creelman, C.D. (2004). Detection theory: A user's guide. Psychology press.
+
+
+
+---
+
+<font size="4">Session information</font>
+
+```{r session info, echo=FALSE}
+sessionInfo()
+```
+

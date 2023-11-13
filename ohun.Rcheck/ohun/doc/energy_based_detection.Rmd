@@ -1,0 +1,401 @@
+---
+title: "Energy-based detection"
+pagetitle: Energy-based detection
+author: 
+- <a href="https://marce10.github.io/">Marcelo Araya-Salas, PhD</a>
+date:  "`r Sys.Date()`"
+output:
+  rmarkdown::html_document:
+    self_contained: yes
+    toc: true
+    toc_depth: 3
+vignette: >
+   %\VignetteIndexEntry{3. Energy-based detection}
+   %\usepackage[utf8]{inputenc}
+   %\VignetteEncoding{UTF-8}
+   %\VignetteEngine{knitr::rmarkdown}     
+editor_options: 
+  chunk_output_type: console
+params:
+  EVAL: !r identical(Sys.getenv("NOT_CRAN"), "true")
+---
+
+This vignette details the use of energy-based detection in [ohun](https://docs.ropensci.org/ohun/). The energy detector approach uses amplitude envelopes to infer the position of sound events. Amplitude envelopes are representations of the variation in energy through time. This type of detector doesn't require highly stereotyped sound events, although they work better on high quality recordings in which the amplitude of target sound events is higher than the background noise (i.e. high signal-to-noise ratio):
+
+<figure>
+<center><img src="analysis_workflow_energy.png" alt="automated signal detection diagram" width="500" height="450"></center>
+<figcaption><i>Diagram depicting how target sound event features can be used to tell the most adequate sound event detection approach. Steps in which 'ohun' can be helpful are shown in color. (SNR = signal-to-noise ratio) </i></figcaption>
+</figure> 
+
+First, we need to install the package. It can be installed from CRAN as follows:
+
+```{r, eval = FALSE}
+
+# From CRAN would be
+install.packages("ohun")
+
+#load package
+library(ohun)
+
+```
+
+To install the latest developmental version from [github](https://github.com/) you will need the R package [remotes](https://cran.r-project.org/package=devtools):
+
+```{r, eval = FALSE}
+
+# install package
+remotes::install_github("maRce10/ohun")
+
+#load packages
+library(ohun)
+library(tuneR)
+library(warbleR)
+```
+
+```{r global options, echo = FALSE, message=FALSE, warning=FALSE}
+
+#load packages
+library(ohun)
+library(tuneR)
+library(warbleR)
+
+load("../data/lbh2.rda")
+load("../data/lbh1.rda")
+load("../data/lbh_reference.rda")
+
+
+# for spectrograms
+par(mar = c(5, 4, 2, 2) + 0.1)
+
+stopifnot(require(knitr))
+options(width = 90)
+opts_chunk$set(
+  comment = NA,
+  # eval = if (isTRUE(exists("params"))) params$EVAL else FALSE,
+  dev = "jpeg",
+  dpi = 70,
+  fig.width=10,
+  out.width = "100%",
+  fig.align = "center"
+)
+
+```
+
+The package comes with an example reference table containing annotations of long-billed hermit hummingbird songs from two sound files (also supplied as example data: 'lbh1' and 'lbh2'), which will be used in this vignette. The example data can be load and explored as follows:  
+
+```{r, eval = TRUE}
+# load example data
+data("lbh1", "lbh2", "lbh_reference")
+
+# save sound files
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
+# select a subset of the data
+lbh1_reference <-
+  lbh_reference[lbh_reference$sound.files == "lbh1.wav",]
+
+# print data
+lbh1_reference
+```
+
+We can plot the annotations on top of the spectrogram and amplitude envelope to further explore the data (this function only plots one wave object at the time, not really useful for long files):
+
+```{r, eval = TRUE, fig.asp=0.5}
+
+# print spectrogram
+label_spectro(wave = lbh1, reference = lbh1_reference, hop.size = 10, ovlp = 50, flim = c(1, 10), envelope = TRUE)
+```
+
+
+# How it works 
+
+The function `ernergy_detector()` performs this type of detection. We can understand how to use `ernergy_detector()` using simulated sound events. We will do that using the function `simulate_songs()` from [warbleR](https://CRAN.R-project.org/package=warbleR). In this example we simulate a recording with 10 sounds with two different frequency ranges and durations:
+
+```{r}
+# install this package first if not installed
+# install.packages("Sim.DiffProc")
+
+#Creating vector for duration 
+durs <- rep(c(0.3, 1), 5)
+
+#Creating simulated song
+set.seed(12)
+simulated_1 <-
+  warbleR::simulate_songs(
+    n = 10,
+    durs = durs,
+    freqs = 5,
+    sig2 = 0.01,
+    gaps = 0.5,
+    harms = 1,
+    bgn = 0.1,
+    path = tempdir(),
+    file.name = "simulated_1",
+    selec.table = TRUE,
+    shape = "cos",
+    fin = 0.3,
+    fout = 0.35,
+    samp.rate = 18
+  )$wave
+```
+
+
+The function call saves a '.wav' sound file in a temporary directory (`tempdir()`) and also returns a `wave` object in the R environment. This outputs will be used to run energy-based detection and creating plots, respectively. This is how the spectrogram and amplitude envelope of the simulated recording look like:
+
+```{r, fig.asp=0.5}
+# plot spectrogram and envelope
+label_spectro(wave = simulated_1,
+              env = TRUE,
+              fastdisp = TRUE)
+
+```
+
+
+Note that the amplitude envelope shows a high signal-to-noise ratio of the sound events, which is ideal for energy-based detection. This can be conducted using `ernergy_detector()` as follows:
+
+```{r, fig.asp=0.5}
+# run detection
+detection <-
+  energy_detector(
+    files = "simulated_1.wav",
+    bp = c(2, 8),
+    threshold = 50,
+    smooth = 150,
+    path = tempdir()
+  )
+
+# plot spectrogram and envelope
+label_spectro(
+  wave = simulated_1,
+  envelope = TRUE,
+  detection = detection,
+  threshold = 50
+)
+```
+
+
+The output is a selection table:
+
+```{r}
+detection
+```
+
+
+Now we will make use of some additional arguments to filter out specific sound events based on their structural features. For instance we can use the argument `minimum.duration` to provide a time treshold (in ms) to exclude short sound events and keep only the longest sound events:
+
+```{r eval = TRUE, echo = TRUE, fig.asp=0.4}
+# run detection
+detection <-
+  energy_detector(
+    files = "simulated_1.wav",
+    bp = c(1, 8),
+    threshold = 50,
+    min.duration = 500,
+    smooth = 150,
+    path = tempdir()
+  )
+
+# plot spectrogram
+label_spectro(wave = simulated_1, detection = detection)
+
+```
+
+
+We can use the argument `max.duration` (also in ms) to exclude long sound events and keep the short ones:
+
+```{r eval = TRUE, echo = TRUE, fig.asp=0.4}
+# run detection
+detection <- energy_detector(files = "simulated_1.wav", bp = c(1, 8),  threshold = 50, smooth = 150, max.duration = 500, path = tempdir())
+
+# plot spectrogram
+label_spectro(wave = simulated_1,  detection = detection)
+```
+
+
+We can also focus the detection on specific frequency ranges using the argument `bp` (bandpass). By setting `bp = c(5, 8)` only those sound events found within that frequency range (5-8 kHz) will be detected, which excludes sound events below 5 kHz:
+
+```{r, fig.asp=0.4, eval = TRUE, echo = TRUE}
+# Detecting 
+detection <- energy_detector(files = "simulated_1.wav", bp = c(5, 8), threshold = 50, smooth = 150, path = tempdir())
+
+# plot spectrogram
+label_spectro(wave = simulated_1,  detection = detection)
+```
+
+
+The same logic can be applied to detect those sound events found below 5 kHz. We just need to set the upper bound of the band pass filter below the range of the higher frequency sound events (for instance `bp = (0, 6)`):
+
+```{r, fig.asp=0.4, eval = TRUE, echo = TRUE}
+# Detect
+detection <-
+  energy_detector(
+    files = "simulated_1.wav",
+    bp = c(0, 6),
+    threshold = 50,
+    min.duration = 1,
+    smooth = 150,
+    path = tempdir()
+  )
+
+# plot spectrogram
+label_spectro(wave = simulated_1,  detection = detection)
+```
+
+
+Amplitude modulation (variation in amplitude across a sound event) can be problematic for detection based on amplitude envelopes. We can also simulate some amplitude modulation using `warbleR::simulate_songs()`:
+
+```{r, eval = TRUE, fig.asp=0.5}
+#Creating simulated song
+set.seed(12)
+
+#Creating vector for duration
+durs <- rep(c(0.3, 1), 5)
+
+sim_2 <-
+  sim_songs(
+    n = 10,
+    durs = durs,
+    freqs = 5,
+    sig2 = 0.01,
+    gaps = 0.5,
+    harms = 1,
+    bgn = 0.1,
+    path = tempdir(),
+    file.name = "simulated_2",
+    selec.table = TRUE,
+    shape = "cos",
+    fin = 0.3,
+    fout = 0.35,
+    samp.rate = 18,
+    am.amps = c(1, 2, 3, 2, 0.1, 2, 3, 3, 2, 1)
+  )
+
+# extract wave object and selection table
+simulated_2 <- sim_2$wave
+sim2_sel_table <- sim_2$selec.table
+
+# plot spectrogram
+label_spectro(wave = simulated_2, envelope = TRUE)
+```
+
+
+When sound events have strong amplitude modulation they can be split during detection:
+
+```{r, eval = TRUE, fig.asp=0.5}
+# detect sounds
+detection <- energy_detector(files = "simulated_2.wav", threshold = 50, path = tempdir())
+
+# plot spectrogram
+label_spectro(wave = simulated_2, envelope = TRUE, threshold = 50, detection = detection)
+```
+
+
+There are two arguments that can deal with this: `holdtime` and `smooth`. `hold.time` allows to merge split sound events that are found within a given time range (in ms). This time range should be high enough to merge things belonging to the same sound event but not too high so it merges different sound events. For this example a `hold.time` of 200 ms can do the trick (we know gaps between sound events are ~0.5 s long):
+
+```{r, eval = TRUE, fig.asp=0.5}
+# detect sounds
+detection <-
+  energy_detector(
+    files = "simulated_2.wav",
+    threshold = 50,
+    min.duration = 1,
+    path = tempdir(),
+    hold.time = 200
+  )
+
+# plot spectrogram
+label_spectro(
+  wave = simulated_2,
+  envelope = TRUE,
+  threshold = 50,
+  detection = detection
+)
+```
+
+
+`smooth` works by merging the amplitude envelope 'hills' of the split sound events themselves. It smooths envelopes by applying a sliding window averaging of amplitude values. It's given in ms of the window size. A `smooth` of 350 ms can merged back split sound events from our example:  
+
+```{r, eval = TRUE, fig.asp=0.5}
+# detect sounds
+detection <-
+  energy_detector(
+    files = "simulated_2.wav",
+    threshold = 50,
+    min.duration = 1,
+    path = tempdir(),
+    smooth = 350
+  )
+
+# plot spectrogram
+label_spectro(
+  wave = simulated_2,
+  envelope = TRUE,
+  threshold = 50,
+  detection = detection,
+  smooth = 350
+)
+```
+
+
+The function has some additional arguments for further filtering detections (`peak.amplitude`) and speeding up analysis (`thinning` and `parallel`).
+
+
+
+# Optimizing energy-based detection
+
+This last example using `smooth` can be used to showcase how the tunning parameters can be optimized. As explained above, to do this we need a reference table that contains the time position of the target sound events. The function `optimize_energy_detector()` can be used finding the optimal parameter values. We must provide the range of parameter values that will be evaluated:
+
+```{r}
+optim_detection <-
+  optimize_energy_detector(
+    reference = sim2_sel_table,
+    files = "simulated_2.wav",
+    threshold = 50,
+    min.duration = 1,
+    path = tempdir(),
+    smooth = c(100, 250, 350)
+  )
+
+optim_detection[, c(1, 2:5, 7:12, 17:18)]
+```
+
+
+The output contains the combination of parameters used at each iteration as well as the corresponding diagnose indices. In this case all combinations generate a good detection (recall & precision = 1). However, only the routine with the highest `smooth` (last row) has no split sound events ('split.positive' column). It also shows a better overlap to the reference sound events ('overlap' closer to 1).
+
+In addition, there are two complementary functions for optimizing energy-based detection routines: `summarize_reference()` and `merge_overlaps()`. `summarize_reference()` allow user to get a sense of the time and frequency characteristics of a reference table. This information can be used to determine the range of tuning parameter values during optimization. This is the output of the function applied to `lbh_reference`:
+
+```{r}
+summarize_reference(reference = lbh_reference, path = tempdir())
+```
+
+
+Features related to selection duration can be used to set the 'max.duration' and 'min.duration' values, frequency related features can inform banpass values, gap related features inform hold time values and duty cycle can be used to evaluate performance. Peak amplitude can be used to keep only those sound events with the highest intensity, mostly useful for routines in which only a subset of the target sound events present in the recordings is needed.
+
+`merge_overlaps()` finds time-overlapping selections in reference tables and collapses them into a single selection. Overlapping selections would more likely appear as a single amplitude 'hill' and thus would be detected as a single sound event. So `merge_overlaps()` can be useful to prepare references in a format representing a more realistic expectation of how a pefect energy detection routine would look like.
+
+---
+
+<div class="alert alert-info">
+
+Please cite [ohun](https://docs.ropensci.org/ohun/) like this:
+
+Araya-Salas, M. (2021), *ohun: diagnosing and optimizing automated sound event detection*. R package version 0.1.0.
+
+</div>
+
+# References
+
+1. Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
+1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal sound events. Methods Ecol Evol 8:184-191.
+1. Knight, E.C., Hannah, K.C., Foley, G.J., Scott, C.D., Brigham, R.M. & Bayne, E. (2017). Recommendations for acoustic recognizer performance assessment with application to five common automated signal recognition programs. Avian Conservation and Ecology,
+1. Macmillan, N. A., & Creelman, C.D. (2004). Detection theory: A user's guide. Psychology press.
+
+---
+
+<font size="4">Session information</font>
+
+```{r session info, echo=FALSE}
+sessionInfo()
+```
+

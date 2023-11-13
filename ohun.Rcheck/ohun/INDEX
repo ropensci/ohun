@@ -1,0 +1,31 @@
+consensus_detection     Remove ambiguous detections
+diagnose_detection      Evaluate the performance of a sound event
+                        detection procedure
+energy_detector         Detects the start and end of sound events
+get_envelopes           Extract absolute amplitude envelopes
+get_templates           Find templates representative of the structural
+                        variation of sound events
+label_detection         Label detections from a sound event detection
+                        procedure
+label_spectro           Plot a labeled spectrogram
+lbh1                    Long-billed hermit recording
+lbh2                    Long-billed hermit recording
+lbh_reference           Example data frame of a selection table
+                        including all sound events of interests.
+merge_overlaps          Merge overlapping selections
+optimize_energy_detector
+                        Optimize energy-based sound event detection
+optimize_template_detector
+                        Optimize acoustic template detection
+plot_detection          Plot detection and reference annotations
+split_acoustic_data     Splits sound files and associated annotations
+summarize_acoustic_data
+                        Summarize information about file format in an
+                        acoustic data set
+summarize_diagnostic    Summarize detection diagnostics
+summarize_reference     Summarize temporal and frequency dimensions of
+                        annotations and gaps
+template_correlator     Acoustic templates correlator using
+                        time-frequency cross-correlation
+template_detector       Acoustic template detection from time-frequency
+                        cross-correlations

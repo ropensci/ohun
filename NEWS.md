@@ -1,11 +1,16 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
-ohun 1.0.0 (developmental)
+ohun 1.0.1
+=========================
+
+Update requested by CRAN.
+
+ohun 1.0.0 
 =========================
 
 ### NEW FEATURES
 
-- Ne function `plot_detection()` to visually inspect detections 
+  * New function `plot_detection()` to visually inspect detections 
 
 ### MINOR IMPROVEMENTS
 

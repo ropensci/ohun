@@ -26,7 +26,7 @@ than those needed to accurately represent amplitude variation in time, which aff
 output (usually very large R objects / files). Default is \code{1} (no thinning). Higher sampling rates can afford higher size reduction (e.g. lower thinning values). Reduction is conducted by interpolation using \code{\link[stats]{approx}}. Note that thinning may decrease time precision, and the higher the thinning the less precise the time detection. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
 
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
-frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transform into a wave object using a reverse Fourier transformation.}
+frequency bandpass filter (in kHz). Default is \code{NULL}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.}
 
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  \code{\link[warbleR]{envelope}} is used internally which is analogous to sum smoothing in code{\link[seewave]{env}}. This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied.}
@@ -100,7 +100,6 @@ detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.
 # diagnose detection
 diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
 
-\dontrun{
 # USIN OTHER SOUND FILE FORMAT (flac program must be installed)
  # fisrt convert files to flac
  warbleR::wav_2_flac(path = tempdir())
@@ -115,7 +114,6 @@ diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostic
 
  # diagnose detection
  diagnose_detection(reference = flac_reference, detection = detec)
- }
 }
 
 }

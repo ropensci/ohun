@@ -3,6 +3,7 @@
 ^.*\.pdf$
 testing
 docs
+tests
 pkgdown
 CITATION\.cff$
 README\.Rmd$
