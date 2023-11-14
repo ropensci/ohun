@@ -1,18 +1,6 @@
 pkgname <- "ohun"
 source(file.path(R.home("share"), "R", "examples-header.R"))
 options(warn = 1)
-base::assign(".ExTimings", "ohun-Ex.timings", pos = 'CheckExEnv')
-base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
-base::assign(".format_ptime",
-function(x) {
-  if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
-  if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
-  options(OutDec = '.')
-  format(x[1L:3L], digits = 7L)
-},
-pos = 'CheckExEnv')
-
-### * </HEADER>
 library('ohun')
 
 base::assign(".oldSearch", base::search(), pos = 'CheckExEnv')
@@ -23,7 +11,6 @@ nameEx("consensus_detection")
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: consensus_detection
 ### Title: Remove ambiguous detections
 ### Aliases: consensus_detection
@@ -74,15 +61,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("consensus_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("diagnose_detection")
 ### * diagnose_detection
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: diagnose_detection
 ### Title: Evaluate the performance of a sound event detection procedure
 ### Aliases: diagnose_detection
@@ -135,88 +119,28 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("diagnose_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("energy_detector")
 ### * energy_detector
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: energy_detector
 ### Title: Detects the start and end of sound events
 ### Aliases: energy_detector
 
 ### ** Examples
 
-## No test: 
-# Save example files into temporary working directory
-data("lbh1", "lbh2", "lbh_reference")
-tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
-
-# using smoothing and minimum duration
-detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
-path = tempdir(), threshold = 6, smooth = 6.8,
-bp = c(2, 9), hop.size = 3, min.duration = 0.05)
-
-# diagnose detection
-diagnose_detection(reference = lbh_reference,
-detection = detec)
-
-# without declaring 'files'
-detec <- energy_detector(path = tempdir(), threshold = 60, smooth = 6.8,
-bp = c(2, 9), hop.size = 6.8, min.duration = 90)
-
-# diagnose detection
-diagnose_detection(reference = lbh_reference,
-detection = detec)
-
-# using hold time
-detec <- energy_detector(threshold = 10, hold.time = 150,
-bp = c(2, 9), hop.size = 6.8, path = tempdir())
-
-# diagnose detection
-diagnose_detection(reference = lbh_reference, detection = detec)
-
-# calculate envelopes first
-envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
-
-# then run detection providing 'envelopes' (but no 'files')
-detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)
-
-# diagnose detection
-diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
-
-# USIN OTHER SOUND FILE FORMAT (flac program must be installed)
- # fisrt convert files to flac
- warbleR::wav_2_flac(path = tempdir())
-
- # change sound file extension to flac
- flac_reference <- lbh_reference
- flac_reference$sound.files <- gsub(".wav", ".flac", flac_reference$sound.files)
-
- # run detection
- detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,
- smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
-
- # diagnose detection
- diagnose_detection(reference = flac_reference, detection = detec)
-## End(No test)
 
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("energy_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("get_envelopes")
 ### * get_envelopes
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: get_envelopes
 ### Title: Extract absolute amplitude envelopes
 ### Aliases: get_envelopes
@@ -260,15 +184,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("get_envelopes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("get_templates")
 ### * get_templates
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: get_templates
 ### Title: Find templates representative of the structural variation of
 ###   sound events
@@ -292,15 +213,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("get_templates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("label_detection")
 ### * label_detection
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: label_detection
 ### Title: Label detections from a sound event detection procedure
 ### Aliases: label_detection
@@ -353,15 +271,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("label_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("label_spectro")
 ### * label_spectro
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: label_spectro
 ### Title: Plot a labeled spectrogram
 ### Aliases: label_spectro
@@ -392,15 +307,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("label_spectro", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("merge_overlaps")
 ### * merge_overlaps
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: merge_overlaps
 ### Title: Merge overlapping selections
 ### Aliases: merge_overlaps
@@ -424,87 +336,28 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("merge_overlaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("optimize_energy_detector")
 ### * optimize_energy_detector
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: optimize_energy_detector
 ### Title: Optimize energy-based sound event detection
 ### Aliases: optimize_energy_detector
 
 ### ** Examples
 
-## No test: 
-# Save example files into temporary working directory
-data("lbh1", "lbh2", "lbh_reference")
-tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
-
-# using smoothing and minimum duration
-optimize_energy_detector(
-  reference = lbh_reference, path = tempdir(),
-  threshold = c(6, 10), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
-  min.duration = 90
-)
-
-# with thinning and smoothing
-optimize_energy_detector(
-  reference = lbh_reference, path = tempdir(),
-  threshold = c(6, 10, 15), smooth = c(7, 10), thinning = c(0.1, 0.01),
-  bp = c(2, 9), hop.size = 6.8, min.duration = 90
-)
-
-# by sound file
-(opt_ed <- optimize_energy_detector(
-  reference = lbh_reference,
-  path = tempdir(), threshold = c(6, 10, 15), smooth = 6.8, bp = c(2, 9),
-  hop.size = 6.8, min.duration = 90, by.sound.file = TRUE
-))
-
-# summarize
-summarize_diagnostic(opt_ed)
-
-# using hold time
-(op_ed <- optimize_energy_detector(
-  reference = lbh_reference,
-  threshold = 10, hold.time = c(100, 150), bp = c(2, 9), hop.size = 6.8,
-  path = tempdir()
-))
-
-# including previous output in new call
-optimize_energy_detector(
-  reference = lbh_reference, threshold = 10,
-  hold.time = c(50, 200), previous.output = op_ed, smooth = 6.8,
-  bp = c(2, 9), hop.size = 7, path = tempdir()
-)
-
-# having and extra file in files (simulating a file that should have no detetions)
-sub_reference <- lbh_reference[lbh_reference$sound.files != "lbh1.wav", ]
-
-optimize_energy_detector(
-  reference = sub_reference, files = unique(lbh_reference$sound.files),
-  threshold = 10, hold.time = c(1, 150), bp = c(2, 9), smooth = 6.8,
-  hop.size = 7, path = tempdir()
-)
-## End(No test)
 
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("optimize_energy_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("optimize_template_detector")
 ### * optimize_template_detector
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: optimize_template_detector
 ### Title: Optimize acoustic template detection
 ### Aliases: optimize_template_detector
@@ -553,15 +406,12 @@ optimize_template_detector(template.correlations = tc, reference =
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("optimize_template_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("plot_detection")
 ### * plot_detection
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: plot_detection
 ### Title: Plot detection and reference annotations
 ### Aliases: plot_detection
@@ -607,15 +457,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("plot_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("split_acoustic_data")
 ### * split_acoustic_data
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: split_acoustic_data
 ### Title: Splits sound files and associated annotations
 ### Aliases: split_acoustic_data
@@ -638,15 +485,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("split_acoustic_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("summarize_acoustic_data")
 ### * summarize_acoustic_data
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: summarize_acoustic_data
 ### Title: Summarize information about file format in an acoustic data set
 ### Aliases: summarize_acoustic_data
@@ -665,15 +509,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("summarize_acoustic_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("summarize_diagnostic")
 ### * summarize_diagnostic
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: summarize_diagnostic
 ### Title: Summarize detection diagnostics
 ### Aliases: summarize_diagnostic
@@ -703,15 +544,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("summarize_diagnostic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("summarize_reference")
 ### * summarize_reference
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: summarize_reference
 ### Title: Summarize temporal and frequency dimensions of annotations and
 ###   gaps
@@ -734,15 +572,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("summarize_reference", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("template_correlator")
 ### * template_correlator
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: template_correlator
 ### Title: Acoustic templates correlator using time-frequency
 ###   cross-correlation
@@ -811,15 +646,12 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("template_correlator", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 cleanEx()
 nameEx("template_detector")
 ### * template_detector
 
 flush(stderr()); flush(stdout())
 
-base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 ### Name: template_detector
 ### Title: Acoustic template detection from time-frequency
 ###   cross-correlations
@@ -870,8 +702,6 @@ base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 
 
 
-base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-base::cat("template_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 ### * <FOOTER>
 ###
 cleanEx()

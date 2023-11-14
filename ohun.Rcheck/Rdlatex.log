@@ -1,816 +1,783 @@
 Hmm ... looks like a package
-Converting parsed Rd's to LaTeX ..
-Creating pdf output from LaTeX ...
-
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex)
+Warning in texi2dvi(file = file, pdf = TRUE, clean = clean, quiet = quiet,  :
+  texi2dvi script/program not available, using emulation
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
  restricted \write18 enabled.
 entering extended mode
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05>
 (./Rd2.tex
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/book.cls
-Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/usr/share/R/share/texmf/tex/latex/Rd.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/home/m/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/m/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/makeidx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty)
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
 Writing index file Rd2.idx
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
 No file Rd2.aux.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd)
-No file Rd2.toc.
-[1{/home/m/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}]
-Overfull \hbox (4.73999pt too wide) in paragraph at lines 53--53
- []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE) 
+(/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) [1{/var/lib/texmf/fon
+ts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (4.73999pt too wide) in paragraph at lines 51--51
+ []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max"
+, cores = 1, pb = TRUE) 
 
-Overfull \hbox (39.27725pt too wide) in paragraph at lines 59--60
-[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age's for-mat, see [][][]\T1/zi4/m/n/10 selection_table[][][][]\T1/ptm/m/n/10 )
-[2] (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+Overfull \hbox (39.27725pt too wide) in paragraph at lines 57--58
+[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age
+'s for-mat, see [][]\T1/zi4/m/n/10 selection_table[][][]\T1/ptm/m/n/10 )
+[2] (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 173--174
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[4] (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6]
-Overfull \hbox (16.39984pt too wide) in paragraph at lines 277--277
- []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL, 
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 171--172
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[4] (/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6]
+Overfull \hbox (16.39984pt too wide) in paragraph at lines 275--275
+ []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", h
+op.size = 11.6, wl = NULL, 
 
-Overfull \hbox (1.2381pt too wide) in paragraph at lines 285--286
-\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-ported file for-mats:'.wav',
+Overfull \hbox (1.2381pt too wide) in paragraph at lines 283--284
+\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-port
+ed file for-mats:'.wav',
 [7] [8]
-Overfull \hbox (4.05801pt too wide) in paragraph at lines 313--316
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thresh-old. If 'hold.time'
+Overfull \hbox (4.05801pt too wide) in paragraph at lines 311--314
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thr
+esh-old. If 'hold.time'
 
-Overfull \hbox (3.44829pt too wide) in paragraph at lines 317--320
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thresh-old. If 'hold.time'
+Overfull \hbox (3.44829pt too wide) in paragraph at lines 315--318
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thre
+sh-old. If 'hold.time'
 [9]
-Overfull \hbox (8.24101pt too wide) in paragraph at lines 387--387
- []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)[] 
+Overfull \hbox (8.24101pt too wide) in paragraph at lines 385--385
+ []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hol
+d.time = 150, min.duration = 50)[] 
 
-Overfull \hbox (18.74408pt too wide) in paragraph at lines 401--401
- [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,[] 
+Overfull \hbox (18.74408pt too wide) in paragraph at lines 399--399
+ [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"),
+ path = tempdir(), threshold = 60,[] 
 
-Underfull \vbox (badness 3803) has occurred while \output is active [10] [11] [12] [13] [14] [15] [16]
-Overfull \hbox (21.95842pt too wide) in paragraph at lines 691--692
-\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the ref-er-ence sound. See [][][]\T1/zi4/m/n/10 diagnose_detection[][][]
-[17] [18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (19.72977pt too wide) in paragraph at lines 1056--1056
- [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,[] 
+Underfull \vbox (badness 3803) has occurred while \output is active [10]
+[11] [12] [13] [14] [15]
+Overfull \hbox (21.95842pt too wide) in paragraph at lines 626--627
+\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the
+ ref-er-ence sound. See [][]\T1/zi4/m/n/10 diagnose_detection[][][]
+[16] [17] [18] [19] [20] [21]
+Overfull \hbox (19.72977pt too wide) in paragraph at lines 937--937
+ [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.outpu
+t = NULL, envelopes = NULL,[] 
+[22]
+Overfull \hbox (3.00865pt too wide) in paragraph at lines 953--954
+\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][]\
+T1/zi4/m/n/10 sound_pressure_level[][][]\T1/ptm/m/n/10 ).
+[23]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 994--995
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[24] [25]
+Underfull \vbox (badness 3803) has occurred while \output is active [26]
+Overfull \hbox (3.4384pt too wide) in paragraph at lines 1111--1112
+[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [
+][]\T1/zi4/m/n/10 template_correlator[][][]\T1/ptm/m/n/10 )
 
-Overfull \hbox (3.00865pt too wide) in paragraph at lines 1072--1073
-\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][][]\T1/zi4/m/n/10 sound_pressure_level[][][][]\T1/ptm/m/n/10 ).
-[25] [26]
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1113--1114
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[27] [28] [29]
-Overfull \hbox (3.4384pt too wide) in paragraph at lines 1230--1231
-[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 )
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1245--1246
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-
-Overfull \hbox (41.40701pt too wide) in paragraph at lines 1252--1253
-[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tion_table' ('X') and the out-put of [][][]\T1/zi4/m/n/10 template_correlator[][][]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1126--1127
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[27]
+Overfull \hbox (41.40701pt too wide) in paragraph at lines 1133--1134
+[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tio
+n_table' ('X') and the out-put of [][]\T1/zi4/m/n/10 template_correlator[][][]
+[28] [29]
+Overfull \hbox (21.41006pt too wide) in paragraph at lines 1218--1218
+ []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size 
+= 20, positions = c(1, 2)) 
 [30] [31]
-Overfull \hbox (21.41006pt too wide) in paragraph at lines 1337--1337
- []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2)) 
-[32] [33] [34]
-Overfull \hbox (1.86978pt too wide) in paragraph at lines 1469--1470
-[]\T1/ptm/m/n/10 Object of class []\T1/zi4/m/n/10 template_correlations[]\T1/ptm/m/n/10 , gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 . 
-[35]
-Overfull \hbox (22.01743pt too wide) in paragraph at lines 1511--1514
-[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sound file name (sound.files),
+Overfull \hbox (22.01743pt too wide) in paragraph at lines 1331--1334
+[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sou
+nd file name (sound.files),
 
-Overfull \hbox (17.17825pt too wide) in paragraph at lines 1522--1523
-[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if []\T1/zi4/m/n/10 only.sels = FALSE[]\T1/ptm/m/n/10 , named as 'sound.file.name-
-[36] [37]
-Overfull \hbox (34.85762pt too wide) in paragraph at lines 1627--1628
-[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion func-tion ([][][]\T1/zi4/m/n/10 diagnose_detection[][][][]\T1/ptm/m/n/10 ,
-[38]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+Overfull \hbox (17.17825pt too wide) in paragraph at lines 1342--1343
+[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if \
+T1/zi4/m/n/10 only.sels = FALSE\T1/ptm/m/n/10 , named as 'sound.file.name-
+[32] [33]
+Overfull \hbox (34.85762pt too wide) in paragraph at lines 1447--1448
+[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion
+ func-tion ([][]\T1/zi4/m/n/10 diagnose_detection[][][]\T1/ptm/m/n/10 ,
+[34]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1631--1632
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[39] [40] [41] [42] [43] [44]
-Overfull \hbox (0.74408pt too wide) in paragraph at lines 1865--1865
- []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))[] 
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ts1cmtt.fd)
-Overfull \hbox (5.24408pt too wide) in paragraph at lines 1896--1896
- []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")[] 
-[45]
-Overfull \hbox (33.48878pt too wide) in paragraph at lines 1910--1911
-[]\T1/zi4/m/n/10 template_detector []\T1/ptm/m/n/10 find sound event oc-cur-rences in cross-correlation vec-tors from [][][]\T1/zi4/m/n/10 template_correlator[][][] 
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1451--1452
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[35] [36] [37] [38] [39] [40]
+Overfull \hbox (0.74408pt too wide) in paragraph at lines 1685--1685
+ []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = temp
+dir(), type = "mel-auditory"))[] 
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
+Overfull \hbox (5.24408pt too wide) in paragraph at lines 1716--1716
+ []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path
+ = tempdir(), type = "fourier")[] 
+[41]
+Overfull \hbox (33.48878pt too wide) in paragraph at lines 1730--1731
+[]\T1/zi4/m/n/10 template_detector \T1/ptm/m/n/10 find sound event oc-cur-rence
+s in cross-correlation vec-tors from [][]\T1/zi4/m/n/10 template_correlator[][]
+[] 
 
-Overfull \hbox (2.32841pt too wide) in paragraph at lines 1922--1923
-[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][] []\T1/ptm/m/n/10 con-
-[46]
+Overfull \hbox (2.32841pt too wide) in paragraph at lines 1742--1743
+[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][]\T
+1/zi4/m/n/10 template_correlator[][][] \T1/ptm/m/n/10 con-
+[42]
 No file Rd2.ind.
-[47] (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux)
+[43] (./Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
 (rerunfilecheck)                or use package `bookmark'.
 
  )
-(see the transcript file for additional information)
-pdfTeX warning (dest): name{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by a fixed one
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by
+ a fixed one
 
+pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist,
+ replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, re
+placed by a fixed one
 
+pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exis
+t, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not 
+exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist
+, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist,
+ replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but d
+oes not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenc
+ed but does not exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, re
+placed by a fixed one
 
-pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exis
+t, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist
+, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but do
+es not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but does not exist, replaced by a fixed one
-
- </home/m/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></home/m/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (47 pages, 185598 bytes).
+ </home/marce/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk
+>{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/u
+rw/times/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (43 pages, 178657 bytes).
 Transcript written on Rd2.log.
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex)
- restricted \write18 enabled.
-entering extended mode
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05>
-(./Rd2.tex
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/book.cls
-Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/usr/share/R/share/texmf/tex/latex/Rd.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/home/m/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/m/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/makeidx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty)
-Writing index file Rd2.idx
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.toc [1{/home/m/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
-Overfull \hbox (4.73999pt too wide) in paragraph at lines 53--53
- []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE) 
-
-Overfull \hbox (39.27725pt too wide) in paragraph at lines 59--60
-[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age's for-mat, see [][][]\T1/zi4/m/n/10 selection_table[][][][]\T1/ptm/m/n/10 )
-[2] (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}] [4]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
-
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 173--174
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6] [7]
-Overfull \hbox (16.39984pt too wide) in paragraph at lines 277--277
- []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL, 
-
-Overfull \hbox (1.2381pt too wide) in paragraph at lines 285--286
-\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-ported file for-mats:'.wav',
-[8]
-Overfull \hbox (4.05801pt too wide) in paragraph at lines 313--316
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thresh-old. If 'hold.time'
-
-Overfull \hbox (3.44829pt too wide) in paragraph at lines 317--320
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thresh-old. If 'hold.time'
-[9] [10]
-Overfull \hbox (8.24101pt too wide) in paragraph at lines 387--387
- []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)[] 
-
-Overfull \hbox (18.74408pt too wide) in paragraph at lines 401--401
- [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,[] 
-[11] [12] [13] [14] [15] [16] [17]
-Overfull \hbox (21.95842pt too wide) in paragraph at lines 691--692
-\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the ref-er-ence sound. See [][][]\T1/zi4/m/n/10 diagnose_detection[][][]
-[18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (19.72977pt too wide) in paragraph at lines 1056--1056
- [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,[] 
-[25]
-Overfull \hbox (3.00865pt too wide) in paragraph at lines 1072--1073
-\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][][]\T1/zi4/m/n/10 sound_pressure_level[][][][]\T1/ptm/m/n/10 ).
-[26]
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1113--1114
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[27] [28]
-Underfull \vbox (badness 3803) has occurred while \output is active [29]
-Overfull \hbox (3.4384pt too wide) in paragraph at lines 1230--1231
-[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 )
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1245--1246
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[30]
-Overfull \hbox (41.40701pt too wide) in paragraph at lines 1252--1253
-[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tion_table' ('X') and the out-put of [][][]\T1/zi4/m/n/10 template_correlator[][][]
-[31] [32]
-Overfull \hbox (21.41006pt too wide) in paragraph at lines 1337--1337
- []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2)) 
-[33] [34]
-Overfull \hbox (1.86978pt too wide) in paragraph at lines 1469--1470
-[]\T1/ptm/m/n/10 Object of class []\T1/zi4/m/n/10 template_correlations[]\T1/ptm/m/n/10 , gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 . 
-[35]
-Overfull \hbox (22.01743pt too wide) in paragraph at lines 1511--1514
-[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sound file name (sound.files),
-[36]
-Overfull \hbox (17.17825pt too wide) in paragraph at lines 1522--1523
-[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if []\T1/zi4/m/n/10 only.sels = FALSE[]\T1/ptm/m/n/10 , named as 'sound.file.name-
-[37] [38]
-Overfull \hbox (34.85762pt too wide) in paragraph at lines 1627--1628
-[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion func-tion ([][][]\T1/zi4/m/n/10 diagnose_detection[][][][]\T1/ptm/m/n/10 ,
-
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
-
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1631--1632
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[39] [40] [41] [42] [43] [44]
-Overfull \hbox (0.74408pt too wide) in paragraph at lines 1865--1865
- []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))[] 
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ts1cmtt.fd) [45]
-Overfull \hbox (5.24408pt too wide) in paragraph at lines 1896--1896
- []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")[] 
-
-Overfull \hbox (33.48878pt too wide) in paragraph at lines 1910--1911
-[]\T1/zi4/m/n/10 template_detector []\T1/ptm/m/n/10 find sound event oc-cur-rences in cross-correlation vec-tors from [][][]\T1/zi4/m/n/10 template_correlator[][][] 
-
-Overfull \hbox (2.32841pt too wide) in paragraph at lines 1922--1923
-[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][] []\T1/ptm/m/n/10 con-
-[46] [47]
-No file Rd2.ind.
-[48] (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux) )
-(see the transcript file for additional information)
-pdfTeX warning (dest): name{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but does not exist, replaced by a fixed one
-
- </home/m/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></home/m/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (48 pages, 189405 bytes).
-Transcript written on Rd2.log.
-This is makeindex, version 2.15 [TeX Live 2019] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (160 entries accepted, 0 rejected).
-Sorting entries....done (1249 comparisons).
-Generating output file Rd2.ind....done (152 lines written, 4 warnings).
+This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (131 entries accepted, 0 rejected).
+Sorting entries....done (1002 comparisons).
+Generating output file Rd2.ind....done (131 lines written, 1 warning).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex)
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
  restricted \write18 enabled.
 entering extended mode
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05>
 (./Rd2.tex
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/book.cls
-Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/usr/share/R/share/texmf/tex/latex/Rd.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/home/m/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/m/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/makeidx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty)
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
 Writing index file Rd2.idx
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.toc [1{/home/m/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
-Overfull \hbox (4.73999pt too wide) in paragraph at lines 53--53
- []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE) 
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./Rd2.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(./Rd2.out) (./Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
+b/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+Overfull \hbox (4.73999pt too wide) in paragraph at lines 51--51
+ []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max"
+, cores = 1, pb = TRUE) 
 
-Overfull \hbox (39.27725pt too wide) in paragraph at lines 59--60
-[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age's for-mat, see [][][]\T1/zi4/m/n/10 selection_table[][][][]\T1/ptm/m/n/10 )
-[2] (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}] [4]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+Overfull \hbox (39.27725pt too wide) in paragraph at lines 57--58
+[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age
+'s for-mat, see [][]\T1/zi4/m/n/10 selection_table[][][]\T1/ptm/m/n/10 )
+[2] (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 173--174
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6] [7]
-Overfull \hbox (16.39984pt too wide) in paragraph at lines 277--277
- []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL, 
-
-Overfull \hbox (1.2381pt too wide) in paragraph at lines 285--286
-\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-ported file for-mats:'.wav',
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
+[4]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 171--172
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6]
+Overfull \hbox (16.39984pt too wide) in paragraph at lines 275--275
+ []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", h
+op.size = 11.6, wl = NULL, 
+[7]
+Overfull \hbox (1.2381pt too wide) in paragraph at lines 283--284
+\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-port
+ed file for-mats:'.wav',
 [8]
-Overfull \hbox (4.05801pt too wide) in paragraph at lines 313--316
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thresh-old. If 'hold.time'
+Overfull \hbox (4.05801pt too wide) in paragraph at lines 311--314
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thr
+esh-old. If 'hold.time'
 
-Overfull \hbox (3.44829pt too wide) in paragraph at lines 317--320
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thresh-old. If 'hold.time'
-[9] [10]
-Overfull \hbox (8.24101pt too wide) in paragraph at lines 387--387
- []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)[] 
+Overfull \hbox (3.44829pt too wide) in paragraph at lines 315--318
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thre
+sh-old. If 'hold.time'
+[9]
+Overfull \hbox (8.24101pt too wide) in paragraph at lines 385--385
+ []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hol
+d.time = 150, min.duration = 50)[] 
+[10]
+Overfull \hbox (18.74408pt too wide) in paragraph at lines 399--399
+ [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"),
+ path = tempdir(), threshold = 60,[] 
+[11] [12] [13] [14] [15]
+Overfull \hbox (21.95842pt too wide) in paragraph at lines 626--627
+\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the
+ ref-er-ence sound. See [][]\T1/zi4/m/n/10 diagnose_detection[][][]
+[16] [17] [18] [19] [20] [21]
+Overfull \hbox (19.72977pt too wide) in paragraph at lines 937--937
+ [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.outpu
+t = NULL, envelopes = NULL,[] 
+[22]
+Overfull \hbox (3.00865pt too wide) in paragraph at lines 953--954
+\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][]\
+T1/zi4/m/n/10 sound_pressure_level[][][]\T1/ptm/m/n/10 ).
+[23]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 994--995
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[24] [25]
+Underfull \vbox (badness 3803) has occurred while \output is active [26]
+Overfull \hbox (3.4384pt too wide) in paragraph at lines 1111--1112
+[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [
+][]\T1/zi4/m/n/10 template_correlator[][][]\T1/ptm/m/n/10 )
 
-Overfull \hbox (18.74408pt too wide) in paragraph at lines 401--401
- [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,[] 
-[11] [12] [13] [14] [15] [16] [17]
-Overfull \hbox (21.95842pt too wide) in paragraph at lines 691--692
-\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the ref-er-ence sound. See [][][]\T1/zi4/m/n/10 diagnose_detection[][][]
-[18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (19.72977pt too wide) in paragraph at lines 1056--1056
- [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,[] 
-[25]
-Overfull \hbox (3.00865pt too wide) in paragraph at lines 1072--1073
-\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][][]\T1/zi4/m/n/10 sound_pressure_level[][][][]\T1/ptm/m/n/10 ).
-[26]
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1113--1114
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[27] [28]
-Underfull \vbox (badness 3803) has occurred while \output is active [29]
-Overfull \hbox (3.4384pt too wide) in paragraph at lines 1230--1231
-[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 )
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1126--1127
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[27]
+Overfull \hbox (41.40701pt too wide) in paragraph at lines 1133--1134
+[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tio
+n_table' ('X') and the out-put of [][]\T1/zi4/m/n/10 template_correlator[][][]
+[28] [29]
+Overfull \hbox (21.41006pt too wide) in paragraph at lines 1218--1218
+ []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size 
+= 20, positions = c(1, 2)) 
+[30] [31]
+Overfull \hbox (22.01743pt too wide) in paragraph at lines 1331--1334
+[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sou
+nd file name (sound.files),
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1245--1246
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[30]
-Overfull \hbox (41.40701pt too wide) in paragraph at lines 1252--1253
-[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tion_table' ('X') and the out-put of [][][]\T1/zi4/m/n/10 template_correlator[][][]
-[31] [32]
-Overfull \hbox (21.41006pt too wide) in paragraph at lines 1337--1337
- []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2)) 
-[33] [34]
-Overfull \hbox (1.86978pt too wide) in paragraph at lines 1469--1470
-[]\T1/ptm/m/n/10 Object of class []\T1/zi4/m/n/10 template_correlations[]\T1/ptm/m/n/10 , gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 . 
-[35]
-Overfull \hbox (22.01743pt too wide) in paragraph at lines 1511--1514
-[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sound file name (sound.files),
-[36]
-Overfull \hbox (17.17825pt too wide) in paragraph at lines 1522--1523
-[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if []\T1/zi4/m/n/10 only.sels = FALSE[]\T1/ptm/m/n/10 , named as 'sound.file.name-
-[37] [38]
-Overfull \hbox (34.85762pt too wide) in paragraph at lines 1627--1628
-[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion func-tion ([][][]\T1/zi4/m/n/10 diagnose_detection[][][][]\T1/ptm/m/n/10 ,
+Overfull \hbox (17.17825pt too wide) in paragraph at lines 1342--1343
+[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if \
+T1/zi4/m/n/10 only.sels = FALSE\T1/ptm/m/n/10 , named as 'sound.file.name-
+[32] [33]
+Overfull \hbox (34.85762pt too wide) in paragraph at lines 1447--1448
+[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion
+ func-tion ([][]\T1/zi4/m/n/10 diagnose_detection[][][]\T1/ptm/m/n/10 ,
+[34]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
 
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1451--1452
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[35] [36] [37] [38] [39] [40]
+Overfull \hbox (0.74408pt too wide) in paragraph at lines 1685--1685
+ []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = temp
+dir(), type = "mel-auditory"))[] 
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
+Overfull \hbox (5.24408pt too wide) in paragraph at lines 1716--1716
+ []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path
+ = tempdir(), type = "fourier")[] 
+[41]
+Overfull \hbox (33.48878pt too wide) in paragraph at lines 1730--1731
+[]\T1/zi4/m/n/10 template_detector \T1/ptm/m/n/10 find sound event oc-cur-rence
+s in cross-correlation vec-tors from [][]\T1/zi4/m/n/10 template_correlator[][]
+[] 
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1631--1632
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[39] [40] [41] [42] [43] [44]
-Overfull \hbox (0.74408pt too wide) in paragraph at lines 1865--1865
- []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))[] 
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ts1cmtt.fd) [45]
-Overfull \hbox (5.24408pt too wide) in paragraph at lines 1896--1896
- []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")[] 
-
-Overfull \hbox (33.48878pt too wide) in paragraph at lines 1910--1911
-[]\T1/zi4/m/n/10 template_detector []\T1/ptm/m/n/10 find sound event oc-cur-rences in cross-correlation vec-tors from [][][]\T1/zi4/m/n/10 template_correlator[][][] 
-
-Overfull \hbox (2.32841pt too wide) in paragraph at lines 1922--1923
-[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][] []\T1/ptm/m/n/10 con-
-[46] [47] (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.ind [48]
-
-LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 93.
-
-[49]) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
+Overfull \hbox (2.32841pt too wide) in paragraph at lines 1742--1743
+[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][]\T
+1/zi4/m/n/10 template_correlator[][][] \T1/ptm/m/n/10 con-
+[42] (./Rd2.ind [43] [44]) (./Rd2.aux)
 
 Package rerunfilecheck Warning: File `Rd2.out' has changed.
 (rerunfilecheck)                Rerun to get outlines right
 (rerunfilecheck)                or use package `bookmark'.
 
  )
-(see the transcript file for additional information)
-pdfTeX warning (dest): name{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by a fixed one
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by
+ a fixed one
 
+pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist,
+ replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, re
+placed by a fixed one
 
+pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exis
+t, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not 
+exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist
+, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist,
+ replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but d
+oes not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenc
+ed but does not exist, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, re
+placed by a fixed one
 
-pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exis
+t, replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist
+, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist, replaced by a fixed one
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
 
+pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but do
+es not exist, replaced by a fixed one
 
-pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but does not exist, replaced by a fixed one
-
- </home/m/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></home/m/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (49 pages, 204578 bytes).
+ </home/marce/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk
+>{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (44 pages, 195315 bytes).
 Transcript written on Rd2.log.
-This is makeindex, version 2.15 [TeX Live 2019] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (160 entries accepted, 0 rejected).
-Sorting entries....done (1249 comparisons).
-Generating output file Rd2.ind....done (152 lines written, 4 warnings).
+This is makeindex, version 2.15 [TeX Live 2022/dev] (kpathsea + Thai support).
+Scanning input file Rd2.idx....done (131 entries accepted, 0 rejected).
+Sorting entries....done (991 comparisons).
+Generating output file Rd2.ind....done (131 lines written, 1 warning).
 Output written in Rd2.ind.
 Transcript written in Rd2.ilg.
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex)
+This is pdfTeX, Version 3.141592653-2.6-1.40.22 (TeX Live 2022/dev/Debian) (preloaded format=pdflatex)
  restricted \write18 enabled.
 entering extended mode
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05>
 (./Rd2.tex
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/book.cls
-Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/usr/share/R/share/texmf/tex/latex/Rd.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/home/m/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/m/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/makeidx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty)
+LaTeX2e <2021-11-15> patch level 1
+L3 programming layer <2022-01-21>
+(/usr/share/texlive/texmf-dist/tex/latex/base/book.cls
+Document Class: book 2021/10/04 v1.4n Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/bk10.clo))
+(/usr/share/R/share/texmf/tex/latex/Rd.sty
+(/usr/share/texlive/texmf-dist/tex/latex/base/ifthen.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/bm.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/alltt.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/verbatim.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/textcomp.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/times.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/zi4.sty
+`inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe)
+(/usr/share/texlive/texmf-dist/tex/latex/xkeyval/xkeyval.sty
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkeyval.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/xkvutils.tex
+(/usr/share/texlive/texmf-dist/tex/generic/xkeyval/keyval.tex)))))
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/color.sty
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-cfg/color.cfg)
+(/usr/share/texlive/texmf-dist/tex/latex/graphics-def/pdftex.def))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+(/usr/share/texlive/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/iftex/iftex.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
+(/usr/share/texlive/texmf-dist/tex/generic/infwarerr/infwarerr.sty))
+(/usr/share/texlive/texmf-dist/tex/generic/kvsetkeys/kvsetkeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/pdfescape/pdfescape.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hycolor/hycolor.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/auxhook/auxhook.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/kvoptions/kvoptions.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref-langpatches.def)
+(/usr/share/texlive/texmf-dist/tex/generic/intcalc/intcalc.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/etexcmds/etexcmds.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/puenc.def)
+(/usr/share/texlive/texmf-dist/tex/generic/bitset/bitset.sty
+(/usr/share/texlive/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/base/atbegshi-ltx.sty))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+(/usr/share/texlive/texmf-dist/tex/latex/base/atveryend-ltx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty
+(/usr/share/texlive/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))
+
+Package hyperref Warning: Option `hyperindex' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+
+Package hyperref Warning: Option `pagebackref' has already been used,
+(hyperref)                setting the option has no effect on input line 377.
+
+) (/usr/share/texlive/texmf-dist/tex/latex/base/makeidx.sty)
+(/usr/share/texlive/texmf-dist/tex/latex/base/inputenc.sty)
 Writing index file Rd2.idx
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.toc [1{/home/m/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
-Overfull \hbox (4.73999pt too wide) in paragraph at lines 53--53
- []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE) 
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1ptm.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def)
+(./Rd2.aux) (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+) (/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+(/usr/share/texlive/texmf-dist/tex/latex/refcount/refcount.sty)
+(/usr/share/texlive/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty))
+(./Rd2.out) (./Rd2.out)
+(/usr/share/texlive/texmf-dist/tex/latex/inconsolata/t1zi4.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/t1phv.fd) (./Rd2.toc [1{/var/li
+b/texmf/fonts/map/pdftex/updmap/pdftex.map}])
+Overfull \hbox (4.73999pt too wide) in paragraph at lines 51--51
+ []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max"
+, cores = 1, pb = TRUE) 
 
-Overfull \hbox (39.27725pt too wide) in paragraph at lines 59--60
-[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age's for-mat, see [][][]\T1/zi4/m/n/10 selection_table[][][][]\T1/ptm/m/n/10 )
-[2] (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}] [4]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+Overfull \hbox (39.27725pt too wide) in paragraph at lines 57--58
+[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age
+'s for-mat, see [][]\T1/zi4/m/n/10 selection_table[][][]\T1/ptm/m/n/10 )
+[2] (/usr/share/texlive/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 173--174
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[5] (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [6] [7]
-Overfull \hbox (16.39984pt too wide) in paragraph at lines 277--277
- []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL, 
-
-Overfull \hbox (1.2381pt too wide) in paragraph at lines 285--286
-\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-ported file for-mats:'.wav',
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 160--161
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
+[4]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 171--172
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [5] [6]
+Overfull \hbox (16.39984pt too wide) in paragraph at lines 275--275
+ []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", h
+op.size = 11.6, wl = NULL, 
+[7]
+Overfull \hbox (1.2381pt too wide) in paragraph at lines 283--284
+\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-port
+ed file for-mats:'.wav',
 [8]
-Overfull \hbox (4.05801pt too wide) in paragraph at lines 313--316
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thresh-old. If 'hold.time'
+Overfull \hbox (4.05801pt too wide) in paragraph at lines 311--314
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thr
+esh-old. If 'hold.time'
+
+Overfull \hbox (3.44829pt too wide) in paragraph at lines 315--318
+\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thre
+sh-old. If 'hold.time'
+[9]
+Overfull \hbox (8.24101pt too wide) in paragraph at lines 385--385
+ []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hol
+d.time = 150, min.duration = 50)[] 
+[10]
+Overfull \hbox (18.74408pt too wide) in paragraph at lines 399--399
+ [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"),
+ path = tempdir(), threshold = 60,[] 
+[11] [12] [13] [14] [15]
+Overfull \hbox (21.95842pt too wide) in paragraph at lines 626--627
+\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the
+ ref-er-ence sound. See [][]\T1/zi4/m/n/10 diagnose_detection[][][]
+[16] [17] [18] [19] [20] [21]
+Overfull \hbox (19.72977pt too wide) in paragraph at lines 937--937
+ [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.outpu
+t = NULL, envelopes = NULL,[] 
+[22]
+Overfull \hbox (3.00865pt too wide) in paragraph at lines 953--954
+\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][]\
+T1/zi4/m/n/10 sound_pressure_level[][][]\T1/ptm/m/n/10 ).
+[23]
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 994--995
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[24] [25]
+Underfull \vbox (badness 3803) has occurred while \output is active [26]
+Overfull \hbox (3.4384pt too wide) in paragraph at lines 1111--1112
+[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [
+][]\T1/zi4/m/n/10 template_correlator[][][]\T1/ptm/m/n/10 )
+
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1126--1127
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[27]
+Overfull \hbox (41.40701pt too wide) in paragraph at lines 1133--1134
+[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tio
+n_table' ('X') and the out-put of [][]\T1/zi4/m/n/10 template_correlator[][][]
+[28] [29]
+Overfull \hbox (21.41006pt too wide) in paragraph at lines 1218--1218
+ []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size 
+= 20, positions = c(1, 2)) 
+[30] [31]
+Overfull \hbox (22.01743pt too wide) in paragraph at lines 1331--1334
+[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sou
+nd file name (sound.files),
+
+Overfull \hbox (17.17825pt too wide) in paragraph at lines 1342--1343
+[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if \
+T1/zi4/m/n/10 only.sels = FALSE\T1/ptm/m/n/10 , named as 'sound.file.name-
+[32] [33]
+Overfull \hbox (34.85762pt too wide) in paragraph at lines 1447--1448
+[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion
+ func-tion ([][]\T1/zi4/m/n/10 diagnose_detection[][][]\T1/ptm/m/n/10 ,
+[34]
+Overfull \hbox (94.01657pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.pos
+itives", "mean.duration.false.negatives"
+
+Overfull \hbox (9.01805pt too wide) in paragraph at lines 1449--1450
+\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if 
+\T1/zi4/m/n/10 TRUE\T1/ptm/m/n/10 ). De-fault is \T1/zi4/m/n/10 FALSE\T1/ptm/m/
+n/10 . 
+
+Overfull \hbox (44.88693pt too wide) in paragraph at lines 1451--1452
+\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, me
+an.duration.false.negatives,
+[35] [36] [37] [38] [39] [40]
+Overfull \hbox (0.74408pt too wide) in paragraph at lines 1685--1685
+ []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = temp
+dir(), type = "mel-auditory"))[] 
+(/usr/share/texlive/texmf-dist/tex/latex/base/t1cmtt.fd)
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmtt.fd)
+Overfull \hbox (5.24408pt too wide) in paragraph at lines 1716--1716
+ []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path
+ = tempdir(), type = "fourier")[] 
+[41]
+Overfull \hbox (33.48878pt too wide) in paragraph at lines 1730--1731
+[]\T1/zi4/m/n/10 template_detector \T1/ptm/m/n/10 find sound event oc-cur-rence
+s in cross-correlation vec-tors from [][]\T1/zi4/m/n/10 template_correlator[][]
+[] 
+
+Overfull \hbox (2.32841pt too wide) in paragraph at lines 1742--1743
+[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][]\T
+1/zi4/m/n/10 template_correlator[][][] \T1/ptm/m/n/10 con-
+[42] (./Rd2.ind [43] [44]) (./Rd2.aux) )
+(see the transcript file for additional information)pdfTeX warning (dest): name
+{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by
+ a fixed one
+
+pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist,
+ replaced by a fixed one
+
+pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, re
+placed by a fixed one
 
-Overfull \hbox (3.44829pt too wide) in paragraph at lines 317--320
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thresh-old. If 'hold.time'
-[9] [10]
-Overfull \hbox (8.24101pt too wide) in paragraph at lines 387--387
- []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)[] 
+pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exis
+t, replaced by a fixed one
 
-Overfull \hbox (18.74408pt too wide) in paragraph at lines 401--401
- [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,[] 
-[11] [12] [13] [14] [15] [16] [17]
-Overfull \hbox (21.95842pt too wide) in paragraph at lines 691--692
-\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the ref-er-ence sound. See [][][]\T1/zi4/m/n/10 diagnose_detection[][][]
-[18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (19.72977pt too wide) in paragraph at lines 1056--1056
- [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,[] 
-[25]
-Overfull \hbox (3.00865pt too wide) in paragraph at lines 1072--1073
-\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][][]\T1/zi4/m/n/10 sound_pressure_level[][][][]\T1/ptm/m/n/10 ).
-[26]
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1113--1114
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[27] [28]
-Underfull \vbox (badness 3803) has occurred while \output is active [29]
-Overfull \hbox (3.4384pt too wide) in paragraph at lines 1230--1231
-[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 )
+pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not 
+exist, replaced by a fixed one
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1245--1246
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[30]
-Overfull \hbox (41.40701pt too wide) in paragraph at lines 1252--1253
-[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tion_table' ('X') and the out-put of [][][]\T1/zi4/m/n/10 template_correlator[][][]
-[31] [32]
-Overfull \hbox (21.41006pt too wide) in paragraph at lines 1337--1337
- []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2)) 
-[33] [34]
-Overfull \hbox (1.86978pt too wide) in paragraph at lines 1469--1470
-[]\T1/ptm/m/n/10 Object of class []\T1/zi4/m/n/10 template_correlations[]\T1/ptm/m/n/10 , gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 . 
-[35]
-Overfull \hbox (22.01743pt too wide) in paragraph at lines 1511--1514
-[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sound file name (sound.files),
-[36]
-Overfull \hbox (17.17825pt too wide) in paragraph at lines 1522--1523
-[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if []\T1/zi4/m/n/10 only.sels = FALSE[]\T1/ptm/m/n/10 , named as 'sound.file.name-
-[37] [38]
-Overfull \hbox (34.85762pt too wide) in paragraph at lines 1627--1628
-[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion func-tion ([][][]\T1/zi4/m/n/10 diagnose_detection[][][][]\T1/ptm/m/n/10 ,
+pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist
+, replaced by a fixed one
 
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
+pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist,
+ replaced by a fixed one
 
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
+pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but d
+oes not exist, replaced by a fixed one
 
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1631--1632
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[39] [40] [41] [42] [43] [44]
-Overfull \hbox (0.74408pt too wide) in paragraph at lines 1865--1865
- []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))[] 
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ts1cmtt.fd) [45]
-Overfull \hbox (5.24408pt too wide) in paragraph at lines 1896--1896
- []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")[] 
+pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenc
+ed but does not exist, replaced by a fixed one
 
-Overfull \hbox (33.48878pt too wide) in paragraph at lines 1910--1911
-[]\T1/zi4/m/n/10 template_detector []\T1/ptm/m/n/10 find sound event oc-cur-rences in cross-correlation vec-tors from [][][]\T1/zi4/m/n/10 template_correlator[][][] 
+pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, re
+placed by a fixed one
 
-Overfull \hbox (2.32841pt too wide) in paragraph at lines 1922--1923
-[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][] []\T1/ptm/m/n/10 con-
-[46] [47] (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.ind [48]
+pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exis
+t, replaced by a fixed one
 
-LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 93.
+pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist
+, replaced by a fixed one
 
-[49]) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux)
+pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist,
+ replaced by a fixed one
 
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but do
+es not exist, replaced by a fixed one
 
- )
-(see the transcript file for additional information)
-pdfTeX warning (dest): name{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but does not exist, replaced by a fixed one
-
- </home/m/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></home/m/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (49 pages, 205241 bytes).
-Transcript written on Rd2.log.
-This is makeindex, version 2.15 [TeX Live 2019] (kpathsea + Thai support).
-Scanning input file Rd2.idx....done (160 entries accepted, 0 rejected).
-Sorting entries....done (1255 comparisons).
-Generating output file Rd2.ind....done (152 lines written, 4 warnings).
-Output written in Rd2.ind.
-Transcript written in Rd2.ilg.
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex)
- restricted \write18 enabled.
-entering extended mode
-LaTeX2e <2022-11-01> patch level 1
-L3 programming layer <2023-05-05>
-(./Rd2.tex
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/book.cls
-Document Class: book 2022/07/02 v1.4n Standard LaTeX document class
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/bk10.clo)) (/usr/share/R/share/texmf/tex/latex/Rd.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ifthen.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/longtable.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/bm.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/alltt.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/tools/verbatim.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/url/url.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/textcomp.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsmath.sty
-For additional information on amsmath, use the `?' option.
-(/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amstext.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsgen.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsbsy.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsmath/amsopn.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amsfonts.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/amssymb.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/eucal.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/iftex/iftex.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/fontenc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/times.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/zi4.sty `inconsolata-zi4' v1.12, 2019/05/17 Text macros for Inconsolata (msharpe) (/home/m/.TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex (/home/m/.TinyTeX/texmf-dist/tex/generic/xkeyval/keyval.tex))))) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/color.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics-def/pdftex.def) (/home/m/.TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/kvdefinekeys/kvdefinekeys.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/pdfescape/pdfescape.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hycolor/hycolor.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/letltxmacro/letltxmacro.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty) (/home/m/.TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty (/home/m/.TinyTeX/texmf-dist/tex/latex/kvoptions/kvoptions.sty))) (/home/m/.TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def) (/home/m/.TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty)) (/home/m/.TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def (/home/m/.TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/rerunfilecheck/rerunfilecheck.sty (/home/m/.TinyTeX/texmf-dist/tex/generic/uniquecounter/uniquecounter.sty)))) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/makeidx.sty) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/inputenc.sty)
-Writing index file Rd2.idx
-(/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1ptm.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.out) (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/t1zi4.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/t1phv.fd) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.toc [1{/home/m/.TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/base/8r.enc}{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-t1-0.enc}])
-Overfull \hbox (4.73999pt too wide) in paragraph at lines 53--53
- []\T1/zi4/m/n/10 consensus_detection(detection, by = "overlap", filter = "max", cores = 1, pb = TRUE) 
-
-Overfull \hbox (39.27725pt too wide) in paragraph at lines 59--60
-[]\T1/ptm/m/n/10 Data frame or se-lec-tion ta-ble (us-ing the war-bleR pack-age's for-mat, see [][][]\T1/zi4/m/n/10 selection_table[][][][]\T1/ptm/m/n/10 )
-[2] (/home/m/.TinyTeX/texmf-dist/tex/latex/inconsolata/ts1zi4.fd) [3{/home/m/.TinyTeX/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}] [4]
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
-
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 162--163
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 173--174
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[5] (/home/m/.TinyTeX/texmf-dist/tex/latex/psnfss/ts1ptm.fd) [6] [7]
-Overfull \hbox (16.39984pt too wide) in paragraph at lines 277--277
- []\T1/zi4/m/n/10 energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL, 
-
-Overfull \hbox (1.2381pt too wide) in paragraph at lines 285--286
-\T1/ptm/m/n/10 ported for-mat sound files in the work-ing di-rec-tory. Sup-ported file for-mats:'.wav',
-[8]
-Overfull \hbox (4.05801pt too wide) in paragraph at lines 313--316
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events be-low that thresh-old. If 'hold.time'
-
-Overfull \hbox (3.44829pt too wide) in paragraph at lines 317--320
-\T1/ptm/m/n/10 events to be de-tected. It re-moves sound events above that thresh-old. If 'hold.time'
-[9] [10]
-Overfull \hbox (8.24101pt too wide) in paragraph at lines 387--387
- []\T1/zi4/m/n/9 detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)[] 
-
-Overfull \hbox (18.74408pt too wide) in paragraph at lines 401--401
- [] \T1/zi4/m/n/9 detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,[] 
-[11] [12] [13] [14] [15] [16] [17]
-Overfull \hbox (21.95842pt too wide) in paragraph at lines 691--692
-\T1/ptm/m/n/10 tected and 'over-lap' which refers to the amount over-lap to the ref-er-ence sound. See [][][]\T1/zi4/m/n/10 diagnose_detection[][][]
-[18] [19] [20] [21] [22] [23] [24]
-Overfull \hbox (19.72977pt too wide) in paragraph at lines 1056--1056
- [] \T1/zi4/m/n/10 by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,[] 
-[25]
-Overfull \hbox (3.00865pt too wide) in paragraph at lines 1072--1073
-\T1/ptm/m/n/10 pres-sure level (in deci-bels) across the sound event (see [][][]\T1/zi4/m/n/10 sound_pressure_level[][][][]\T1/ptm/m/n/10 ).
-[26]
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1113--1114
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[27] [28]
-Underfull \vbox (badness 3803) has occurred while \output is active [29]
-Overfull \hbox (3.4384pt too wide) in paragraph at lines 1230--1231
-[]\T1/ptm/m/n/10 An ob-ject of class 'tem-plate_correlations' (gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 )
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1245--1246
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[30]
-Overfull \hbox (41.40701pt too wide) in paragraph at lines 1252--1253
-[]\T1/ptm/m/n/10 This func-tion takes a a ref-er-ence data frame or 'se-lec-tion_table' ('X') and the out-put of [][][]\T1/zi4/m/n/10 template_correlator[][][]
-[31] [32]
-Overfull \hbox (21.41006pt too wide) in paragraph at lines 1337--1337
- []\T1/zi4/m/n/10 plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2)) 
-[33] [34]
-Overfull \hbox (1.86978pt too wide) in paragraph at lines 1469--1470
-[]\T1/ptm/m/n/10 Object of class []\T1/zi4/m/n/10 template_correlations[]\T1/ptm/m/n/10 , gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][][]\T1/ptm/m/n/10 . 
-[35]
-Overfull \hbox (22.01743pt too wide) in paragraph at lines 1511--1514
-[]\T1/ptm/m/n/10 'selection_table' ob-ject or a data frame with columns for sound file name (sound.files),
-[36]
-Overfull \hbox (17.17825pt too wide) in paragraph at lines 1522--1523
-[]\T1/ptm/m/n/10 Wave files for each seg-ment in the work-ing di-rec-tory (if []\T1/zi4/m/n/10 only.sels = FALSE[]\T1/ptm/m/n/10 , named as 'sound.file.name-
-[37] [38]
-Overfull \hbox (34.85762pt too wide) in paragraph at lines 1627--1628
-[]\T1/ptm/m/n/10 A data frame with the out-put of a de-tec-tion op-ti-miza-tion func-tion ([][][]\T1/zi4/m/n/10 diagnose_detection[][][][]\T1/ptm/m/n/10 ,
-
-Overfull \hbox (94.01657pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 events ("mean.duration.true.positives", "mean.duration.false.positives", "mean.duration.false.negatives"
-
-Overfull \hbox (9.01805pt too wide) in paragraph at lines 1629--1630
-\T1/ptm/m/n/10 and "pro-por-tional.duration.true.positives") are re-turned (if []\T1/zi4/m/n/10 TRUE[]\T1/ptm/m/n/10 ). De-fault is []\T1/zi4/m/n/10 FALSE[]\T1/ptm/m/n/10 . 
-
-Overfull \hbox (44.88693pt too wide) in paragraph at lines 1631--1632
-\T1/ptm/m/n/10 mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives,
-[39] [40] [41] [42] [43] [44]
-Overfull \hbox (0.74408pt too wide) in paragraph at lines 1865--1865
- []  \T1/zi4/m/n/9 (tc_ma <- template_correlator(templates = templ, path = tempdir(), type = "mel-auditory"))[] 
-(/home/m/.TinyTeX/texmf-dist/tex/latex/base/t1cmtt.fd) (/home/m/.TinyTeX/texmf-dist/tex/latex/base/ts1cmtt.fd) [45]
-Overfull \hbox (5.24408pt too wide) in paragraph at lines 1896--1896
- []  \T1/zi4/m/n/9 tc_fr_est <- template_correlator(templates = templ_est, path = tempdir(), type = "fourier")[] 
-
-Overfull \hbox (33.48878pt too wide) in paragraph at lines 1910--1911
-[]\T1/zi4/m/n/10 template_detector []\T1/ptm/m/n/10 find sound event oc-cur-rences in cross-correlation vec-tors from [][][]\T1/zi4/m/n/10 template_correlator[][][] 
-
-Overfull \hbox (2.32841pt too wide) in paragraph at lines 1922--1923
-[]\T1/ptm/m/n/10 object of class 'tem-plate_correlations' gen-er-ated by [][][]\T1/zi4/m/n/10 template_correlator[][][] []\T1/ptm/m/n/10 con-
-[46] [47] (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.ind [48]
-
-LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 93.
-
-[49]) (/tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a/Rd2.aux)
-
-LaTeX Font Warning: Some font shapes were not available, defaults substituted.
-
- )
-(see the transcript file for additional information)
-pdfTeX warning (dest): name{Rfn.full.Rul.spectrograms} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.melfcc} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cor} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ftwindow} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.cut.Rul.sels} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.prcomp} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.spectro.Rul.analysis} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.sound.Rul.pressure.Rul.level} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.env} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.envelope} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.ffilter} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.approx} has been referenced but does not exist, replaced by a fixed one
-
-
-pdfTeX warning (dest): name{Rfn.selection.Rul.table} has been referenced but does not exist, replaced by a fixed one
-
- </home/m/.TinyTeX/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk></home/m/.TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/helvetic/uhvr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></home/m/.TinyTeX/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on Rd2.pdf (49 pages, 205241 bytes).
+ </home/marce/.texlive2021/texmf-var/fonts/pk/ljfour/jknappen/ec/tctt0900.600pk
+>{/usr/share/texlive/texmf-dist/fonts/enc/dvips/inconsolata/i4-ts1.enc}{/usr/sh
+are/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/share/texlive/texmf-di
+st/fonts/enc/dvips/inconsolata/i4-t1-0.enc}</usr/share/texlive/texmf-dist/fonts
+/type1/public/inconsolata/Inconsolata-zi4r.pfb></usr/share/texlive/texmf-dist/f
+onts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/urw/helvetic/uhvr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/tim
+es/utmb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb><
+/usr/share/texlive/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/share/texl
+ive/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on Rd2.pdf (44 pages, 195549 bytes).
 Transcript written on Rd2.log.
 Saving output to ‘ohun-manual.pdf’ ...
 Done
-You may want to clean up by 'rm -Rf /tmp/RtmpqODukF/Rd2pdf1856a027ae8d3a'
+You may want to clean up by 'rm -Rf /tmp/RtmpZnjtZh/Rd2pdf515f2c35955c'

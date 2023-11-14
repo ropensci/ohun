@@ -1,6 +1,6 @@
 
-R version 4.3.1 (2023-06-16) -- "Beagle Scouts"
-Copyright (C) 2023 The R Foundation for Statistical Computing
+R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+Copyright (C) 2021 The R Foundation for Statistical Computing
 Platform: x86_64-pc-linux-gnu (64-bit)
 
 R is free software and comes with ABSOLUTELY NO WARRANTY.
@@ -20,18 +20,6 @@ Type 'q()' to quit R.
 > pkgname <- "ohun"
 > source(file.path(R.home("share"), "R", "examples-header.R"))
 > options(warn = 1)
-> base::assign(".ExTimings", "ohun-Ex.timings", pos = 'CheckExEnv')
-> base::cat("name\tuser\tsystem\telapsed\n", file=base::get(".ExTimings", pos = 'CheckExEnv'))
-> base::assign(".format_ptime",
-+ function(x) {
-+   if(!is.na(x[4L])) x[1L] <- x[1L] + x[4L]
-+   if(!is.na(x[5L])) x[2L] <- x[2L] + x[5L]
-+   options(OutDec = '.')
-+   format(x[1L:3L], digits = 7L)
-+ },
-+ pos = 'CheckExEnv')
-> 
-> ### * </HEADER>
 > library('ohun')
 
 Please cite 'ohun' as: 
@@ -46,7 +34,6 @@ Please cite 'ohun' as:
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: consensus_detection
 > ### Title: Remove ambiguous detections
 > ### Aliases: consensus_detection
@@ -101,15 +88,12 @@ Please cite 'ohun' as:
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("consensus_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("diagnose_detection")
 > ### * diagnose_detection
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: diagnose_detection
 > ### Title: Evaluate the performance of a sound event detection procedure
 > ### Aliases: diagnose_detection
@@ -166,114 +150,28 @@ Please cite 'ohun' as:
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("diagnose_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("energy_detector")
 > ### * energy_detector
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: energy_detector
 > ### Title: Detects the start and end of sound events
 > ### Aliases: energy_detector
 > 
 > ### ** Examples
 > 
-> ## No test: 
-> # Save example files into temporary working directory
-> data("lbh1", "lbh2", "lbh_reference")
-> tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-> tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
-> 
-> # using smoothing and minimum duration
-> detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
-+ path = tempdir(), threshold = 6, smooth = 6.8,
-+ bp = c(2, 9), hop.size = 3, min.duration = 0.05)
-> 
-> # diagnose detection
-> diagnose_detection(reference = lbh_reference,
-+ detection = detec)
-  detections true.positives false.positives false.negatives splits merges
-1         86             19              67               0      0      0
-    overlap recall precision   f.score
-1 0.8511668      1 0.2209302 0.3619048
-> 
-> # without declaring 'files'
-> detec <- energy_detector(path = tempdir(), threshold = 60, smooth = 6.8,
-+ bp = c(2, 9), hop.size = 6.8, min.duration = 90)
-> 
-> # diagnose detection
-> diagnose_detection(reference = lbh_reference,
-+ detection = detec)
-  detections true.positives false.positives false.negatives splits merges
-1          0              0               0              19      0      0
-  overlap recall precision f.score
-1      NA      0         0      NA
-> 
-> # using hold time
-> detec <- energy_detector(threshold = 10, hold.time = 150,
-+ bp = c(2, 9), hop.size = 6.8, path = tempdir())
-> 
-> # diagnose detection
-> diagnose_detection(reference = lbh_reference, detection = detec)
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-    overlap recall precision f.score
-1 0.8774537      1         1       1
-> 
-> # calculate envelopes first
-> envs <- get_envelopes(bp = c(2, 9), hop.size = 6.8, path = tempdir())
-> 
-> # then run detection providing 'envelopes' (but no 'files')
-> detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.duration = 50)
-> 
-> # diagnose detection
-> diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-    overlap mean.duration.true.positives mean.duration.false.positives
-1 0.8774537                          152                            NA
-  mean.duration.false.negatives proportional.duration.true.positives recall
-1                            NA                              1.06869      1
-  precision f.score
-1         1       1
-> 
-> # USIN OTHER SOUND FILE FORMAT (flac program must be installed)
->  # fisrt convert files to flac
->  warbleR::wav_2_flac(path = tempdir())
-flac 1.3.3
-flac 1.3.3
-> 
->  # change sound file extension to flac
->  flac_reference <- lbh_reference
->  flac_reference$sound.files <- gsub(".wav", ".flac", flac_reference$sound.files)
-> 
->  # run detection
->  detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,
-+  smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
-> 
->  # diagnose detection
->  diagnose_detection(reference = flac_reference, detection = detec)
-  detections true.positives false.positives false.negatives splits merges
-1          0              0               0              19      0      0
-  overlap recall precision f.score
-1      NA      0         0      NA
-> ## End(No test)
 > 
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("energy_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("get_envelopes")
 > ### * get_envelopes
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: get_envelopes
 > ### Title: Extract absolute amplitude envelopes
 > ### Aliases: get_envelopes
@@ -326,15 +224,12 @@ Warning in title(...) : "normalize" is not a graphical parameter
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("get_envelopes", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("get_templates")
 > ### * get_templates
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: get_templates
 > ### Title: Find templates representative of the structural variation of
 > ###   sound events
@@ -360,15 +255,12 @@ The first 2 principal components explained 0.68 of the variance
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("get_templates", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("label_detection")
 > ### * label_detection
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: label_detection
 > ### Title: Label detections from a sound event detection procedure
 > ### Aliases: label_detection
@@ -439,15 +331,12 @@ created by warbleR < 1.1.21
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("label_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("label_spectro")
 > ### * label_spectro
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: label_spectro
 > ### Title: Plot a labeled spectrogram
 > ### Aliases: label_spectro
@@ -478,15 +367,12 @@ created by warbleR < 1.1.21
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("label_spectro", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("merge_overlaps")
 > ### * merge_overlaps
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: merge_overlaps
 > ### Title: Merge overlapping selections
 > ### Aliases: merge_overlaps
@@ -516,275 +402,28 @@ created by warbleR < 1.1.21
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("merge_overlaps", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("optimize_energy_detector")
 > ### * optimize_energy_detector
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: optimize_energy_detector
 > ### Title: Optimize energy-based sound event detection
 > ### Aliases: optimize_energy_detector
 > 
 > ### ** Examples
 > 
-> ## No test: 
-> # Save example files into temporary working directory
-> data("lbh1", "lbh2", "lbh_reference")
-> tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
-> tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
-> 
-> # using smoothing and minimum duration
-> optimize_energy_detector(
-+   reference = lbh_reference, path = tempdir(),
-+   threshold = c(6, 10), smooth = 6.8, bp = c(2, 9), hop.size = 6.8,
-+   min.duration = 90
-+ )
-2 combinations will be evaluated:
-  threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1         6              0    6.8         0           90          Inf        1
-2        10              0    6.8         0           90          Inf        1
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-2         19             19               0               0      0      0
-    overlap mean.duration.true.positives mean.duration.false.positives
-1 0.8526227                          164                            NA
-2 0.9081851                          147                            NA
-  mean.duration.false.negatives proportional.duration.true.positives duty.cycle
-1                            NA                             1.153234  0.3113362
-2                            NA                             1.032732  0.2789096
-  recall precision f.score
-1      1         1       1
-2      1         1       1
-> 
-> # with thinning and smoothing
-> optimize_energy_detector(
-+   reference = lbh_reference, path = tempdir(),
-+   threshold = c(6, 10, 15), smooth = c(7, 10), thinning = c(0.1, 0.01),
-+   bp = c(2, 9), hop.size = 6.8, min.duration = 90
-+ )
-12 combinations will be evaluated:
-   threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1          6              0      7         0           90          Inf     0.10
-2         10              0      7         0           90          Inf     0.10
-3         15              0      7         0           90          Inf     0.10
-4          6              0     10         0           90          Inf     0.10
-5         10              0     10         0           90          Inf     0.10
-6         15              0     10         0           90          Inf     0.10
-7          6              0      7         0           90          Inf     0.01
-8         10              0      7         0           90          Inf     0.01
-9         15              0      7         0           90          Inf     0.01
-10         6              0     10         0           90          Inf     0.01
-11        10              0     10         0           90          Inf     0.01
-12        15              0     10         0           90          Inf     0.01
-   detections true.positives false.positives false.negatives splits merges
-1          19             19               0               0      0      0
-2          19             19               0               0      0      0
-3          19             19               0               0      0      0
-4          19             19               0               0      0      0
-5          19             19               0               0      0      0
-6          19             19               0               0      0      0
-7          19             19               0               0      0      0
-8          19             19               0               0      0      0
-9          19             19               0               0      0      0
-10         19             19               0               0      0      0
-11         19             19               0               0      0      0
-12         19             19               0               0      0      0
-     overlap mean.duration.true.positives mean.duration.false.positives
-1  0.8494709                          165                            NA
-2  0.9065211                          147                            NA
-3  0.9227890                          136                            NA
-4  0.8300895                          169                            NA
-5  0.9018598                          149                            NA
-6  0.9192277                          139                            NA
-7  0.8265783                          164                            NA
-8  0.8872974                          149                            NA
-9  0.9075075                          137                            NA
-10 0.8103066                          171                            NA
-11 0.8863643                          150                            NA
-12 0.9044356                          140                            NA
-   mean.duration.false.negatives proportional.duration.true.positives
-1                             NA                            1.1573464
-2                             NA                            1.0337601
-3                             NA                            0.9542338
-4                             NA                            1.1921639
-5                             NA                            1.0501397
-6                             NA                            0.9780232
-7                             NA                            1.1575802
-8                             NA                            1.0474697
-9                             NA                            0.9631188
-10                            NA                            1.2023828
-11                            NA                            1.0558039
-12                            NA                            0.9802918
-   duty.cycle recall precision f.score
-1   0.3125000      1         1       1
-2   0.2792090      1         1       1
-3   0.2581187      1         1       1
-4   0.3218886      1         1       1
-5   0.2836085      1         1       1
-6   0.2642870      1         1       1
-7   0.3124432      1         1       1
-8   0.2829246      1         1       1
-9   0.2602180      1         1       1
-10  0.3247048      1         1       1
-11  0.2851953      1         1       1
-12  0.2647593      1         1       1
-> 
-> # by sound file
-> (opt_ed <- optimize_energy_detector(
-+   reference = lbh_reference,
-+   path = tempdir(), threshold = c(6, 10, 15), smooth = 6.8, bp = c(2, 9),
-+   hop.size = 6.8, min.duration = 90, by.sound.file = TRUE
-+ ))
-3 combinations will be evaluated:
-  sound.files threshold peak.amplitude smooth hold.time min.duration
-1    lbh2.wav         6              0    6.8         0           90
-2    lbh1.wav         6              0    6.8         0           90
-3    lbh2.wav        10              0    6.8         0           90
-4    lbh1.wav        10              0    6.8         0           90
-5    lbh2.wav        15              0    6.8         0           90
-6    lbh1.wav        15              0    6.8         0           90
-  max.duration thinning detections true.positives false.positives
-1          Inf        1          9              9               0
-2          Inf        1         10             10               0
-3          Inf        1          9              9               0
-4          Inf        1         10             10               0
-5          Inf        1          9              9               0
-6          Inf        1         10             10               0
-  false.negatives splits merges mean.duration.true.positives
-1               0      0      0                          159
-2               0      0      0                          168
-3               0      0      0                          142
-4               0      0      0                          151
-5               0      0      0                          128
-6               0      0      0                          142
-  mean.duration.false.positives mean.duration.false.negatives   overlap
-1                            NA                            NA 0.8044589
-2                            NA                            NA 0.8959702
-3                            NA                            NA 0.8747964
-4                            NA                            NA 0.9382350
-5                            NA                            NA 0.9221066
-6                            NA                            NA 0.9235634
-  proportional.duration.true.positives duty.cycle recall precision f.score
-1                            1.2125978  0.2869232      1         1       1
-2                            1.0998059  0.3357491      1         1       1
-3                            1.0803862  0.2556395      1         1       1
-4                            0.9898431  0.3021796      1         1       1
-5                            0.9759279  0.2309227      1         1       1
-6                            0.9322323  0.2845922      1         1       1
-> 
-> # summarize
-> summarize_diagnostic(opt_ed)
-  threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1         6              0    6.8         0           90          Inf        1
-2        10              0    6.8         0           90          Inf        1
-3        15              0    6.8         0           90          Inf        1
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-2         19             19               0               0      0      0
-3         19             19               0               0      0      0
-    overlap recall precision f.score
-1 0.8526227      1         1       1
-2 0.9081851      1         1       1
-3 0.9228733      1         1       1
-> 
-> # using hold time
-> (op_ed <- optimize_energy_detector(
-+   reference = lbh_reference,
-+   threshold = 10, hold.time = c(100, 150), bp = c(2, 9), hop.size = 6.8,
-+   path = tempdir()
-+ ))
-2 combinations will be evaluated:
-  threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1        10              0      5       100         -Inf          Inf        1
-2        10              0      5       150         -Inf          Inf        1
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-2         19             19               0               0      0      0
-    overlap mean.duration.true.positives mean.duration.false.positives
-1 0.8774537                          152                            NA
-2 0.8774537                          152                            NA
-  mean.duration.false.negatives proportional.duration.true.positives duty.cycle
-1                            NA                              1.06869  0.2890185
-2                            NA                              1.06869  0.2890185
-  recall precision f.score
-1      1         1       1
-2      1         1       1
-> 
-> # including previous output in new call
-> optimize_energy_detector(
-+   reference = lbh_reference, threshold = 10,
-+   hold.time = c(50, 200), previous.output = op_ed, smooth = 6.8,
-+   bp = c(2, 9), hop.size = 7, path = tempdir()
-+ )
-2 combinations will be evaluated:
-  threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1        10              0    5.0       100         -Inf          Inf        1
-2        10              0    5.0       150         -Inf          Inf        1
-3        10              0    6.8        50         -Inf          Inf        1
-4        10              0    6.8       200         -Inf          Inf        1
-  detections true.positives false.positives false.negatives splits merges
-1         19             19               0               0      0      0
-2         19             19               0               0      0      0
-3         20             19               1               0      0      0
-4         19             19               0               0      0      0
-    overlap mean.duration.true.positives mean.duration.false.positives
-1 0.8774537                          152                            NA
-2 0.8774537                          152                            NA
-3 0.8897689                          150                             2
-4 0.8763392                          153                            NA
-  mean.duration.false.negatives proportional.duration.true.positives duty.cycle
-1                            NA                             1.068690  0.2890185
-2                            NA                             1.068690  0.2890185
-3                            NA                             1.056741  0.2855536
-4                            NA                             1.074756  0.2905922
-  recall precision  f.score
-1      1      1.00 1.000000
-2      1      1.00 1.000000
-3      1      0.95 0.974359
-4      1      1.00 1.000000
-> 
-> # having and extra file in files (simulating a file that should have no detetions)
-> sub_reference <- lbh_reference[lbh_reference$sound.files != "lbh1.wav", ]
-> 
-> optimize_energy_detector(
-+   reference = sub_reference, files = unique(lbh_reference$sound.files),
-+   threshold = 10, hold.time = c(1, 150), bp = c(2, 9), smooth = 6.8,
-+   hop.size = 7, path = tempdir()
-+ )
-2 combinations will be evaluated:
-  threshold peak.amplitude smooth hold.time min.duration max.duration thinning
-1        10              0    6.8         1         -Inf          Inf        1
-2        10              0    6.8       150         -Inf          Inf        1
-  detections true.positives false.positives false.negatives splits merges
-1         28              9              19               0      0      0
-2         19              9              10               0      0      0
-    overlap mean.duration.true.positives mean.duration.false.positives
-1 0.8677330                          143                             2
-2 0.8543355                          146                            NA
-  mean.duration.false.negatives proportional.duration.true.positives duty.cycle
-1                            NA                             1.089011  0.2829051
-2                            NA                             1.106874  0.2905922
-  recall precision   f.score
-1      1 0.3214286 0.4864865
-2      1 0.4736842 0.6428571
-> ## End(No test)
 > 
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("optimize_energy_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("optimize_template_detector")
 > ### * optimize_template_detector
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: optimize_template_detector
 > ### Title: Optimize acoustic template detection
 > ### Aliases: optimize_template_detector
@@ -863,15 +502,12 @@ created by warbleR < 1.1.21
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("optimize_template_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("plot_detection")
 > ### * plot_detection
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: plot_detection
 > ### Title: Plot detection and reference annotations
 > ### Aliases: plot_detection
@@ -917,15 +553,12 @@ created by warbleR < 1.1.21
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("plot_detection", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("split_acoustic_data")
 > ### * split_acoustic_data
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: split_acoustic_data
 > ### Title: Splits sound files and associated annotations
 > ### Aliases: split_acoustic_data
@@ -944,20 +577,17 @@ created by warbleR < 1.1.21
 +   # Check this folder
 +   tempdir()
 + }
-[1] "/tmp/RtmpqODukF/working_dir/RtmpMoht72"
+[1] "/tmp/RtmplQ9GLY"
 > 
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("split_acoustic_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("summarize_acoustic_data")
 > ### * summarize_acoustic_data
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: summarize_acoustic_data
 > ### Title: Summarize information about file format in an acoustic data set
 > ### Aliases: summarize_acoustic_data
@@ -973,35 +603,32 @@ created by warbleR < 1.1.21
 +   # summary across sound files
 +   summarize_acoustic_data(path = tempdir())
 + }
-Features of the acoustic data set in '/tmp/RtmpqODukF/working_dir/RtmpMoht72':
+Features of the acoustic data set in '/tmp/RtmplQ9GLY':
 
-* 14 sound files
+* 12 sound files
 
-* 2 file format(s) (.flac (2); .wav (12))
+* 1 file format(s) (.wav (12))
 
-* 1 sampling rate(s) (22.05 kHz (14))
+* 1 sampling rate(s) (22.05 kHz (12))
 
-* 1 bit depth(s) (16 bits (14))
+* 1 bit depth(s) (16 bits (12))
 
-* 1 number of channels (1 channel(s) (14))
+* 1 number of channels (1 channel(s) (12))
 
-* File duration range: 1-5 s (mean: 2.14 s)
+* File duration range: 1-5 s (mean: 1.67 s)
 
-* File size range: 0.04-0.22 MB (mean: 0.09 MB)
+* File size range: 0.04-0.22 MB (mean: 0.07 MB)
 
  (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("summarize_acoustic_data", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("summarize_diagnostic")
 > ### * summarize_diagnostic
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: summarize_diagnostic
 > ### Title: Summarize detection diagnostics
 > ### Aliases: summarize_diagnostic
@@ -1035,15 +662,12 @@ Features of the acoustic data set in '/tmp/RtmpqODukF/working_dir/RtmpMoht72':
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("summarize_diagnostic", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("summarize_reference")
 > ### * summarize_reference
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: summarize_reference
 > ### Title: Summarize temporal and frequency dimensions of annotations and
 > ###   gaps
@@ -1081,15 +705,12 @@ Features of the acoustic data set in '/tmp/RtmpqODukF/working_dir/RtmpMoht72':
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("summarize_reference", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("template_correlator")
 > ### * template_correlator
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: template_correlator
 > ### Title: Acoustic templates correlator using time-frequency
 > ###   cross-correlation
@@ -1163,15 +784,12 @@ saving wave objects into extended selection table (step 2 of 2):
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("template_correlator", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > cleanEx()
 > nameEx("template_detector")
 > ### * template_detector
 > 
 > flush(stderr()); flush(stdout())
 > 
-> base::assign(".ptime", proc.time(), pos = "CheckExEnv")
 > ### Name: template_detector
 > ### Title: Acoustic template detection from time-frequency
 > ###   cross-correlations
@@ -1226,14 +844,12 @@ saving wave objects into extended selection table (step 2 of 2):
 > 
 > 
 > 
-> base::assign(".dptime", (proc.time() - get(".ptime", pos = "CheckExEnv")), pos = "CheckExEnv")
-> base::cat("template_detector", base::get(".format_ptime", pos = 'CheckExEnv')(get(".dptime", pos = "CheckExEnv")), "\n", file=base::get(".ExTimings", pos = 'CheckExEnv'), append=TRUE, sep="\t")
 > ### * <FOOTER>
 > ###
 > cleanEx()
 > options(digits = 7L)
 > base::cat("Time elapsed: ", proc.time() - base::get("ptime", pos = 'CheckExEnv'),"\n")
-Time elapsed:  34.878 0.303 36.027 0.39 0.112 
+Time elapsed:  14.626 0.32 15.039 0.09 0.03 
 > grDevices::dev.off()
 null device 
           1 
