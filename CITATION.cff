@@ -1,43 +1,392 @@
-# This CITATION.cff file was generated with cffinit.
-# Visit https://bit.ly/cffinit to generate yours today!
-
+# -----------------------------------------------------------
+# CITATION file created with {cffr} R package, v0.5.0
+# See also: https://docs.ropensci.org/cffr/
+# -----------------------------------------------------------
+ 
 cff-version: 1.2.0
-title: >-
-  ohun: an R package for diagnosing and optimizing automatic
-  sound event detection
-message: >-
-  If you use this software, please cite it using the
-  metadata from this file.
+message: 'To cite package "ohun" in publications use:'
 type: software
+license: GPL-2.0-or-later
+title: 'ohun: Optimizing Acoustic Signal Detection'
+version: 1.0.1
+abstract: Facilitates the automatic detection of acoustic signals, providing functions
+  to diagnose and optimize the performance of detection routines. Detections from
+  other software can also be explored and optimized. Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
 authors:
-  - given-names: Marcelo
-    family-names: Araya Salas
+- family-names: Araya-Salas
+  given-names: Marcelo
+  email: marcelo.araya@ucr.ac.cr
+  orcid: https://orcid.org/0000-0003-3594-619X
+preferred-citation:
+  type: article
+  title: 'ohun: automatic detection of acoustic signals'
+  authors:
+  - family-names: Araya-Salas
+    given-names: M.
+  - family-names: Smith-Vidaurre
+    given-names: G.
+  - name: Brenes
+  - name: J.C.
+  - family-names: Chirino
+    given-names: F.
+  - family-names: Elizondo-Calvo
+    given-names: J
+  - family-names: Rico-Guevara
+    given-names: A.
+  entry: MISC
+  year: '2023'
+  journal: Methods in Ecology and Evolution
+  url: https://doi.org/10.1111/2041-210X.14170
+repository: https://CRAN.R-project.org/package=ohun
+repository-code: https://github.com/ropensci/ohun/issues/
+url: https://docs.ropensci.org/ohun/
+contact:
+- family-names: Araya-Salas
+  given-names: Marcelo
+  email: marcelo.araya@ucr.ac.cr
+  orcid: https://orcid.org/0000-0003-3594-619X
+references:
+- type: software
+  title: tuneR
+  abstract: 'tuneR: Analysis of Music and Speech'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=tuneR
+  authors:
+  - family-names: Ligges
+    given-names: Uwe
+    email: ligges@statistik.tu-dortmund.de
+    orcid: https://orcid.org/0000-0001-5875-6167
+  - family-names: Krey
+    given-names: Sebastian
+  - family-names: Mersmann
+    given-names: Olaf
+  - family-names: Schnackenberg
+    given-names: Sarah
+  - family-names: Guénard
+    given-names: Guillaume
+  - family-names: Ellis
+    given-names: Daniel P. W.
+  - name: Underbit Technologies
+  year: '2023'
+- type: software
+  title: warbleR
+  abstract: 'warbleR: Streamline Bioacoustic Analysis'
+  notes: Imports
+  url: https://marce10.github.io/warbleR/
+  repository: https://CRAN.R-project.org/package=warbleR
+  authors:
+  - family-names: Araya-Salas
+    given-names: Marcelo
     email: marcelo.araya@ucr.ac.cr
-    affiliation: Universidad de Costa Rica
-    orcid: 'https://orcid.org/0000-0003-3594-619X'
+    orcid: https://orcid.org/0000-0003-3594-619X
+  - family-names: Smith-Vidaurre
+    given-names: Grace
+    email: gsmithvi@gmail.com
+  year: '2023'
+  version: '>= 1.1.29'
+- type: software
+  title: cli
+  abstract: 'cli: Helpers for Developing Command Line Interfaces'
+  notes: Imports
+  url: https://cli.r-lib.org
+  repository: https://CRAN.R-project.org/package=cli
+  authors:
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+  year: '2023'
+- type: software
+  title: methods
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2023'
+  institution:
+    name: R Foundation for Statistical Computing
+- type: software
+  title: stats
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2023'
+  institution:
+    name: R Foundation for Statistical Computing
+- type: software
+  title: utils
+  abstract: 'R: A Language and Environment for Statistical Computing'
+  notes: Imports
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2023'
+  institution:
+    name: R Foundation for Statistical Computing
+- type: software
+  title: seewave
+  abstract: 'seewave: Sound Analysis and Synthesis'
+  notes: Imports
+  url: https://rug.mnhn.fr/seewave/
+  repository: https://CRAN.R-project.org/package=seewave
+  authors:
+  - family-names: Sueur
+    given-names: Jerome
+    email: sueur@mnhn.fr
+  - family-names: Aubin
+    given-names: Thierry
+  - family-names: Simonis
+    given-names: Caroline
+  year: '2023'
+  version: '>= 2.0.1'
+- type: software
+  title: fftw
+  abstract: 'fftw: Fast FFT and DCT Based on the FFTW Library'
+  notes: Imports
+  repository: https://CRAN.R-project.org/package=fftw
+  authors:
+  - family-names: Mersmann
+    given-names: Olaf
+    email: olafm@p-value.net
+  year: '2023'
+- type: software
+  title: rlang
+  abstract: 'rlang: Functions for Base Types and Core R and ''Tidyverse'' Features'
+  notes: Imports
+  url: https://rlang.r-lib.org
+  repository: https://CRAN.R-project.org/package=rlang
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2023'
+- type: software
+  title: sf
+  abstract: 'sf: Simple Features for R'
+  notes: Imports
+  url: https://r-spatial.github.io/sf/
+  repository: https://CRAN.R-project.org/package=sf
+  authors:
+  - family-names: Pebesma
+    given-names: Edzer
+    email: edzer.pebesma@uni-muenster.de
+    orcid: https://orcid.org/0000-0001-8049-7069
+  year: '2023'
+- type: software
+  title: igraph
+  abstract: 'igraph: Network Analysis and Visualization'
+  notes: Imports
+  url: https://r.igraph.org/
+  repository: https://CRAN.R-project.org/package=igraph
+  authors:
+  - family-names: Csárdi
+    given-names: Gábor
+    email: csardi.gabor@gmail.com
+    orcid: https://orcid.org/0000-0001-7098-9676
+  - family-names: Nepusz
+    given-names: Tamás
+    email: ntamas@gmail.com
+    orcid: https://orcid.org/0000-0002-1451-338X
+  - family-names: Traag
+    given-names: Vincent
+    orcid: https://orcid.org/0000-0003-3170-3879
+  - family-names: Horvát
+    given-names: Szabolcs
+    email: szhorvat@gmail.com
+    orcid: https://orcid.org/0000-0002-3100-523X
+  - family-names: Zanini
+    given-names: Fabio
+    email: fabio.zanini@unsw.edu.au
+    orcid: https://orcid.org/0000-0001-7097-8539
+  - family-names: Noom
+    given-names: Daniel
+  - family-names: Müller
+    given-names: Kirill
+    email: kirill@cynkra.com
+    orcid: https://orcid.org/0000-0002-1416-3412
+  year: '2023'
+- type: software
+  title: checkmate
+  abstract: 'checkmate: Fast and Versatile Argument Checks'
+  notes: Imports
+  url: https://mllg.github.io/checkmate/
+  repository: https://CRAN.R-project.org/package=checkmate
+  authors:
+  - family-names: Lang
+    given-names: Michel
+    email: michellang@gmail.com
+    orcid: https://orcid.org/0000-0001-9754-0393
+  year: '2023'
+- type: software
+  title: ggplot2
+  abstract: 'ggplot2: Create Elegant Data Visualisations Using the Grammar of Graphics'
+  notes: Imports
+  url: https://ggplot2.tidyverse.org
+  repository: https://CRAN.R-project.org/package=ggplot2
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+    orcid: https://orcid.org/0000-0003-4757-117X
+  - family-names: Chang
+    given-names: Winston
+    orcid: https://orcid.org/0000-0002-1576-2126
+  - family-names: Henry
+    given-names: Lionel
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomas.pedersen@posit.co
+    orcid: https://orcid.org/0000-0002-5147-4711
+  - family-names: Takahashi
+    given-names: Kohske
+  - family-names: Wilke
+    given-names: Claus
+    orcid: https://orcid.org/0000-0002-7470-9261
+  - family-names: Woo
+    given-names: Kara
+    orcid: https://orcid.org/0000-0002-5125-4188
+  - family-names: Yutani
+    given-names: Hiroaki
+    orcid: https://orcid.org/0000-0002-3385-7233
+  - family-names: Dunnington
+    given-names: Dewey
+    orcid: https://orcid.org/0000-0002-9415-4582
+  year: '2023'
+- type: software
+  title: 'R: A Language and Environment for Statistical Computing'
+  notes: Depends
+  url: https://www.R-project.org/
+  authors:
+  - name: R Core Team
+  location:
+    name: Vienna, Austria
+  year: '2023'
+  institution:
+    name: R Foundation for Statistical Computing
+  version: '>= 3.2.1'
+- type: software
+  title: knitr
+  abstract: 'knitr: A General-Purpose Package for Dynamic Report Generation in R'
+  notes: Suggests
+  url: https://yihui.org/knitr/
+  repository: https://CRAN.R-project.org/package=knitr
+  authors:
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  year: '2023'
+- type: software
+  title: rmarkdown
+  abstract: 'rmarkdown: Dynamic Documents for R'
+  notes: Suggests
+  url: https://pkgs.rstudio.com/rmarkdown/
+  repository: https://CRAN.R-project.org/package=rmarkdown
+  authors:
+  - family-names: Allaire
+    given-names: JJ
+    email: jj@posit.co
+  - family-names: Xie
+    given-names: Yihui
+    email: xie@yihui.name
+    orcid: https://orcid.org/0000-0003-0645-5666
+  - family-names: Dervieux
+    given-names: Christophe
+    email: cderv@posit.co
+    orcid: https://orcid.org/0000-0003-4474-2498
+  - family-names: McPherson
+    given-names: Jonathan
+    email: jonathan@posit.co
+  - family-names: Luraschi
+    given-names: Javier
+  - family-names: Ushey
+    given-names: Kevin
+    email: kevin@posit.co
+  - family-names: Atkins
+    given-names: Aron
+    email: aron@posit.co
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  - family-names: Cheng
+    given-names: Joe
+    email: joe@posit.co
+  - family-names: Chang
+    given-names: Winston
+    email: winston@posit.co
+  - family-names: Iannone
+    given-names: Richard
+    email: rich@posit.co
+    orcid: https://orcid.org/0000-0003-3925-190X
+  year: '2023'
+- type: software
+  title: testthat
+  abstract: 'testthat: Unit Testing for R'
+  notes: Suggests
+  url: https://testthat.r-lib.org
+  repository: https://CRAN.R-project.org/package=testthat
+  authors:
+  - family-names: Wickham
+    given-names: Hadley
+    email: hadley@posit.co
+  year: '2023'
+- type: software
+  title: viridis
+  abstract: 'viridis: Colorblind-Friendly Color Maps for R'
+  notes: Suggests
+  url: https://sjmgarnier.github.io/viridis/
+  repository: https://CRAN.R-project.org/package=viridis
+  authors:
+  - family-names: Garnier
+    given-names: Simon
+    email: garnier@njit.edu
+  year: '2023'
+- type: software
+  title: Sim.DiffProc
+  abstract: 'Sim.DiffProc: Simulation of Diffusion Processes'
+  notes: Suggests
+  url: https://github.com/acguidoum/Sim.DiffProc
+  repository: https://CRAN.R-project.org/package=Sim.DiffProc
+  authors:
+  - family-names: Guidoum
+    given-names: Arsalane Chouaib
+    email: acguidoum@usthb.dz
+  - family-names: Boukhetala
+    given-names: Kamal
+    email: kboukhetala@usthb.dz
+  year: '2023'
+- type: software
+  title: vdiffr
+  abstract: 'vdiffr: Visual Regression Testing and Graphical Diffing'
+  notes: Suggests
+  url: https://vdiffr.r-lib.org/
+  repository: https://CRAN.R-project.org/package=vdiffr
+  authors:
+  - family-names: Henry
+    given-names: Lionel
+    email: lionel@posit.co
+  - family-names: Pedersen
+    given-names: Thomas Lin
+    email: thomas.pedersen@posit.co
+    orcid: https://orcid.org/0000-0002-5147-4711
+  - family-names: Luciani
+    given-names: T Jake
+    email: jake@apache.org
+  - family-names: Decorde
+    given-names: Matthieu
+    email: matthieu.decorde@ens-lyon.fr
+  - family-names: Lise
+    given-names: Vaudor
+    email: lise.vaudor@ens-lyon.fr
+  year: '2023'
 identifiers:
-  - type: url
-    value: 'https://docs.ropensci.org/ohun/'
-    description: github repository
-repository-code: 'https://github.com/ropensci/ohun/'
-url: 'https://docs.ropensci.org/ohun/'
-abstract: >-
-  An R package intended to facilitate automated sound event
-  detection. ohun provides functions to diagnose and
-  optimize detection routines and compare performance among
-  different detection approaches and evaluate the accuracy
-  in infering the temporal location of events. The package
-  uses reference annotations containing the time position of
-  target sounds in a training data set to evaluate detection
-  routine performance using common signal detection theory
-  indices. This can be done both with routine outputs
-  imported from other software and detections run within the
-  package. The package also provides functions to organize
-  acoustic data sets in a format amenable to detection
-  analyses. ohun also includes energy-based and
-  template-based detection methods, two commonly used
-  automatic approaches in bioacoustic research. 
-keywords:
-  - bioacoustics
-  - sound event detection
-license: GPL-3.0-with-GCC-exception
+- type: url
+  value: https://github.com/ropensci/ohun/
