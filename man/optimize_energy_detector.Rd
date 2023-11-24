@@ -27,7 +27,7 @@ sound events (in \%). Default is 5. \strong{Several values can be supplied for o
 \item{wl}{A numeric vector of length 1 specifying the window length of the spectrogram. Default is \code{NULL}. If supplied, 'hop.size' is ignored. Used internally for bandpass filtering (so only applied when 'bp' is supplied).}
 
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
-with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  \code{\link[warbleR]{envelope}} is used internally which is analogous to sum smoothing in code{\link[seewave]{env}}. This argument is used internally by \code{\link{get_envelopes}}. \strong{Several values can be supplied for optimization}.}
+with a sum smooth function. It controls the time 'neighborhood' (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied. Note that smoothing is applied before thinning (see 'thinning' argument). The function  \code{\link[warbleR]{envelope}} is used internally which is analogous to sum smoothing in \code{\link[seewave]{env}}. This argument is used internally by \code{\link{get_envelopes}}. \strong{Several values can be supplied for optimization}.}
 
 \item{hold.time}{Numeric vector of length 1. Specifies the time range (in ms) at which selections will be merged (i.e. if 2 selections are separated by less than the specified 'hold.time' they will be merged in to a single selection). Default is \code{0} (no hold time applied). \strong{Several values can be supplied for optimization}.}
 
@@ -52,7 +52,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{by.sound.file}{Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE} and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.}
 
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
-frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.}
+frequency bandpass filter (in kHz). Default is \code{NULL}.  This argument is used internally by \code{\link{get_envelopes}}. Not used if 'envelopes' are supplied. Bandpass is done using the function \code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.}
 
 \item{path}{Character string containing the directory path where the sound files are located.
 The current working directory is used as default.}
@@ -146,9 +146,7 @@ optimize_energy_detector(
 
 }
 \references{
-{
 Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
-}
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr}).

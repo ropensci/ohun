@@ -33,9 +33,9 @@
 #'   template <- get_templates(reference = lbh_reference, n.sub.spaces = 3, path = tempdir())
 #' }
 #'
-#' @references {
+#' @references 
 #' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
-#' }
+#' 
 #' @seealso \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
 #' modified version of the timer function from seewave.

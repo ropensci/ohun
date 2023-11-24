@@ -52,9 +52,7 @@ If only 1 template is required the function returns the sound event closest to t
 
 }
 \references{
-{
 Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
-}
 }
 \seealso{
 \code{\link{template_detector}}

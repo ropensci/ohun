@@ -42,9 +42,7 @@ The function extracts quantitative features from reference tables that can infor
 }
 }
 \references{
-{
 Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
-}
 }
 \seealso{
 \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}
