@@ -8,7 +8,7 @@ message: 'To cite package "ohun" in publications use:'
 type: software
 license: GPL-2.0-or-later
 title: 'ohun: Optimizing Acoustic Signal Detection'
-version: 1.0.1
+version: 1.0.2
 abstract: Facilitates the automatic detection of acoustic signals, providing functions
   to diagnose and optimize the performance of detection routines. Detections from
   other software can also be explored and optimized. Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
