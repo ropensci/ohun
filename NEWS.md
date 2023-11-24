@@ -1,5 +1,8 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
+ohun 1.0.2 (developmental)
+=========================
+
 ohun 1.0.1
 =========================
 
