@@ -66,7 +66,9 @@ jobs:
           sudo apt-get install -y make libssl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev cmake libfftw3-3 libfftw3-dev libsndfile1 libsndfile1-dev libudunits2-dev 
           sudo apt-add-repository -r ppa:armagetronad-dev/ppa
           sudo apt update -q
-          
+           remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
+        
       - name: Install macOS system dependencies
         if: runner.os == 'macOS'
         run: brew install gdal proj udunits
@@ -92,6 +94,8 @@ jobs:
         run: |
           Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
           choco install flac
+          remotes::install_deps(dependencies = TRUE)
+        shell: Rscript {0}
 
       - name: "[Stage] Install pak"
         run: Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/stable')"

@@ -68,12 +68,15 @@ summarize_reference <-
         output$mean.sel.duration <-
           mean(reference$duration, na.rm = TRUE)
         output$max.sel.duration <- max(reference$duration, na.rm = TRUE)
-        suppressWarnings(output$min.gap.duration <-
-          min(reference$gaps, na.rm = TRUE))
-        suppressWarnings(output$mean.gap.duration <-
-          mean(reference$gaps, na.rm = TRUE))
-        suppressWarnings(output$max.gap.duration <-
-          max(reference$gaps, na.rm = TRUE))
+        output$min.gap.duration <- if (any(!is.na(reference$gaps)))
+          min(reference$gaps, na.rm = TRUE) else
+            NA
+        output$mean.gap.duration <- if (any(!is.na(reference$gaps)))
+          mean(reference$gaps, na.rm = TRUE) else
+            NA
+        output$max.gap.duration <- if (any(!is.na(reference$gaps)))
+          max(reference$gaps, na.rm = TRUE) else
+            NA
 
         if (total.annotations) {
           output$annotations <- nrow(reference)

@@ -4,7 +4,8 @@ Version: 1.0.2
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
     providing functions to diagnose and optimize the performance of detection 
-    routines. Detections from other software can also be explored and optimized.
+    routines. Detections from other software can also be explored and optimized. 
+    This package has been peer-reviewed by rOpenSci.
     Araya-Salas et al. (2022) <doi:10.1101/2022.12.13.520253>.
 License: GPL (>= 2)
 Encoding: UTF-8

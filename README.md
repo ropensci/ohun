@@ -95,6 +95,9 @@ packages:
 - [Template-based
   detection](https://docs.ropensci.org/ohun/articles/template_based_detection.html)
 
+This package has been [peer-reviewed by
+rOpenSci](https://github.com/ropensci/software-review/issues/568).
+
 ------------------------------------------------------------------------
 
 Please cite [ohun](https://github.com/ropensci/ohun) as follows:
