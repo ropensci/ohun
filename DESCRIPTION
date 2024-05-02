@@ -12,7 +12,7 @@ Encoding: UTF-8
 URL: https://docs.ropensci.org/ohun/, https://github.com/ropensci/ohun/
 BugReports: https://github.com/ropensci/ohun/issues/
 VignetteBuilder: knitr
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 Language: en-US
 Authors@R: 
     c(person("Marcelo", "Araya-Salas", 

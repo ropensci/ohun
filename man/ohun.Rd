@@ -2,8 +2,8 @@
 % Please edit documentation in R/ohun-package.R
 \docType{package}
 \name{ohun}
-\alias{ohun}
 \alias{ohun-package}
+\alias{ohun}
 \title{ohun: Optimizing sound event detection}
 \description{
 ohun is intended to facilitate the automated detection of sound events, providing functions to diagnose and optimize detection routines. Detections from other software can also be explored and optimized.
