@@ -237,10 +237,12 @@ optimize_energy_detector <-
       cat("\n")
 
       eng_det_l <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           X = seq_len(nrow(exp_grd)),
           pbar = pb,
           cl = 1,
+          message = "evaluating combinations",
+          total = 1,
           FUN = function(x) {
             eng_det <-
               energy_detector(

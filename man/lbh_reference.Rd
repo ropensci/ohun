@@ -3,7 +3,7 @@
 \docType{data}
 \name{lbh_reference}
 \alias{lbh_reference}
-\title{Example data frame of a selection table including all sound events of interests.}
+\title{Example data frame of a selection table including all sound events of interests}
 \format{
 A data frame with 19 rows and 6 variables: \describe{
  \item{sound.files}{recording names}

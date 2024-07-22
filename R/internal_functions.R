@@ -590,7 +590,7 @@ XC_FUN <- function(spc1, spc2, cm) {
 
   # calculate correlations at each step
   cors <- vapply(stps, function(x, cor.method = cm) {
-    warbleR::try_na(cor(
+    .try_na(cor(
       c(lg.spc[, x:(x + shrt.lgth)]),
       c(shrt.spc),
       method = cm,
@@ -1073,3 +1073,15 @@ spc_FUN <-
 
     return(spc)
   }
+
+
+# Wrapper for "try" function
+# silly wrapper for  function that returns an NA if an error is found.
+.try_na <- function(expr, silent = TRUE, outFile) {
+  out <- try(expr = expr, silent = silent, outFile = outFile)
+  if (is(out, "try-error")) {
+    return(NA)
+  } else {
+    return(out)
+  }
+}

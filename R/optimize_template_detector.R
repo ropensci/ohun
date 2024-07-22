@@ -126,9 +126,11 @@ optimize_template_detector <-
 
       # set pb options
       diagnostics_list <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           pbar = pb,
           cl = 1,
+          message = "evaluating thresholds",
+          total = 1,
           X = threshold,
           FUN = function(x) {
             detection <-

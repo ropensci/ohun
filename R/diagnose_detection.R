@@ -123,10 +123,12 @@ diagnose_detection <-
       split_det <- split(x = detection, f = detection[, by])
 
       split_diagnostic <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           X = seq_len(length(split_det)),
           cl = 1,
           pbar = pb,
+          message = "diagnose_detection",
+          total = 1,
           FUN = function(x) {
             by_diag <-
               diagnose_detection(

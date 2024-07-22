@@ -1,6 +1,6 @@
 Package: ohun
 Title: Optimizing Acoustic Signal Detection
-Version: 1.0.2
+Version: 1.0.3
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
     providing functions to diagnose and optimize the performance of detection 
@@ -12,7 +12,7 @@ Encoding: UTF-8
 URL: https://docs.ropensci.org/ohun/, https://github.com/ropensci/ohun/
 BugReports: https://github.com/ropensci/ohun/issues/
 VignetteBuilder: knitr
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 Language: en-US
 Authors@R: 
     c(person("Marcelo", "Araya-Salas", 
@@ -30,7 +30,7 @@ Authors@R:
       email = "sammlapp@gmail.com",
       comment = c(ORCID = "0000-0003-1637-6822")))       
 Imports: tuneR, 
-    warbleR (>= 1.1.29), 
+    warbleR (>= 1.1.31), 
     cli, 
     methods, 
     stats, 

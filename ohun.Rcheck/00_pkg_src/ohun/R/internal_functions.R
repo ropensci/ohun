@@ -590,7 +590,7 @@ XC_FUN <- function(spc1, spc2, cm) {
 
   # calculate correlations at each step
   cors <- vapply(stps, function(x, cor.method = cm) {
-    warbleR::try_na(cor(
+    .try_na(cor(
       c(lg.spc[, x:(x + shrt.lgth)]),
       c(shrt.spc),
       method = cm,

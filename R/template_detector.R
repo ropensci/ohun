@@ -98,10 +98,12 @@ template_detector <-
 
     # loop over scores of each dyad
     sel_table_list <-
-      warbleR:::pblapply_wrblr_int(
+      warbleR:::.pblapply(
         pbar = pb,
         X = 1:(length(template.correlations) - 1),
         cl = cl,
+        message = "detecting templates",
+        total = 1,
         FUN = function(i) {
           # extract data for a dyad
           temp_cor <- template.correlations[[i]]

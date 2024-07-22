@@ -121,10 +121,12 @@ get_envelopes <-
     }
 
     # run function over sound files or selections in loop
-    env_list <- warbleR:::pblapply_wrblr_int(
+    env_list <- warbleR:::.pblapply(
       pbar = pb,
       X = files,
       cl = cl,
+      message = "getting envelopes",
+      total = 1,
       FUN = function(i) {
         env_ohun_int(
           i,

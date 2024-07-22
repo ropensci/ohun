@@ -61,7 +61,7 @@ This function calculates the similarity of acoustic templates across sound files
   # create template
   templ <- lbh_reference[4, ]
   templ2 <- warbleR::selection_table(templ,
-    extended = TRUE, confirm.extended = FALSE,
+    extended = TRUE,
     path = tempdir()
   )
 
@@ -96,7 +96,7 @@ This function calculates the similarity of acoustic templates across sound files
 
   # using an extended selection table
   templ_est <- warbleR::selection_table(templ,
-    extended = TRUE, confirm.extended = FALSE,
+    extended = TRUE,
     path = tempdir()
   )
 

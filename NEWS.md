@@ -1,7 +1,12 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
-ohun 1.0.2 (developmental)
+ohun 1.0.3
 =========================
+Fix function names from package warbleR
+
+ohun 1.0.2
+=========================
+Update requested by CRAN.
 
 ohun 1.0.1
 =========================

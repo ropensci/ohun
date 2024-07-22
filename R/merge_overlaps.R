@@ -49,25 +49,17 @@ merge_overlaps <- function(X, pb = TRUE, cores = 1) {
   # report errors
   checkmate::reportAssertions(check_results)
 
-
-
   # merged overlapping selections
-  if (pb) {
-    print(x = "Detecting overlapping selections:")
-  }
   ov_sls <-
     overlapping_sels(X,
       pb = pb,
-      verbose = FALSE,
+      verbose = TRUE,
       parallel = cores
     )
 
   if (any(!is.na(ov_sls$ovlp.sels))) {
-    if (pb) {
-      print("Merging overlapping selections:")
-    }
     merges_l <-
-      warbleR:::pblapply_wrblr_int(unique(ov_sls$ovlp.sels), pbar = pb, cl = cores, function(x) {
+      warbleR:::.pblapply(unique(ov_sls$ovlp.sels), pbar = pb, message = "merging overlapping selections", current = 2, total = 2, cl = cores, function(x) {
         if (!is.na(x)) {
           Y <- ov_sls[ov_sls$ovlp.sels == x & !is.na(ov_sls$ovlp.sels), ]
           Y$end[1] <- max(Y$end)

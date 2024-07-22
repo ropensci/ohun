@@ -166,10 +166,12 @@ energy_detector <-
     }
 
     # run function over sound files or selections in loop
-    detections_l <- warbleR:::pblapply_wrblr_int(
+    detections_l <- warbleR:::.pblapply(
       pbar = pb,
       X = files,
       cl = cl,
+      message = "detecting sound events",
+      total = 1,
       FUN = function(file) {
         out <- detect_FUN(file,
           wl,

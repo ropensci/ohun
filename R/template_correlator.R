@@ -39,7 +39,7 @@
 #'   # create template
 #'   templ <- lbh_reference[4, ]
 #'   templ2 <- warbleR::selection_table(templ,
-#'     extended = TRUE, confirm.extended = FALSE,
+#'     extended = TRUE,
 #'     path = tempdir()
 #'   )
 #'
@@ -74,7 +74,7 @@
 #'
 #'   # using an extended selection table
 #'   templ_est <- warbleR::selection_table(templ,
-#'     extended = TRUE, confirm.extended = FALSE,
+#'     extended = TRUE,
 #'     path = tempdir()
 #'   )
 #'
@@ -227,10 +227,12 @@ template_correlator <-
 
     # get correlation
     corr_vector_list <-
-      warbleR:::pblapply_wrblr_int(
+      warbleR:::.pblapply(
         pbar = pb,
         X = seq_len(nrow(compare.matrix)),
         cl = cl,
+        message = "computing correlations",
+        total = 1,
         FUN = function(e, cor.meth = cor.method) {
           # set bandpass to template frequency range
           bp <-

@@ -94,10 +94,13 @@ label_detection <-
       split_det <- split(x = detection, f = detection[, by])
 
       split_labeled <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           X = seq_len(length(split_det)),
           cl = 1,
           pbar = pb,
+          message = "splitting labels",
+          current = 1,
+          total = 2,
           FUN = function(x) {
             by_lab <-
               label_detection(
@@ -133,9 +136,12 @@ label_detection <-
 
       # look at detections matching 1 training selection at the time
       labeled_detections_list <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           pbar = pb,
           cl = cl,
+          message = "labeling detections",
+          current = if (is.null(by)) 1 else 2, 
+          total = if (is.null(by)) 1 else 1,
           X = unique(detection$sound.files),
           FUN = function(z) {
             # get subset from detection for that sound file
@@ -205,7 +211,7 @@ label_detection <-
 
                   # convert to graph
                   ovlp_graph <-
-                    igraph::graph_from_incidence_matrix(ovlp_mat)
+                    igraph::graph_from_biadjacency_matrix(ovlp_mat)
 
                   # convert to data frame
                   df_ovlp_graph <- igraph::as_data_frame(ovlp_graph)

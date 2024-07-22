@@ -86,7 +86,7 @@ split_acoustic_data <-
     }
 
     # measure wav duration
-    wvdr <- warbleR::duration_wavs(path = path, files = files)
+    wvdr <- warbleR::duration_sound_files(path = path, files = files)
 
     # calculate start and end of segments and output data frame
     split.df_l <- lapply(files, function(x) {
@@ -180,10 +180,12 @@ split_acoustic_data <-
 
       # split using a loop but only those that are shorter than segments
       a_l <-
-        warbleR:::pblapply_wrblr_int(
+        warbleR:::.pblapply(
           pbar = pb,
           X = which(split.df$original.sound.files != split.df$sound.files),
           cl = cl,
+          message = "splitting sound files",
+          total = 1,
           FUN = function(x) {
             # read clip
             clip <-
@@ -289,7 +291,7 @@ split_acoustic_data <-
           contained.sls$end <- contained.sls$end - Y$start
           contained.sls$start[contained.sls$start < 0] <- 0
           wav_header <-
-            read_wave(
+            warbleR::read_sound_file(
               X = Y$new.sound.files,
               path = path,
               header = TRUE

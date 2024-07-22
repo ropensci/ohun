@@ -107,7 +107,7 @@ consensus_detection <-
 
     # run loop over every detected signal in the reference
     filter_tp_list <-
-      warbleR:::pblapply_wrblr_int(X = unique(true.positives$reference), cl = cl, pbar = pb, function(x) {
+      warbleR:::.pblapply(X = unique(true.positives$reference), cl = cl, message = "computing consensus detections", total = 1, pbar = pb, function(x) {
         # get those detection that overlapped with x
         X <- true.positives[true.positives$reference == x, ]
 

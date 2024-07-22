@@ -1,4 +1,4 @@
-#' Example data frame of a selection table including all sound events of interests.
+#' Example data frame of a selection table including all sound events of interests
 #'
 #' A data frame containing the start, end, low and high frequency of
 #' \emph{Phaethornis longirostris} (Long-billed Hermit) songs from the 2
