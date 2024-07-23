@@ -1,6 +1,6 @@
 Package: ohun
 Title: Optimizing Acoustic Signal Detection
-Version: 1.0.3
+Version: 1.0.2
 Maintainer: Marcelo Araya-Salas <marcelo.araya@ucr.ac.cr>
 Description: Facilitates the automatic detection of acoustic signals, 
     providing functions to diagnose and optimize the performance of detection 
@@ -30,7 +30,7 @@ Authors@R:
       email = "sammlapp@gmail.com",
       comment = c(ORCID = "0000-0003-1637-6822")))       
 Imports: tuneR, 
-    warbleR (>= 1.1.31), 
+    warbleR (>= 1.1.32), 
     cli, 
     methods, 
     stats, 
