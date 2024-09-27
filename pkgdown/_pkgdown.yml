@@ -1,3 +1,51 @@
 url: https://docs.ropensci.org/ohun/
 template:
   bootstrap: 5
+
+
+reference:
+- title: Prepare data for detection
+  desc: >
+    Prepare annotations and acoustic data for automated detection
+  contents:
+  - split_acoustic_data
+  - get_envelopes
+  - get_templates
+  - summarize_reference
+  - summarize_acoustic_data
+  
+- title: Automated detection
+  desc: >
+    Functions implementing automated sound event detection
+  contents:
+  - energy_detector
+  - optimize_energy_detector
+  - template_correlator
+  - template_detector
+  - optimize_template_detector
+
+- title: Curating detection datasets
+  desc: >
+    Exploration and manipulation of the output of detection functions
+  contents:
+  - consensus_detection
+  - merge_overlaps
+  - summarize_diagnostic
+  - label_detection
+  - diagnose_detection
+
+
+
+- title: Built in datasets
+  desc: >
+    Datasets included in baRulho
+  contents:
+  - lbh1
+  - lbh2
+  - lbh_reference
+
+- title: Additional functions
+  contents:
+  - label_spectro
+  - plot_detection
+
