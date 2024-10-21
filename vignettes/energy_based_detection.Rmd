@@ -119,17 +119,21 @@ The function `ernergy_detector()` performs this type of detection. We can unders
 #Creating vector for duration 
 durs <- rep(c(0.3, 1), 5)
 
+set.seed(123)
+freqs <- sample(c(3, 6), 10, replace = TRUE)
+
 #Creating simulated song
 set.seed(12)
 simulated_1 <-
   warbleR::simulate_songs(
     n = 10,
     durs = durs,
-    freqs = 5,
-    sig2 = 0.01,
+    freqs = freqs,
+    sig2 = 0.1,
     gaps = 0.5,
     harms = 1,
     bgn = 0.1,
+    freq.range = 2,
     path = tempdir(),
     file.name = "simulated_1",
     selec.table = TRUE,
@@ -224,14 +228,14 @@ label_spectro(wave = simulated_1,  detection = detection)
 ```
 
 
-The same logic can be applied to detect those sound events found below 5 kHz. We just need to set the upper bound of the band pass filter below the range of the higher frequency sound events (for instance `bp = (0, 6)`):
+The same logic can be applied to detect those sound events found below 5 kHz. We just need to set the upper bound of the band pass filter below the range of the higher frequency sound events (for instance `bp = (0, 5)`):
 
 ```{r, fig.asp=0.4, eval = TRUE, echo = TRUE}
 # Detect
 detection <-
   energy_detector(
     files = "simulated_1.wav",
-    bp = c(0, 6),
+    bp = c(0, 5),
     threshold = 50,
     min.duration = 1,
     smooth = 150,
