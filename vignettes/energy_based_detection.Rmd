@@ -256,15 +256,21 @@ set.seed(12)
 #Creating vector for duration
 durs <- rep(c(0.3, 1), 5)
 
+# and a frequency vector
+set.seed(123)
+freqs <- sample(c(3, 6), 10, replace = TRUE)
+
+
 sim_2 <-
   simulate_songs(
     n = 10,
     durs = durs,
-    freqs = 5,
+    freqs = freqs,
     sig2 = 0.01,
     gaps = 0.5,
     harms = 1,
     bgn = 0.1,
+    freq.range = 2,    
     path = tempdir(),
     file.name = "simulated_2",
     selec.table = TRUE,
