@@ -737,12 +737,15 @@ detect_FUN <-
       return(out)
     }))
 
-    ## FIX IF START OR END OF sound eventS IS NOT INCLUDED IN SOUND FILE
+    
+ 
+    ## FIX IF START OR END OF SOUND EVENTS IS NOT INCLUDED IN SOUND FILE
     # get start and end of detections
     # starts are the positive ones
-    starts <- cross_thresh[cross_thresh > 0]
+    starts <-    # if no threshold crossing
+      if (!is.null(cross_thresh)) cross_thresh[cross_thresh > 0] else vector("numeric")
     # and ends the negative ones (should be converted to positive)
-    ends <- abs(cross_thresh[cross_thresh < 0])
+    ends <- if (!is.null(cross_thresh)) abs(cross_thresh[cross_thresh < 0]) else vector("numeric")
 
     # if there is no end
     if (length(starts) > 0 & length(ends) == 0) ends <- envlp$duration
@@ -874,6 +877,10 @@ detect_FUN <-
       # remove extra column
       detections_df$SPL <- NULL
     }
+    
+    # fix so selec it starts at 1 on each sound file and increases 1 unit within a sound file
+    detections_df$selec <- seq_len(nrow(detections_df))
+    
     return(detections_df)
   }
 
