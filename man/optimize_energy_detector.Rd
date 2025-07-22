@@ -4,11 +4,28 @@
 \alias{optimize_energy_detector}
 \title{Optimize energy-based sound event detection}
 \usage{
-optimize_energy_detector(reference, files = NULL, threshold = 5,
-peak.amplitude = 0, hop.size = 11.6, wl = NULL, smooth = 5, hold.time = 0,
-min.duration = NULL, max.duration = NULL, thinning = 1, cores = 1, pb = TRUE,
- by.sound.file = FALSE, bp = NULL, path = ".", previous.output = NULL, envelopes = NULL,
- macro.average = FALSE, min.overlap = 0.5)
+optimize_energy_detector(
+  reference,
+  files = NULL,
+  threshold = 5,
+  peak.amplitude = 0,
+  hop.size = 11.6,
+  wl = NULL,
+  smooth = 5,
+  hold.time = 0,
+  min.duration = NULL,
+  max.duration = NULL,
+  thinning = 1,
+  cores = 1,
+  pb = TRUE,
+  by.sound.file = FALSE,
+  bp = NULL,
+  path = ".",
+  previous.output = NULL,
+  envelopes = NULL,
+  macro.average = FALSE,
+  min.overlap = 0.5
+)
 }
 \arguments{
 \item{reference}{Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
@@ -146,7 +163,7 @@ optimize_energy_detector(
 
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \author{
 Marcelo Araya-Salas (\email{marcelo.araya@ucr.ac.cr}).

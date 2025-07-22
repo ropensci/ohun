@@ -4,10 +4,20 @@
 \alias{label_spectro}
 \title{Plot a labeled spectrogram}
 \usage{
-label_spectro(wave, reference = NULL, detection = NULL,
- envelope = FALSE, threshold = NULL, smooth = 5, collevels = seq(-100, 0, 5),
- palette = viridis::viridis, template.correlation = NULL,
- line.x.position = 2, hop.size = NULL, ...)
+label_spectro(
+  wave,
+  reference = NULL,
+  detection = NULL,
+  envelope = FALSE,
+  threshold = NULL,
+  smooth = 5,
+  collevels = seq(-100, 0, 5),
+  palette = viridis::viridis,
+  template.correlation = NULL,
+  line.x.position = 2,
+  hop.size = NULL,
+  ...
+)
 }
 \arguments{
 \item{wave}{A 'wave' class object.}
@@ -68,7 +78,7 @@ This function plots spectrograms annotated with the position of sound events. \s
 
 }
 \references{
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}

@@ -1,7 +1,6 @@
 #' @title Merge overlapping selections
 #'
 #' @description \code{merge_overlaps} merges several overlapping selections into a single selection
-#' @usage merge_overlaps(X, pb = TRUE, cores = 1)
 #' @param X Data frame or 'selection.table' (following the warbleR package format) with selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param cores Numeric. Controls whether parallel computing is applied.
@@ -28,7 +27,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 
 merge_overlaps <- function(X, pb = TRUE, cores = 1) {

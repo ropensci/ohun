@@ -4,7 +4,11 @@
 \alias{summarize_diagnostic}
 \title{Summarize detection diagnostics}
 \usage{
-summarize_diagnostic(diagnostic, time.diagnostics = FALSE, macro.average = FALSE)
+summarize_diagnostic(
+  diagnostic,
+  time.diagnostics = FALSE,
+  macro.average = FALSE
+)
 }
 \arguments{
 \item{diagnostic}{A data frame with the output of a detection optimization function (\code{\link{diagnose_detection}}, \code{\link{optimize_energy_detector}} or \code{\link{optimize_template_detector}})}

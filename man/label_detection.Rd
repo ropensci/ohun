@@ -4,8 +4,15 @@
 \alias{label_detection}
 \title{Label detections from a sound event detection procedure}
 \usage{
-label_detection(reference, detection, cores = 1, pb = TRUE, min.overlap = 0.5,
- by = NULL)
+label_detection(
+  reference,
+  detection,
+  cores = 1,
+  pb = TRUE,
+  min.overlap = 0.5,
+  by = NULL,
+  solve.ambiguous = TRUE
+)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
@@ -17,9 +24,11 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
-\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
+\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.}
 
 \item{by}{Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is \code{NULL}.}
+
+\item{solve.ambiguous}{Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.}
 }
 \value{
 A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
@@ -76,7 +85,7 @@ The function identifies the rows in the output of a detection routine as true or
 }
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{diagnose_detection}}, \code{\link{summarize_diagnostic}}

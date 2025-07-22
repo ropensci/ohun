@@ -1,12 +1,17 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
-ohun 1.0.4
-=========================
-Update requested by CRAN
-
 ohun 1.0.3
 =========================
-Fix function names from package warbleR
+
+### NEW FEATURES
+
+  * New function `reassemble_detection()` to reassembles detections made on clips so they refer to the original sound files
+
+### MINOR IMPROVEMENTS
+
+  * Update names of functions from package warbleR those in latest versions
+  * Replace `sapply()` with `vapply()`
+  * Fix bug when true positive are set to false positives based on solving ambiguous detection using maximum bipartite graph matching 
 
 ohun 1.0.2
 =========================

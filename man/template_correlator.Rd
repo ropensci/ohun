@@ -4,9 +4,21 @@
 \alias{template_correlator}
 \title{Acoustic templates correlator using time-frequency cross-correlation}
 \usage{
-template_correlator(templates, files = NULL, hop.size = 11.6, wl = NULL, ovlp = 0,
-wn ='hanning', cor.method = "pearson", cores = 1, path = ".",
-pb = TRUE, type = "fourier", fbtype = "mel", ...)
+template_correlator(
+  templates,
+  files = NULL,
+  hop.size = 11.6,
+  wl = NULL,
+  ovlp = 0,
+  wn = "hanning",
+  cor.method = "pearson",
+  cores = 1,
+  path = ".",
+  pb = TRUE,
+  type = "fourier",
+  fbtype = "mel",
+  ...
+)
 }
 \arguments{
 \item{templates}{'selection_table', 'extended_selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame with time and frequency information of the sound event(s) to be used as templates (1 template per row). The object must contain columns for sound files (sound.files),
@@ -110,7 +122,7 @@ This function calculates the similarity of acoustic templates across sound files
 }
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 
 Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.
 

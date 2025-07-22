@@ -4,9 +4,19 @@
 \alias{diagnose_detection}
 \title{Evaluate the performance of a sound event detection procedure}
 \usage{
-diagnose_detection(reference, detection, by.sound.file = FALSE,
-time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL,
- macro.average = FALSE, min.overlap = 0.5)
+diagnose_detection(
+  reference,
+  detection,
+  by.sound.file = FALSE,
+  time.diagnostics = FALSE,
+  cores = 1,
+  pb = TRUE,
+  path = NULL,
+  by = NULL,
+  macro.average = FALSE,
+  min.overlap = 0.5,
+  solve.ambiguous = TRUE
+)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
@@ -28,7 +38,9 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
 
-\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
+\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.}
+
+\item{solve.ambiguous}{Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.}
 }
 \value{
 A data frame including the following detection performance diagnostics:
@@ -102,7 +114,7 @@ The function evaluates the performance of a sound event detection procedure by c
 }
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}

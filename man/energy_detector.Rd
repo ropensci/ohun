@@ -4,9 +4,23 @@
 \alias{energy_detector}
 \title{Detects the start and end of sound events}
 \usage{
-energy_detector(files = NULL, envelopes = NULL, path = ".", hop.size = 11.6, wl = NULL,
-thinning = 1, bp = NULL, smooth = 5, threshold = 5, peak.amplitude = 0,
-hold.time = 0, min.duration = 0, max.duration = Inf, cores = 1, pb = TRUE)
+energy_detector(
+  files = NULL,
+  envelopes = NULL,
+  path = ".",
+  hop.size = 11.6,
+  wl = NULL,
+  thinning = 1,
+  bp = NULL,
+  smooth = 5,
+  threshold = 5,
+  peak.amplitude = 0,
+  hold.time = 0,
+  min.duration = 0,
+  max.duration = Inf,
+  cores = 1,
+  pb = TRUE
+)
 }
 \arguments{
 \item{files}{Character vector indicating the sound files that will be analyzed. Optional. If 'files' and 'envelopes' are not supplied then the function will work on all supported format sound files in the working directory. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.}
@@ -96,7 +110,7 @@ detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.
 # diagnose detection
 diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
 
-# USIN OTHER SOUND FILE FORMAT (flac program must be installed)
+# USING OTHER SOUND FILE FORMAT (flac program must be installed)
  # fisrt convert files to flac
  warbleR::wav_2_flac(path = tempdir())
 
@@ -114,7 +128,7 @@ diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostic
 
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{optimize_energy_detector}}

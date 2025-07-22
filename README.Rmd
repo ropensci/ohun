@@ -76,4 +76,4 @@ This package has been [peer-reviewed by rOpenSci](https://github.com/ropensci/so
 
 Please cite [ohun](https://github.com/ropensci/ohun) as follows:
 
-Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.1.
+ Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170 

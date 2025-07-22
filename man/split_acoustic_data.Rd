@@ -4,12 +4,20 @@
 \alias{split_acoustic_data}
 \title{Splits sound files and associated annotations}
 \usage{
-split_acoustic_data(path = ".", sgmt.dur = 10, sgmts = NULL, files = NULL,
- cores = 1, pb = TRUE, only.sels = FALSE, X = NULL)
+split_acoustic_data(
+  path = ".",
+  sgmt.dur = 10,
+  sgmts = NULL,
+  files = NULL,
+  cores = 1,
+  pb = TRUE,
+  only.sels = FALSE,
+  output.path = file.path(path, "clips"),
+  X = NULL
+)
 }
 \arguments{
-\item{path}{Directory path where sound files are found.
-The current working directory is used as default.}
+\item{path}{Directory path where sound files are found. The current working directory is used as default.}
 
 \item{sgmt.dur}{Numeric. Duration (in s) of segments in which sound files would be split. Sound files shorter than 'sgmt.dur' won't be split. Ignored if 'sgmts' is supplied.}
 
@@ -24,15 +32,17 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{only.sels}{Logical argument to control if only the data frame is returned (no wave files are saved). Default is \code{FALSE}.}
 
+\item{output.path}{Directory path where the output files will be saved. If not supplied then a subfolder called 'clips' will be created within the supplied 'path'.}
+
 \item{X}{'selection_table' object or a data frame with columns
 for sound file name (sound.files), selection number (selec), and start and end time of signal
 (start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selection are labeled as 'split'. Default is \code{NULL}.}
 }
 \value{
-Wave files for each segment in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav') and a data frame in the R environment containing the name of the original sound files (original.sound.files), the name of the clips (sound.files) and the start and end of clips in the original files. Clips are saved in .wav format. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. In this case the output data frame contains an additional column, 'split.sels', that inform users whether selections have been split into multiple clips ('split') or not (\code{NA}). Sound files in 'path' that are not referenced in 'X' will stil be split.
+Wave files for each segment (e.g. clips) in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav'). Clips are saved in .wav format. If 'X' is not supplied the function returns a data frame in the containing the name of the original sound files (original.sound.files), the name of the segments (sound.files) and the start and end of segments in the original files. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. However, if 'X' is a 'selection table' and the clips have been saved, a data frame with the information of the position of clips in the original sound files is also returned as an attribute in the output selection table ("clip.info"). Output annotation data contains the position of the annotations in the new clips, with an additional column, 'split.sels', that inform users whether annotations have been split into multiple clips ('split') or not (\code{NA}). For split annotations the 'selec' column will contain the original 'selec' id plus an additional index (selec-index) so users can still identify from which annotation splits came from. Sound files in 'path' that are not referenced in 'X' will stil be split. The function may not work properly with very short segments (< 1 s).
 }
 \description{
-\code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter segments
+\code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter clips
 }
 \details{
 This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
@@ -45,7 +55,7 @@ This function aims to reduce the size of sound files in order to simplify some p
   tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 
   # split files in 1 s files
-  split_acoustic_data(sgmt.dur = 1, path = tempdir())
+  split_acoustic_data(sgmt.dur = 1, path = tempdir(), files = c("lbh1.wav", "lbh2.wav"))
 
   # Check this folder
   tempdir()
@@ -53,7 +63,7 @@ This function aims to reduce the size of sound files in order to simplify some p
 
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link[warbleR]{cut_sels}}

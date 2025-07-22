@@ -1,9 +1,6 @@
 #' @title Evaluate the performance of a sound event detection procedure
 #'
 #' @description \code{diagnose_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
-#' @usage diagnose_detection(reference, detection, by.sound.file = FALSE,
-#' time.diagnostics = FALSE, cores = 1, pb = TRUE, path = NULL, by = NULL,
-#'  macro.average = FALSE, min.overlap = 0.5)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param by.sound.file Logical argument to control whether performance diagnostics are summarized across sound files (when \code{by.sound.file = FALSE}, when more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
@@ -14,7 +11,8 @@
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.
 #' @param by Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.
 #' @param macro.average Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.
-#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
+#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.
+#' @param solve.ambiguous Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.
 #' @return A data frame including the following detection performance diagnostics:
 #' \itemize{
 #'  \item \code{detections}: total number of detections
@@ -83,7 +81,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 
 diagnose_detection <-
   function(reference,
@@ -95,7 +93,9 @@ diagnose_detection <-
            path = NULL,
            by = NULL,
            macro.average = FALSE,
-           min.overlap = 0.5) {
+           min.overlap = 0.5,
+           solve.ambiguous = TRUE
+           ) {
     # check arguments
     if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
@@ -188,7 +188,8 @@ diagnose_detection <-
             detection = detection,
             cores = cores,
             pb = pb,
-            min.overlap = min.overlap
+            min.overlap = min.overlap,
+            solve.ambiguous = solve.ambiguous
           )
 
 

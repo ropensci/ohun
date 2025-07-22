@@ -364,7 +364,7 @@ count number of detections per unit of time
 ## References
 
 1. Araya-Salas, M. (2021), ohun: diagnosing and optimizing automated sound event detection. R package version 0.1.0.
-1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal sound events. Methods Ecol Evol 8:184-191.
+1. Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to streamline analysis of animal acoustic signals. Methods in Ecology and Evolution, 8:184-191.
 1. Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
 1. Knight, E.C., Hannah, K.C., Foley, G.J., Scott, C.D., Brigham, R.M. & Bayne, E. (2017). Recommendations for acoustic recognizer performance assessment with application to five common automated signal recognition programs. Avian Conservation and Ecology,
 1. Macmillan, N. A., & Creelman, C.D. (2004). Detection theory: A user's guide. Psychology press.

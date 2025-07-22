@@ -4,8 +4,15 @@
 \alias{get_templates}
 \title{Find templates representative of the structural variation of sound events}
 \usage{
-get_templates(reference, acoustic.space = NULL, path = ".",
-n.sub.spaces = 1, plot = TRUE, color = "#21908C4D", ...)
+get_templates(
+  reference,
+  acoustic.space = NULL,
+  path = ".",
+  n.sub.spaces = 1,
+  plot = TRUE,
+  color = "#21908C4D",
+  ...
+)
 }
 \arguments{
 \item{reference}{Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
@@ -52,7 +59,7 @@ If only 1 template is required the function returns the sound event closest to t
 
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{template_detector}}

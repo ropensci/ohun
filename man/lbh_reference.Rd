@@ -21,7 +21,7 @@ Marcelo Araya-Salas, ohun
 data(lbh_reference)
 }
 \description{
-\code{lbh_reference} is a data frame containing the start, end, bottom and top frequency of all songs in 'lbh_1.wav' and 'lbh_2.wav' recordings. #'
+\code{lbh_reference} is a data frame containing the start, end, bottom and top frequency of all songs in 'lbh_1.wav' and 'lbh_2.wav' recordings.
 }
 \details{
 A data frame containing the start, end, low and high frequency of

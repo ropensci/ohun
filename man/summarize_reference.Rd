@@ -4,8 +4,13 @@
 \alias{summarize_reference}
 \title{Summarize temporal and frequency dimensions of annotations and gaps}
 \usage{
-summarize_reference(reference, path = NULL, by.sound.file = FALSE,
-units = c("ms", "kHz"), digits = 2)
+summarize_reference(
+  reference,
+  path = NULL,
+  by.sound.file = FALSE,
+  units = c("ms", "kHz"),
+  digits = 2
+)
 }
 \arguments{
 \item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.}
@@ -42,7 +47,7 @@ The function extracts quantitative features from reference tables that can infor
 }
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{optimize_energy_detector}}, \code{\link{optimize_template_detector}}

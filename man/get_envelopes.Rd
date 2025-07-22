@@ -4,8 +4,18 @@
 \alias{get_envelopes}
 \title{Extract absolute amplitude envelopes}
 \usage{
-get_envelopes(path = ".", files = NULL, bp = NULL, hop.size = 11.6, wl = NULL,
-cores = 1, thinning = 1, pb = TRUE, smooth = 5, normalize = TRUE)
+get_envelopes(
+  path = ".",
+  files = NULL,
+  bp = NULL,
+  hop.size = 11.6,
+  wl = NULL,
+  cores = 1,
+  thinning = 1,
+  pb = TRUE,
+  smooth = 5,
+  normalize = TRUE
+)
 }
 \arguments{
 \item{path}{Character string containing the directory path where the sound files are located.
@@ -81,7 +91,7 @@ This function extracts the absolute amplitude envelopes of sound files. Can be u
 
 }
 \references{
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{energy_detector}}

@@ -1,7 +1,6 @@
 #' @title Plot detection and reference annotations
 #'
 #' @description \code{plot_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
-#' @usage plot_detection(reference, detection, mid.point = FALSE, size = 20, positions = c(1, 2))
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param mid.point Logical argument to control if each annotations is shown as a rectangle with fix width center at the mid point of the time position (if \code{TRUE}) or the true time range of the annotations is used (if \code{FALSE},  default). 'mid.point' can be useful to make visible annotations in very long sound files that would otherwise look to thin.
@@ -51,7 +50,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 
 plot_detection <-

@@ -7,10 +7,10 @@ test_that("split files", {
 
 
   #split files in 1 s files
-  sad <- split_acoustic_data(sgmt.dur = 1, path = tempdir())
+  sad <- split_acoustic_data(sgmt.dur = 1, path = tempdir(), files = c("lbh1.wav", "lbh2.wav"))
 
   # Check this folder
-  fls <- list.files(path = tempdir(), pattern = ".wav$")
+  fls <- list.files(path = file.path(tempdir(), "clips"), pattern = ".wav$")
 
   unlink(
     list.files(
@@ -25,7 +25,7 @@ test_that("split files", {
 
   expect_equal(nrow(sad), 10)
 
-  expect_length(fls, 12)
+  expect_length(fls, 10)
 
 })
 
@@ -42,10 +42,10 @@ test_that("split files and annotations", {
   sad <-
     split_acoustic_data(sgmt.dur = 1,
                         path = tempdir(),
-                        X = lbh_reference)
+                        X = lbh_reference, files = c("lbh1.wav", "lbh2.wav"))
 
   # Check this folder
-  fls <- list.files(path = tempdir(), pattern = ".wav$")
+  fls <- list.files(path = file.path(tempdir(), "clips"), pattern = ".wav$")
 
   unlink(
     list.files(
@@ -60,6 +60,6 @@ test_that("split files and annotations", {
 
   expect_equal(nrow(sad), 20)
 
-  expect_length(fls, 12)
+  expect_length(fls, 10)
 
 })

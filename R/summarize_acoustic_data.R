@@ -1,7 +1,6 @@
 #' @title Summarize information about file format in an acoustic data set
 #'
 #' @description \code{summarize_acoustic_data} summarizes information about file format in an acoustic data set
-#' @usage summarize_acoustic_data(path = ".", digits = 2)
 #' @param path Character string containing the directory path where the sound files are located. Default is \code{"."} (current working directory).
 #' @param digits Numeric vector of length 1 with the number of decimals to include. Default is 2.
 #' @return The function prints a summary of the format of the files in an acoustic data set.
@@ -21,7 +20,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 
 summarize_acoustic_data <- function(path = ".", digits = 2) {

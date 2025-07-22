@@ -373,6 +373,7 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "path")) {
+    # print(args$path)
     checkmate::assert_directory(x = args$path, access = "r", add = check_collection, .var.name = "path")
   }
 

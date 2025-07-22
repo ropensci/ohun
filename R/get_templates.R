@@ -1,8 +1,6 @@
 #' @title Find templates representative of the structural variation of sound events
 #'
 #' @description \code{get_templates} find the sound events that are closer to the acoustic space centroid (i.e. close to the average acoustic structure) in a reference table.
-#' @usage get_templates(reference, acoustic.space = NULL, path = ".",
-#' n.sub.spaces = 1, plot = TRUE, color = "#21908C4D", ...)
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of sound event
 #' (start and end).
@@ -34,7 +32,7 @@
 #' }
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 #' @seealso \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a

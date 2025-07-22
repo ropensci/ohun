@@ -17,5 +17,5 @@
 #'
 #' @source Marcelo Araya-Salas, ohun
 #'
-#' @description \code{lbh_reference} is a data frame containing the start, end, bottom and top frequency of all songs in 'lbh_1.wav' and 'lbh_2.wav' recordings. #'
+#' @description \code{lbh_reference} is a data frame containing the start, end, bottom and top frequency of all songs in 'lbh_1.wav' and 'lbh_2.wav' recordings.
 "lbh_reference"

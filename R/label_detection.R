@@ -1,16 +1,15 @@
 #' @title Label detections from a sound event detection procedure
 #'
 #' @description \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table
-#' @usage label_detection(reference, detection, cores = 1, pb = TRUE, min.overlap = 0.5,
-#'  by = NULL)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.
 #' @param detection Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.
 #' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
+#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.
 #' @param by Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is \code{NULL}.
 #' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
+#' @param solve.ambiguous Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.
 #' @export
 #' @name label_detection
 #' @details The function identifies the rows in the output of a detection routine as true or false positives. This is achieved by comparing the data frame to a reference selection table in which all sound events of interest have been selected.
@@ -61,7 +60,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 
 label_detection <-
@@ -70,7 +69,8 @@ label_detection <-
            cores = 1,
            pb = TRUE,
            min.overlap = 0.5,
-           by = NULL) {
+           by = NULL,
+           solve.ambiguous = TRUE) {
     # check arguments
     if (options("ohun_check_args")$ohun_check_args) {
       # check arguments
@@ -181,7 +181,8 @@ label_detection <-
                 }, FUN.VALUE = character(1))
 
                 # use maximum bipartite graph matching to solve ambiguous detections
-                if (any(grepl("split|merge", sub_detec$detection.class))) {
+                
+                if (any(grepl("split|merge", sub_detec$detection.class)) & solve.ambiguous) {
                   ambiguous_detec <- sub_detec[grepl("split|merge", sub_detec$detection.class), ]
                   ambiguous_detec$id <- paste(ambiguous_detec$sound.files, ambiguous_detec$selec, sep = "-")
                   sub_ref$id <- paste(sub_ref$sound.files, sub_ref$selec, sep = "-")
@@ -223,9 +224,9 @@ label_detection <-
                     }, FUN.VALUE = numeric(1))
                   #
                   #   # plot just to troubleshoot
-                  #   # plot.igraph(ovlp_graph, layout = layout_as_bipartite,
-                  #   #             vertex.color=c("green","cyan")[V(ovlp_graph)$type+1], edge.width=(3*E(g)$weight), vertex.size = 40)
-                  #
+                    # igraph::plot.igraph(ovlp_graph, layout = layout_as_bipartite,
+                    #             vertex.color=c("green","cyan")[V(ovlp_graph)$type+1], edge.width=(3*E(g)$weight), vertex.size = 40)
+
                   #   # get maximum bipartite graph
                   bigraph_results <-
                     igraph::max_bipartite_match(ovlp_graph)$matching
@@ -242,9 +243,11 @@ label_detection <-
                     names(bigraph_results)[is.na(bigraph_results)]
 
                   if (length(bigraph_false_positives) > 0) {
-                    sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- gsub("true.positive", "false.positive", sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives])
+                    sub_detec$detection.class[paste(sub_detec$sound.files, sub_detec$selec, sep = "-") %in% bigraph_false_positives] <- "false.positive"
                   }
-                }
+                  # remove split and merge labels
+                  sub_detec$detection.class[grep("true.positive", sub_detec$detection.class)] <- "true.positive"
+                } 
               }
             } else {
               overlap_iou <- data.frame(sound.files = vector(), detection.id = vector(), reference.id = vector(), IoU = vector())

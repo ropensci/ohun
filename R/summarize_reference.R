@@ -1,8 +1,6 @@
 #' @title Summarize temporal and frequency dimensions of annotations and gaps
 #'
 #' @description \code{summarize_reference} summarizes temporal and frequency dimensions of annotations and gaps
-#' @usage summarize_reference(reference, path = NULL, by.sound.file = FALSE,
-#' units = c("ms", "kHz"), digits = 2)
 #' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". If frequency range columns are included ("bottom.freq" and "top.freq") these are also used to characterize reference selections.
 #' @param path Character string containing the directory path where the sound files are located. If supplied then duty cycle and peak frequency features are returned. These features are more helpful for tuning a energy-based detection. Default is \code{NULL}.
 #' @param by.sound.file Logical argument to control whether features are summarized across sound files (when \code{by.sound.file = FALSE}, and more than 1 sound file is included in 'reference') or shown separated by sound file. Default is \code{FALSE}.
@@ -28,7 +26,7 @@
 #' @author Marcelo Araya-Salas \email{marcelo.araya@@ucr.ac.cr})
 #'
 #' @references 
-#' Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. 2022. ohun: an R package for diagnosing and optimizing automatic sound event detection. BioRxiv, 2022.12.13.520253. https://doi.org/10.1101/2022.12.13.520253
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 
 summarize_reference <-
