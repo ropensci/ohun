@@ -5,7 +5,7 @@ articles:
   energy_based_detection: energy_based_detection.html
   intro_to_ohun: intro_to_ohun.html
   template_based_detection: template_based_detection.html
-last_built: 2025-07-22T16:13Z
+last_built: 2025-07-22T16:15Z
 urls:
   reference: https://docs.ropensci.org/ohun/reference
   article: https://docs.ropensci.org/ohun/articles
