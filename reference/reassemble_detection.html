@@ -71,11 +71,11 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see <code><a href="https://marce10.github.io/warbleR/reference/selection_table.html" class="external-link">selection_table</a></code>) as in 'detection' but removing ambiguous detections (split and merged positives).</p>
+    <p>A data frame with annotations refering to the position of the detections in the original sound files.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function will take detections made on clips created with <code><a href="split_acoustic_data.html">split_acoustic_data</a></code>, and reset their information so they refer back to the original (unsplit) sound files.</p>
+    <p>When working with large sound files, it can be convenient to split files into smaller clips to speed up the detection process (this can be done with the function <code><a href="split_acoustic_data.html">split_acoustic_data</a></code>). However, this can make it difficult to interpret the results, as the detections will refer to the clips rather than the original sound files. The function will take detections made on clips created with <code><a href="split_acoustic_data.html">split_acoustic_data</a></code>, and format their information so they refer back to the original (unsplit) sound files.</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
