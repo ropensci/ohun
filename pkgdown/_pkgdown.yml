@@ -33,7 +33,7 @@ reference:
   - summarize_diagnostic
   - label_detection
   - diagnose_detection
-
+  - reassemble_detection
 
 
 - title: Built in datasets
