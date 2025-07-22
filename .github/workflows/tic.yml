@@ -1,5 +1,5 @@
 ## tic GitHub Actions template: linux-macos-windows-deploy
-## revision date: 2022-11-23
+## revision date: 2023-12-15
 on:
   workflow_dispatch:
   push:
@@ -31,8 +31,8 @@ jobs:
           # use a different tic template type if you do not want to build on all listed platforms
           - { os: windows-latest, r: "release" }
           - { os: macOS-latest, r: "release", pkgdown: "true", latex: "true" }
+          - { os: ubuntu-latest, r: "devel" }
           - { os: ubuntu-latest, r: "release" }
-          #- { os: ubuntu-latest, r: "devel" }
 
     env:
       # make sure to run `tic::use_ghactions_deploy()` to set up deployment
@@ -46,13 +46,11 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-r@v2
         with:
           r-version: ${{ matrix.config.r }}
-          http-user-agent: ${{ matrix.config.http-user-agent }}
-          use-public-rspm: ${{ runner.os != 'Windows' || matrix.config.r != '3.6' }}
           Ncpus: 4
 
       - uses: r-lib/actions/setup-tinytex@v2
@@ -60,19 +58,10 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - name: Extra deps
+      - name: Install sys deps for Ubuntu
         if: runner.os == 'Linux'
-        run: |
-          sudo apt-get install -y make libssl-dev libcurl4-openssl-dev libxml2-dev libfontconfig1-dev libharfbuzz-dev libfribidi-dev libfreetype6-dev libpng-dev libtiff5-dev libjpeg-dev cmake libfftw3-3 libfftw3-dev libsndfile1 libsndfile1-dev libudunits2-dev 
-          sudo apt-add-repository -r ppa:armagetronad-dev/ppa
-          sudo apt update -q
-           remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-        
-      - name: Install macOS system dependencies
-        if: runner.os == 'macOS'
-        run: brew install gdal proj udunits
-      
+        run: sudo apt update && sudo apt install -y libgit2-dev libcurl4-openssl-dev
+
       # set date/week for use in cache creation
       # https://github.community/t5/GitHub-Actions/How-to-set-and-access-a-Workflow-variable/m-p/42970
       # - cache R packages daily
@@ -81,27 +70,22 @@ jobs:
         id: date
         run: echo "date=$(date '+%d-%m')" >> $GITHUB_OUTPUT
 
-      - name: "[Cache] Cache R packages"
+      - name: "[Cache] Restore R package cache"
         if: runner.os != 'Windows'
-        uses: pat-s/always-upload-cache@v3
+        uses: actions/cache/restore@v3
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-          restore-keys: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
-
-      - name: "non R windows dependencies"
-        if: runner.os == 'Windows'
-        run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
-          choco install flac
-          remotes::install_deps(dependencies = TRUE)
-        shell: Rscript {0}
-
-      - name: "[Stage] Install pak"
-        run: Rscript -e "install.packages('pak', repos = 'https://r-lib.github.io/p/pak/stable')"
 
       - name: "[Stage] Install"
-        run: Rscript -e "if (grepl('Ubuntu', Sys.info()[['version']]) && !grepl('Under development', R.version[['status']])) {options(repos = c(CRAN = sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))))}else{options(repos = c(CRAN = 'cloud.r-project.org'))}; pak::pkg_install('ropensci/tic')" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
+        run: Rscript -e "install.packages('tic', repos = c('https://ropensci.r-universe.dev', if (grepl('Ubuntu', Sys.info()[['version']])) {sprintf('https://packagemanager.rstudio.com/all/__linux__/%s/latest', system('lsb_release -cs', intern = TRUE))} else {'https://cloud.r-project.org'}))" -e "print(tic::dsl_load())" -e "tic::prepare_all_stages()" -e "tic::before_install()" -e "tic::install()"
+
+      - name: "[Cache] Save R package cache"
+        if: runner.os != 'Windows' && always()
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-r-${{ matrix.config.r }}-${{steps.date.outputs.date}}
 
       - name: "[Stage] Script"
         run: Rscript -e 'tic::script()'
@@ -111,7 +95,7 @@ jobs:
 
       - name: "[Stage] Upload R CMD check artifacts"
         if: failure()
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ runner.os }}-r${{ matrix.config.r }}-results
           path: check
