@@ -1,108 +1,40 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://marce10.github.io/ohun/404.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/CONTRIBUTING.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/articles/intro_to_ohun.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/articles/template_based_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/index.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/consensus_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/diagnose_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/energy_detector.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/feature_acoustic_data.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/feature_reference.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/filter_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/get_envelopes.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/get_templates.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/label_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/label_spectro.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/lbh1.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/lbh2.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/lbh_reference.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/merge_overlaps.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/ohun.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/optimize_energy_detector.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/optimize_template_detector.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/plot_detection.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/print.envelopes.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/print.template_correlations.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/split_acoustic_data.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/summarize_acoustic_data.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/summarize_diagnostic.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/summarize_reference.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/template_correlator.html</loc>
-  </url>
-  <url>
-    <loc>https://marce10.github.io/ohun/reference/template_detector.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://docs.ropensci.org/ohun/404.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/CONTRIBUTING.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/articles/energy_based_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/articles/index.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/articles/intro_to_ohun.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/articles/template_based_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/authors.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/index.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/news/index.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/consensus_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/diagnose_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/energy_detector.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/feature_acoustic_data.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/feature_reference.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/filter_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/get_envelopes.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/get_templates.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/index.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/label_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/label_spectro.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/lbh1.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/lbh2.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/lbh_reference.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/merge_overlaps.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/ohun.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/optimize_energy_detector.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/optimize_template_detector.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/plot_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/print.envelopes.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/print.template_correlations.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/reassemble_detection.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/split_acoustic_data.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/summarize_acoustic_data.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/summarize_diagnostic.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/summarize_reference.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/template_correlator.html</loc></url>
+<url><loc>https://docs.ropensci.org/ohun/reference/template_detector.html</loc></url>
 </urlset>
+
