@@ -17,13 +17,13 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 }
 \value{
-A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) as in 'detection' but removing ambiguous detections (split and merged positives).
+A data frame with annotations refering to the position of the detections in the original sound files.
 }
 \description{
 \code{reassemble_detection} reassembles detections made on clips so they refer to the original sound files
 }
 \details{
-This function will take detections made on clips created with \code{\link{split_acoustic_data}}, and reset their information so they refer back to the original (unsplit) sound files.
+When working with large sound files, it can be convenient to split files into smaller clips to speed up the detection process (this can be done with the function \code{\link{split_acoustic_data}}). However, this can make it difficult to interpret the results, as the detections will refer to the clips rather than the original sound files. The function will take detections made on clips created with \code{\link{split_acoustic_data}}, and format their information so they refer back to the original (unsplit) sound files.
 }
 \examples{
 {

@@ -110,22 +110,6 @@ detec <- energy_detector(envelopes = envs, threshold = 10, hold.time = 150, min.
 # diagnose detection
 diagnose_detection(reference = lbh_reference, detection = detec, time.diagnostics = TRUE)
 
-\donttest{
-# USING OTHER SOUND FILE FORMAT (flac program must be installed)
- # fisrt convert files to flac
- warbleR::wav_2_flac(path = tempdir())
-
- # change sound file extension to flac
- flac_reference <- lbh_reference
- flac_reference$sound.files <- gsub(".wav", ".flac", flac_reference$sound.files)
-
- # run detection
- detec <- energy_detector(files = c("lbh1.flac", "lbh2.flac"), path = tempdir(), threshold = 60,
- smooth = 6.8, bp = c(2, 9), hop.size = 6.8, min.duration = 90)
-
- # diagnose detection
- diagnose_detection(reference = flac_reference, detection = detec)
- }
 }
 
 }
