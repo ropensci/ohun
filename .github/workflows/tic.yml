@@ -58,13 +58,23 @@ jobs:
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r-dependencies@v2
-        with:
-          extra-packages: any::flac
+      - name: Install sys deps for Ubuntu
+        if: runner.os == 'Linux'
+        run: sudo apt update && sudo apt install -y libgit2-dev libcurl4-openssl-dev flac
 
-      # - name: Install sys deps for Ubuntu
-      #   if: runner.os == 'Linux'
-      #   run: sudo apt update && sudo apt install -y libgit2-dev libcurl4-openssl-dev flac
+ # For macOS
+  - name: Install macOS dependencies
+    if: runner.os == 'macOS'
+    run: |
+      brew update
+      brew install flac
+
+  # For Windows
+  - name: Install Windows dependencies
+    if: runner.os == 'Windows'
+    run: |
+      choco install -y flac
+      # Windows typically has curl/libgit2 available through Rtools
 
       # set date/week for use in cache creation
       # https://github.community/t5/GitHub-Actions/How-to-set-and-access-a-Workflow-variable/m-p/42970
