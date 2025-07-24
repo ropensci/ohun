@@ -331,6 +331,13 @@ check_arguments <- function(fun, args) {
     assert_unique_sels(x = args$detection, fun = fun, add = check_collection, .var.name = "detection")
   }
 
+  if (any(names(args) == "Y")) {
+    checkmate::assert_data_frame(x = args$Y, any.missing = TRUE, add = check_collection, .var.name = "detection")
+    
+    checkmate::assert_names(x = names(args$Y), type = "unique", must.include = c("original.sound.files", "sound.files", "start", "end"), add = check_collection, .var.name = "names(Y)")
+    try(checkmate::assert_data_frame(x = args$Y[, cols], any.missing = TRUE, add = check_collection, .var.name = "Y"), silent = TRUE)
+  }
+  
   if (any(names(args) == "X")) {
     checkmate::assert_multi_class(x = args$X, classes = c("data.frame", "selection.table"), add = check_collection, .var.name = "X")
     checkmate::assert_names(x = names(args$X), type = "unique", must.include = c("sound.files", "selec", "start", "end"), add = check_collection, .var.name = "names(X)")
