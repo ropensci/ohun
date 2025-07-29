@@ -2,7 +2,7 @@
 % Please edit documentation in R/reassemble_detection.R
 \name{reassemble_detection}
 \alias{reassemble_detection}
-\title{Reassemble annotations from clips}
+\title{Reassemble detections from clips}
 \usage{
 reassemble_detection(detection, Y, cores = 1, pb = TRUE)
 }

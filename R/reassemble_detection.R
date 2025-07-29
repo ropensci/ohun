@@ -1,4 +1,4 @@
-#' @title Reassemble annotations from clips
+#' @title Reassemble detections from clips
 #'
 #' @description \code{reassemble_detection} reassembles detections made on clips so they refer to the original sound files
 #' @param detection Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start" and "end". 
