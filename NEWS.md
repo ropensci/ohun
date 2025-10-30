@@ -1,5 +1,18 @@
 <!-- based on: https://devguide.ropensci.org/newstemplate.html#newstemplate -->
 
+ohun 1.0.5
+=========================
+
+### MINOR IMPROVEMENTS
+
+  *  `split_acoustic_data()` returns the name and duration of files with a duration less than the specified clip duration
+
+ohun 1.0.4
+=========================
+
+### MINOR IMPROVEMENTS
+
+  * 'overwrite' argument added to `split_acoustic_data()` to allow overwriting existing files
 
 ohun 1.0.3
 =========================

@@ -12,7 +12,8 @@
 #' @param X 'selection_table' object or a data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
 #' (start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selection are labeled as 'split'. Default is \code{NULL}.
-#' @param output.path Directory path where the output files will be saved. If not supplied then a subfolder called 'clips' will be created within the supplied 'path'.  
+#' @param output.path Directory path where the output files will be saved. If not supplied then a subfolder called 'clips' will be created within the supplied 'path'.
+#' @param overwrite Logical. If \code{TRUE} existing files in the output path with the same name as the clips being created will be overwritten. Default is \code{FALSE}. This allows to avoid re-creating clips that have already been created in previous function calls.  
 #' @family data manipulation
 #' @seealso \code{\link[warbleR]{cut_sels}}
 #' @export
@@ -27,7 +28,8 @@
 #'   tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
 #'
 #'   # split files in 1 s files
-#'   split_acoustic_data(sgmt.dur = 1, path = tempdir(), files = c("lbh1.wav", "lbh2.wav"))
+#'   split_acoustic_data(sgmt.dur = 1, path = tempdir(), 
+#'   files = c("lbh1.wav", "lbh2.wav"))
 #'
 #'   # Check this folder
 #'   tempdir()
@@ -47,7 +49,8 @@ split_acoustic_data <-
            pb = TRUE,
            only.sels = FALSE,
            output.path = file.path(path, "clips"),
-           X = NULL) {
+           X = NULL,
+           overwrite = FALSE) {
     # save start time
     start_time <- proc.time()
     
@@ -80,10 +83,12 @@ split_acoustic_data <-
     
     # exclude those shorter than sgmt.dur
     if (any(wvdr$duration <= sgmt.dur) & is.null(sgmts)) {
-      message2(color = "silver", x = "One or more sound files are shorter than the specified clip duration. No clips will be created for these files.")
+      message2(color = "silver", x = "One or more sound files are shorter than the specified clip duration. No clips will be created for these files. Check their names and duration (in s) at `options('unsplit_sound_files')`")
+      
+      # save unsplit file names
+      options(unsplit_sound_files = wvdr[wvdr$duration <= sgmt.dur,])
       wvdr <- wvdr[wvdr$duration > sgmt.dur, ]
     } 
-    
     
     # calculate start and end of clips and output data frame
     split.df_l <- lapply(wvdr$sound.files, function(x) {
@@ -188,6 +193,8 @@ split_acoustic_data <-
           message = "splitting sound files",
           total = 1,
           FUN = function(x) {
+            
+            if (overwrite | (!overwrite & !file.exists(file.path(output.path, split.df$sound.files[x])))){
             # read clip
             clip <-
               warbleR::read_sound_file(
@@ -203,6 +210,7 @@ split_acoustic_data <-
               object = clip,
               filename = file.path(output.path, split.df$sound.files[x])
             )
+            }
             
             return(NULL)
           }
