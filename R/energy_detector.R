@@ -172,7 +172,7 @@ energy_detector <-
       message = "detecting sound events",
       total = 1,
       FUN = function(file) {
-        out <- detect_FUN(file,
+        out <- .detect(file,
           wl,
           thres = threshold / 100,
           pa = peak.amplitude,

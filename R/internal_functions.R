@@ -689,7 +689,7 @@ print.template_correlations <- function(x, ...) {
 }
 
 ### function to do energy detection of sound events (i is the file name) use internally by energy_detector
-detect_FUN <-
+.detect <-
   function(file,
            wl,
            thres,
