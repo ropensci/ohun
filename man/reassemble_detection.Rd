@@ -7,7 +7,7 @@
 reassemble_detection(detection, Y, cores = 1, pb = TRUE)
 }
 \arguments{
-\item{detection}{Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the signals. Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{detection}{Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of sound events. Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
 
 \item{Y}{Data frame with the start and end of clips in the orignal sound files. Must contain the column "original.sound.files", "sound.files" (clip files), "start" and "end".}
 
@@ -23,7 +23,7 @@ A data frame with annotations refering to the position of the detections in the 
 \code{reassemble_detection} reassembles detections made on clips so they refer to the original sound files
 }
 \details{
-When working with large sound files, it can be convenient to split files into smaller clips to speed up the detection process (this can be done with the function \code{\link{split_acoustic_data}}). However, this can make it difficult to interpret the results, as the detections will refer to the clips rather than the original sound files. The function will take detections made on clips created with \code{\link{split_acoustic_data}}, and format their information so they refer back to the original (unsplit) sound files.
+When working with large sound files, splitting them into smaller clips (which can be done with \code{\link{split_acoustic_data}}) can accelerate detection processing. However, this approach complicates result interpretation since detections reference the clips rather than the original files. This function reformats clip-based detections —specifically those created by split_acoustic_data()— to map them back to their original unsplit sound files.
 }
 \examples{
 {

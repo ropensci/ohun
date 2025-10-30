@@ -5,11 +5,15 @@ ohun: optimizing sound event detection
 <!-- badges: start -->
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![Dependencies](https://tinyverse.netlify.com/badge/ohun)](https://cran.r-project.org/package=ohun)
+[![Dependencies](https://tinyverse.netlify.com/badge/warbleR)](https://cran.r-project.org/package=warbleR)
+[![Dependencies](https://cranchecks.info/badges/dependencies/warbleR)](https://cran.r-project.org/web/checks/check_results_warbleR.html)
+[![R
+Dependencies](https://www.r-pkg.org/badges/version/warbleR)](https://cran.r-project.org/package=warbleR)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
-[![Licence](https://img.shields.io/badge/licence-GPL--2-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.en.html)
+[![License:
+GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
@@ -102,5 +106,8 @@ rOpenSci](https://github.com/ropensci/software-review/issues/568).
 
 Please cite [ohun](https://github.com/ropensci/ohun) as follows:
 
-Araya-Salas, M. (2022), ohun: diagnosing and optimizing automated sound
-event detection. R package version 0.1.1.
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
+Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R
+package for diagnosing and optimizing automatic sound event detection.
+Methods in Ecology and Evolution, 14, 2259–2271.
+<https://doi.org/10.1111/2041-210X.14170>

@@ -15,7 +15,6 @@ message2 <- function(x, color = "black") {
   message(colortext(x, as = color))
 }
 
-
 colortext <-
   function(text,
            as = c(
