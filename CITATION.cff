@@ -1,14 +1,15 @@
-# --------------------------------------------
-# CITATION file created with {cffr} R package
+# ------------------------------------------------
+# CITATION.cff file created with {cffr} R package
 # See also: https://docs.ropensci.org/cffr/
-# --------------------------------------------
+# ------------------------------------------------
  
 cff-version: 1.2.0
 message: 'To cite package "ohun" in publications use:'
 type: software
 license: GPL-2.0-or-later
 title: 'ohun: Optimizing Acoustic Signal Detection'
-version: 1.0.3
+version: 1.0.5
+doi: 10.1111/2041-210X.14170
 identifiers:
 - type: doi
   value: 10.32614/CRAN.package.ohun
@@ -43,6 +44,7 @@ preferred-citation:
   year: '2023'
   journal: Methods in Ecology and Evolution
   url: https://doi.org/10.1111/2041-210X.14170
+  doi: 10.1111/2041-210X.14170
 repository: https://CRAN.R-project.org/package=ohun
 repository-code: https://github.com/ropensci/ohun/issues/
 url: https://docs.ropensci.org/ohun/
@@ -74,7 +76,7 @@ references:
   - family-names: Ellis
     given-names: Daniel P. W.
   - name: Underbit Technologies
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.tuneR
 - type: software
   title: warbleR
@@ -90,9 +92,9 @@ references:
   - family-names: Smith-Vidaurre
     given-names: Grace
     email: gsmithvi@gmail.com
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.warbleR
-  version: '>= 1.1.32'
+  version: '>= 1.1.34'
 - type: software
   title: cli
   abstract: 'cli: Helpers for Developing Command Line Interfaces'
@@ -103,7 +105,7 @@ references:
   - family-names: Csárdi
     given-names: Gábor
     email: gabor@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.cli
 - type: software
   title: methods
@@ -111,30 +113,39 @@ references:
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: stats
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: utils
   abstract: 'R: A Language and Environment for Statistical Computing'
   notes: Imports
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
 - type: software
   title: seewave
   abstract: 'seewave: Sound Analysis and Synthesis'
@@ -149,7 +160,7 @@ references:
     given-names: Thierry
   - family-names: Simonis
     given-names: Caroline
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.seewave
   version: '>= 2.0.1'
 - type: software
@@ -161,7 +172,7 @@ references:
   - family-names: Mersmann
     given-names: Olaf
     email: olafm@p-value.net
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.fftw
 - type: software
   title: rlang
@@ -176,7 +187,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rlang
 - type: software
   title: sf
@@ -189,7 +200,7 @@ references:
     given-names: Edzer
     email: edzer.pebesma@uni-muenster.de
     orcid: https://orcid.org/0000-0001-8049-7069
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.sf
 - type: software
   title: igraph
@@ -223,7 +234,15 @@ references:
     given-names: Kirill
     email: kirill@cynkra.com
     orcid: https://orcid.org/0000-0002-1416-3412
-  year: '2025'
+  - family-names: Schoch
+    given-names: David
+    email: david.schoch@cynkra.com
+    orcid: https://orcid.org/0000-0003-2952-4812
+  - family-names: Salmon
+    given-names: Maëlle
+    email: maelle@cynkra.com
+    orcid: https://orcid.org/0000-0002-2815-0399
+  year: '2026'
   doi: 10.32614/CRAN.package.igraph
 - type: software
   title: checkmate
@@ -236,7 +255,7 @@ references:
     given-names: Michel
     email: michellang@gmail.com
     orcid: https://orcid.org/0000-0001-9754-0393
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.checkmate
 - type: software
   title: ggplot2
@@ -276,18 +295,35 @@ references:
     given-names: Teun
     name-particle: van den
     orcid: https://orcid.org/0000-0002-9335-7468
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.ggplot2
+- type: software
+  title: Rraven
+  abstract: 'Rraven: Connecting R and ''Raven'' Sound Analysis Software'
+  notes: Imports
+  url: https://github.com/maRce10/Rraven
+  repository: https://CRAN.R-project.org/package=Rraven
+  authors:
+  - family-names: Araya-Salas
+    given-names: Marcelo
+    email: marcelo.araya@ucr.ac.cr
+    orcid: https://orcid.org/0000-0003-3594-619X
+  year: '2026'
+  doi: 10.32614/CRAN.package.Rraven
+  version: '>= 1.0.16'
 - type: software
   title: 'R: A Language and Environment for Statistical Computing'
   notes: Depends
   url: https://www.R-project.org/
   authors:
   - name: R Core Team
+    website: https://ror.org/02zz1nj61
   institution:
     name: R Foundation for Statistical Computing
+    website: https://ror.org/05qewa988
     address: Vienna, Austria
-  year: '2025'
+  year: '2026'
+  doi: 10.32614/R.manuals
   version: '>= 3.2.1'
 - type: software
   title: knitr
@@ -300,7 +336,7 @@ references:
     given-names: Yihui
     email: xie@yihui.name
     orcid: https://orcid.org/0000-0003-0645-5666
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.knitr
 - type: software
   title: rmarkdown
@@ -344,7 +380,7 @@ references:
     given-names: Richard
     email: rich@posit.co
     orcid: https://orcid.org/0000-0003-3925-190X
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.rmarkdown
 - type: software
   title: testthat
@@ -356,7 +392,7 @@ references:
   - family-names: Wickham
     given-names: Hadley
     email: hadley@posit.co
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.testthat
 - type: software
   title: viridis
@@ -368,7 +404,7 @@ references:
   - family-names: Garnier
     given-names: Simon
     email: garnier@njit.edu
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.viridis
 - type: software
   title: Sim.DiffProc
@@ -384,7 +420,7 @@ references:
   - family-names: Boukhetala
     given-names: Kamal
     email: kboukhetala@usthb.dz
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.Sim.DiffProc
 - type: software
   title: vdiffr
@@ -409,6 +445,6 @@ references:
   - family-names: Lise
     given-names: Vaudor
     email: lise.vaudor@ens-lyon.fr
-  year: '2025'
+  year: '2026'
   doi: 10.32614/CRAN.package.vdiffr
 
