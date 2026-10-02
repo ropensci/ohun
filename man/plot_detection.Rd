@@ -13,24 +13,24 @@ plot_detection(
 )
 }
 \arguments{
-\item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) that will be used to evaluate the performance of the detection, represented by those selections in 'detection'. Must contained at least the following columns: "sound.files", "selec", "start" and "end". \strong{It must contain the reference selections that will be used for detection optimization}.}
+\item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events) to be plotted. Must contain at least the following columns: "sound.files", "selec", "start" and "end".}
 
-\item{detection}{Data frame or 'selection.table' with the detections (start and end of the sound events) that will be compared against the 'reference' selections. Must contained at least the following columns: "sound.files", "selec", "start" and "end". It can contain data for additional sound files not found in 'references'. In this case the routine assumes that no sound events are found in those files, so detection from those files are all false positives.}
+\item{detection}{Data frame or 'selection.table' with the detections (start and end of the sound events) to be plotted along with the 'reference' selections. Must contain at least the following columns: "sound.files", "selec", "start" and "end".}
 
-\item{mid.point}{Logical argument to control if each annotations is shown as a rectangle with fix width center at the mid point of the time position (if \code{TRUE}) or the true time range of the annotations is used (if \code{FALSE},  default). 'mid.point' can be useful to make visible annotations in very long sound files that would otherwise look to thin.}
+\item{mid.point}{Logical argument to control if each annotation is shown as a rectangle with fixed width centered at the mid point of the time position (if \code{TRUE}) or the true time range of the annotations is used (if \code{FALSE},  default). 'mid.point' can be useful to make visible annotations in very long sound files that would otherwise look too thin.}
 
 \item{size}{Numeric. Controls the size of the rectangles if \code{mid.point = TRUE}. Default is 20.}
 
-\item{positions}{Numeric. Controls the vertical position of the rectangles representing anotations. Default is c(1, 2). This can be used to get reference and detection annotations closer in the vertical axis. Note that the height of rectangles is 0.5.}
+\item{positions}{Numeric. Controls the vertical position of the rectangles representing annotations. Default is c(1, 2). This can be used to get reference and detection annotations closer in the vertical axis. Note that the height of rectangles is 0.5.}
 }
 \value{
 A ggplot graph (i.e. an object of class "ggplot").
 }
 \description{
-\code{plot_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
+\code{plot_detection} plots detection and reference annotations as rectangles along the time axis
 }
 \details{
-The function helps to visualize the match between reference and detection annotations by plotting them next to each other as rectangles along the time axis. If the annotations contain data for several sound files each sound file will be plotted in its own panel. The plot can be further modify by users using regular ggplot syntax.
+The function helps to visualize the match between reference and detection annotations by plotting them next to each other as rectangles along the time axis. If the annotations contain data for several sound files each sound file will be plotted in its own panel. The plot can be further modified by users using regular ggplot syntax.
 }
 \examples{
 {
@@ -55,7 +55,7 @@ The function helps to visualize the match between reference and detection annota
     detection = lbh_reference[-1, ]
   )
 
-  # use position to make reference and anotations overlap vertically
+  # use position to make reference and annotations overlap vertically
   plot_detection(
     reference = lbh_reference[-14, ],
     detection = lbh_reference[-1, ], positions = c(1, 1.4)

@@ -24,10 +24,11 @@
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each sound event by
-#'   sound file. If no sound event was detected for a sound file it is not included in the output data frame.
+#'   sound file. If no sound event was detected for a sound file it is not included in the output data frame. A selection table is returned when the sound files are found in 'path'.
+#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the same directory as the sound files. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files. 
 #' @export
 #' @name energy_detector
-#' @details This function detects the time position of target sound events based on energy and time thresholds. It first detect all sound above a given energy threshold (argument 'energy'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
+#' @details This function detects the time position of target sound events based on energy and time thresholds. It first detects all sounds above a given energy threshold (argument 'threshold'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
 #'
 #' @examples {
 #' # Save example files into temporary working directory
@@ -38,7 +39,7 @@
 #' # using smoothing and minimum duration
 #' detec <- energy_detector(files = c("lbh1.wav", "lbh2.wav"),
 #' path = tempdir(), threshold = 6, smooth = 6.8,
-#' bp = c(2, 9), hop.size = 3, min.duration = 0.05)
+#' bp = c(2, 9), hop.size = 3, min.duration = 50)
 #'
 #' # diagnose detection
 #' diagnose_detection(reference = lbh_reference,
@@ -70,7 +71,7 @@
 #'
 #' \dontrun{
 #' # USING OTHER SOUND FILE FORMAT (flac program must be installed)
-#'  # fisrt convert files to flac
+#'  # first convert files to flac
 #'  warbleR::wav_2_flac(path = tempdir())
 #'
 #'  # change sound file extension to flac
@@ -107,7 +108,8 @@ energy_detector <-
            min.duration = 0,
            max.duration = Inf,
            cores = 1,
-           pb = TRUE) {
+           pb = TRUE,
+           save.txt = FALSE) {
 
     
     # save start time
@@ -186,7 +188,8 @@ energy_detector <-
           hop.siz = hop.size,
           cors = cores,
           pbar = pb,
-          hold.t = hold.time
+          hold.t = hold.time,
+          save = save.txt
         )
         return(out)
       }
@@ -195,15 +198,14 @@ energy_detector <-
     # put together in a single data frame
     detections <- do.call(rbind, detections_l)
 
-    # remove NAs in detections
-    detections <- detections[!is.na(detections$sound.files), ]
+    # remove empty detections (sound files with no detections)
+    detections <- detections[!is.na(detections$start), ]
 
     # rename rows
     if (nrow(detections) > 0) {
       rownames(detections) <- seq_len(nrow(detections))
     }
-
-    if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections > 0)) {
+    if (all(detections$sound.files %in% list.files(path = path)) & nrow(detections) > 0 & all(complete.cases(detections))) {
       detections <- warbleR::selection_table(X = detections[!is.na(detections$start), ], path = path, parallel = cores, pb = FALSE, verbose = FALSE, fix.selec = TRUE)
 
       attributes(detections)$call <- base::match.call()

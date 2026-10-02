@@ -32,7 +32,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{previous.output}{Data frame with the output of a previous run of this function. This will be used to include previous results in the new output and avoid recalculating detection performance for parameter combinations previously evaluated.}
 
-\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
+\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
 
 \item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
 }
@@ -52,7 +52,7 @@ A data frame in which each row shows the result of a detection job for each cuto
 \code{\link{optimize_template_detector}} optimizes acoustic template detection
 }
 \details{
-This function takes a a reference data frame or 'selection_table' ('X') and the output of \code{\link{template_correlator}} and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections. The function returns several diagnostic metrics to allow user to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
+This function takes a reference data frame or 'selection_table' ('reference') and the output of \code{\link{template_correlator}} and estimates the detection performance for different detection parameter combinations. This is done by comparing the position in time of the detection to those of the reference selections. The function returns several diagnostic metrics to allow users to determine which parameter values provide a detection that more closely matches the selections in 'reference'. Those parameters can be later used for performing a more efficient detection using \code{\link{template_detector}}. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'.
 }
 \examples{
 {
@@ -68,7 +68,7 @@ templ <- lbh_reference[11, ]
 tc <- template_correlator(templates = templ, path = tempdir(),
 files = "lbh2.wav")
 
-# using 2 threshold
+# using 2 thresholds
 optimize_template_detector(template.correlations = tc, reference =
 lbh_reference[lbh_reference$sound.files == "lbh2.wav", ],
 threshold = c(0.2, 0.5))

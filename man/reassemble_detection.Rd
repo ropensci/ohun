@@ -7,9 +7,9 @@
 reassemble_detection(detection, Y, cores = 1, pb = TRUE)
 }
 \arguments{
-\item{detection}{Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of sound events. Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{detection}{Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of sound events. Must contain at least the following columns: "sound.files", "selec", "start" and "end".}
 
-\item{Y}{Data frame with the start and end of clips in the orignal sound files. Must contain the column "original.sound.files", "sound.files" (clip files), "start" and "end".}
+\item{Y}{Data frame with the start and end of clips in the original sound files. Must contain the column "original.sound.files", "sound.files" (clip files), "start" and "end".}
 
 \item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
@@ -17,7 +17,7 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 }
 \value{
-A data frame with annotations refering to the position of the detections in the original sound files.
+A data frame with annotations referring to the position of the detections in the original sound files.
 }
 \description{
 \code{reassemble_detection} reassembles detections made on clips so they refer to the original sound files

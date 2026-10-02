@@ -7,19 +7,19 @@
 #' @param files Character vector indicating the subset of files that will be split. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.
 #' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
-#' @param pb Logical argument to control progress bar. Default is \code{TRUE}. Only used when
+#' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param only.sels Logical argument to control if only the data frame is returned (no wave files are saved). Default is \code{FALSE}.
 #' @param X 'selection_table' object or a data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of signal
-#' (start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selection are labeled as 'split'. Default is \code{NULL}.
+#' (start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selections are labeled as 'split'. Default is \code{NULL}.
 #' @param output.path Directory path where the output files will be saved. If not supplied then a subfolder called 'clips' will be created within the supplied 'path'.
-#' @param overwrite Logical. If \code{TRUE} existing files in the output path with the same name as the clips being created will be overwritten. Default is \code{FALSE}. This allows to avoid re-creating clips that have already been created in previous function calls.  
+#' @param overwrite Logical. If \code{TRUE} existing files in the output path with the same name as the clips being created will be overwritten. Default is \code{FALSE}. This avoids re-creating clips that have already been created in previous function calls.  
 #' @family data manipulation
 #' @seealso \code{\link[warbleR]{cut_sels}}
 #' @export
 #' @name split_acoustic_data
-#' @return Wave files for each segment (e.g. clips) in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav'). Clips are saved in .wav format. If 'X' is not supplied the function returns a data frame in the containing the name of the original sound files (original.sound.files), the name of the segments (sound.files) and the start and end of segments in the original files. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. However, if 'X' is a 'selection table' and the clips have been saved, a data frame with the information of the position of clips in the original sound files is also returned as an attribute in the output selection table ("clip.info"). Output annotation data contains the position of the annotations in the new clips, with an additional column, 'split.sels', that inform users whether annotations have been split into multiple clips ('split') or not (\code{NA}). For split annotations the 'selec' column will contain the original 'selec' id plus an additional index (selec-index) so users can still identify from which annotation splits came from. Sound files in 'path' that are not referenced in 'X' will stil be split. The function may not work properly with very short segments (< 1 s).
-#' @details This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
+#' @return Wave files for each segment (e.g. clips) in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav'). Clips are saved in .wav format. If 'X' is not supplied the function returns a data frame containing the name of the original sound files (original.sound.files), the name of the segments (sound.files) and the start and end of segments in the original files. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. However, if 'X' is a 'selection table' and the clips have been saved, a data frame with the information of the position of clips in the original sound files is also returned as an attribute in the output selection table ("clip.info"). Output annotation data contains the position of the annotations in the new clips, with an additional column, 'split.sels', that inform users whether annotations have been split into multiple clips ('split') or not (\code{NA}). For split annotations the 'selec' column will contain the original 'selec' id plus an additional index (selec-index) so users can still identify from which annotation splits came from. Sound files in 'path' that are not referenced in 'X' will still be split. The function may not work properly with very short segments (< 1 s).
+#' @details This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can't be manipulated, e.g. \code{\link{energy_detector}}).
 #' @examples
 #' {
 #'   # load data and save to temporary working directory
@@ -75,8 +75,8 @@ split_acoustic_data <-
       normalizePath(path)
     }
     
-    # create output path if it does not exist
-    if (!dir.exists(output.path)) dir.create(output.path, recursive = TRUE)
+    # create output path if it does not exist (only needed if clips are saved)
+    if (!only.sels && !dir.exists(output.path)) dir.create(output.path, recursive = TRUE)
     
     # measure wav duration
     wvdr <- warbleR::duration_sound_files(path = path, files = files)
@@ -170,9 +170,9 @@ split_acoustic_data <-
     # put together in a single data frame
     split.df <- do.call(rbind, split.df_l)
     
-    # check if there are duplicated file names (witout extension) in the original sound files
+    # check if there are duplicated file names (without extension) in the original sound files
     if (any(table(sub("\\.[^.]+$", "", unique(split.df$original.sound.files))) > 1))
-      stop2("Some sound files with different formats have the same name (without extension). Please rename them to avoid problems when splitting sound files of use the argument 'files' to focus on a file subset.")
+      stop2("Some sound files with different formats have the same name (without extension). Please rename them to avoid problems when splitting sound files or use the argument 'files' to focus on a file subset.")
     
     # if clips are produced
     if (!only.sels) {

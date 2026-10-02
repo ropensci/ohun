@@ -24,14 +24,14 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
-\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.}
+\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
 
-\item{by}{Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is \code{NULL}.}
+\item{by}{Character vector with the name of a categorical column in 'detection' for running a stratified labeling (e.g. by template). Labels will be returned separated for each level in 'by'. Default is \code{NULL}.}
 
 \item{solve.ambiguous}{Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.}
 }
 \value{
-A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
+A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount of overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
 }
 \description{
 \code{label_detection} labels the performance of a sound event detection procedure comparing the output selection table to a reference selection table

@@ -1,6 +1,6 @@
 #' @title Find templates representative of the structural variation of sound events
 #'
-#' @description \code{get_templates} find the sound events that are closer to the acoustic space centroid (i.e. close to the average acoustic structure) in a reference table.
+#' @description \code{get_templates} finds the sound events that are closest to the acoustic space centroid (i.e. close to the average acoustic structure) in a reference table.
 #' @param reference Selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) or data frame with columns
 #' for sound file name (sound.files), selection number (selec), and start and end time of sound event
 #' (start and end).
@@ -16,7 +16,7 @@
 #' @export
 #' @name get_templates
 #' @details This function finds sound events (from a reference table) that are representative of the acoustic structure variation of all sound events. This is done by finding the events closer to the centroid of the acoustic space. If the acoustic space is not supplied ('acoustic.space' argument) then the function will estimate it by measuring several acoustic features using the function \code{\link[warbleR]{spectro_analysis}} (features related to energy distribution in the frequency and time domain as well as features of the dominant frequency contours, see \code{\link[warbleR]{spectro_analysis}} for more details) and summarizing it with Principal Component Analysis (after z-transforming parameters) using the function \code{\link[stats]{prcomp}}. Acoustic features with missing values are removed before estimating Principal Component Analysis. The rationale is that a sound event close to the average structure is more likely to share structural features with most events across the acoustic space than a sound event in the periphery of the space.
-#' If only 1 template is required the function returns the sound event closest to the acoustic space centroid. If more than 1 template is required additional sound events are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'. Notice that the function aims to partition spaces in which sounds are somehow homogeneously distributed. When clear clusters are found in the distribution of the acoustic space thus clusters might not match the sub-spaces defined by the function.
+#' If only 1 template is required the function returns the sound event closest to the acoustic space centroid. If more than 1 template is required additional sound events are returned that are representative of the acoustic space. To do this, the function defines sub-spaces as equal-size slices of a circle centered at the centroid of the acoustic space. A column 'template' is included in the output selection table that identifies each template. Custom acoustic spaces can be supplied with argument 'acoustic.space'. Notice that the function aims to partition spaces in which sounds are somehow homogeneously distributed. When clear clusters are found in the distribution of the acoustic space those clusters might not match the sub-spaces defined by the function.
 #'
 #' @examples {
 #'   # Save example files into temporary working directory
@@ -35,8 +35,7 @@
 #'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #' 
 #' @seealso \code{\link{template_detector}}
-#' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}). Implements a
-#' modified version of the timer function from seewave.
+#' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
 
 get_templates <-
   function(reference,
@@ -62,7 +61,7 @@ get_templates <-
 
     if (!is.null(acoustic.space)) {
       if (nrow(reference) != nrow(acoustic.space)) {
-        stop2("'reference' and 'acoustic.space' must have the same number of columns")
+        stop2("'reference' and 'acoustic.space' must have the same number of rows")
       }
     }
 
@@ -100,7 +99,7 @@ get_templates <-
       plot_labs <- c("PC1", "PC2")
     } else {
       if (length(dim(acoustic.space)) != 2) {
-        stop2("Acoustic space must be either a data frame or a matrix with 2 column")
+        stop2("Acoustic space must be either a data frame or a matrix with 2 columns")
       }
 
       if (ncol(acoustic.space) != 2) {

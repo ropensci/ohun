@@ -3,7 +3,7 @@
 #' @description \code{get_envelopes} extracts absolute amplitude envelopes to speed up energy detection
 #' @param path Character string containing the directory path where the sound files are located.
 #' The current working directory is used as default.
-#' @param files character vector or indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.
+#' @param files Character vector indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.
 #' @param bp Numeric vector of length 2 giving the lower and upper limits of a
 #'   frequency bandpass filter (in kHz). Default is \code{NULL}. Bandpass is done using the function \code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.
 #' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 wl for a 44.1 kHz sampling rate. Ignored if 'wl' is supplied.
@@ -49,11 +49,10 @@
 #'   plot(x[(length(x) / 9):(length(x) / 4)], type = "l", xlab = "samples", ylab = "amplitude")
 #'
 #'   # no normalization
-#'   envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8)
+#'   envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8, normalize = FALSE)
 #'   x <- envs[[1]]$envelope
 #'   plot(x[(length(x) / 9):(length(x) / 4)],
-#'     type = "l", xlab = "samples", ylab = "amplitude",
-#'     normalize = FALSE
+#'     type = "l", xlab = "samples", ylab = "amplitude"
 #'   )
 #' }
 #'
@@ -145,7 +144,7 @@ get_envelopes <-
 
     # append call info
     env_list[[length(env_list) + 1]] <- list(
-      parameters = lapply(as.list(base::match.call())[-1], eval),
+      parameters = mget(names(as.list(base::match.call())[-1])),
       call = base::match.call(),
       ohun.version = packageVersion("ohun")
     )
@@ -165,9 +164,10 @@ get_envelopes <-
 #' Class 'envelopes': list of absolute amplitude envelopes
 #'
 #' Class for absolute amplitude envelopes
-#' @export
+#' @name envelopes
 #' @details An object of class \code{envelopes} created by \code{\link{get_envelopes}} is a list with sound files absolute amplitude envelopes and metadata
 #' @seealso \code{\link{get_envelopes}}
+NULL
 
 
 ##############################################################################################################
@@ -196,7 +196,7 @@ print.envelopes <- function(x, ...) {
   # add message about amplitude envelope modifications
   if (any(names(x$call_info$parameters) == "smooth")) {
     if (x$call_info$parameters$smooth > 0) {
-      smooth_message <- paste0(x$call_info$parameters$smooth, " samples smoothing")
+      smooth_message <- paste0(x$call_info$parameters$smooth, " ms smoothing")
     } else {
       smooth_message <- ""
     }
@@ -206,7 +206,7 @@ print.envelopes <- function(x, ...) {
 
   if (any(names(x$call_info$parameters) == "thinning")) {
     if (x$call_info$parameters$thinning < 1) {
-      thin_message <- paste0(x$call_info$parameters$thinning, "t hinning")
+      thin_message <- paste0(x$call_info$parameters$thinning, " thinning")
     } else {
       thin_message <- ""
     }

@@ -14,7 +14,7 @@ test_that("split files", {
 
   unlink(
     list.files(
-      path = tempdir(),
+      path = file.path(tempdir(), "clips"),
       pattern = "\\.wav$|\\.flac$|\\.mp3$|\\.wac$",
       ignore.case = T,
       full.names = TRUE
@@ -49,7 +49,7 @@ test_that("split files and annotations", {
 
   unlink(
     list.files(
-      path = tempdir(),
+      path = file.path(tempdir(), "clips"),
       pattern = "\\.wav$|\\.flac$|\\.mp3$|\\.wac$",
       ignore.case = T,
       full.names = TRUE

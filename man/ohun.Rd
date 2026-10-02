@@ -11,9 +11,9 @@ ohun is intended to facilitate the automated detection of sound events, providin
 \details{
 The main features of the package are:
   \itemize{
-  \item The use of reference annotations for detection optimization and diagnostic
+  \item The use of reference annotations for detection optimization and diagnosis
   \item The use of signal detection theory diagnostic parameters to evaluate detection performance
-  \item The batch processing of sound files for improve computational performance
+  \item The batch processing of sound files to improve computational performance
   }
 
 The package offers functions for:

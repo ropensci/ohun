@@ -2,23 +2,22 @@
 #'
 #' @description \code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-correlation scores
 #' @param wave A 'wave' class object.
-#' @param detection Data frame or selection table (using the warbleR package's format, see \code{\link[warbleR]{selection_table}}).
-#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".
-#' @param detection Data frame or 'selection.table' with the detection (start and end of the sound events) Must contained at least the following columns: "sound.files", "selec", "start" and "end".
+#' @param reference Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contain at least the following columns: "sound.files", "selec", "start" and "end".
+#' @param detection Data frame or 'selection.table' with the detection (start and end of the sound events). Must contain at least the following columns: "sound.files", "selec", "start" and "end".
 #' @param envelope Logical to control whether the amplitude envelope is plotted. Default is \code{FALSE}.
-#' @param threshold A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-1, while for correlations the range is 0-100.
+#' @param threshold A numeric vector of length 1 indicating the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-100 (as in \code{\link{energy_detector}}), while for correlations the range is 0-1.
 #' @param smooth A numeric vector of length 1 to smooth the amplitude envelope
 #'   with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.
 #' @param collevels Numeric sequence of negative numbers to control color partitioning and amplitude values that are shown (as in \code{\link[seewave]{spectro}}).
 #' @param palette Function with the color palette to be used on the spectrogram (as in \code{\link[seewave]{spectro}})
 #' @param template.correlation List extracted from the output of \code{\link{template_correlator}} containing the correlation scores and metadata for an specific sound file/template dyad. For instance 'correlations[[1]]' where 'correlations' is the output of a \code{\link{template_correlator}} call. If supplied the correlation is also plotted. Default is \code{NULL}.
 #' @param line.x.position Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting sound events. Default is 2.
-#' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.
+#' @param hop.size A numeric vector of length 1 specifying the time window duration (in ms). Default is \code{NULL} (the 'wl' default of \code{\link[seewave]{spectro}} is used, or 'wl' if supplied through '...'). 11.6 ms is equivalent to 512 'wl' for a 44.1 kHz sampling rate.
 #' @param ... Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.
-#' @return A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectrogram.
+#' @return A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or correlation scores below the spectrogram.
 #' @export
 #' @name label_spectro
-#' @details This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
+#' @details This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at a time.
 #'
 #' @examples {
 #'   # load example data
@@ -35,14 +34,14 @@
 #'   label_spectro(
 #'     wave = lbh1,
 #'     detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-#'     wl = 200, ovlp = 50, flim = c(1, 10)
+#'     wl = 200, ovlp = 50, flim = c(1, 10), envelope = TRUE
 #'   )
 #'
 #'   # see the package vignette for more examples
 #' }
 #'
 #' @references
-#' #'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
+#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #'
 #' @seealso \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}
 #' @author Marcelo Araya-Salas (\email{marcelo.araya@@ucr.ac.cr}).
@@ -60,7 +59,7 @@ label_spectro <-
            line.x.position = 2,
            hop.size = NULL,
            ...) {
-    # error message if wavethresh is not installed
+    # error message if viridis is not installed
     if (!requireNamespace("viridis", quietly = TRUE)) {
       stop2("must install 'viridis' to use this function")
     }
@@ -82,9 +81,12 @@ label_spectro <-
     # report errors
     checkmate::reportAssertions(check_results)
 
-    # adjust wl based on hope.size
+    # extra arguments for spectro()
+    spectro_args <- list(...)
+
+    # adjust wl based on hop.size
     if (!is.null(hop.size)) {
-      wl <- round(wave@samp.rate * hop.size / 1000, 0)
+      spectro_args$wl <- round(wave@samp.rate * hop.size / 1000, 0)
     }
 
     # reset graphic device on exit
@@ -98,26 +100,23 @@ label_spectro <-
     }
 
     # plot spectrogram
-    seewave::spectro(
-      wave = wave,
-      grid = FALSE,
-      scale = FALSE,
-      palette = palette,
-      collevels = collevels,
-      axisX = if (envelope |
-        !is.null(template.correlation)) {
-        FALSE
-      } else {
-        TRUE
-      },
-      ...
-    )
+    do.call(seewave::spectro, c(
+      list(
+        wave = wave,
+        grid = FALSE,
+        scale = FALSE,
+        palette = palette,
+        collevels = collevels,
+        axisX = !(envelope | !is.null(template.correlation))
+      ),
+      spectro_args
+    ))
 
     # plot detection
     if (!is.null(reference)) {
       for (i in seq_len(nrow(reference))) {
         lines(
-          x = (reference[i, c("start", "end")]),
+          x = unlist(reference[i, c("start", "end")]),
           y = rep(line.x.position, 2),
           col = "#F7D03CFF",
           lwd = 7,
@@ -130,7 +129,7 @@ label_spectro <-
     if (!is.null(detection)) {
       for (i in seq_len(nrow(detection))) {
         lines(
-          x = (detection[i, c("start", "end")]),
+          x = unlist(detection[i, c("start", "end")]),
           y = rep(line.x.position - 0.3, 2),
           col = "#CF4446FF",
           lwd = 7,
@@ -185,8 +184,10 @@ label_spectro <-
       # set graphic device for envelope
       par(mar = c(4, 4, 0.3, 1))
 
-      if (!is.null(smooth)) {
-        smooth <- round(wave@samp.rate * smooth / 1000, 0)
+      smooth <- if (!is.null(smooth) && smooth > 0) {
+        round(wave@samp.rate * smooth / 1000, 0)
+      } else {
+        NULL
       }
 
       # plot envelope
@@ -196,7 +197,7 @@ label_spectro <-
       # add threshold line
       if (!is.null(threshold)) {
         abline(
-          h = par("usr")[4] * threshold / 100,
+          h = threshold / 100,
           col = "#CF4446FF",
           lwd = 3
         )

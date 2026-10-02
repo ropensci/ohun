@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_envelopes.R
 \name{print.envelopes}
 \alias{print.envelopes}
-\title{Class 'envelopes': list of absolute amplitude envelopes}
+\title{print method for class \code{envelopes}}
 \usage{
 \method{print}{envelopes}(x, ...)
 }
@@ -15,13 +15,6 @@
 Prints a summary of an object of class 'envelopes'.
 }
 \description{
-Class for absolute amplitude envelopes
-}
-\details{
-An object of class \code{envelopes} created by \code{\link{get_envelopes}} is a list with sound files absolute amplitude envelopes and metadata
-}
-\seealso{
-\code{\link{get_envelopes}}
 print method for class \code{envelopes}
 }
 \keyword{internal}

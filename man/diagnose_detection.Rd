@@ -32,13 +32,13 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
-\item{path}{Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected)is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.}
+\item{path}{Character string containing the directory path where the sound files are located. If supplied then duty cycle (fraction of a sound file in which sounds were detected) is also returned. This feature is more helpful for tuning an energy-based detection. Default is \code{NULL}.}
 
-\item{by}{Character vector with the name of a column in 'reference' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.}
+\item{by}{Character vector with the name of a column in 'detection' for splitting diagnostics. Diagnostics will be returned separated for each level in 'by'. Default is \code{NULL}.}
 
-\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
+\item{macro.average}{Logical argument to control if diagnostics are first calculated for each sound file and then averaged across sound files, which can minimize the effect of unbalanced sample sizes between sound files. If \code{FALSE} (default) diagnostics are based on aggregated statistics irrespective of sound files. The following indices can be estimated by macro-averaging: overlap, mean.duration.true.positives, mean.duration.false.positives, mean.duration.false.negatives, proportional.duration.true.positives, recall and precision (f.score is always derived from recall and precision). Note that when applying macro-averaging, recall and precision are not derived from the true positive, false positive and false negative values returned by the function.}
 
-\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.}
+\item{min.overlap}{Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.}
 
 \item{solve.ambiguous}{Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.}
 }
@@ -66,7 +66,7 @@ A data frame including the following detection performance diagnostics:
 \code{diagnose_detection} evaluates the performance of a sound event detection procedure comparing the output selection table to a reference selection table
 }
 \details{
-The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through maximum bipartite matching (using the R package igraph). Priority for assigning a detection to a reference is given by the amount of time overlap. 'splits' and 'merge.positives' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = detections".
+The function evaluates the performance of a sound event detection procedure by comparing its output selection table to a reference selection table in which all sound events of interest have been selected. The function takes any overlap between detected sound events and target sound events as true positives. Note that all sound files located in the supplied 'path' will be analyzed even if not all of them are listed in 'reference'. When several possible matching pairs of sound event and detections are found, the optimal set of matching pairs is found through maximum bipartite matching (using the R package igraph). Priority for assigning a detection to a reference is given by the amount of time overlap. 'splits' and 'merges' are also counted (i.e. counted twice) as 'true.positives'. Therefore "true.positives + false.positives = detections".
 }
 \examples{
 {
@@ -92,20 +92,20 @@ The function evaluates the performance of a sound event detection procedure by c
   diagnose_detection(
     reference = lbh_reference,
     detection =
-      lbh_reference[lbh_reference$sound.files != "lbh1", ]
+      lbh_reference[lbh_reference$sound.files != "lbh1.wav", ]
   )
 
   # and extra sound file in detection
   diagnose_detection(
     reference =
-      lbh_reference[lbh_reference$sound.files != "lbh1", ],
+      lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
     detection = lbh_reference
   )
 
   # and extra sound file in detection by sound file
   dd <- diagnose_detection(
     reference =
-      lbh_reference[lbh_reference$sound.files != "lbh1", ],
+      lbh_reference[lbh_reference$sound.files != "lbh1.wav", ],
     detection = lbh_reference, time.diagnostics = TRUE, by.sound.file = TRUE
   )
 

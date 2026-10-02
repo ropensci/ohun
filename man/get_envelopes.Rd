@@ -21,7 +21,7 @@ get_envelopes(
 \item{path}{Character string containing the directory path where the sound files are located.
 The current working directory is used as default.}
 
-\item{files}{character vector or indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.}
+\item{files}{Character vector indicating the sound files that will be analyzed. Supported file formats:'.wav', '.mp3', '.flac' and '.wac'. If not supplied the function will work on all sound files (in the supported format) in 'path'.}
 
 \item{bp}{Numeric vector of length 2 giving the lower and upper limits of a
 frequency bandpass filter (in kHz). Default is \code{NULL}. Bandpass is done using the function \code{\link[seewave]{ffilter}}, which applies a short-term Fourier transformation to first create a spectrogram in which the target frequencies are filtered and then is back transformed into a wave object using a reverse Fourier transformation.}
@@ -81,11 +81,10 @@ This function extracts the absolute amplitude envelopes of sound files. Can be u
   plot(x[(length(x) / 9):(length(x) / 4)], type = "l", xlab = "samples", ylab = "amplitude")
 
   # no normalization
-  envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8)
+  envs <- get_envelopes(path = tempdir(), thinning = 1 / 10, smooth = 6.8, normalize = FALSE)
   x <- envs[[1]]$envelope
   plot(x[(length(x) / 9):(length(x) / 4)],
-    type = "l", xlab = "samples", ylab = "amplitude",
-    normalize = FALSE
+    type = "l", xlab = "samples", ylab = "amplitude"
   )
 }
 

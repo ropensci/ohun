@@ -4,9 +4,9 @@
 #'
 #' The main features of the package are:
 #'   \itemize{
-#'   \item The use of reference annotations for detection optimization and diagnostic
+#'   \item The use of reference annotations for detection optimization and diagnosis
 #'   \item The use of signal detection theory diagnostic parameters to evaluate detection performance
-#'   \item The batch processing of sound files for improve computational performance
+#'   \item The batch processing of sound files to improve computational performance
 #'   }
 #'
 #' The package offers functions for:
@@ -29,11 +29,12 @@
 #' @import utils
 #' @import methods
 #' @import stats
+#' @importFrom Rraven exp_raven
 #' @importFrom ggplot2 ggplot aes geom_point scale_color_manual facet_grid labs theme_bw geom_polygon scale_fill_manual scale_y_continuous theme_classic
 #' @importFrom checkmate assert_logical assert_character assert_integerish assert_numeric assert_multi_class assert_list assert_function assert_class assert_directory assert_data_frame assert_names makeAssertCollection makeAssertionFunction reportAssertions
 #' @importFrom rlang call_args
 #' @importFrom cli style_bold style_italic make_ansi_style num_ansi_colors
-#' @importFrom igraph max_bipartite_match E as_data_frame graph_from_incidence_matrix
+#' @importFrom igraph max_bipartite_match E as_data_frame graph_from_biadjacency_matrix
 #' @importFrom methods is
 #' @importFrom sf st_polygon st_intersects st_as_sf
 #' @importFrom tuneR writeWave

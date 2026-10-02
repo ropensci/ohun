@@ -18,7 +18,7 @@ The function prints a summary of the format of the files in an acoustic data set
 \code{summarize_acoustic_data} summarizes information about file format in an acoustic data set
 }
 \details{
-The function summarizes information about file format in an acoustic data set. It provides information about the number of files, file formats, sampling rates, bit depts, channels, duration and file size (in MB). For file format, sampling rate, bit depth and number of channels the function includes information about the number of files for each format (e.g. '44.1 kHz (2)' means 2 files with a sampling rate of 44.1 kHz).
+The function summarizes information about file format in an acoustic data set. It provides information about the number of files, file formats, sampling rates, bit depths, channels, duration and file size (in MB). For file format, sampling rate, bit depth and number of channels the function includes information about the number of files for each format (e.g. '44.1 kHz (2)' means 2 files with a sampling rate of 44.1 kHz).
 }
 \examples{
 {

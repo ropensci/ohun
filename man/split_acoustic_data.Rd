@@ -29,7 +29,7 @@ split_acoustic_data(
 \item{cores}{Numeric. Controls whether parallel computing is applied.
 It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).}
 
-\item{pb}{Logical argument to control progress bar. Default is \code{TRUE}. Only used when}
+\item{pb}{Logical argument to control progress bar. Default is \code{TRUE}.}
 
 \item{only.sels}{Logical argument to control if only the data frame is returned (no wave files are saved). Default is \code{FALSE}.}
 
@@ -37,18 +37,18 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{X}{'selection_table' object or a data frame with columns
 for sound file name (sound.files), selection number (selec), and start and end time of signal
-(start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selection are labeled as 'split'. Default is \code{NULL}.}
+(start and end). If supplied the data frame/selection table is modified to reflect the position of the selections in the new sound files. Note that some selections could split between 2 segments. To deal with this, a 'split.sels' column is added to the data frame in which those selections are labeled as 'split'. Default is \code{NULL}.}
 
-\item{overwrite}{Logical. If \code{TRUE} existing files in the output path with the same name as the clips being created will be overwritten. Default is \code{FALSE}. This allows to avoid re-creating clips that have already been created in previous function calls.}
+\item{overwrite}{Logical. If \code{TRUE} existing files in the output path with the same name as the clips being created will be overwritten. Default is \code{FALSE}. This avoids re-creating clips that have already been created in previous function calls.}
 }
 \value{
-Wave files for each segment (e.g. clips) in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav'). Clips are saved in .wav format. If 'X' is not supplied the function returns a data frame in the containing the name of the original sound files (original.sound.files), the name of the segments (sound.files) and the start and end of segments in the original files. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. However, if 'X' is a 'selection table' and the clips have been saved, a data frame with the information of the position of clips in the original sound files is also returned as an attribute in the output selection table ("clip.info"). Output annotation data contains the position of the annotations in the new clips, with an additional column, 'split.sels', that inform users whether annotations have been split into multiple clips ('split') or not (\code{NA}). For split annotations the 'selec' column will contain the original 'selec' id plus an additional index (selec-index) so users can still identify from which annotation splits came from. Sound files in 'path' that are not referenced in 'X' will stil be split. The function may not work properly with very short segments (< 1 s).
+Wave files for each segment (e.g. clips) in the working directory (if \code{only.sels = FALSE}, named as 'sound.file.name-#.wav'). Clips are saved in .wav format. If 'X' is not supplied the function returns a data frame containing the name of the original sound files (original.sound.files), the name of the segments (sound.files) and the start and end of segments in the original files. If 'X' is supplied then a data frame with the position of the selections in the newly created clips is returned instead. However, if 'X' is a 'selection table' and the clips have been saved, a data frame with the information of the position of clips in the original sound files is also returned as an attribute in the output selection table ("clip.info"). Output annotation data contains the position of the annotations in the new clips, with an additional column, 'split.sels', that inform users whether annotations have been split into multiple clips ('split') or not (\code{NA}). For split annotations the 'selec' column will contain the original 'selec' id plus an additional index (selec-index) so users can still identify from which annotation splits came from. Sound files in 'path' that are not referenced in 'X' will still be split. The function may not work properly with very short segments (< 1 s).
 }
 \description{
 \code{split_acoustic_data} splits sound files (and corresponding selection tables) in shorter clips
 }
 \details{
-This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can be manipulated, e.g. \code{\link{energy_detector}}).
+This function aims to reduce the size of sound files in order to simplify some processes that are limited by sound file size (big files can't be manipulated, e.g. \code{\link{energy_detector}}).
 }
 \examples{
 {

@@ -19,11 +19,125 @@ test_that("peak amplitude works", {
       smooth = 10,
       peak.amplitude = 10,
       pb = FALSE
-    )
+      )
   expect_equal(class(detec1)[2], "data.frame")
   expect_equal(class(detec1)[1], "selection_table")
   expect_equal(nrow(detec1), 12)
 })
+
+test_that("export selection table", {
+  detec1 <-
+    energy_detector(
+      files = c("lbh1.wav", "lbh2.wav"),
+      path = tempdir(),
+      threshold = 0.06,
+      hop.size = 6.8,
+      bp = c(2, 9),
+      min.duration = 0.09,
+      smooth = 10,
+      peak.amplitude = 10,
+      pb = TRUE,
+      save.txt = TRUE
+    )
+
+  
+  txts <- list.files(path = tempdir(), pattern = "txt$", full.names = TRUE)
+  
+  expect_equal(length(txts), 2)
+  
+  detec2 <-
+    energy_detector(
+      files = c("lbh1.wav", "lbh2.wav"),
+      path = tempdir(),
+      threshold = 0.06,
+      hop.size = 6.8,
+      bp = c(2, 9),
+      min.duration = 0.09,
+      smooth = 10,
+      peak.amplitude = 10,
+      pb = TRUE,
+      save.txt = TRUE
+    )
+
+  unlink(txts)
+  
+  expect_equal(nrow(detec1), nrow(detec2))
+  
+  expect_true(all(detec1$start - detec2$start < 0.0001))
+  
+})
+
+test_that("export selection table no detection", {
+  
+  txts <- list.files(path = tempdir(), pattern = "txt$", full.names = TRUE)
+  
+  unlink(txts)
+  
+  
+  detec1 <-
+    energy_detector(
+      files = c("lbh1.wav", "lbh2.wav"),
+      path = tempdir(),
+      threshold = 0.06,
+      hop.size = 6.8,
+      bp = c(2, 9),
+      min.duration = 0.09,
+      smooth = 10,
+      peak.amplitude = 100,
+      pb = TRUE,
+      save.txt = TRUE
+    )
+  
+  
+  
+  expect_equal(length(txts), 2)
+  
+  unlink(txts)
+  
+  detec2 <-
+    energy_detector(
+      files = c("lbh1.wav", "lbh2.wav"),
+      path = tempdir(),
+      threshold = 0.06,
+      hop.size = 6.8,
+      bp = c(2, 9),
+      min.duration = 0.09,
+      smooth = 10,
+      peak.amplitude = 10,
+      pb = TRUE,
+      save.txt = TRUE
+    )
+  
+  
+  expect_equal(nrow(detec1), 0)
+  
+  expect_equal(nrow(detec2), 12)
+  
+})
+
+test_that("export empty selection table", {
+  detec1 <-
+    energy_detector(
+      files = c("lbh1.wav", "lbh2.wav"),
+      path = tempdir(),
+      threshold = 0.06,
+      hop.size = 6.8,
+      bp = c(2, 9),
+      min.duration = 0.09,
+      smooth = 10,
+      peak.amplitude = 100,
+      pb = FALSE,
+      save.txt = TRUE
+    )
+  txts <- list.files(path = tempdir(), pattern = "txt$", full.names = TRUE)
+  
+  txt1 <- read.table(txts[1], header = TRUE)
+  
+  expect_equal(nrow(txt1), 0)
+  
+  unlink(txts)
+})
+
 
 test_that("time diagnostics", {
   # diagnose detection

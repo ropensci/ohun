@@ -6,6 +6,7 @@ ohun 1.0.5
 ### MINOR IMPROVEMENTS
 
   *  `split_acoustic_data()` returns the name and duration of files with a duration less than the specified clip duration
+  * new argument `save.txt` in `energy_detector()` and `template_detector()` to save selection table (sensu Raven Pro) txt files for each sound file to facilitate resuming process
 
 ohun 1.0.4
 =========================

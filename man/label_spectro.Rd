@@ -22,13 +22,13 @@ label_spectro(
 \arguments{
 \item{wave}{A 'wave' class object.}
 
-\item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{reference}{Data frame or 'selection.table' (following the warbleR package format) with the reference selections (start and end of the sound events). Must contain at least the following columns: "sound.files", "selec", "start" and "end".}
 
-\item{detection}{Data frame or 'selection.table' with the detection (start and end of the sound events) Must contained at least the following columns: "sound.files", "selec", "start" and "end".}
+\item{detection}{Data frame or 'selection.table' with the detection (start and end of the sound events). Must contain at least the following columns: "sound.files", "selec", "start" and "end".}
 
 \item{envelope}{Logical to control whether the amplitude envelope is plotted. Default is \code{FALSE}.}
 
-\item{threshold}{A numeric vector on length 1 indicated the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-1, while for correlations the range is 0-100.}
+\item{threshold}{A numeric vector of length 1 indicating the amplitude or correlation threshold to plot on the envelope or correlation scores respectively. Default is \code{NULL}. Note that for amplitude the range of valid values is 0-100 (as in \code{\link{energy_detector}}), while for correlations the range is 0-1.}
 
 \item{smooth}{A numeric vector of length 1 to smooth the amplitude envelope
 with a sum smooth function. It controls the time range (in ms) in which amplitude samples are smoothed (i.e. averaged with neighboring samples). Default is 5. 0 means no smoothing is applied.}
@@ -41,18 +41,18 @@ with a sum smooth function. It controls the time range (in ms) in which amplitud
 
 \item{line.x.position}{Numeric vector of length 1 with the position in the frequency axis (so in kHz) of the lines highlighting sound events. Default is 2.}
 
-\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is 11.6 ms, which is equivalent to 512 'wl' for a 44.1 kHz sampling rate.}
+\item{hop.size}{A numeric vector of length 1 specifying the time window duration (in ms). Default is \code{NULL} (the 'wl' default of \code{\link[seewave]{spectro}} is used, or 'wl' if supplied through '...'). 11.6 ms is equivalent to 512 'wl' for a 44.1 kHz sampling rate.}
 
 \item{...}{Additional arguments to be passed to  \code{\link[seewave]{spectro}} for further spectrogram customization.}
 }
 \value{
-A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or corelation scores below the spectrogram.
+A spectrogram along with lines highlighting the position of sound events in 'reference' and/or 'detection'. If supplied it will also plot the amplitude envelope or correlation scores below the spectrogram.
 }
 \description{
 \code{label_spectro} plot a spectrogram along with amplitude envelopes or cross-correlation scores
 }
 \details{
-This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at the time.
+This function plots spectrograms annotated with the position of sound events. \strong{Created for graphs included in the vignette, and probably only useful for that or for very short recordings}. Only works on a single 'wave' object at a time.
 }
 \examples{
 {
@@ -70,7 +70,7 @@ This function plots spectrograms annotated with the position of sound events. \s
   label_spectro(
     wave = lbh1,
     detection = lbh_reference[lbh_reference$sound.files == "lbh1.wav", ],
-    wl = 200, ovlp = 50, flim = c(1, 10)
+    wl = 200, ovlp = 50, flim = c(1, 10), envelope = TRUE
   )
 
   # see the package vignette for more examples
@@ -78,7 +78,7 @@ This function plots spectrograms annotated with the position of sound events. \s
 
 }
 \references{
-#'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 }
 \seealso{
 \code{\link{energy_detector}}, \code{\link{template_correlator}}, \code{\link{template_detector}}

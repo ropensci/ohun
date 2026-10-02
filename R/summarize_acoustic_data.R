@@ -6,7 +6,7 @@
 #' @return The function prints a summary of the format of the files in an acoustic data set.
 #' @export
 #' @name summarize_acoustic_data
-#' @details The function summarizes information about file format in an acoustic data set. It provides information about the number of files, file formats, sampling rates, bit depts, channels, duration and file size (in MB). For file format, sampling rate, bit depth and number of channels the function includes information about the number of files for each format (e.g. '44.1 kHz (2)' means 2 files with a sampling rate of 44.1 kHz).
+#' @details The function summarizes information about file format in an acoustic data set. It provides information about the number of files, file formats, sampling rates, bit depths, channels, duration and file size (in MB). For file format, sampling rate, bit depth and number of channels the function includes information about the number of files for each format (e.g. '44.1 kHz (2)' means 2 files with a sampling rate of 44.1 kHz).
 #' @examples {
 #'   # load data and save example files into temporary working directory
 #'   data("lbh1", "lbh2", "lbh_reference")
@@ -124,10 +124,7 @@ summarize_acoustic_data <- function(path = ".", digits = 2) {
   message2(color = "silver", x = dur_message)
 
   # file size
-  tab_sz <- table(info_files$channels)
-  tab_sz <- paste0(names(tab_sz), " MB", " (", tab_sz, ")")
-  tab_sz <- paste(tab_sz, collapse = "; ")
-  dur_message <-
+  size_message <-
     paste0(
       "\n* File size range: ",
       round(min(info_files$wav.size), digits),
@@ -138,7 +135,7 @@ summarize_acoustic_data <- function(path = ".", digits = 2) {
       " MB)"
     )
 
-  message2(color = "silver", x = dur_message)
+  message2(color = "silver", x = size_message)
 
   message2(color = "silver", cli::style_italic(
     "\n (detailed information by sound file can be obtained with 'warbleR::info_sound_files()')"

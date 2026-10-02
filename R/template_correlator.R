@@ -19,11 +19,11 @@
 #' @param type A character vector of length 1 specifying the type of cross-correlation: "fourier" (i.e. spectrographic cross-correlation using Fourier transform; internally using \code{\link[seewave]{spectro}}; default), "mfcc" (auditory scale coefficient matrix cross-correlation; internally using \code{\link[tuneR]{melfcc}}) or "mel-auditory" (cross-correlation of auditory spectrum, i.e. spectrum after transformation to an auditory scale; internally using \code{\link[tuneR]{melfcc}}). The argument 'fbtype' controls the auditory scale to be used. Note that the last 2 methods have not been widely used in this context so can be regarded as experimental.
 #' @param fbtype Character vector indicating the auditory frequency scale to use: "mel", "bark", "htkmel", "fcmel".
 #' @param ... Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.
-#' @return The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event occurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
+#' @return The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event occurrences using \code{\link{template_detector}}. Correlation scores for a single template/sound file combination can be plotted with \code{\link{label_spectro}}.
 #'
 #' @export
 #' @name template_correlator
-#' @details This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including cepstral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
+#' @details This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including cepstral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided into two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (an object of class 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
 #' @examples
 #' {
 #'   # load example data
@@ -35,10 +35,6 @@
 #'
 #'   # create template
 #'   templ <- lbh_reference[4, ]
-#'   templ2 <- warbleR::selection_table(templ,
-#'     extended = TRUE,
-#'     path = tempdir()
-#'   )
 #'
 #'   # fourier spectrogram
 #'   (tc_fr <- template_correlator(templates = templ, path = tempdir(), type = "fourier"))
@@ -49,7 +45,7 @@
 #'   # mfcc spectrograms
 #'   (tc_mfcc <- template_correlator(templates = templ, path = tempdir(), type = "mfcc"))
 #'
-#'   # similar results (but no exactly the same) are found with the 3 methods
+#'   # similar results (but not exactly the same) are found with the 3 methods
 #'   # these are the correlation of the correlation vectors
 #'   # fourier vs mel-auditory
 #'   cor(
@@ -89,7 +85,7 @@
 #' @references 
 #'  Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 #'
-#' Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.
+#' Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
 #'
 #' Lyon, R. H., & Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.
 #'
@@ -139,7 +135,7 @@ template_correlator <-
       }
 
       # check files are in working directory
-      if (!any(
+      if (!all(
         files %in% list.files(
           path = path,
           pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
@@ -159,7 +155,7 @@ template_correlator <-
 
     # check if files in templates are in path
     if (!is_extended_selection_table(templates)) {
-      if (!any(
+      if (!all(
         templates$sound.files %in% list.files(
           path = path,
           pattern = "\\.wav$|\\.wac$|\\.mp3$|\\.flac$",
@@ -304,12 +300,13 @@ template_correlator <-
     corr_vector_list[[length(corr_vector_list) + 1]] <- list(
       parameters = lapply(as.list(base::match.call())[-1], function(x) try(eval(x), silent = TRUE)),
       call = base::match.call(),
+      path = path,
       ohun.version = packageVersion("ohun")
     )
 
     names(corr_vector_list)[length(corr_vector_list)] <- "call_info"
 
-    # add class envelopes
+    # add class template_correlations
     class(corr_vector_list) <- c("list", "template_correlations")
 
     return(corr_vector_list)

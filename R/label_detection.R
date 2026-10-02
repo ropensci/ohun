@@ -6,9 +6,9 @@
 #' @param cores Numeric. Controls whether parallel computing is applied.
 #'  It specifies the number of cores to be used. Default is 1 (i.e. no parallel computing).
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
-#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union. Only used if \code{solve.ambiguous = TRUE}.
-#' @param by Character vector with the name of a categorical column in 'reference' for running a stratified. Labels will be returned separated for each level in 'by'. Default is \code{NULL}.
-#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
+#' @param min.overlap Numeric. Controls the minimum amount of overlap required for a detection and a reference sound for it to be counted as true positive. Default is 0.5. Overlap is measured as intersection over union.
+#' @param by Character vector with the name of a categorical column in 'detection' for running a stratified labeling (e.g. by template). Labels will be returned separated for each level in 'by'. Default is \code{NULL}.
+#' @return A data frame or selection table (if 'detection' was also a selection table, warbleR package's format, see \code{\link[warbleR]{selection_table}}) including three additional columns, 'detection.class', which indicates the class of each detection, 'reference' which identifies the event in the 'reference' table that was detected  and 'overlap' which refers to the amount of overlap to the reference sound. See \code{\link{diagnose_detection}} for a description of the labels used in 'detection.class'. The output data frame also contains an additional data frame with the overlap for each pair of overlapping detection/reference.  Overlap is measured as intersection over union.
 #' @param solve.ambiguous Logical argument to control whether ambiguous detections (i.e. split and merged positives) are solved using maximum bipartite graph matching. Default is \code{TRUE}. If \code{FALSE} ambiguous detections are not solved.
 #' @export
 #' @name label_detection
@@ -108,7 +108,8 @@ label_detection <-
                 detection = split_det[[x]],
                 pb = FALSE,
                 cores = cores,
-                min.overlap = min.overlap
+                min.overlap = min.overlap,
+                solve.ambiguous = solve.ambiguous
               )
 
             return(by_lab)
@@ -263,14 +264,16 @@ label_detection <-
                 function(x) {
                   ovlp <- overlap_iou$IoU[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
                   if (length(ovlp) == 0) ovlp <- NA
-                  return(ovlp)
+                  # keep highest overlap if detection overlaps several references (unsolved merges)
+                  return(max(ovlp))
                 },
                 FUN.VALUE = numeric(1)
               )
               sub_detec$reference <- vapply(seq_len(nrow(sub_detec)),
                 function(x) {
-                  ref <- overlap_iou$reference.id[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-")]
-                  if (length(ref) == 0) ref <- NA
+                  sub_iou <- overlap_iou[overlap_iou$detection.id == paste(sub_detec$sound.files[x], sub_detec$selec[x], sep = "-"), ]
+                  # keep reference with highest overlap if detection overlaps several references (unsolved merges)
+                  ref <- if (nrow(sub_iou) == 0) NA else sub_iou$reference.id[which.max(sub_iou$IoU)]
                   return(as.character(ref))
                 },
                 FUN.VALUE = character(1)
@@ -293,10 +296,11 @@ label_detection <-
 
       # convert to selection table
       if (warbleR::is_selection_table(detection)) {
-        detection$detection.class <- labeled_detections$detection.class
-        detection$reference.row <- labeled_detections$reference.row
-        detection$reference <- labeled_detections$reference
-        detection$overlap <- labeled_detections$overlap
+        # match rows by sound file and selec (labeled rows are grouped by sound file)
+        row_match <- match(paste(detection$sound.files, detection$selec), paste(labeled_detections$sound.files, labeled_detections$selec))
+        detection$detection.class <- labeled_detections$detection.class[row_match]
+        detection$reference <- labeled_detections$reference[row_match]
+        detection$overlap <- labeled_detections$overlap[row_match]
 
         # overwrite labeled_detections
         labeled_detections <- detection
@@ -305,7 +309,7 @@ label_detection <-
         attributes(labeled_detections)$call <- base::match.call()
       }
 
-      rownames(labeled_detections) <- 1:nrow(labeled_detections)
+      rownames(labeled_detections) <- seq_len(nrow(labeled_detections))
 
       attributes(labeled_detections)$overlaps <- do.call(rbind, lapply(labeled_detections_list, function(x) attributes(x)$overlaps))
     }

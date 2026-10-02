@@ -137,7 +137,7 @@ find_templates <-
       polys <- vector()
     }
 
-    # get  centroids, the first one is the centroid of the enitre space
+    # get  centroids, the first one is the centroid of the entire space
     centroids <- vector(length = length(polys) + 1)
 
     for (i in 0:length(polys)) {
@@ -169,7 +169,7 @@ find_templates <-
           centroid <-
             sub_space$...NROW[which.min(dists_to_centroid)]
         } else {
-          centroid <- sub_space$...NROW[whch_within]
+          centroid <- space$...NROW[whch_within]
         }
       } else {
         centroid <- NA
@@ -180,16 +180,17 @@ find_templates <-
 
 
     if (length(centroids) > 1) {
-      if (any(centroids[-1] == centroids[1])) {
+      coincide <- !is.na(centroids[-1]) & centroids[-1] == centroids[1]
+      if (any(coincide)) {
         message2(
           color = "silver",
           x = paste(
-            sum(centroids[-1] == centroids[1]),
+            sum(coincide),
             "sub-space centroid(s) coincide with the overall centroid and was (were) removed"
           )
         )
         centroids <-
-          c(centroids[1], centroids[-1][centroids[-1] != centroids[1]])
+          c(centroids[1], centroids[-1][!coincide])
       }
     }
 
@@ -292,7 +293,7 @@ pairs_iou <- function(df, detection, reference) {
 # custom assert functions to check arguments
 # Simple custom check function  no duplicated selection labels
 check_unique_sels <- function(x, fun) {
-  if (fun == "label_detection") {
+  if (identical(fun, "label_detection")) {
     if (anyDuplicated(paste(x$sound.files, x$selec, x$template)) > 0) "Duplicated 'selec' labels within at least one combination of sound file/template" else TRUE
   } else {
     if (anyDuplicated(paste(x$sound.files, x$selec)) > 0) "Duplicated 'selec' labels within at least one sound file" else TRUE
@@ -303,6 +304,10 @@ assert_unique_sels <- checkmate::makeAssertionFunction(check_unique_sels)
 
 ## function to check arguments
 check_arguments <- function(fun, args) {
+  # get function name as a single string (handles calls like ohun::fun() or ohun:::fun())
+  fun <- as.character(fun)
+  fun <- fun[length(fun)]
+
   # create object to store check results
   check_collection <- checkmate::makeAssertCollection()
 
@@ -318,7 +323,7 @@ check_arguments <- function(fun, args) {
     checkmate::assert_data_frame(x = args$detection, any.missing = TRUE, add = check_collection, .var.name = "detection")
     checkmate::assert_multi_class(x = args$detection, classes = c("data.frame", "selection.table"), add = check_collection, .var.name = "detection")
 
-    cols <- if (fun == "consensus_detection") {
+    cols <- if (identical(fun, "consensus_detection")) {
       c("sound.files", "selec", "start", "end", "detection.class")
     } else {
       c("sound.files", "selec", "start", "end")
@@ -331,10 +336,10 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "Y")) {
-    checkmate::assert_data_frame(x = args$Y, any.missing = TRUE, add = check_collection, .var.name = "detection")
-    
+    checkmate::assert_data_frame(x = args$Y, any.missing = TRUE, add = check_collection, .var.name = "Y")
+
     checkmate::assert_names(x = names(args$Y), type = "unique", must.include = c("original.sound.files", "sound.files", "start", "end"), add = check_collection, .var.name = "names(Y)")
-    try(checkmate::assert_data_frame(x = args$Y[, cols], any.missing = TRUE, add = check_collection, .var.name = "Y"), silent = TRUE)
+    try(checkmate::assert_data_frame(x = args$Y[, c("original.sound.files", "sound.files", "start", "end")], any.missing = FALSE, add = check_collection, .var.name = "Y"), silent = TRUE)
   }
   
   if (any(names(args) == "X")) {
@@ -396,11 +401,11 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "filter")) {
-    checkmate::assert_character(x = args$filter, null.ok = TRUE, add = check_collection, .var.name = "filter", len = 1)
+    checkmate::assert_choice(x = args$filter, choices = c("max", "min"), null.ok = TRUE, add = check_collection, .var.name = "filter")
   }
 
   if (any(names(args) == "envelopes")) {
-    checkmate::assert_multi_class(x = args$envelopes, classes = c("envelope", "list"), null.ok = TRUE, add = check_collection, .var.name = "envelopes")
+    checkmate::assert_multi_class(x = args$envelopes, classes = c("envelopes", "list"), null.ok = TRUE, add = check_collection, .var.name = "envelopes")
   }
 
   if (any(names(args) == "hop.size")) {
@@ -416,15 +421,15 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "smooth")) {
-    checkmate::assert_numeric(x = args$smooth, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, add = check_collection, .var.name = "smooth")
+    checkmate::assert_numeric(x = args$smooth, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0, add = check_collection, .var.name = "smooth")
   }
 
   if (any(names(args) == "threshold")) {
-    if (as.character(fun)[[1]] %in% c("energy_detector", "optimize_energy_detector")) {
+    if (fun %in% c("energy_detector", "optimize_energy_detector")) {
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 99.9, add = check_collection, .var.name = "threshold")
     }
 
-    if (as.character(fun)[[1]] %in% c("template_detector", "optimize_template_detector")) {
+    if (fun %in% c("template_detector", "optimize_template_detector")) {
       checkmate::assert_numeric(x = args$threshold, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0.0001, upper = 0.999, add = check_collection, .var.name = "threshold")
     }
   }
@@ -459,7 +464,7 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "acoustic.space")) {
-    checkmate::assert_multi_class(x = args$acoustic.space, classes = c("data.frame", "matrix"), null.ok = TRUE, add = check_collection, .var.name = "envelopes")
+    checkmate::assert_multi_class(x = args$acoustic.space, classes = c("data.frame", "matrix"), null.ok = TRUE, add = check_collection, .var.name = "acoustic.space")
   }
 
   if (any(names(args) == "n.sub.spaces")) {
@@ -483,7 +488,7 @@ check_arguments <- function(fun, args) {
   }
 
   if (any(names(args) == "collevels")) {
-    checkmate::assert_numeric(x = args$collevels, any.missing = FALSE, all.missing = FALSE, unique = TRUE, lower = 0, add = check_collection, .var.name = "collevels")
+    checkmate::assert_numeric(x = args$collevels, any.missing = FALSE, all.missing = FALSE, unique = TRUE, upper = 0, add = check_collection, .var.name = "collevels")
   }
 
   if (any(names(args) == "palette")) {
@@ -582,18 +587,11 @@ XC_FUN <- function(spc1, spc2, cm) {
     shrt.spc <- spc1
   }
 
-  # get length of shortest minus 1 (1 if same length so it runs a single correlation)
+  # get length of shortest minus 1 (0 if a single time bin)
   shrt.lgth <- ncol(shrt.spc) - 1
 
-  # steps for sliding one signal over the other
-  stps <- ncol(lg.spc) - ncol(shrt.spc)
-
-  # set sequence of steps, if <= 1 then just 1 step
-  if (stps <= 1) {
-    stps <- 1
-  } else {
-    stps <- 1:stps
-  }
+  # all possible positions for sliding one signal over the other (1 if same length)
+  stps <- seq_len(ncol(lg.spc) - ncol(shrt.spc) + 1)
 
   # calculate correlations at each step
   cors <- vapply(stps, function(x, cor.method = cm) {
@@ -667,7 +665,7 @@ print.template_correlations <- function(x, ...) {
       paste(
         paste("\n... and"),
         length(files),
-        "sound files(s):\n",
+        "sound file(s):\n",
         paste(cli::style_italic(utils::head(files), collapse = " ")),
         if (length(files) > 6) {
           paste("... and", length(files) - 6, "more")
@@ -704,7 +702,28 @@ print.template_correlations <- function(x, ...) {
            hop.siz,
            cors,
            pbar,
-           hold.t) {
+           hold.t,
+           save) {
+    # if save and file exist then read it
+    if (save & file.exists(file.path(pth, paste0(file, ".txt")))){
+      
+      # read file
+      suppressWarnings(in_txt <- Rraven::imp_raven(
+        path = pth,
+        files = paste0(file, ".txt"),
+        pb = FALSE,
+        warbler.format = TRUE
+      ))
+    
+      if (!is.null(in_txt)) {
+        in_txt$duration <- if (nrow(in_txt) > 0) (in_txt$end - in_txt$start) else vector()
+      
+      detections_df <- in_txt[, c("sound.files", "duration", "selec", "start", "end")]
+      } else {
+        detections_df <- .empty_detection(file) 
+       }
+    } else { # if file was not saved
+    
     # get envelope if not supplied
     if (is.null(envlp)) {
       envlp <- env_ohun_int(
@@ -744,8 +763,6 @@ print.template_correlations <- function(x, ...) {
       return(out)
     }))
 
-    
- 
     ## FIX IF START OR END OF SOUND EVENTS IS NOT INCLUDED IN SOUND FILE
     # get start and end of detections
     # starts are the positive ones
@@ -759,6 +776,7 @@ print.template_correlations <- function(x, ...) {
 
     # if there is no start
     if (length(ends) > 0 & length(starts) == 0) starts <- 0
+  
 
     # if there are both starts and ends detected
     if (length(starts) > 0 & length(ends) > 0) {
@@ -779,21 +797,6 @@ print.template_correlations <- function(x, ...) {
           stringsAsFactors = FALSE
         )
 
-      # add row names
-      if (nrow(detections_df) > 0) {
-        detections_df$selec <- seq_len(nrow(detections_df))
-      }
-    } else { # return NAs
-      detections_df <-
-        data.frame(
-          sound.files = file,
-          duration = NA,
-          selec = NA,
-          start = NA,
-          end = NA,
-          stringsAsFactors = FALSE
-        )
-    }
 
     # TIME FILTERS
     # if something was detected applied time filters
@@ -870,7 +873,7 @@ print.template_correlations <- function(x, ...) {
       if (max.dur < Inf) {
         detections_df <- detections_df[detections_df$duration < max.dur / 1000, ]
       }
-    }
+    
 
     # remove extra column
     detections_df$ovlp.sels <- NULL
@@ -883,13 +886,65 @@ print.template_correlations <- function(x, ...) {
 
       # remove extra column
       detections_df$SPL <- NULL
+      }
     }
     
-    # fix so selec it starts at 1 on each sound file and increases 1 unit within a sound file
-    detections_df$selec <- seq_len(nrow(detections_df))
+    # add row names
+    if (nrow(detections_df) > 0) {
+      detections_df$selec <- seq_len(nrow(detections_df))
+    }
+    } else { # return NAs
+      detections_df <- .empty_detection(file)
+    }
+  }  
+    # save txt file with detections
+    if (save & !file.exists(file.path(pth, paste0(file, ".txt")))){
+      if (nrow(detections_df) == 0 || all(is.na(detections_df$start))){
+        .write_empty_raven(X = detections_df, path = pth, file.name = file)
+      } else {
+        Rraven::exp_raven(detections_df, path = pth, file.name = file, pb = FALSE, sound.file.path = pth)
+        }
+          
+    }
     
     return(detections_df)
   }
+
+# write a header-only Raven selection table for sound files with no detections
+# (older Rraven::exp_raven() versions fail on 0-row data frames; Rraven::imp_raven() skips empty files)
+.write_empty_raven <- function(X, path, file.name) {
+  rvn_names <- c(sound.files = "Begin File", selec = "Selection", start = "Begin Time (s)", end = "End Time (s)", bottom.freq = "Low Freq (Hz)", top.freq = "High Freq (Hz)")
+  col_names <- names(X)
+  to_rename <- col_names %in% names(rvn_names)
+  col_names[to_rename] <- rvn_names[col_names[to_rename]]
+  header <- unique(c("Selection", "View", "Channel", "Begin Time (s)", "End Time (s)", col_names, "Begin Path", "File Offset (s)"))
+  writeLines(paste(header, collapse = "\t"), con = file.path(path, paste0(file.name, ".txt")))
+  invisible(NULL)
+}
+
+# empty detection
+.empty_detection <- function(file, type = "energy", template = NULL) {
+  if (type == "energy") {
+    data.frame(
+      sound.files = file,
+      duration = NA,
+      selec = 1,
+      start = NA,
+      end = NA,
+      stringsAsFactors = FALSE
+    )
+  } else {
+    data.frame(
+      sound.files = file,
+      selec = 1,
+      start = NA,
+      end = NA,
+      template = template,
+      scores = NA,
+      stringsAsFactors = FALSE
+    )
+  }
+}
 
 
 ########################### internal function to get an envelope used by get_envelopes ###################
@@ -966,7 +1021,7 @@ env_ohun_int <-
 
     # thin
     if (thinning < 1) {
-      if (n.samples * thinning < 10) stop2("thinning is too high, no enough samples left for at least 1 sound file")
+      if (n.samples * thinning < 10) stop2("thinning is too high, not enough samples left for at least 1 sound file")
 
       # reduce size of envelope
       envp <-
@@ -1024,6 +1079,11 @@ spc_FUN <-
     # make wl even if odd
     if (!(wlg %% 2) == 0) {
       wlg <- wlg + 1
+    }
+
+    # use full frequency range if no bandpass supplied (templates without 'bottom.freq'/'top.freq')
+    if (length(bndpss) < 2 || anyNA(bndpss)) {
+      bndpss <- c(0, clp@samp.rate / 2000)
     }
 
     # steps for time bins
@@ -1091,7 +1151,7 @@ spc_FUN <-
 
 # Wrapper for "try" function
 # silly wrapper for  function that returns an NA if an error is found.
-.try_na <- function(expr, silent = TRUE, outFile) {
+.try_na <- function(expr, silent = TRUE, outFile = getOption("try.outFile", default = stderr())) {
   out <- try(expr = expr, silent = silent, outFile = outFile)
   if (is(out, "try-error")) {
     return(NA)

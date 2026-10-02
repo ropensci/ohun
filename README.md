@@ -2,13 +2,10 @@ ohun: optimizing sound event detection
 ================
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
+
 <!-- badges: start -->
 
 [![lifecycle](https://img.shields.io/badge/lifecycle-maturing-brightgreen.svg)](https://lifecycle.r-lib.org/articles/stages.html)
-[![Dependencies](https://tinyverse.netlify.com/badge/warbleR)](https://cran.r-project.org/package=warbleR)
-[![Dependencies](https://cranchecks.info/badges/dependencies/warbleR)](https://cran.r-project.org/web/checks/check_results_warbleR.html)
-[![R
-Dependencies](https://www.r-pkg.org/badges/version/warbleR)](https://cran.r-project.org/package=warbleR)
 [![Project Status: Active The project has reached a stable, usable state
 and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
@@ -16,7 +13,7 @@ developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.re
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
 [![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
-Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cranlogs.r-pkg.org/badges/grand-total/ohun)
+Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cran.r-project.org/package=ohun)
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
 [![Status at rOpenSci Software Peer
@@ -47,8 +44,8 @@ The package offers functions for:
 - Template-based detection
 
 The implementation of detection diagnostics that can be applied to both
-built in detection methods and to those obtained from other software
-packages makes the package [ohun](https://github.com/ropensci/ohun) an
+built-in detection methods and to those obtained from other software
+packages makes the package [ohun](https://github.com/ropensci/ohun) a
 useful tool for conducting direct comparisons of the performance of
 different routines. In addition, the compatibility of
 [ohun](https://github.com/ropensci/ohun) with data formats already used
@@ -62,6 +59,8 @@ parallel and [pbapply](https://CRAN.R-project.org/package=pbapply)),
 which distributes the tasks among several processors to improve
 computational efficiency. The package works on sound files in ‘.wav’,
 ‘.mp3’, ‘.flac’ and ‘.wac’ format.
+
+## Installation
 
 Install/load the package from CRAN as follows:
 
@@ -85,12 +84,68 @@ library(ohun)
 ```
 
 Further system requirements due to the dependency
-[seewave](https://rug.mnhn.fr/seewave/) may be needed. Take a look a
-[this link](https://rug.mnhn.fr/seewave/inst.html) for instruction on
-how to install/troubleshoot these external dependencies.
+[seewave](https://cran.r-project.org/package=seewave) may be needed
+(e.g. ‘libsndfile’ and ‘fftw3’ on Linux). Take a look at [this archived
+page](https://web.archive.org/web/20240521143417/https://rug.mnhn.fr/seewave/inst.html)
+for instructions on how to install/troubleshoot these external
+dependencies.
 
-Take a look at the vignettes for an overview of the main features of the
-packages:
+## Quick example
+
+The package comes with example data so you can try out a detection
+routine right away. The code below runs an energy-based detection on two
+sound files and compares it against the reference annotations using
+[`diagnose_detection()`](https://docs.ropensci.org/ohun/reference/diagnose_detection.html):
+
+``` r
+library(ohun)
+
+# load example data
+data("lbh1", "lbh2", "lbh_reference")
+
+# save sound files into a temporary working directory
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+
+# detect sound events based on amplitude envelopes
+detection <- energy_detector(
+  files = c("lbh1.wav", "lbh2.wav"),
+  path = tempdir(),
+  threshold = 6,
+  smooth = 6.8,
+  bp = c(2, 9),
+  hop.size = 3,
+  min.duration = 50
+)
+
+# compare the detection against the reference annotations
+diagnose_detection(reference = lbh_reference, detection = detection)
+```
+
+    ##   detections true.positives false.positives false.negatives splits merges
+    ## 1         19             19               0               0      0      0
+    ##     overlap recall precision f.score
+    ## 1 0.8511668      1         1       1
+
+This returns a set of [signal detection
+theory](https://en.wikipedia.org/wiki/Detection_theory) indices
+(e.g. recall, precision, F score) that can be used to evaluate and
+fine-tune the detection parameters.
+[`optimize_energy_detector()`](https://docs.ropensci.org/ohun/reference/optimize_energy_detector.html)
+automates this process by testing several parameter combinations at
+once.
+
+[`template_detector()`](https://docs.ropensci.org/ohun/reference/template_detector.html)
+works in a similar way to `energy_detector()` (same ‘files’/‘path’
+arguments and selection table output), but detects sound events by
+cross-correlation with a template sound event instead of amplitude
+thresholds, so its output can be evaluated with `diagnose_detection()`
+and optimized with `optimize_template_detector()` just like above.
+
+## Vignettes
+
+Take a look at the vignettes for a more detailed overview of the main
+features of the package:
 
 - [Optimizing sound event
   detection](https://docs.ropensci.org/ohun/articles/intro_to_ohun.html)
@@ -104,10 +159,12 @@ rOpenSci](https://github.com/ropensci/software-review/issues/568).
 
 ------------------------------------------------------------------------
 
+## Citation
+
 Please cite [ohun](https://github.com/ropensci/ohun) as follows:
 
-Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
-Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R
-package for diagnosing and optimizing automatic sound event detection.
-Methods in Ecology and Evolution, 14, 2259–2271.
-<https://doi.org/10.1111/2041-210X.14170>
+> Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
+> Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R
+> package for diagnosing and optimizing automatic sound event detection.
+> Methods in Ecology and Evolution, 14, 2259–2271.
+> <https://doi.org/10.1111/2041-210X.14170>

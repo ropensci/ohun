@@ -53,13 +53,13 @@ The current working directory is used as default.}
 \item{...}{Additional arguments to be passed to \code{\link[tuneR]{melfcc}} for further customization when using auditory scales.}
 }
 \value{
-The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event occurrences using \code{\link{template_detector}} or to graphically explore template correlations across sound files using \code{\link[warbleR]{full_spectrograms}}.
+The function returns an object of class 'template_correlations' which is a list with the correlation scores for each combination of templates and files. 'template_correlations' objects must be used to infer sound event occurrences using \code{\link{template_detector}}. Correlation scores for a single template/sound file combination can be plotted with \code{\link{label_spectro}}.
 }
 \description{
 \code{template_correlator} estimates templates cross-correlation across multiple sound files.
 }
 \details{
-This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including cepstral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided in two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (and object of 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
+This function calculates the similarity of acoustic templates across sound files by means of time-frequency cross-correlation. Fourier spectrograms or time-frequency representations from auditory scales (including cepstral coefficients) can be used. Several templates can be run over several sound files. Note that template-based detection is divided into two steps: template correlation (using this function) and template detection (or peak detection as it infers detection based on peak correlation scores, using the function \code{\link{template_detector}}). So the output of this function (an object of class 'template_correlations') must be input into \code{\link{template_detector}} for inferring sound event occurrences. \code{\link{optimize_template_detector}} can be used to optimize template detection.
 }
 \examples{
 {
@@ -72,10 +72,6 @@ This function calculates the similarity of acoustic templates across sound files
 
   # create template
   templ <- lbh_reference[4, ]
-  templ2 <- warbleR::selection_table(templ,
-    extended = TRUE,
-    path = tempdir()
-  )
 
   # fourier spectrogram
   (tc_fr <- template_correlator(templates = templ, path = tempdir(), type = "fourier"))
@@ -86,7 +82,7 @@ This function calculates the similarity of acoustic templates across sound files
   # mfcc spectrograms
   (tc_mfcc <- template_correlator(templates = templ, path = tempdir(), type = "mfcc"))
 
-  # similar results (but no exactly the same) are found with the 3 methods
+  # similar results (but not exactly the same) are found with the 3 methods
   # these are the correlation of the correlation vectors
   # fourier vs mel-auditory
   cor(
@@ -124,7 +120,7 @@ This function calculates the similarity of acoustic templates across sound files
 \references{
 Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C., Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R package for diagnosing and optimizing automatic sound event detection. Methods in Ecology and Evolution, 14, 2259–2271. https://doi.org/10.1111/2041-210X.14170
 
-Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of recall. Bioacoustics 7(3): 209-234.
+Khanna H., Gaunt S.L.L.  & McCallum D.A. (1997). Digital spectrographic cross-correlation: tests of sensitivity. Bioacoustics 7(3): 209-234.
 
 Lyon, R. H., & Ordubadi, A. (1982). Use of cepstra in acoustical signal analysis. Journal of Mechanical Design, 104(2), 303-306.
 }

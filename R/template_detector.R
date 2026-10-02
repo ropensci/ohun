@@ -7,8 +7,10 @@
 #' @param threshold Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting sound event occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param verbose Logical argument to control if some summary messages are printed to the console.
+#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the directory given by 'path'. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files.
+#' @param path Character string containing the directory path where the '.txt' files will be saved (only if \code{save.txt = TRUE}). Default is \code{"."} (current working directory).
 #' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) with the start and end and correlation score for the
-#' detected sound events.
+#' detected sound events. Template/sound file combinations with no detections are not included in the output (a data frame with 0 rows is returned if nothing is detected).
 #' @export
 #' @name template_detector
 #' @details This function infers sound events occurrences from cross-correlation scores along sound files. Correlation scores must be generated first using \code{\link{template_correlator}}. The output is a data frame (or selection table if sound files are still found in the original path supplied to \code{\link{template_correlator}}, using the warbleR package's format, see \code{\link[warbleR]{selection_table}}) containing the start and end of the detected sound events as well as the cross-correlation score ('scores' column) for each detection. \strong{Note that the detected sounds are assumed to have the same duration as the template, so their start and end correspond to the correlation peak position +/- half the template duration}.
@@ -65,7 +67,9 @@ template_detector <-
            cores = 1,
            threshold,
            pb = TRUE,
-           verbose = TRUE) {
+           verbose = TRUE,
+           save.txt = FALSE,
+           path = ".") {
     # save start time
     start_time <- proc.time()
 
@@ -103,6 +107,32 @@ template_detector <-
         message = "detecting templates",
         total = 1,
         FUN = function(i) {
+          
+          # get file and template names
+          file_template <-
+            strsplit(names(template.correlations)[i], "/")[[1]]
+          
+          # name of the txt file (one per template/sound file combination)
+          txt_name <- paste0(file_template[2], "_", file_template[1])
+
+          # if save and file exist then read it
+          if (save.txt & file.exists(file.path(path, paste0(txt_name, ".txt")))){
+            
+            # read file
+            suppressWarnings(in_txt <- Rraven::imp_raven(
+              path = path,
+              files = paste0(txt_name, ".txt"),
+              pb = FALSE,
+              warbler.format = TRUE, all.data = TRUE
+            ))
+            
+            if (!is.null(in_txt)) {
+              sel_table <- in_txt[, c("sound.files", "selec", "start", "end", "template", "scores")]
+            } else {
+              sel_table <- .empty_detection(file_template[2], type = "template", template = file_template[1]) 
+            }
+          } else {
+          
           # extract data for a dyad
           temp_cor <- template.correlations[[i]]
 
@@ -115,11 +145,6 @@ template_detector <-
 
           # get peaks and their scores
           scores <- temp_cor$correlation.scores[peak_position]
-          peak_time <-
-            seq(0,
-              temp_cor$file.duration,
-              length.out = length(temp_cor$correlation.scores)
-            )[peak_position]
 
           # get peak position fixing by removing half the duration of the sound event at the start and end of the sound file
           peak_time <-
@@ -128,10 +153,6 @@ template_detector <-
               temp_cor$file.duration - temp_cor$template.duration / 2,
               length.out = length(temp_cor$correlation.scores)
             )[peak_position]
-
-          # get file and template names
-          file_template <-
-            strsplit(names(template.correlations)[i], "/")[[1]]
 
           # calculate starts as the peak location minus half the template duration
           starts <-
@@ -143,7 +164,7 @@ template_detector <-
           # cannot be negative
           starts[starts < 0] <- 0
 
-          # calculate starts as the peak location minus half the template duration
+          # calculate ends as the peak location plus half the template duration
           ends <-
             if (length(peak_time) > 0) {
               peak_time + (temp_cor$template.duration / 2)
@@ -172,20 +193,38 @@ template_detector <-
                 NA
               }
             )
+          
+          # save txt file with detections
+          if (save.txt){
+            if (all(is.na(sel_table$start))){
+              .write_empty_raven(X = sel_table, path = path, file.name = txt_name)
+            } else {
+              Rraven::exp_raven(sel_table, path = path, file.name = txt_name, pb = FALSE, sound.file.path = path)
+            }
+            
+          }
+          }
 
           return(sel_table)
         }
       )
 
     # put results in a data frame
-    sel_table_df <- do.call(rbind, sel_table_list)
+    detections_df <- do.call(rbind, sel_table_list)
+
+    # remove empty detections (template/sound file combinations with no detections)
+    detections_df <- detections_df[!is.na(detections_df$start), ]
 
     # relabel rows
-    rownames(sel_table_df) <- seq_len(nrow(sel_table_df))
+    rownames(detections_df) <- seq_len(nrow(detections_df))
 
-    # get path from corrrelation call
-    corr_call_path <-
-      try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
+    # get path from correlation call (stored directly in newer versions)
+    corr_call_path <- template.correlations$call_info$path
+
+    if (is.null(corr_call_path)) {
+      corr_call_path <-
+        try(eval(rlang::call_args(template.correlations$call_info$call)$path), silent = TRUE)
+    }
 
     if (is(corr_call_path, "try-error") |
       is.null(corr_call_path)) {
@@ -193,13 +232,14 @@ template_detector <-
     }
 
     #  let user know if no detections are found
-    if (all(is.na(sel_table_df$start)) & verbose) {
-      print(x = "no sound events above threshold were detected")
-    } else if (all(sel_table_df$sound.files %in% list.files(path = corr_call_path)) &
-      any(!is.na(sel_table_df$start))) {
-      sel_table_df <-
+    if (nrow(detections_df) == 0) {
+      if (verbose) {
+        message2(color = "silver", x = "no sound events above threshold were detected")
+      }
+    } else if (all(detections_df$sound.files %in% list.files(path = corr_call_path))) {
+      detections_df <-
         warbleR::selection_table(
-          X = sel_table_df[!is.na(sel_table_df$start), ],
+          X = detections_df,
           path = corr_call_path,
           parallel = cores,
           pb = FALSE,
@@ -207,11 +247,11 @@ template_detector <-
           fix.selec = TRUE
         )
 
-      attributes(sel_table_df)$call <- base::match.call()
+      attributes(detections_df)$call <- base::match.call()
 
       # add elapsed time
-      attributes(sel_table_df)$elapsed.time.s <-
+      attributes(detections_df)$elapsed.time.s <-
         as.vector((proc.time() - start_time)[3])
     }
-    return(sel_table_df)
+    return(detections_df)
   }
