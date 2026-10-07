@@ -3,10 +3,17 @@
 ohun 1.0.5
 =========================
 
-### MINOR IMPROVEMENTS
+### NEW FEATURES
 
-  *  `split_acoustic_data()` returns the name and duration of files with a duration less than the specified clip duration
+  * `split_acoustic_data()` returns the name and duration of files with a duration less than the specified clip duration
   * new argument `save.txt` in `energy_detector()` and `template_detector()` to save selection table (sensu Raven Pro) txt files for each sound file to facilitate resuming process
+  * new argument `resume` in `energy_detector()` and `template_detector()` to control whether previously saved '.txt' files are read back in instead of recomputing detection; `save.txt` alone no longer causes previous results to be silently reused when parameters change
+
+### BUG FIXES
+
+  * `reassemble_detection()` no longer produces duplicated 'selec' labels when an original sound file was split into more than one clip
+  * `split_acoustic_data()` no longer leaves a stale value in `options('unsplit_sound_files')` from a previous call
+  * parallel clusters created internally on Windows (when `cores > 1`) are now properly stopped after use
 
 ohun 1.0.4
 =========================

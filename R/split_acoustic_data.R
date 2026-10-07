@@ -81,15 +81,18 @@ split_acoustic_data <-
     # measure wav duration
     wvdr <- warbleR::duration_sound_files(path = path, files = files)
     
-    # exclude those shorter than sgmt.dur
+    # exclude those shorter than sgmt.dur (always reset so a previous call's
+    # result isn't mistaken for this call's, even when nothing is too short now)
     if (any(wvdr$duration <= sgmt.dur) & is.null(sgmts)) {
       message2(color = "silver", x = "One or more sound files are shorter than the specified clip duration. No clips will be created for these files. Check their names and duration (in s) at `options('unsplit_sound_files')`")
-      
+
       # save unsplit file names
       options(unsplit_sound_files = wvdr[wvdr$duration <= sgmt.dur,])
       wvdr <- wvdr[wvdr$duration > sgmt.dur, ]
-    } 
-    
+    } else {
+      options(unsplit_sound_files = NULL)
+    }
+
     # calculate start and end of clips and output data frame
     split.df_l <- lapply(wvdr$sound.files, function(x) {
       # calculate clip limits
@@ -180,6 +183,7 @@ split_acoustic_data <-
       if (Sys.info()[1] == "Windows" & cores > 1) {
         cl <-
           parallel::makePSOCKcluster(getOption("cl.cores", cores))
+        on.exit(parallel::stopCluster(cl), add = TRUE)
       } else {
         cl <- cores
       }

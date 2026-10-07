@@ -93,6 +93,7 @@ reassemble_detection <- function(detection,
   # set clusters for windows OS
   if (Sys.info()[1] == "Windows" & cores > 1) {
     cl <- parallel::makeCluster(cores)
+    on.exit(parallel::stopCluster(cl), add = TRUE)
   } else {
     cl <- cores
   }
@@ -118,14 +119,17 @@ reassemble_detection <- function(detection,
     W$sound.files <- Y$original.sound.files[Y$sound.files == x]
     W$start <- W$clip.start + Y$start[Y$sound.files == x]
     W$end <- W$clip.end + Y$start[Y$sound.files == x]
-    W$selec <- seq_len(nrow(W))
-    
+
     return(W)
 })
-  
+
   # Combine the list of data frames into a single data frame
   reassemble_anns <- do.call(rbind, anns_list)
   reassemble_anns <- reassemble_anns[order(reassemble_anns$sound.files, reassemble_anns$start), ]
-  
+
+  # renumber selec sequentially within each original sound file (clips for the same
+  # sound file would otherwise each restart at 1, producing duplicated selec labels)
+  reassemble_anns$selec <- stats::ave(seq_len(nrow(reassemble_anns)), reassemble_anns$sound.files, FUN = seq_along)
+
   return(reassemble_anns)
   }

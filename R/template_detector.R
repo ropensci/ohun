@@ -7,7 +7,8 @@
 #' @param threshold Numeric vector of length 1 with a value between 0 and 1 specifying the correlation threshold for detecting sound event occurrences (i.e. correlation peaks). Must be supplied. Correlation scores are forced to between 0 and 1 (by converting negative scores to 0). 0 and 1 represent the lowest and highest similarity to the template respectively.
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @param verbose Logical argument to control if some summary messages are printed to the console.
-#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the directory given by 'path'. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files.
+#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each template/sound file combination in the directory given by 'path', overwriting any previous file for that combination. For combinations with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files (see 'resume' argument).
+#' @param resume Logical argument to control if detection is skipped for template/sound file combinations that already have a '.txt' file saved (from a previous call with 'save.txt = TRUE'), reading the previous results back in instead of recomputing them. Default is \code{FALSE}, meaning detection is always run with the current arguments. Only set to \code{TRUE} to resume an interrupted run (or add new sound files) using the exact same detection parameters as the previous call; otherwise stale results from a previous call can be silently returned.
 #' @param path Character string containing the directory path where the '.txt' files will be saved (only if \code{save.txt = TRUE}). Default is \code{"."} (current working directory).
 #' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) with the start and end and correlation score for the
 #' detected sound events. Template/sound file combinations with no detections are not included in the output (a data frame with 0 rows is returned if nothing is detected).
@@ -69,6 +70,7 @@ template_detector <-
            pb = TRUE,
            verbose = TRUE,
            save.txt = FALSE,
+           resume = FALSE,
            path = ".") {
     # save start time
     start_time <- proc.time()
@@ -94,6 +96,7 @@ template_detector <-
     if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <-
         parallel::makePSOCKcluster(getOption("cl.cores", cores))
+      on.exit(parallel::stopCluster(cl), add = TRUE)
     } else {
       cl <- cores
     }
@@ -115,8 +118,8 @@ template_detector <-
           # name of the txt file (one per template/sound file combination)
           txt_name <- paste0(file_template[2], "_", file_template[1])
 
-          # if save and file exist then read it
-          if (save.txt & file.exists(file.path(path, paste0(txt_name, ".txt")))){
+          # if resuming and file exist then read it instead of recomputing
+          if (resume & file.exists(file.path(path, paste0(txt_name, ".txt")))){
             
             # read file
             suppressWarnings(in_txt <- Rraven::imp_raven(

@@ -214,6 +214,7 @@ template_correlator <-
     if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <-
         parallel::makePSOCKcluster(getOption("cl.cores", cores))
+      on.exit(parallel::stopCluster(cl), add = TRUE)
     } else {
       cl <- cores
     }

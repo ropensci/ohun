@@ -87,11 +87,11 @@ test_that("export selection table no detection", {
       pb = TRUE,
       save.txt = TRUE
     )
-  
-  
-  
+
+  txts <- list.files(path = tempdir(), pattern = "txt$", full.names = TRUE)
+
   expect_equal(length(txts), 2)
-  
+
   unlink(txts)
   
   detec2 <-

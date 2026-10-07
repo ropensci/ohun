@@ -703,9 +703,10 @@ print.template_correlations <- function(x, ...) {
            cors,
            pbar,
            hold.t,
-           save) {
-    # if save and file exist then read it
-    if (save & file.exists(file.path(pth, paste0(file, ".txt")))){
+           save,
+           resume) {
+    # if resuming and file exist then read it instead of recomputing
+    if (resume & file.exists(file.path(pth, paste0(file, ".txt")))){
       
       # read file
       suppressWarnings(in_txt <- Rraven::imp_raven(
@@ -896,17 +897,18 @@ print.template_correlations <- function(x, ...) {
     } else { # return NAs
       detections_df <- .empty_detection(file)
     }
-  }  
-    # save txt file with detections
-    if (save & !file.exists(file.path(pth, paste0(file, ".txt")))){
+
+    # save txt file with detections (overwrites any previous file for this sound file)
+    if (save){
       if (nrow(detections_df) == 0 || all(is.na(detections_df$start))){
         .write_empty_raven(X = detections_df, path = pth, file.name = file)
       } else {
         Rraven::exp_raven(detections_df, path = pth, file.name = file, pb = FALSE, sound.file.path = pth)
         }
-          
+
     }
-    
+  }
+
     return(detections_df)
   }
 

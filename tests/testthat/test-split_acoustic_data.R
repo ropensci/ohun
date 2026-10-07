@@ -63,3 +63,23 @@ test_that("split files and annotations", {
   expect_length(fls, 10)
 
 })
+
+
+test_that("'unsplit_sound_files' option is not left stale from a previous call", {
+  data(lbh1, package = "ohun")
+  data(lbh2, package = "ohun")
+  tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"), extensible = FALSE)
+  tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"), extensible = FALSE)
+
+  # clip duration longer than the files: both are reported as too short
+  split_acoustic_data(sgmt.dur = 100, path = tempdir(), only.sels = TRUE, files = c("lbh1.wav", "lbh2.wav"))
+
+  expect_equal(nrow(getOption("unsplit_sound_files")), 2)
+
+  # clip duration shorter than the files: nothing is too short, option must be cleared
+  split_acoustic_data(sgmt.dur = 0.05, path = tempdir(), only.sels = TRUE, files = c("lbh1.wav", "lbh2.wav"))
+
+  expect_null(getOption("unsplit_sound_files"))
+
+  unlink(c(file.path(tempdir(), "lbh1.wav"), file.path(tempdir(), "lbh2.wav")))
+})

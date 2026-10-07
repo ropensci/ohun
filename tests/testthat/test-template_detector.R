@@ -74,13 +74,39 @@ test_that("saving txt files no detections", {
   
   expect_equal(nrow(td), 0)
   
-  # running again reads the saved (empty) files and returns the same result
+  # running again with the same threshold recomputes (default resume = FALSE) and gets the same result
   td2 <-
     template_detector(template.correlations = tc, threshold = 0.99, save.txt = TRUE, path = tempdir())
-  
+
   expect_equal(nrow(td2), 0)
-  
+
   unlink(txts)
+})
+
+test_that("resume does not reuse stale results from a different threshold, but resume = TRUE does", {
+
+  # template for the first sound file in 'lbh_reference'
+  tc <- template_correlator(templates = lbh_reference[1, ], path = tempdir())
+
+  # low threshold, save txt files with 22 detections
+  td1 <-
+    template_detector(template.correlations = tc, threshold = 0.4, save.txt = TRUE, path = tempdir())
+
+  expect_equal(nrow(td1), 22)
+
+  # high threshold on the same path: default resume = FALSE must recompute, not reuse the 22-row cache
+  td2 <-
+    template_detector(template.correlations = tc, threshold = 0.99, save.txt = TRUE, path = tempdir())
+
+  expect_equal(nrow(td2), 0)
+
+  # same high threshold again with resume = TRUE: now it is correct to reuse the cached (0-row) result
+  td3 <-
+    template_detector(template.correlations = tc, threshold = 0.99, save.txt = TRUE, resume = TRUE, path = tempdir())
+
+  expect_equal(nrow(td3), 0)
+
+  unlink(list.files(path = tempdir(), pattern = "txt$", full.names = TRUE))
 })
 
 

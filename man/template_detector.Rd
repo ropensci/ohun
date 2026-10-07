@@ -11,6 +11,7 @@ template_detector(
   pb = TRUE,
   verbose = TRUE,
   save.txt = FALSE,
+  resume = FALSE,
   path = "."
 )
 }
@@ -26,7 +27,9 @@ It specifies the number of cores to be used. Default is 1 (i.e. no parallel comp
 
 \item{verbose}{Logical argument to control if some summary messages are printed to the console.}
 
-\item{save.txt}{Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the directory given by 'path'. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files.}
+\item{save.txt}{Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each template/sound file combination in the directory given by 'path', overwriting any previous file for that combination. For combinations with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files (see 'resume' argument).}
+
+\item{resume}{Logical argument to control if detection is skipped for template/sound file combinations that already have a '.txt' file saved (from a previous call with 'save.txt = TRUE'), reading the previous results back in instead of recomputing them. Default is \code{FALSE}, meaning detection is always run with the current arguments. Only set to \code{TRUE} to resume an interrupted run (or add new sound files) using the exact same detection parameters as the previous call; otherwise stale results from a previous call can be silently returned.}
 
 \item{path}{Character string containing the directory path where the '.txt' files will be saved (only if \code{save.txt = TRUE}). Default is \code{"."} (current working directory).}
 }

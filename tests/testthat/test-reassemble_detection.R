@@ -22,7 +22,13 @@ test_that("output size summarized", {
   testthat::expect_true(all(tc$end == lbh_reference$end))
   
   testthat::expect_equal(nrow(tc), 19)
-  
+
+  # 'selec' must be unique within each (reassembled) sound file, otherwise downstream
+  # functions like diagnose_detection()/label_detection() break (duplicated IDs)
+  testthat::expect_false(anyDuplicated(paste(tc$sound.files, tc$selec)) > 0)
+
+  testthat::expect_true(is.data.frame(diagnose_detection(reference = lbh_reference, detection = tc, pb = FALSE)))
+
   unlink(
     list.files(
       path = tempdir(),
@@ -31,7 +37,7 @@ test_that("output size summarized", {
       full.names = TRUE
     )
   )
-  
+
 })
 
 

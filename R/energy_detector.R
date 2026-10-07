@@ -25,7 +25,8 @@
 #' @param pb Logical argument to control progress bar. Default is \code{TRUE}.
 #' @return The function returns a 'selection_table' (warbleR package's formats, see \code{\link[warbleR]{selection_table}}) or data frame (if sound files can't be found) containing the start and end of each sound event by
 #'   sound file. If no sound event was detected for a sound file it is not included in the output data frame. A selection table is returned when the sound files are found in 'path'.
-#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the same directory as the sound files. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files. 
+#' @param save.txt Logical argument to control if a '.txt' file in selection table format (compatible with the Raven Pro acoustic analysis software) is saved (using \code{\link[Rraven]{exp_raven}} internally). If so a single file will be saved for each sound file in the same directory as the sound files, overwriting any previous file for that sound file. For sound files with no detections the file will still be saved but without any data. The name of the selection will contain the name of the sound file. This is useful for long processes in which users might want to stop and resume or when adding new sound files (see 'resume' argument).
+#' @param resume Logical argument to control if detection is skipped for sound files that already have a '.txt' file saved (from a previous call with 'save.txt = TRUE'), reading the previous results back in instead of recomputing them. Default is \code{FALSE}, meaning detection is always run with the current arguments. Only set to \code{TRUE} to resume an interrupted run (or add new sound files) using the exact same detection parameters as the previous call; otherwise stale results from a previous call can be silently returned.
 #' @export
 #' @name energy_detector
 #' @details This function detects the time position of target sound events based on energy and time thresholds. It first detects all sounds above a given energy threshold (argument 'threshold'). If 'hold.time' is supplied then detected sounds are merged if necessary. Then the sounds detected are filtered based on duration attributes ('min.duration' and 'max.duration'). If 'peak.amplitude' is higher than 0 then only those sound events with higher peak amplitude are kept. Band pass filtering ('bp'), thinning ('thinning') and envelope smoothing ('smooth') are applied (if supplied) before threshold detection.
@@ -109,7 +110,8 @@ energy_detector <-
            max.duration = Inf,
            cores = 1,
            pb = TRUE,
-           save.txt = FALSE) {
+           save.txt = FALSE,
+           resume = FALSE) {
 
     
     # save start time
@@ -162,6 +164,7 @@ energy_detector <-
     # set clusters for windows OS
     if (Sys.info()[1] == "Windows" & cores > 1) {
       cl <- parallel::makeCluster(cores)
+      on.exit(parallel::stopCluster(cl), add = TRUE)
     } else {
       cl <- cores
     }
@@ -189,7 +192,8 @@ energy_detector <-
           cors = cores,
           pbar = pb,
           hold.t = hold.time,
-          save = save.txt
+          save = save.txt,
+          resume = resume
         )
         return(out)
       }

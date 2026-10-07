@@ -131,6 +131,7 @@ label_detection <-
       # set clusters for windows OS
       if (Sys.info()[1] == "Windows" & cores > 1) {
         cl <- parallel::makeCluster(cores)
+        on.exit(parallel::stopCluster(cl), add = TRUE)
       } else {
         cl <- cores
       }
