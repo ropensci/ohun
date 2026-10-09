@@ -11,11 +11,16 @@ and is being actively
 developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 [![License:
 GPL-3](https://img.shields.io/badge/license-GPL--3-blue.svg)](https://cran.r-project.org/web/licenses/GPL-3)
-[![CRAN_Status_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
+[![R-CMD-check](https://github.com/ropensci/ohun/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ropensci/ohun/actions/workflows/R-CMD-check.yaml)
+[![CRAN\_Status\_Badge](https://www.r-pkg.org/badges/version/ohun)](https://cran.r-project.org/package=ohun)
 [![Total
 Downloads](https://cranlogs.r-pkg.org/badges/grand-total/ohun)](https://cran.r-project.org/package=ohun)
+[![Monthly
+Downloads](https://cranlogs.r-pkg.org/badges/ohun)](https://cran.r-project.org/package=ohun)
 [![Codecov test
 coverage](https://codecov.io/gh/maRce10/ohun/branch/master/graph/badge.svg)](https://app.codecov.io/gh/maRce10/ohun?branch=master)
+[![Last
+Commit](https://img.shields.io/github/last-commit/ropensci/ohun.svg)](https://github.com/ropensci/ohun/commits/master)
 [![Status at rOpenSci Software Peer
 Review](https://badges.ropensci.org/568_status.svg)](https://github.com/ropensci/software-review/issues/568)
 <!-- badges: end -->
@@ -30,18 +35,18 @@ time boxes.
 
 The main features of the package are:
 
-- The use of reference annotations for detection diagnostic and
-  optimization
-- The use of signal detection theory indices to evaluate detection
-  performance
+  - The use of reference annotations for detection diagnostic and
+    optimization
+  - The use of signal detection theory indices to evaluate detection
+    performance
 
 The package offers functions for:
 
-- Curate references and acoustic data sets
-- Diagnose detection performance
-- Optimize detection routines based on reference annotations
-- Energy-based detection
-- Template-based detection
+  - Curate references and acoustic data sets
+  - Diagnose detection performance
+  - Optimize detection routines based on reference annotations
+  - Energy-based detection
+  - Template-based detection
 
 The implementation of detection diagnostics that can be applied to both
 built-in detection methods and to those obtained from other software
@@ -147,17 +152,17 @@ and optimized with `optimize_template_detector()` just like above.
 Take a look at the vignettes for a more detailed overview of the main
 features of the package:
 
-- [Optimizing sound event
-  detection](https://docs.ropensci.org/ohun/articles/intro_to_ohun.html)
-- [Energy-based
-  detection](https://docs.ropensci.org/ohun/articles/energy_based_detection.html)
-- [Template-based
-  detection](https://docs.ropensci.org/ohun/articles/template_based_detection.html)
+  - [Optimizing sound event
+    detection](https://docs.ropensci.org/ohun/articles/intro_to_ohun.html)
+  - [Energy-based
+    detection](https://docs.ropensci.org/ohun/articles/energy_based_detection.html)
+  - [Template-based
+    detection](https://docs.ropensci.org/ohun/articles/template_based_detection.html)
 
 This package has been [peer-reviewed by
 rOpenSci](https://github.com/ropensci/software-review/issues/568).
 
-------------------------------------------------------------------------
+-----
 
 ## Citation
 
