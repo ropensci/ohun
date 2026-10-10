@@ -10,6 +10,7 @@ reference:
   contents:
   - split_acoustic_data
   - get_envelopes
+  - envelopes
   - get_templates
   - summarize_reference
   - summarize_acoustic_data
@@ -48,4 +49,3 @@ reference:
   contents:
   - label_spectro
   - plot_detection
-
