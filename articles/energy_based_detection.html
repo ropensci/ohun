@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Energy-based detection • ohun</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Energy-based detection">
@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ohun</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
                         <h4 data-toc-skip class="author"><a href="https://marce10.github.io/" class="external-link">Marcelo
 Araya-Salas, PhD</a></h4>
             
-            <h4 data-toc-skip class="date">2025-10-30</h4>
+            <h4 data-toc-skip class="date">2026-10-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ropensci/ohun/blob/master/vignettes/energy_based_detection.Rmd" class="external-link"><code>vignettes/energy_based_detection.Rmd</code></a></small>
       <div class="d-none name"><code>energy_based_detection.Rmd</code></div>
@@ -75,7 +75,7 @@ Araya-Salas, PhD</a></h4>
 approach uses amplitude envelopes to infer the position of sound events.
 Amplitude envelopes are representations of the variation in energy
 through time. This type of detector doesn’t require highly stereotyped
-sound events, although they work better on high quality recordings in
+sound events, although it works better on high quality recordings in
 which the amplitude of target sound events is higher than the background
 noise (i.e. high signal-to-noise ratio):</p>
 <figure><center>
@@ -92,7 +92,7 @@ as follows:</p>
 <span></span>
 <span><span class="co">#load package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/ohun/">ohun</a></span><span class="op">)</span></span></code></pre></div>
-<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">remotes</a>:</p>
+<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes" class="external-link">remotes</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install package</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span></span>
@@ -104,7 +104,7 @@ as follows:</p>
 <p>The package comes with an example reference table containing
 annotations of long-billed hermit hummingbird songs from two sound files
 (also supplied as example data: ‘lbh1’ and ‘lbh2’), which will be used
-in this vignette. The example data can be load and explored as
+in this vignette. The example data can be loaded and explored as
 follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
@@ -140,16 +140,16 @@ Contains: [22m
 <pre><code> [90mcreated by warbleR &lt; 1.1.21 [39m</code></pre>
 <p>We can plot the annotations on top of the spectrogram and amplitude
 envelope to further explore the data (this function only plots one wave
-object at the time, not really useful for long files):</p>
+object at a time, so it is not really useful for long files):</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># print spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh1</span>, reference <span class="op">=</span> <span class="va">lbh1_reference</span>, hop.size <span class="op">=</span> <span class="fl">10</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <div class="section level2">
 <h2 id="how-it-works">How it works<a class="anchor" aria-label="anchor" href="#how-it-works"></a>
 </h2>
-<p>The function <code>ernergy_detector()</code> performs this type of
-detection. We can understand how to use <code>ernergy_detector()</code>
+<p>The function <code><a href="../reference/energy_detector.html">energy_detector()</a></code> performs this type of
+detection. We can understand how to use <code><a href="../reference/energy_detector.html">energy_detector()</a></code>
 using simulated sound events. We will do that using the function
 <code><a href="https://marce10.github.io/warbleR/reference/simulate_songs.html" class="external-link">simulate_songs()</a></code> from <a href="https://CRAN.R-project.org/package=warbleR" class="external-link">warbleR</a>. In this
 example we simulate a recording with 10 sounds with two different
@@ -186,18 +186,18 @@ frequency ranges and durations:</p>
 <span>  <span class="op">)</span><span class="op">$</span><span class="va">wave</span></span></code></pre></div>
 <p>The function call saves a ‘.wav’ sound file in a temporary directory
 (<code><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir()</a></code>) and also returns a <code>wave</code> object in
-the R environment. This outputs will be used to run energy-based
-detection and creating plots, respectively. This is how the spectrogram
-and amplitude envelope of the simulated recording look like:</p>
+the R environment. These outputs will be used to run energy-based
+detection and to create plots, respectively. This is how the spectrogram
+and amplitude envelope of the simulated recording look:</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot spectrogram and envelope</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>,</span>
-<span>              env <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>              envelope <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>              fastdisp <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-6-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>Note that the amplitude envelope shows a high signal-to-noise ratio
 of the sound events, which is ideal for energy-based detection. This can
-be conducted using <code>ernergy_detector()</code> as follows:</p>
+be conducted using <code><a href="../reference/energy_detector.html">energy_detector()</a></code> as follows:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
@@ -217,7 +217,7 @@ be conducted using <code>ernergy_detector()</code> as follows:</p>
 <span>  detection <span class="op">=</span> <span class="va">detection</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">50</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-7-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-7-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The output is a selection table:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">detection</span></span></code></pre></div>
@@ -238,12 +238,12 @@ Contains: [22m
 <pre><code> [90m... and 4 more row(s) [39m</code></pre>
 <pre><code> [90m
 * A data frame (check.results) with 10 rows generated by check_sels() (as an attribute) [39m</code></pre>
-<pre><code> [90mcreated by warbleR 1.1.37 [39m</code></pre>
+<pre><code> [90mcreated by warbleR 1.1.38 [39m</code></pre>
 <p>Now we will make use of some additional arguments to filter out
-specific sound events based on their structural features. For instance
-we can use the argument <code>minimum.duration</code> to provide a time
-treshold (in ms) to exclude short sound events and keep only the longest
-sound events:</p>
+specific sound events based on their structural features. For instance,
+we can use the argument <code>min.duration</code> to provide a time
+threshold (in ms) to exclude short sound events and keep only the
+longest sound events:</p>
 <div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
@@ -258,16 +258,24 @@ sound events:</p>
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-9-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-9-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>We can use the argument <code>max.duration</code> (also in ms) to
 exclude long sound events and keep the short ones:</p>
 <div class="sourceCode" id="cb42"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run detection</span></span>
-<span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>,  threshold <span class="op">=</span> <span class="fl">50</span>, smooth <span class="op">=</span> <span class="fl">150</span>, max.duration <span class="op">=</span> <span class="fl">500</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">detection</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
+<span>    files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>,</span>
+<span>    bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">8</span><span class="op">)</span>,</span>
+<span>    threshold <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    smooth <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>    max.duration <span class="op">=</span> <span class="fl">500</span>,</span>
+<span>    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
-<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>,  detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-10-1.png" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-10-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>We can also focus the detection on specific frequency ranges using
 the argument <code>bp</code> (bandpass). By setting
 <code>bp = c(5, 8)</code> only those sound events found within that
@@ -275,15 +283,22 @@ frequency range (5-8 kHz) will be detected, which excludes sound events
 below 5 kHz:</p>
 <div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Detecting </span></span>
-<span><span class="va">detection</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span>files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>, bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>, threshold <span class="op">=</span> <span class="fl">50</span>, smooth <span class="op">=</span> <span class="fl">150</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">detection</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="../reference/energy_detector.html">energy_detector</a></span><span class="op">(</span></span>
+<span>    files <span class="op">=</span> <span class="st">"simulated_1.wav"</span>,</span>
+<span>    bp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">8</span><span class="op">)</span>,</span>
+<span>    threshold <span class="op">=</span> <span class="fl">50</span>,</span>
+<span>    smooth <span class="op">=</span> <span class="fl">150</span>,</span>
+<span>    path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
-<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>,  detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-11-1.png" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-11-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The same logic can be applied to detect those sound events found
-below 5 kHz. We just need to set the upper bound of the band pass filter
+below 5 kHz. We just need to set the upper bound of the bandpass filter
 below the range of the higher frequency sound events (for instance
-<code>bp = (0, 5)</code>):</p>
+<code>bp = c(0, 5)</code>):</p>
 <div class="sourceCode" id="cb44"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Detect</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
@@ -297,8 +312,8 @@ below the range of the higher frequency sound events (for instance
 <span>  <span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
-<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>,  detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></p>
+<span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_1</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>Amplitude modulation (variation in amplitude across a sound event)
 can be problematic for detection based on amplitude envelopes. We can
 also simulate some amplitude modulation using
@@ -341,7 +356,7 @@ also simulate some amplitude modulation using
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-13-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-13-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>When sound events have strong amplitude modulation they can be split
 during detection:</p>
 <div class="sourceCode" id="cb46"><pre class="downlit sourceCode r">
@@ -350,15 +365,14 @@ during detection:</p>
 <span></span>
 <span><span class="co"># plot spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">simulated_2</span>, envelope <span class="op">=</span> <span class="cn">TRUE</span>, threshold <span class="op">=</span> <span class="fl">50</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-14-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-14-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>There are two arguments that can deal with this:
-<code>holdtime</code> and <code>smooth</code>. <code>hold.time</code>
-allows to merge split sound events that are found within a given time
-range (in ms). This time range should be high enough to merge things
-belonging to the same sound event but not too high so it merges
-different sound events. For this example a <code>hold.time</code> of 200
-ms can do the trick (we know gaps between sound events are ~0.5 s
-long):</p>
+<code>hold.time</code> and <code>smooth</code>. <code>hold.time</code>
+merges split sound events that are found within a given time range (in
+ms). This time range should be high enough to merge things belonging to
+the same sound event but not so high that it merges different sound
+events. For this example a <code>hold.time</code> of 200 ms can do the
+trick (we know gaps between sound events are ~0.5 s long):</p>
 <div class="sourceCode" id="cb47"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># detect sounds</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
@@ -377,12 +391,12 @@ long):</p>
 <span>  threshold <span class="op">=</span> <span class="fl">50</span>,</span>
 <span>  detection <span class="op">=</span> <span class="va">detection</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-15-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-15-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p><code>smooth</code> works by merging the amplitude envelope ‘hills’
 of the split sound events themselves. It smooths envelopes by applying a
-sliding window averaging of amplitude values. It’s given in ms of the
-window size. A <code>smooth</code> of 350 ms can merged back split sound
-events from our example:</p>
+sliding window averaging of amplitude values. It’s given as the window
+size in ms. A <code>smooth</code> of 350 ms can merge back the split
+sound events from our example:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># detect sounds</span></span>
 <span><span class="va">detection</span> <span class="op">&lt;-</span></span>
@@ -402,7 +416,7 @@ events from our example:</p>
 <span>  detection <span class="op">=</span> <span class="va">detection</span>,</span>
 <span>  smooth <span class="op">=</span> <span class="fl">350</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-16-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="energy_based_detection_files/figure-html/unnamed-chunk-16-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The function has some additional arguments for further filtering
 detections (<code>peak.amplitude</code>) and speeding up analysis
 (<code>thinning</code> and <code>parallel</code>).</p>
@@ -411,12 +425,11 @@ detections (<code>peak.amplitude</code>) and speeding up analysis
 <h2 id="optimizing-energy-based-detection">Optimizing energy-based detection<a class="anchor" aria-label="anchor" href="#optimizing-energy-based-detection"></a>
 </h2>
 <p>This last example using <code>smooth</code> can be used to showcase
-how the tunning parameters can be optimized. As explained above, to do
-this we need a reference table that contains the time position of the
-target sound events. The function
-<code><a href="../reference/optimize_energy_detector.html">optimize_energy_detector()</a></code> can be used finding the optimal
-parameter values. We must provide the range of parameter values that
-will be evaluated:</p>
+how the tuning parameters can be optimized. To do this we need a
+reference table that contains the time position of the target sound
+events. The function <code><a href="../reference/optimize_energy_detector.html">optimize_energy_detector()</a></code> can be used
+for finding the optimal parameter values. We must provide the range of
+parameter values that will be evaluated:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">optim_detection</span> <span class="op">&lt;-</span></span>
 <span>  <span class="fu"><a href="../reference/optimize_energy_detector.html">optimize_energy_detector</a></span><span class="op">(</span></span>
@@ -443,7 +456,7 @@ will be evaluated:</p>
 2                            0.5023727
 3                            0.7843797</code></pre>
 <p>The output contains the combination of parameters used at each
-iteration as well as the corresponding diagnose indices. In this case
+iteration as well as the corresponding diagnostic indices. In this case
 all combinations generate a good detection (recall &amp; precision = 1).
 However, only the routine with the highest <code>smooth</code> (last
 row) has no split sound events (‘split.positive’ column). It also shows
@@ -451,8 +464,8 @@ a better overlap to the reference sound events (‘overlap’ closer to
 1).</p>
 <p>In addition, there are two complementary functions for optimizing
 energy-based detection routines: <code><a href="../reference/summarize_reference.html">summarize_reference()</a></code> and
-<code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/summarize_reference.html">summarize_reference()</a></code> allow
-user to get a sense of the time and frequency characteristics of a
+<code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code>. <code><a href="../reference/summarize_reference.html">summarize_reference()</a></code> allows
+users to get a sense of the time and frequency characteristics of a
 reference table. This information can be used to determine the range of
 tuning parameter values during optimization. This is the output of the
 function applied to <code>lbh_reference</code>:</p>
@@ -468,7 +481,7 @@ bottom.freq      1.81   2.11   2.37
 top.freq         8.49   8.82   9.53</code></pre>
 <p>Features related to selection duration can be used to set the
 ‘max.duration’ and ‘min.duration’ values, frequency related features can
-inform banpass values, gap related features inform hold time values and
+inform bandpass values, gap related features inform hold time values and
 duty cycle can be used to evaluate performance. Peak amplitude can be
 used to keep only those sound events with the highest intensity, mostly
 useful for routines in which only a subset of the target sound events
@@ -478,14 +491,16 @@ reference tables and collapses them into a single selection. Overlapping
 selections would more likely appear as a single amplitude ‘hill’ and
 thus would be detected as a single sound event. So
 <code><a href="../reference/merge_overlaps.html">merge_overlaps()</a></code> can be useful to prepare references in a
-format representing a more realistic expectation of how a pefect energy
-detection routine would look like.</p>
+format representing a more realistic expectation of how a perfect energy
+detection routine would look.</p>
 <hr>
 <div class="alert alert-info">
 <p>Please cite <a href="https://docs.ropensci.org/ohun/">ohun</a> like
 this:</p>
-<p>Araya-Salas, M. (2021), <em>ohun: diagnosing and optimizing automated
-sound event detection</em>. R package version 0.1.0.</p>
+<p>Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
+Chirino, F., Elizondo-Calvo, J., &amp; Rico-Guevara, A. (2023). ohun: An
+R package for diagnosing and optimizing automatic sound event detection.
+<em>Methods in Ecology and Evolution</em>, 14, 2259–2271. <a href="https://doi.org/10.1111/2041-210X.14170" class="external-link uri">https://doi.org/10.1111/2041-210X.14170</a></p>
 </div>
 </div>
 <div class="section level2">
@@ -503,15 +518,16 @@ Evolution, 8:184-191.</li>
 <li>Knight, E.C., Hannah, K.C., Foley, G.J., Scott, C.D., Brigham, R.M.
 &amp; Bayne, E. (2017). Recommendations for acoustic recognizer
 performance assessment with application to five common automated signal
-recognition programs. Avian Conservation and Ecology,</li>
+recognition programs. Avian Conservation and Ecology, 12(2), 14. <a href="https://doi.org/10.5751/ACE-01114-120214" class="external-link uri">https://doi.org/10.5751/ACE-01114-120214</a>
+</li>
 <li>Macmillan, N. A., &amp; Creelman, C.D. (2004). Detection theory: A
 user’s guide. Psychology press.</li>
 </ol>
 <hr>
 <p><font size="4">Session information</font></p>
-<pre><code>R version 4.5.1 (2025-06-13)
+<pre><code>R version 4.6.1 (2026-06-24)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.3 LTS
+Running under: Ubuntu 24.04.5 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -530,27 +546,26 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] warbleR_1.1.37     NatureSounds_1.0.5 knitr_1.50         seewave_2.2.4     
-[5] tuneR_1.4.7        ohun_1.0.4        
+[1] warbleR_1.1.38     NatureSounds_1.0.5 knitr_1.52         seewave_2.2.4     
+[5] tuneR_1.4.7        ohun_1.0.5        
 
 loaded via a namespace (and not attached):
- [1] gtable_0.3.6       rjson_0.2.23       xfun_0.53          bslib_0.9.0       
- [5] ggplot2_4.0.0      vctrs_0.6.5        tools_4.5.1        bitops_1.0-9      
- [9] curl_7.0.0         parallel_4.5.1     proxy_0.4-27       pkgconfig_2.0.3   
-[13] KernSmooth_2.23-26 checkmate_2.3.3    RColorBrewer_1.1-3 S7_0.2.0          
-[17] desc_1.4.3         lifecycle_1.0.4    compiler_4.5.1     farver_2.1.2      
-[21] textshaping_1.0.4  brio_1.1.5         htmltools_0.5.8.1  class_7.3-23      
-[25] sass_0.4.10        RCurl_1.98-1.17    yaml_2.3.10        pkgdown_2.1.3     
-[29] jquerylib_0.1.4    MASS_7.3-65        classInt_0.4-11    cachem_1.1.0      
-[33] viridis_0.6.5      Deriv_4.2.0        digest_0.6.37      sf_1.0-21         
-[37] fastmap_1.2.0      grid_4.5.1         cli_3.6.5          magrittr_2.0.4    
-[41] e1071_1.7-16       scales_1.4.0       backports_1.5.0    rmarkdown_2.30    
-[45] httr_1.4.7         Sim.DiffProc_4.9   signal_1.8-1       igraph_2.2.1      
-[49] gridExtra_2.3      ragg_1.5.0         pbapply_1.7-4      evaluate_1.0.5    
-[53] dtw_1.23-1         fftw_1.0-9         testthat_3.2.3     viridisLite_0.4.2 
-[57] rlang_1.1.6        Rcpp_1.1.0         glue_1.8.0         DBI_1.2.3         
-[61] jsonlite_2.0.0     R6_2.6.1           systemfonts_1.3.1  fs_1.6.6          
-[65] units_1.0-0       </code></pre>
+ [1] Sim.DiffProc_5.0   viridis_0.6.5      sass_0.4.10        class_7.3-23      
+ [5] KernSmooth_2.23-26 digest_0.6.39      magrittr_2.0.5     evaluate_1.0.5    
+ [9] grid_4.6.1         RColorBrewer_1.1-3 fastmap_1.2.0      jsonlite_2.0.0    
+[13] e1071_1.7-17       backports_1.5.1    DBI_1.3.0          gridExtra_2.3.1   
+[17] httr_1.4.9         viridisLite_0.4.3  scales_1.4.0       pbapply_1.7-5     
+[21] textshaping_1.0.5  jquerylib_0.1.4    cli_3.6.6          rlang_1.3.0       
+[25] units_1.0-1        fftw_1.0-9         cachem_1.1.0       yaml_2.3.12       
+[29] otel_0.2.0         tools_4.6.1        parallel_4.6.1     checkmate_2.3.4   
+[33] Rraven_1.0.16      ggplot2_4.0.3      Deriv_4.3.5        curl_8.0.0        
+[37] vctrs_0.7.3        R6_2.6.1           classInt_0.4-11    proxy_0.4-29      
+[41] lifecycle_1.0.5    dtw_1.23-3         fs_2.1.0           MASS_7.3-65       
+[45] ragg_1.5.2         pkgconfig_2.0.3    desc_1.4.3         pkgdown_2.2.1     
+[49] bslib_0.12.0       gtable_0.3.6       glue_1.8.1         Rcpp_1.1.2        
+[53] sf_1.1-3           systemfonts_1.3.2  xfun_0.61          farver_2.1.2      
+[57] htmltools_0.5.9    igraph_2.3.4       rmarkdown_2.32     signal_1.8-1      
+[61] compiler_4.6.1     S7_0.2.2          </code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -563,7 +578,7 @@ loaded via a namespace (and not attached):
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>

@@ -1,0 +1,119 @@
+# Reassemble detections from clips
+
+`reassemble_detection` reassembles detections made on clips so they
+refer to the original sound files
+
+## Usage
+
+``` r
+reassemble_detection(detection, Y, cores = 1, pb = TRUE)
+```
+
+## Arguments
+
+- detection:
+
+  Data frame or selection table (using the warbleR package's format, see
+  [`selection_table`](https://marce10.github.io/warbleR/reference/selection_table.html))
+  containing the start and end of sound events. Must contain at least
+  the following columns: "sound.files", "selec", "start" and "end".
+
+- Y:
+
+  Data frame with the start and end of clips in the original sound
+  files. Must contain the column "original.sound.files", "sound.files"
+  (clip files), "start" and "end".
+
+- cores:
+
+  Numeric. Controls whether parallel computing is applied. It specifies
+  the number of cores to be used. Default is 1 (i.e. no parallel
+  computing).
+
+- pb:
+
+  Logical argument to control progress bar. Default is `TRUE`.
+
+## Value
+
+A data frame with annotations referring to the position of the
+detections in the original sound files.
+
+## Details
+
+When working with large sound files, splitting them into smaller clips
+(which can be done with
+[`split_acoustic_data`](https://docs.ropensci.org/ohun/reference/split_acoustic_data.md))
+can accelerate detection processing. However, this approach complicates
+result interpretation since detections reference the clips rather than
+the original files. This function reformats clip-based detections
+—specifically those created by split_acoustic_data()— to map them back
+to their original unsplit sound files.
+
+## References
+
+Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
+Chirino, F., Elizondo-Calvo, J., & Rico-Guevara, A. (2023). ohun: An R
+package for diagnosing and optimizing automatic sound event detection.
+Methods in Ecology and Evolution, 14, 2259–2271.
+https://doi.org/10.1111/2041-210X.14170
+
+## See also
+
+[`label_detection`](https://docs.ropensci.org/ohun/reference/label_detection.md),
+[`split_acoustic_data`](https://docs.ropensci.org/ohun/reference/split_acoustic_data.md)
+
+## Author
+
+Marcelo Araya-Salas (<marcelo.araya@ucr.ac.cr>).
+
+## Examples
+
+``` r
+{
+# load example data
+data("lbh1", "lbh2", "lbh_reference")
+tuneR::writeWave(lbh1, file.path(tempdir(), "lbh1.wav"))
+tuneR::writeWave(lbh2, file.path(tempdir(), "lbh2.wav"))
+ 
+## if X is a data frame #####
+df_ref <- as.data.frame(lbh_reference)
+  
+# get split annotations
+split_df_ref <- split_acoustic_data(X = df_ref,
+ only.sels = TRUE, sgmt.dur = 1.5, 
+ path = tempdir(), pb = FALSE, 
+ files = c("lbh1.wav", "lbh2.wav"))
+   
+# get clip information
+Y <- split_acoustic_data(sgmt.dur = 1.5, 
+ path = tempdir(), pb = FALSE,
+ output.path = tempdir(), files = c("lbh1.wav", "lbh2.wav"))
+   
+# reassemble annotations
+tc <- reassemble_detection(detection = split_df_ref,  
+Y = Y, pb = FALSE)
+
+# start and end are the same as in the original unsplit data
+df_ref <- df_ref[order(df_ref$sound.files, df_ref$start), ]
+all(tc$end == df_ref$end)
+all(tc$start == df_ref$start)
+ 
+### if X is a selection table ##
+# split annotations and files
+split_lbh_reference <- split_acoustic_data(X = lbh_reference, 
+ sgmt.dur = 1.5, path = tempdir(),
+ output.path = tempdir(),
+ files = c("lbh1.wav", "lbh2.wav"))
+
+# reassemble annotations
+tc <- reassemble_detection(detection = split_lbh_reference, 
+  Y = attributes(split_lbh_reference)$clip.info)
+  
+# start and end are the same as in the original unsplit data
+lbh_reference <- lbh_reference[order(lbh_reference$sound.files, lbh_reference$start), ]
+all(tc$end == lbh_reference$end)
+all(tc$start == lbh_reference$start)
+}
+#> [1] TRUE
+```

@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Template-based detection • ohun</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Template-based detection">
@@ -21,7 +21,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ohun</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -63,7 +63,7 @@
                         <h4 data-toc-skip class="author"><a href="https://marce10.github.io/" class="external-link">Marcelo
 Araya-Salas, PhD</a></h4>
             
-            <h4 data-toc-skip class="date">2025-10-30</h4>
+            <h4 data-toc-skip class="date">2026-10-13</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/ropensci/ohun/blob/master/vignettes/template_based_detection.Rmd" class="external-link"><code>vignettes/template_based_detection.Rmd</code></a></small>
       <div class="d-none name"><code>template_based_detection.Rmd</code></div>
@@ -71,9 +71,9 @@ Araya-Salas, PhD</a></h4>
 
     
     
-<p>This vignette details the use of template-based detection in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>.Template-based
+<p>This vignette details the use of template-based detection in <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a>. The template-based
 detection method is better suited for highly stereotyped sound events.
-As it is less affected by signal-to-noise ratio it’s more robust to
+As it is less affected by signal-to-noise ratio, it’s more robust to
 higher levels of background noise:</p>
 <figure><center>
 <img src="analysis_workflow_template.png" alt="automated signal detection diagram" width="500" height="450">
@@ -81,7 +81,7 @@ higher levels of background noise:</p>
 <figcaption><i>Diagram depicting how target sound event features can be used to tell
 the most adequate sound event detection approach. Steps in which ‘ohun’
 can be helpful are shown in color. (SNR = signal-to-noise ratio) </i>
-</figcaption></figure><p>The procedure for template-based detection is divided in three
+</figcaption></figure><p>The procedure for template-based detection is divided into three
 steps:</p>
 <ul>
 <li>Choosing the right template (<code><a href="../reference/get_templates.html">get_templates()</a></code>)</li>
@@ -99,7 +99,7 @@ as follows:</p>
 <span></span>
 <span><span class="co">#load package</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://docs.ropensci.org/ohun/">ohun</a></span><span class="op">)</span></span></code></pre></div>
-<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=devtools" class="external-link">remotes</a>:</p>
+<p>To install the latest developmental version from <a href="https://github.com/" class="external-link">github</a> you will need the R package <a href="https://cran.r-project.org/package=remotes" class="external-link">remotes</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install package</span></span>
 <span><span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"maRce10/ohun"</span><span class="op">)</span></span>
@@ -111,7 +111,7 @@ as follows:</p>
 <p>The package comes with an example reference table containing
 annotations of long-billed hermit hummingbird songs from two sound files
 (also supplied as example data: ‘lbh1’ and ‘lbh2’), which will be used
-in this vignette. The example data can be load and explored as
+in this vignette. The example data can be loaded and explored as
 follows:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># load example data</span></span>
@@ -146,20 +146,20 @@ Contains: [22m
 * A data frame (check.results) with 10 rows generated by check_sels() (as an attribute) [39m</code></pre>
 <pre><code> [90mcreated by warbleR &lt; 1.1.21 [39m</code></pre>
 <p>We can also plot the annotations on top of the spectrograms to
-further explore the data (this function only plots one wave object at
-the time, not really useful for long files):</p>
+further explore the data (this function only plots one wave object at a
+time, so it is not really useful for long files):</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># print spectrogram</span></span>
 <span><span class="fu"><a href="../reference/label_spectro.html">label_spectro</a></span><span class="op">(</span>wave <span class="op">=</span> <span class="va">lbh1</span>, reference <span class="op">=</span> <span class="va">lbh1_reference</span>, hop.size <span class="op">=</span> <span class="fl">10</span>, ovlp <span class="op">=</span> <span class="fl">50</span>, flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="template_based_detection_files/figure-html/unnamed-chunk-4-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="template_based_detection_files/figure-html/unnamed-chunk-4-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <hr>
 <p>The function <code><a href="../reference/get_templates.html">get_templates()</a></code> can help you find a
-template closer to the average acoustic structure of the sound events in
-a reference table. This is done by finding the sound events closer to
-the centroid of the acoustic space. When the acoustic space is not
+template closest to the average acoustic structure of the sound events
+in a reference table. This is done by finding the sound events closest
+to the centroid of the acoustic space. When the acoustic space is not
 supplied (‘acoustic.space’ argument) the function estimates it by
 measuring several acoustic parameters using the function <a href="https://marce10.github.io/warbleR/reference/spectro_analysis.html" class="external-link"><code>spectro_analysis()</code></a>
-from <a href="https://CRAN.R-project.org/package=warbleR" class="external-link"><code>warbleR</code></a>)
+from <a href="https://CRAN.R-project.org/package=warbleR" class="external-link">warbleR</a>
 and summarizing it with Principal Component Analysis (after
 z-transforming parameters). If only 1 template is required the function
 returns the sound event closest to the acoustic space centroid. The
@@ -173,8 +173,8 @@ space. These ‘mean structure’ templates can be obtained as follows:</p>
 <span>  <span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code> [30mcomputing spectral features (step 0 of 0): [39m</code></pre>
 <pre><code> [90mThe first 2 principal components explained 0.52 of the variance [39m</code></pre>
-<p><img src="template_based_detection_files/figure-html/unnamed-chunk-6-1.png" width="80%" style="display: block; margin: auto;"></p>
-<p>The graph above shows the overall acoustic spaces, in which the sound
+<p><img src="template_based_detection_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
+<p>The graph above shows the overall acoustic space, in which the sound
 closest to the space centroid is highlighted. The highlighted sound is
 selected as the template and can be used to detect similar sound events.
 The function <code><a href="../reference/get_templates.html">get_templates()</a></code> can also select several
@@ -184,10 +184,10 @@ sub-spaces defined as equal-size slices of a circle centered at the
 centroid of the acoustic space:</p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get 3 templates</span></span>
-<span><span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, </span>
-<span>                          n.sub.spaces <span class="op">=</span> <span class="fl">3</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">templates</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/get_templates.html">get_templates</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, </span>
+<span>                           n.sub.spaces <span class="op">=</span> <span class="fl">3</span>, path <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code> [90mThe first 2 principal components explained 0.52 of the variance [39m</code></pre>
-<p><img src="template_based_detection_files/figure-html/unnamed-chunk-8-1.png" width="80%" style="display: block; margin: auto;"></p>
+<p><img src="template_based_detection_files/figure-html/unnamed-chunk-8-1.png" class="r-plt" alt="" width="80%" style="display: block; margin: auto;"></p>
 <p>We will use the single template object (‘template’) to run a
 detection on the example ‘lbh1’ data:</p>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
@@ -211,10 +211,10 @@ own printing method:</p>
 <pre><code> [90m* Contains 1 correlation score vector(s) from 1 template(s):
   [3mlbh1.wav-10 [23m  [39m</code></pre>
 <pre><code> [90m
-... and 1 sound files(s):
+... and 1 sound file(s):
   [3mlbh1.wav [23m  [39m</code></pre>
 <pre><code> [90m
- * Created by  [1mohun  [22m1.0.4 [39m</code></pre>
+ * Created by  [1mohun  [22m1.0.5 [39m</code></pre>
 <p>This object can then be used to detect sound events using
 <code><a href="../reference/template_detector.html">template_detector()</a></code>:</p>
 <div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
@@ -231,15 +231,15 @@ Contains: [22m
 *  A selection table data frame with 6 rows and 6 columns: [39m</code></pre>
 <pre><code> [90msound.files    selec    start      end  template       scores [39m</code></pre>
 <pre><code> [90m------------  ------  -------  -------  ------------  ------- [39m</code></pre>
-<pre><code> [90mlbh1.wav           1   0.0931   0.2410  lbh1.wav-10    0.7403 [39m</code></pre>
-<pre><code> [90mlbh1.wav           2   0.5702   0.7180  lbh1.wav-10    0.8300 [39m</code></pre>
-<pre><code> [90mlbh1.wav           3   1.0589   1.2067  lbh1.wav-10    0.7688 [39m</code></pre>
-<pre><code> [90mlbh1.wav           4   1.7105   1.8583  lbh1.wav-10    0.7234 [39m</code></pre>
-<pre><code> [90mlbh1.wav           5   3.6769   3.8248  lbh1.wav-10    0.7114 [39m</code></pre>
-<pre><code> [90mlbh1.wav           6   4.1540   4.3019  lbh1.wav-10    0.7485 [39m</code></pre>
+<pre><code> [90mlbh1.wav           1   0.0929   0.2408  lbh1.wav-10    0.7403 [39m</code></pre>
+<pre><code> [90mlbh1.wav           2   0.5688   0.7167  lbh1.wav-10    0.8300 [39m</code></pre>
+<pre><code> [90mlbh1.wav           3   1.0563   1.2042  lbh1.wav-10    0.7688 [39m</code></pre>
+<pre><code> [90mlbh1.wav           4   1.7064   1.8543  lbh1.wav-10    0.7234 [39m</code></pre>
+<pre><code> [90mlbh1.wav           5   3.6681   3.8160  lbh1.wav-10    0.7114 [39m</code></pre>
+<pre><code> [90mlbh1.wav           6   4.1440   4.2919  lbh1.wav-10    0.7485 [39m</code></pre>
 <pre><code> [90m
 * A data frame (check.results) with 6 rows generated by check_sels() (as an attribute) [39m</code></pre>
-<pre><code> [90mcreated by warbleR 1.1.37 [39m</code></pre>
+<pre><code> [90mcreated by warbleR 1.1.38 [39m</code></pre>
 <p>The output can be explored by plotting the spectrogram along with the
 detection and correlation scores:</p>
 <div class="sourceCode" id="cb48"><pre class="downlit sourceCode r">
@@ -251,21 +251,21 @@ detection and correlation scores:</p>
 <span>  flim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>  threshold <span class="op">=</span> <span class="fl">0.7</span>,</span>
 <span>  hop.size <span class="op">=</span> <span class="fl">10</span>, ovlp <span class="op">=</span> <span class="fl">50</span><span class="op">)</span></span></code></pre></div>
-<p><img src="template_based_detection_files/figure-html/unnamed-chunk-12-1.png" width="100%" style="display: block; margin: auto;"></p>
+<p><img src="template_based_detection_files/figure-html/unnamed-chunk-12-1.png" class="r-plt" alt="" width="100%" style="display: block; margin: auto;"></p>
 <p>The performance can be evaluated using
 <code><a href="../reference/diagnose_detection.html">diagnose_detection()</a></code>:</p>
 <div class="sourceCode" id="cb49"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
-1          6              6               0               4      0      0 0.9184415
+1          6              6               0               4      0      0 0.9308584
   recall precision f.score
 1    0.6         1    0.75</code></pre>
 <div class="section level2">
 <h2 id="optimizing-template-based-detection">Optimizing template-based detection<a class="anchor" aria-label="anchor" href="#optimizing-template-based-detection"></a>
 </h2>
-<p>The function <code><a href="../reference/optimize_template_detector.html">optimize_template_detector()</a></code> allows to
-evaluate the performance under different correlation thresholds:</p>
+<p>The function <code><a href="../reference/optimize_template_detector.html">optimize_template_detector()</a></code> allows
+evaluating the performance under different correlation thresholds:</p>
 <div class="sourceCode" id="cb51"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run optimization</span></span>
 <span><span class="va">optimization</span> <span class="op">&lt;-</span></span>
@@ -285,15 +285,15 @@ evaluate the performance under different correlation thresholds:</p>
 4       0.4 lbh1.wav-10         10             10               0               0      0
 5       0.5 lbh1.wav-10         10             10               0               0      0
   merges   overlap recall precision   f.score
-1      0 0.9241771      1 0.1123596 0.2020202
-2      0 0.9241771      1 0.1851852 0.3125000
-3      0 0.9241771      1 0.5882353 0.7407407
-4      0 0.9241771      1 1.0000000 1.0000000
-5      0 0.9241771      1 1.0000000 1.0000000</code></pre>
+1      0 0.9264717      1 0.1123596 0.2020202
+2      0 0.9264717      1 0.1851852 0.3125000
+3      0 0.9264717      1 0.5882353 0.7407407
+4      0 0.9264717      1 1.0000000 1.0000000
+5      0 0.9264717      1 1.0000000 1.0000000</code></pre>
 <p>Additional threshold values can be evaluated without having to run it
-all over again. We just need to supplied the output from the previous
-run with the argument <code>previous.output</code> (the same trick can
-be done when optimizing an energy-based detection):</p>
+all over again. We just need to supply the output from the previous run
+with the argument <code>previous.output</code> (the same trick can be
+done when optimizing an energy-based detection):</p>
 <div class="sourceCode" id="cb55"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># run optimization</span></span>
 <span><span class="fu"><a href="../reference/optimize_template_detector.html">optimize_template_detector</a></span><span class="op">(</span></span>
@@ -312,13 +312,13 @@ be done when optimizing an energy-based detection):</p>
 6       0.6 lbh1.wav-10         10             10               0               0      0
 7       0.7 lbh1.wav-10          6              6               0               4      0
   merges   overlap recall precision   f.score
-1      0 0.9241771    1.0 0.1123596 0.2020202
-2      0 0.9241771    1.0 0.1851852 0.3125000
-3      0 0.9241771    1.0 0.5882353 0.7407407
-4      0 0.9241771    1.0 1.0000000 1.0000000
-5      0 0.9241771    1.0 1.0000000 1.0000000
-6      0 0.9241771    1.0 1.0000000 1.0000000
-7      0 0.9184415    0.6 1.0000000 0.7500000</code></pre>
+1      0 0.9264717    1.0 0.1123596 0.2020202
+2      0 0.9264717    1.0 0.1851852 0.3125000
+3      0 0.9264717    1.0 0.5882353 0.7407407
+4      0 0.9264717    1.0 1.0000000 1.0000000
+5      0 0.9264717    1.0 1.0000000 1.0000000
+6      0 0.9264717    1.0 1.0000000 1.0000000
+7      0 0.9308584    0.6 1.0000000 0.7500000</code></pre>
 <p>In this case 2 threshold values (0.5 and 0.6) can achieve an optimal
 detection.</p>
 </div>
@@ -326,8 +326,8 @@ detection.</p>
 <h2 id="detecting-several-templates">Detecting several templates<a class="anchor" aria-label="anchor" href="#detecting-several-templates"></a>
 </h2>
 <p>Several templates can be used within the same call. Here we correlate
-two templates on the two example sound files, taking one template from
-each sound file:</p>
+two templates on the ‘lbh1’ sound file, taking the first and tenth sound
+events of its reference table as templates:</p>
 <div class="sourceCode" id="cb58"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># get correlations</span></span>
 <span><span class="va">correlations</span> <span class="op">&lt;-</span></span>
@@ -347,13 +347,13 @@ is the case just by diagnosing the detection:</p>
 <code class="sourceCode R"><span><span class="co">#diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
-1         20             10              10               0      0      0 0.9306396
+1         20             10              10               0      0      0 0.9556997
   recall precision   f.score
 1      1       0.5 0.6666667</code></pre>
-<p>In this we got perfect recall, but low precision. That is due to the
-fact that the same reference events were picked up by both templates. We
-can actually diagnose the detection by template to see this more
-clearly:</p>
+<p>In this case we got perfect recall, but low precision. That is due to
+the fact that the same reference events were picked up by both
+templates. We can actually diagnose the detection by template to see
+this more clearly:</p>
 <div class="sourceCode" id="cb61"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span>, by <span class="op">=</span> <span class="st">"template"</span><span class="op">)</span></span></code></pre></div>
@@ -361,20 +361,21 @@ clearly:</p>
 1 lbh1.wav-10         10             10               0               0      0      0
 2 lbh1.wav-19         10             10               0               0      0      0
     overlap recall precision f.score
-1 0.9241771      1         1       1
-2 0.8789903      1         1       1</code></pre>
+1 0.9264717      1         1       1
+2 0.9270443      1         1       1</code></pre>
 <p>We see that independently each template achieved a good detection. We
-can create a consensus detection by leaving only those with detections
-with the highest correlation across templates. To do this we first need
-to label each row in the detection using <code><a href="../reference/label_detection.html">label_detection()</a></code>
-and then remove duplicates using <code><a href="../reference/consensus_detection.html">consensus_detection()</a></code>:</p>
+can create a consensus detection by keeping, for each set of duplicates,
+only the detection with the highest correlation across templates. To do
+this we first need to label each row in the detection using
+<code><a href="../reference/label_detection.html">label_detection()</a></code> and then remove duplicates using
+<code><a href="../reference/consensus_detection.html">consensus_detection()</a></code>:</p>
 <div class="sourceCode" id="cb63"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># labeling detection</span></span>
 <span><span class="va">labeled</span> <span class="op">&lt;-</span></span>
-<span>  <span class="fu"><a href="../reference/label_detection.html">label_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh_reference</span>, detection <span class="op">=</span> <span class="va">detection</span>, by <span class="op">=</span> <span class="st">"template"</span><span class="op">)</span></span></code></pre></div>
+<span>  <span class="fu"><a href="../reference/label_detection.html">label_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">detection</span>, by <span class="op">=</span> <span class="st">"template"</span><span class="op">)</span></span></code></pre></div>
 <p>Now we can filter out duplicates and diagnose the detection again,
 telling the function to select a single row per duplicate using the
-correlation score as a criterium (<code>by = "scores"</code>, this
+correlation score as a criterion (<code>by = "scores"</code>, this
 column is part of the <code><a href="../reference/template_detector.html">template_detector()</a></code> output):</p>
 <div class="sourceCode" id="cb64"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># filter</span></span>
@@ -383,17 +384,19 @@ column is part of the <code><a href="../reference/template_detector.html">templa
 <span><span class="co"># diagnose</span></span>
 <span><span class="fu"><a href="../reference/diagnose_detection.html">diagnose_detection</a></span><span class="op">(</span>reference <span class="op">=</span> <span class="va">lbh1_reference</span>, detection <span class="op">=</span> <span class="va">consensus</span><span class="op">)</span></span></code></pre></div>
 <pre><code>  detections true.positives false.positives false.negatives splits merges   overlap
-1         10             10               0               0      0      0 0.9046387
+1         10             10               0               0      0      0 0.9349884
   recall precision f.score
 1      1         1       1</code></pre>
-<p>We successfully get rid of duplicates and detected every single
+<p>We successfully got rid of duplicates and detected every single
 target sound event.</p>
 <hr>
 <div class="alert alert-info">
 <p>Please cite <a href="https://github.com/ropensci/ohun" class="external-link">ohun</a> like
 this:</p>
-<p>Araya-Salas, M. (2021), <em>ohun: diagnosing and optimizing automated
-sound event detection</em>. R package version 0.1.0.</p>
+<p>Araya-Salas, M., Smith-Vidaurre, G., Chaverri, G., Brenes, J. C.,
+Chirino, F., Elizondo-Calvo, J., &amp; Rico-Guevara, A. (2023). ohun: An
+R package for diagnosing and optimizing automatic sound event detection.
+<em>Methods in Ecology and Evolution</em>, 14, 2259–2271. <a href="https://doi.org/10.1111/2041-210X.14170" class="external-link uri">https://doi.org/10.1111/2041-210X.14170</a></p>
 </div>
 </div>
 <div class="section level2">
@@ -406,7 +409,7 @@ R package for diagnosing and optimizing automatic sound event detection.
 Methods in Ecology and Evolution, 14, 2259–2271. <a href="https://doi.org/10.1111/2041-210X.14170" class="external-link uri">https://doi.org/10.1111/2041-210X.14170</a>
 </li>
 <li>Araya-Salas M, Smith-Vidaurre G (2017) warbleR: An R package to
-streamline analysis of animal sound events. Methods in Ecology and
+streamline analysis of animal acoustic signals. Methods in Ecology and
 Evolution, 8:184-191.</li>
 <li>Khanna H., Gaunt S.L.L. &amp; McCallum D.A. (1997). Digital
 spectrographic cross-correlation: tests of sensitivity. Bioacoustics
@@ -414,15 +417,16 @@ spectrographic cross-correlation: tests of sensitivity. Bioacoustics
 <li>Knight, E.C., Hannah, K.C., Foley, G.J., Scott, C.D., Brigham, R.M.
 &amp; Bayne, E. (2017). Recommendations for acoustic recognizer
 performance assessment with application to five common automated signal
-recognition programs. Avian Conservation and Ecology,</li>
+recognition programs. Avian Conservation and Ecology, 12(2), 14. <a href="https://doi.org/10.5751/ACE-01114-120214" class="external-link uri">https://doi.org/10.5751/ACE-01114-120214</a>
+</li>
 <li>Macmillan, N. A., &amp; Creelman, C.D. (2004). Detection theory: A
 user’s guide. Psychology press.</li>
 </ol>
 <hr>
 <p><font size="4">Session information</font></p>
-<pre><code>R version 4.5.1 (2025-06-13)
+<pre><code>R version 4.6.1 (2026-06-24)
 Platform: x86_64-pc-linux-gnu
-Running under: Ubuntu 24.04.3 LTS
+Running under: Ubuntu 24.04.5 LTS
 
 Matrix products: default
 BLAS:   /usr/lib/x86_64-linux-gnu/openblas-pthread/libblas.so.3 
@@ -441,26 +445,25 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] warbleR_1.1.37     NatureSounds_1.0.5 knitr_1.50         seewave_2.2.4     
-[5] tuneR_1.4.7        ohun_1.0.4        
+[1] warbleR_1.1.38     NatureSounds_1.0.5 knitr_1.52         seewave_2.2.4     
+[5] tuneR_1.4.7        ohun_1.0.5        
 
 loaded via a namespace (and not attached):
- [1] viridis_0.6.5      sass_0.4.10        class_7.3-23       bitops_1.0-9      
- [5] KernSmooth_2.23-26 digest_0.6.37      magrittr_2.0.4     evaluate_1.0.5    
- [9] grid_4.5.1         RColorBrewer_1.1-3 fastmap_1.2.0      jsonlite_2.0.0    
-[13] e1071_1.7-16       backports_1.5.0    brio_1.1.5         DBI_1.2.3         
-[17] gridExtra_2.3      httr_1.4.7         viridisLite_0.4.2  scales_1.4.0      
-[21] pbapply_1.7-4      textshaping_1.0.4  jquerylib_0.1.4    cli_3.6.5         
-[25] rlang_1.1.6        units_1.0-0        fftw_1.0-9         cachem_1.1.0      
-[29] yaml_2.3.10        tools_4.5.1        parallel_4.5.1     checkmate_2.3.3   
-[33] ggplot2_4.0.0      curl_7.0.0         vctrs_0.6.5        R6_2.6.1          
-[37] classInt_0.4-11    proxy_0.4-27       lifecycle_1.0.4    dtw_1.23-1        
-[41] fs_1.6.6           MASS_7.3-65        ragg_1.5.0         pkgconfig_2.0.3   
-[45] desc_1.4.3         pkgdown_2.1.3      bslib_0.9.0        gtable_0.3.6      
-[49] glue_1.8.0         Rcpp_1.1.0         sf_1.0-21          systemfonts_1.3.1 
-[53] xfun_0.53          farver_2.1.2       rjson_0.2.23       igraph_2.2.1      
-[57] htmltools_0.5.8.1  rmarkdown_2.30     testthat_3.2.3     signal_1.8-1      
-[61] compiler_4.5.1     S7_0.2.0           RCurl_1.98-1.17   </code></pre>
+ [1] viridis_0.6.5      sass_0.4.10        class_7.3-23       KernSmooth_2.23-26
+ [5] digest_0.6.39      magrittr_2.0.5     evaluate_1.0.5     grid_4.6.1        
+ [9] RColorBrewer_1.1-3 fastmap_1.2.0      jsonlite_2.0.0     e1071_1.7-17      
+[13] backports_1.5.1    DBI_1.3.0          gridExtra_2.3.1    httr_1.4.9        
+[17] viridisLite_0.4.3  scales_1.4.0       pbapply_1.7-5      textshaping_1.0.5 
+[21] jquerylib_0.1.4    cli_3.6.6          rlang_1.3.0        units_1.0-1       
+[25] fftw_1.0-9         cachem_1.1.0       yaml_2.3.12        otel_0.2.0        
+[29] tools_4.6.1        parallel_4.6.1     checkmate_2.3.4    Rraven_1.0.16     
+[33] ggplot2_4.0.3      curl_8.0.0         vctrs_0.7.3        R6_2.6.1          
+[37] classInt_0.4-11    proxy_0.4-29       lifecycle_1.0.5    dtw_1.23-3        
+[41] fs_2.1.0           MASS_7.3-65        ragg_1.5.2         pkgconfig_2.0.3   
+[45] desc_1.4.3         pkgdown_2.2.1      bslib_0.12.0       gtable_0.3.6      
+[49] glue_1.8.1         Rcpp_1.1.2         sf_1.1-3           systemfonts_1.3.2 
+[53] xfun_0.61          farver_2.1.2       htmltools_0.5.9    igraph_2.3.4      
+[57] rmarkdown_2.32     signal_1.8-1       compiler_4.6.1     S7_0.2.2          </code></pre>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
@@ -473,7 +476,7 @@ loaded via a namespace (and not attached):
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.1.</p>
 </div>
 
     </footer>
