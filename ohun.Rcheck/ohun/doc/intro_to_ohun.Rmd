@@ -319,7 +319,7 @@ Detection routines can take a long time when working with large amounts of acous
 - Always test procedures on small data subsets
 - `template_detector()` is faster than `energy_detector()`
 - Parallelization (see `parallel` argument in most functions) can significantly speed-up routines, but works better on Unix-based operating systems (linux and mac OS)
-- Sampling rate matters: detecting sound events on low sampling rate files goes faster, so we should avoid having nyquist frequencies (sampling rate / 2) way higher than the highest frequency of the target sound events (sound files can be downsampled using warbleR's [`fix_sound_files()`](https://marce10.github.io/warbleR/reference/selection_table.html))
+- Sampling rate matters: detecting sound events on low sampling rate files goes faster, so we should avoid having nyquist frequencies (sampling rate / 2) way higher than the highest frequency of the target sound events (sound files can be downsampled using warbleR's [`fix_sound_wavs()`](https://marce10.github.io/warbleR/reference/fix_wavs.html))
 - Large sound files can make the routine crash, use `split_acoustic_data()` to split both reference tables and files into shorter clips.
 - Think about using a computer with lots of RAM memory or a computer cluster for working on large amounts of data
 - `thinning` argument (which reduces the size of the amplitude envelope) can also speed-up `energy_detector()`
