@@ -11,3 +11,4 @@ tests/testthat/Rplots.pdf
 ohun_0.1.1.tar.gz
 /Meta/
 .Rhistory
+*.gz
