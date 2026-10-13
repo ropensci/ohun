@@ -10,6 +10,7 @@ reference:
   contents:
   - split_acoustic_data
   - get_envelopes
+  - envelopes
   - get_templates
   - summarize_reference
   - summarize_acoustic_data
@@ -38,7 +39,7 @@ reference:
 
 - title: Built in datasets
   desc: >
-    Datasets included in baRulho
+    Datasets included in ohun
   contents:
   - lbh1
   - lbh2
